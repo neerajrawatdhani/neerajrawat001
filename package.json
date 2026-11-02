@@ -1,0 +1,22 @@
+{
+  "name": "dhani-tech-neeraj-rawat",
+  "version": "1.0.0",
+  "description": "Neeraj Rawat Portfolio & EduDhani School ERP full-stack website",
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js",
+    "dev": "node start.js",
+    "start:frontend": "node frontend/server.js",
+    "start:backend": "node backend/server.js"
+  },
+  "keywords": [
+    "portfolio",
+    "fullstack",
+    "frontend",
+    "backend",
+    "express",
+    "animations"
+  ],
+  "author": "",
+  "license": "ISC"
+}

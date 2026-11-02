@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Freelance iOS App Developer — Neeraj Rawat</title>
+<link rel="preload" href="../fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(../fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(../fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}</style>
+
+<meta name="description" content="Native iOS apps and games designed and built from first sketch to the App Store. Freelance app developer working remotely with businesses in the US, UK and worldwide." />
+<meta name="theme-color" content="#1A1818" />
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add('embed');try{if(localStorage.getItem('rishi-mode')==='dark')document.documentElement.dataset.mode='dark'}catch(e){}</script>
+<style>
+:root{--bg:#E8E4E0;--fg:#1A1818;--fg-rgb:26,24,24;--card:#F3F0EC;--card-line:rgba(26,24,24,.08);--accent:#6B4F4F;--room:#FBFAF8;
+  --shadow:0 -1px 0 rgba(255,255,255,.6) inset,0 30px 60px -30px rgba(26,24,24,.35),0 -12px 40px -24px rgba(26,24,24,.25);
+  --font:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:light}
+html[data-mode="dark"]{--bg:#1A1818;--fg:#E8E4E0;--fg-rgb:232,228,224;--card:#232020;--card-line:rgba(232,228,224,.08);--accent:#D9C6C6;--room:#050505;
+  --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 30px 60px -30px rgba(0,0,0,.8),0 -12px 40px -20px rgba(0,0,0,.7);color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid #6B5C5C;outline-offset:3px}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:50;background:var(--room);animation:out .8s ease .15s forwards}
+@keyframes out{to{opacity:0;visibility:hidden}}
+html.embed .glow{animation:none;transition:opacity .45s ease,visibility 0s linear .45s}
+html.embed.in .glow{opacity:0;visibility:hidden}
+html.embed.out .glow{opacity:1;visibility:visible;transition:opacity .4s ease}
+
+.wrap{max-width:88rem;margin:0 auto;padding:24px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
+@media (min-width:1024px){.wrap{padding-inline:88px}}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:56px}
+.chip{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.14);font-size:14px;font-weight:500;cursor:pointer;transition:background .25s}
+.chip:hover{background:rgba(var(--fg-rgb),.05)}
+.lbl{font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(var(--fg-rgb),.5)}
+.intro{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding-bottom:64px;text-align:left}
+.intro h1{white-space:nowrap;font-size:clamp(34px,8.2vw,104px)}
+h1{font-size:clamp(44px,7vw,84px);font-weight:600;letter-spacing:-.025em;line-height:.95}
+.intro p{max-width:52ch;font-size:17px;line-height:1.55;color:rgba(var(--fg-rgb),.68)}
+.intro .count{display:block;margin-top:14px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+
+/* ---------- stacked project cards ---------- */
+.stack{position:relative;padding-bottom:12vh}
+.card{position:sticky;top:calc(var(--nav-h,72px) + 16px + var(--i) * 14px);margin-bottom:6vh;border-radius:28px;background:var(--card);box-shadow:var(--shadow);
+  border:1px solid var(--card-line);transform-origin:50% 0;will-change:transform;overflow:hidden}
+.card__in{display:grid;gap:28px;padding:28px;min-height:min(calc(100vh - var(--nav-h,72px) - 120px),720px)}
+@media (min-width:900px){
+  .card__in{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:center;gap:40px;padding:48px 52px}
+  .card.flip .card__in{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+  .card.flip .card__info{order:2}
+}
+.card__dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;border-radius:inherit}
+.card__meta{display:flex;align-items:center;gap:12px;margin-bottom:22px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card__meta .no{color:rgba(var(--fg-rgb),.4)}
+.card__meta i{width:22px;height:1px;background:currentColor;opacity:.5}
+.card h2{font-size:clamp(30px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;line-height:1.02;margin-bottom:10px}
+.card .sub{font-size:15px;font-weight:500;color:rgba(var(--fg-rgb),.7);margin-bottom:22px}
+.card .desc{font-size:16px;line-height:1.6;color:rgba(var(--fg-rgb),.75);max-width:44ch;margin-bottom:26px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.tags li{list-style:none;padding:7px 12px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.14);font-size:13px;font-weight:500;color:rgba(var(--fg-rgb),.8)}
+.live{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;border-radius:999px;background:var(--fg);color:var(--bg);font-size:14px;font-weight:600;transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.live:hover{transform:translateY(-2px)}
+.live svg{width:16px;height:16px}
+.note{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:rgba(var(--fg-rgb),.68)}
+.note::before{content:"";width:7px;height:7px;border-radius:50%;background:#7a8670}
+
+/* ---------- the phone: an iPhone turned slightly side-on ---------- */
+.card__in{--w:clamp(210px,calc((100svh - var(--nav-h,72px) - 240px) * .5),320px);--sw:calc(var(--w) * .916)}
+.stage{position:relative;perspective:1600px;perspective-origin:50% 45%;display:grid;place-items:center;padding:6px 0 34px}
+.phone{position:relative;width:var(--w);transform-style:preserve-3d;transform:rotateY(-21deg) rotateX(6deg) rotateZ(1.2deg);transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.card.flip .phone{transform:rotateY(21deg) rotateX(6deg) rotateZ(-1.2deg)}
+.card:hover .phone{transform:rotateY(-12deg) rotateX(3deg) rotateZ(.5deg)}
+.card.flip:hover .phone{transform:rotateY(12deg) rotateX(3deg) rotateZ(-.5deg)}
+/* titanium frame, then the black bezel, then the screen */
+.phone__body{position:relative;transform-style:preserve-3d;padding:calc(var(--w) * .012);border-radius:calc(var(--w) * .168);
+  background:linear-gradient(145deg,#e4e0db 0%,#8f8a85 22%,#5b5753 48%,#9d9893 74%,#e6e2dd 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 50px 80px -40px rgba(26,24,24,.55),0 18px 30px -18px rgba(26,24,24,.35)}
+html[data-mode="dark"] .phone__body{box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 50px 80px -40px rgba(0,0,0,.9),0 18px 30px -18px rgba(0,0,0,.7)}
+/* the frame's thickness: an edge you see because the phone is turned */
+.phone__body::before{content:"";position:absolute;top:calc(var(--w) * .16);bottom:calc(var(--w) * .16);right:0;width:calc(var(--w) * .05);transform-origin:100% 50%;transform:rotateY(-90deg);
+  background:linear-gradient(180deg,#cfcac5,#8c8783 30%,#6d6965 70%,#b9b4af)}
+.card.flip .phone__body::before{right:auto;left:0;transform-origin:0 50%;transform:rotateY(90deg)}
+.phone__btn{position:absolute;width:calc(var(--w) * .014);border-radius:2px;background:linear-gradient(90deg,#6e6a66,#bdb8b3);transform:translateZ(-1px)}
+.phone__btn.l{left:calc(var(--w) * -.008)}.phone__btn.r{right:calc(var(--w) * -.008)}
+.phone__screen{position:relative;box-sizing:content-box;aspect-ratio:1180/2556;border:calc(var(--w) * .03) solid #050505;border-radius:calc(var(--w) * .156);overflow:hidden;background:#141414 center/cover no-repeat;transform:translateZ(.5px)}
+.phone__screen video{border-radius:calc(var(--w) * .126);position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.phone__screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.03) 30%,transparent 44%)}
+.island{position:absolute;left:34%;top:calc(var(--sw) * .028);width:32%;aspect-ratio:126/37;border-radius:999px;background:#000}
+.sbar{position:absolute;left:0;right:0;top:0;height:calc(var(--sw) * .15);display:flex;align-items:center;justify-content:space-between;
+  padding:0 calc(var(--sw) * .085) 0 calc(var(--sw) * .115);color:#fff;font-size:calc(var(--sw) * .043);font-weight:600;letter-spacing:-.01em;pointer-events:none}
+.sbar svg{height:calc(var(--sw) * .036);width:auto;display:block}
+.sbar span:last-child{display:flex;align-items:center;gap:calc(var(--sw) * .014)}
+.stage::after{content:"";position:absolute;left:50%;bottom:10px;width:calc(var(--w) * 1.05);height:26px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.3),transparent);filter:blur(7px);z-index:-1}
+html[data-mode="dark"] .stage::after{background:radial-gradient(closest-side,rgba(0,0,0,.8),transparent)}
+/* the app's own icon beside its name */
+.app{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.app img{width:58px;height:58px;border-radius:13px;display:block;box-shadow:0 8px 18px -10px rgba(26,24,24,.5),0 0 0 1px rgba(var(--fg-rgb),.06)}
+.app .card__meta{margin-bottom:0}
+
+/* arriving */
+.card .card__info>*,.card .stage{transition:opacity .8s ease,transform 1s cubic-bezier(.16,1,.3,1)}
+.card:not(.seen) .card__info>*{opacity:0;transform:translateY(18px)}
+.card:not(.seen) .stage{opacity:0;transform:translateX(40px)}
+@media (max-width:899.98px){.card:not(.seen) .stage,.card.flip:not(.seen) .stage{transform:translateY(20px)}}
+.card.flip:not(.seen) .stage{transform:translateX(-40px)}
+.card .card__info>*:nth-child(2){transition-delay:.05s}.card .card__info>*:nth-child(3){transition-delay:.1s}
+.card .card__info>*:nth-child(4){transition-delay:.15s}.card .card__info>*:nth-child(5){transition-delay:.2s}.card .card__info>*:nth-child(6){transition-delay:.25s}
+
+.outro{padding:10vh 0 14vh;text-align:center}
+.outro p{font-size:15px;color:rgba(var(--fg-rgb),.55);margin-bottom:18px}
+
+@media (max-width:899.98px){
+  .card{top:calc(var(--nav-h,64px) + 10px + var(--i) * 10px);border-radius:22px}
+  /* phones: each card fits one screen, desktop on top, the essentials below */
+  .card__in{padding:16px 18px 20px;min-height:auto;gap:4px;max-height:calc(100svh - var(--nav-h,64px) - 40px)}
+  .stage{order:-1;padding:4px 6% 18px}
+  .card__meta{margin-bottom:8px;font-size:11px}
+  .card h2{font-size:26px;margin-bottom:4px}
+  .card .sub{font-size:13px;margin-bottom:10px}
+  .card .desc{font-size:14px;line-height:1.5;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .tags{display:none}
+  .live{height:44px;padding:0 18px;font-size:13px}
+  .card__in{--w:clamp(150px,calc((100svh - var(--nav-h,64px) - 370px) * .47),230px)}
+  .phone,.card.flip .phone{transform:rotateY(-14deg) rotateX(4deg) rotateZ(.6deg)}
+  .card.flip .phone__body::before{right:0;left:auto;transform-origin:100% 50%;transform:rotateY(-90deg)}
+  .app{margin-bottom:10px;gap:12px}.app img{width:42px;height:42px;border-radius:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .glow{display:none}
+  .card .card__info>*,.card .stage{transition:none;opacity:1!important;transform:none!important}
+}
+
+.rn{position:sticky;top:0;z-index:40;transition:background .35s ease,box-shadow .35s ease}
+.rn{background:var(--bg)}
+.rn.stuck{box-shadow:0 1px 0 rgba(var(--fg-rgb),.1)}
+.rn__in{max-width:88rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.1rem max(16px,env(safe-area-inset-right)) 1.1rem max(16px,env(safe-area-inset-left));transition:padding .35s ease}
+.rn.stuck .rn__in{padding-block:.8rem}
+@media (min-width:1024px){.rn__in{padding-inline:88px}}
+.rn nav ul{display:none;list-style:none;margin:0;padding:0;gap:1.4rem;white-space:nowrap}
+.rn nav button{padding:0;border:0;background:none;color:var(--fg);font:inherit;font-size:1rem;font-weight:500;opacity:.8;cursor:pointer;transition:opacity .2s}
+.rn nav button:hover,.rn nav button[aria-current]{opacity:1}
+.rn nav button[aria-current]{text-decoration:underline;text-underline-offset:.35em;text-decoration-thickness:1px}
+.rn__clock{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.12);font-size:.875rem;font-weight:500;white-space:nowrap}
+.rn__clock span{color:rgba(var(--fg-rgb),.68)}
+.rn__menu{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:2.75rem;padding:0 1.05rem 0 .95rem;font:500 .9375rem/1 'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.12);background:none;color:var(--fg);cursor:pointer}
+.rn__menu svg{width:1.1rem;height:1.1rem}
+/* ---------- the menu, full screen, on small screens ---------- */
+.rn__panel{position:fixed;inset:0;z-index:110;display:flex;flex-direction:column;
+  padding:max(1rem,env(safe-area-inset-top)) max(1.25rem,env(safe-area-inset-right)) max(1.5rem,env(safe-area-inset-bottom)) max(1.25rem,env(safe-area-inset-left));
+  background:var(--bg);color:var(--fg);visibility:hidden;opacity:0;
+  transition:opacity .4s cubic-bezier(.4,0,.2,1),visibility 0s linear .4s}
+.rn.open .rn__panel{visibility:visible;opacity:1;transition-delay:0s}
+/* a wash of colour sweeps up behind the items as it opens */
+.rn__panel::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(70% 55% at 12% 100%,rgba(164,85,44,.2),transparent 70%),
+             radial-gradient(60% 50% at 95% 4%,rgba(196,176,176,.18),transparent 72%);
+  opacity:0;transform:translateY(12%) scale(1.08);transition:opacity .6s ease,transform .9s cubic-bezier(.16,1,.3,1)}
+.rn.open .rn__panel::before{opacity:1;transform:none}
+.rn__phead{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;min-height:2.75rem;margin-bottom:auto}
+.rn__plbl{font:600 .75rem/1 'Onest',ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(var(--fg-rgb),.5)}
+.rn__pclose{display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border-radius:999px;
+  border:1px solid rgba(var(--fg-rgb),.14);background:none;color:var(--fg);cursor:pointer;transition:background .25s,transform .35s cubic-bezier(.16,1,.3,1)}
+.rn__pclose:hover{background:rgba(var(--fg-rgb),.08);transform:rotate(90deg)}
+.rn__pclose svg{width:1.15rem;height:1.15rem}
+.rn__plist{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:.1rem;padding-block:2rem}
+/* each line rises into place, one after the other */
+.rn__plist button{position:relative;display:flex;align-items:baseline;gap:.85rem;width:100%;padding:.45rem 0;border:0;background:none;color:var(--fg);
+  font:600 clamp(2rem,9.5vw,2.9rem)/1.06 'Onest',ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em;text-align:left;cursor:pointer;
+  opacity:0;transform:translateY(1.1rem);transition:opacity .5s ease,transform .66s cubic-bezier(.16,1,.3,1),color .25s ease}
+.rn.open .rn__plist button{opacity:1;transform:none;transition-delay:calc(var(--i,0) * 55ms + 90ms)}
+.rn__plist button::before{content:counter(rnc,decimal-leading-zero);counter-increment:rnc;
+  font:600 .8125rem/1 ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(var(--fg-rgb),.38);transition:color .25s}
+.rn__plist{counter-reset:rnc}
+.rn__plist button[aria-current]{color:var(--fg)}
+.rn__plist button[aria-current]::before{color:#A4552C}
+@media (hover:hover){.rn__plist button:hover{color:#A4552C}.rn__plist button:hover::before{color:#A4552C}}
+.rn__pfoot{position:relative;z-index:1;margin-top:auto;padding-top:1.25rem;border-top:1px solid rgba(var(--fg-rgb),.1);
+  font:500 .8125rem/1.4 'Onest',ui-sans-serif,system-ui,sans-serif;color:rgba(var(--fg-rgb),.55);
+  opacity:0;transform:translateY(.6rem);transition:opacity .5s ease .34s,transform .6s cubic-bezier(.16,1,.3,1) .34s}
+.rn.open .rn__pfoot{opacity:1;transform:none}
+html.rn-lock,html.rn-lock body{overflow:hidden}
+@media (prefers-reduced-motion:reduce){
+  .rn__panel,.rn__panel::before,.rn__plist button,.rn__pfoot{transition-duration:.01ms!important;transform:none!important}}
+
+/* ---------- where things sit in the bar ---------- */
+/* wide: the full nav shows, and "back" floats in the bottom-left corner instead of taking bar space */
+@media (min-width:1200px){
+  .rn nav ul{display:flex}
+  .rn__menu,.rn__panel{display:none!important}
+  .backd{position:fixed;left:max(1.5rem,env(safe-area-inset-left));bottom:max(1.5rem,calc(env(safe-area-inset-bottom) + 1rem));top:auto;z-index:60;
+    height:3rem;padding:0 1.25rem 0 1rem;border-color:transparent;
+    background:var(--bd-float,rgba(26,24,24,.9));color:var(--bd-floatfg,#E8E4E0);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    box-shadow:0 12px 30px -12px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+  .backd span{display:inline}
+  .backd:hover{background:var(--bd-float,rgba(26,24,24,1));border-color:transparent}
+}
+html[data-mode="dark"] .backd{--bd-float:rgba(232,228,224,.92);--bd-floatfg:#1A1818}
+/* narrow: back on the left, menu on the right, no clock */
+@media (max-width:1199.98px){
+  .rn__in{justify-content:space-between}
+  .rn nav{display:none}
+  .rn__clock{display:none}
+  .rn__menu{order:99;margin-left:auto}
+  .backd{order:-2}
+}
+
+/* ---------- footer ---------- */
+/* the footer slides up over the last 32px of the section above, so its rounded corners show that
+   section's real background (gradients and glows included) instead of a flat patch of colour */
+.sfw{position:relative;z-index:2;background:transparent;margin-top:-32px}
+.sfw--dark .sf{box-shadow:inset 0 1px 0 rgba(232,228,224,.12)}
+.sf{--sf-bg:#1A1818;--sf-fg:#E8E4E0;--sf-rgb:232,228,224;--sf-acc:#C4B0B0;position:relative;z-index:2;background:var(--sf-bg);color:var(--sf-fg);
+  border-radius:2rem 2rem 0 0;overflow:hidden;font-family:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif}
+html[data-mode="dark"] .sf{--sf-bg:#0F0E0E;box-shadow:inset 0 1px 0 rgba(232,228,224,.1)}
+.sf__in{max-width:88rem;margin:0 auto;padding:5.5rem 1.25rem 1.5rem}
+@media (min-width:1024px){.sf__in{padding:7rem 5.5rem 1.75rem}}
+html,body{overscroll-behavior-y:none}
+html{background:#1A1818}html[data-mode="dark"]{background:#0F0E0E}
+body{margin:0}
+.sf{margin-bottom:0}
+.sf__eye{display:inline-flex;align-items:center;gap:.6rem;font-size:.8125rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(var(--sf-rgb),.6)}
+.sf__eye i{width:.5rem;height:.5rem;border-radius:50%;background:#8FBF7A;box-shadow:0 0 0 0 rgba(143,191,122,.6);animation:sfPulse 2.2s ease-out infinite}
+@keyframes sfPulse{70%{box-shadow:0 0 0 .55rem rgba(143,191,122,0)}100%{box-shadow:0 0 0 0 rgba(143,191,122,0)}}
+.sf__h{margin:1.4rem 0 1.25rem;font-size:clamp(2.75rem,7.5vw,6.5rem);font-weight:600;line-height:.95;letter-spacing:-.035em}
+.sf__h span{display:block;color:rgba(var(--sf-rgb),.42)}
+.sf__p{max-width:46ch;font-size:1.0625rem;line-height:1.6;color:rgba(var(--sf-rgb),.7)}
+.sf__cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2.25rem}
+.sf__btn{display:inline-flex;align-items:center;gap:.8rem;height:3.5rem;padding:0 .55rem 0 1.6rem;border:0;border-radius:999px;background:var(--sf-fg);color:var(--sf-bg);
+  font:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.sf__btn b{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--sf-bg);color:var(--sf-fg)}
+.sf__btn svg{width:1.05rem;height:1.05rem;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.sf__btn:hover{transform:translateY(-2px)}.sf__btn:hover svg{transform:translateX(3px)}
+.sf__ghost{display:inline-flex;align-items:center;height:3.5rem;padding:0 1.5rem;border-radius:999px;border:1px solid rgba(var(--sf-rgb),.2);background:none;color:var(--sf-fg);
+  font:inherit;font-size:1rem;font-weight:500;cursor:pointer;transition:background .25s}
+.sf__ghost:hover{background:rgba(var(--sf-rgb),.07)}
+.sf__cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.25rem 1.5rem;margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(var(--sf-rgb),.12)}
+@media (min-width:768px){.sf__cols{grid-template-columns:2fr 1fr 1fr}}
+.sf__cols h3{margin-bottom:1rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(var(--sf-rgb),.66)}
+.sf__cols ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+@media (pointer:coarse),(max-width:767.98px){.sf__cols ul{gap:0}.sf__cols button,.sf__cols a,.sf__bot button{min-height:44px;min-width:44px;display:inline-flex;align-items:center}.sf__cols li.st{min-height:32px;display:flex;align-items:center}}
+.sf__cols button,.sf__cols a{padding:0;border:0;background:none;color:rgba(var(--sf-rgb),.85);font:inherit;font-size:.9375rem;font-weight:500;cursor:pointer;text-align:left;text-decoration:none;transition:color .2s}
+.sf__cols button:hover,.sf__cols a:hover{color:#fff}
+.sf__cols li.st{font-size:.9375rem;color:rgba(var(--sf-rgb),.85)}
+.sf__cols .work{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:.6rem 1.5rem}
+.sf__in{position:relative;z-index:1}
+/* the name runs the full width of the footer, edge to edge, behind the links and the bottom line */
+.sf__word{position:absolute;left:0;right:0;bottom:0;z-index:0;margin:0;padding:0 1.2vw;font-size:var(--wf,15vw);font-weight:700;line-height:.74;letter-spacing:-.055em;
+  color:rgba(var(--sf-rgb),.17);user-select:none;pointer-events:none;white-space:nowrap;text-align:center;transform:translateY(.05em)}
+.sf__word span{display:inline-block}
+.sf__word .short{display:none}
+@media (max-width:767.98px){.sf__word .full{display:none}.sf__word .short{display:inline-block}}
+
+.sf__bot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem;margin-top:1.75rem;font-size:.8125rem;color:rgba(var(--sf-rgb),.68)}
+.sf__bot button{padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}.sf__bot button:hover{color:var(--sf-fg)}
+.sf__legal a{color:inherit;text-decoration:underline;text-underline-offset:.2em;text-decoration-color:rgba(var(--sf-rgb),.35)}.sf__legal a:hover{color:var(--sf-fg)}
+@media (pointer:coarse),(max-width:767.98px){.sf__legal a{min-height:44px;display:inline-flex;align-items:center}}
+@media (prefers-reduced-motion:reduce){.sf__eye i{animation:none}}
+/* ---------- floating back-to-top ---------- */
+.totop{--tt-bg:#1A1818;--tt-fg:#E8E4E0;--tt-ring:232,228,224;position:fixed;right:max(1.25rem,env(safe-area-inset-right));bottom:max(1.25rem,env(safe-area-inset-bottom));z-index:60;
+  display:grid;place-items:center;width:3.25rem;height:3.25rem;padding:0;border:0;border-radius:50%;background:var(--tt-bg);color:var(--tt-fg);cursor:pointer;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.45),0 0 0 1px rgba(var(--tt-ring),.14);
+  opacity:0;visibility:hidden;transform:translateY(.75rem) scale(.9);
+  transition:opacity .35s ease,visibility 0s linear .35s,transform .45s cubic-bezier(.16,1,.3,1),background .3s ease,color .3s ease,box-shadow .3s ease}
+.totop.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.totop[data-on="dark"]{--tt-bg:#E8E4E0;--tt-fg:#1A1818;--tt-ring:26,24,24}
+.totop svg.ar{width:1.15rem;height:1.15rem;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.totop svg.ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
+.totop .ring circle{fill:none;stroke:currentColor;stroke-width:2;opacity:.85;stroke-dasharray:var(--len);stroke-dashoffset:calc(var(--len) * (1 - var(--p,0)));transition:stroke-dashoffset .12s linear}
+.totop .lbl{position:absolute;right:calc(100% + .6rem);top:50%;padding:.4rem .75rem;border-radius:999px;background:var(--tt-bg);color:var(--tt-fg);font:500 .8125rem/1 'Onest',ui-sans-serif,system-ui,sans-serif;
+  white-space:nowrap;pointer-events:none;opacity:0;transform:translate(.4rem,-50%);transition:opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1);box-shadow:0 0 0 1px rgba(var(--tt-ring),.14)}
+@media (hover:hover){.totop:hover{transform:translateY(-3px)}.totop:hover svg.ar{transform:translateY(-3px)}.totop:hover .lbl{opacity:1;transform:translate(0,-50%)}}
+.totop:focus-visible{outline:2px solid #C4B0B0;outline-offset:3px}
+@media (max-width:767.98px){.totop{width:3rem;height:3rem}}
+@media (prefers-reduced-motion:reduce){.totop,.totop svg.ar{transition:opacity .2s ease,visibility 0s linear .2s}}
+
+.skel{position:relative}
+.skel::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;opacity:1;
+  background:linear-gradient(100deg,#E2DDD8 30%,#F1EDE9 50%,#E2DDD8 70%);background-size:220% 100%;animation:skel 1.25s linear infinite}
+html[data-mode="dark"] .skel::after{background-image:linear-gradient(100deg,#231F1F 30%,#2F2A2A 50%,#231F1F 70%)}
+@keyframes skel{from{background-position:120% 0}to{background-position:-100% 0}}
+/* a recording that is still buffering: a light sweep over its poster until it plays */
+.skel-buf{position:relative}
+.skel-buf::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);background-size:220% 100%;animation:skel 1.25s linear infinite}
+@media (prefers-reduced-motion:reduce){.skel::after{animation:none}}
+
+/* "Back to the doors" sits in the room's sticky header: it stays on screen the whole
+   time you are inside a room, but it is part of the bar rather than floating over the page,
+   so it never covers anything you are reading. */
+.backd{order:-2;flex:none;display:inline-flex;align-items:center;gap:.5rem;height:2.75rem;padding:0 1.1rem 0 .85rem;
+  border:1px solid rgba(var(--fg-rgb),.14);border-radius:999px;background:rgba(var(--fg-rgb),.05);color:var(--fg);
+  font:500 .9375rem/1 'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap;
+  opacity:0;transform:translateX(-.5rem);transition:opacity .35s ease,transform .45s cubic-bezier(.16,1,.3,1),background .25s ease,border-color .25s ease}
+.backd.show{opacity:1;transform:none}
+.backd svg{width:1.05rem;height:1.05rem;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+@media (hover:hover){.backd:hover{background:rgba(var(--fg-rgb),.1);border-color:rgba(var(--fg-rgb),.26)}.backd:hover svg{transform:translateX(-3px)}}
+.backd:focus-visible{outline:2px solid #C4B0B0;outline-offset:3px}
+/* phones keep the words on both pills; on the very narrowest screens they just get a little smaller */
+@media (max-width:359.98px){.backd,.rn__menu{font-size:.8125rem}.backd{padding:0 .85rem 0 .7rem}.rn__menu{padding:0 .85rem}}
+/* the leftover top row above each room's title, and the gap under the intro */
+.top{display:none!important}
+.intro{padding-bottom:clamp(28px,4vw,44px)!important}
+.rn__in{min-width:0}
+.rn nav{min-width:0}
+</style>
+<link rel="canonical" href="https://www.edudhani.com/app-developer/" />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<meta name="author" content="Neeraj Rawat" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Neeraj Rawat" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://www.edudhani.com/app-developer/" />
+<meta property="og:title" content="Freelance iOS App Developer — Neeraj Rawat" />
+<meta property="og:description" content="Native iOS apps and games designed and built from first sketch to the App Store. Freelance app developer working remotely with businesses in the US, UK and worldwide." />
+<meta property="og:image" content="https://www.edudhani.com/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Neeraj Rawat&#39;s portfolio" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Freelance iOS App Developer — Neeraj Rawat" />
+<meta name="twitter:description" content="Native iOS apps and games designed and built from first sketch to the App Store. Freelance app developer working remotely with businesses in the US, UK and worldwide." />
+<meta name="twitter:image" content="https://www.edudhani.com/og.jpg" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://edudhani.com/#neeraj","name":"Neeraj Rawat","url":"https://www.edudhani.com","jobTitle":"Freelance Developer, Designer and Photographer","image":"https://www.edudhani.com/og.jpg","description":"Freelance web and iOS developer, UI/UX designer, graphic designer and photographer working remotely with clients worldwide.","knowsAbout":["Web development","iOS app development","UI/UX design","Graphic design","Brand identity","Photography"],"address":{"@type":"PostalAddress","addressCountry":"IN"},"knowsLanguage":["en"],"worksFor":{"@id":"https://www.edudhani.com/#org"}},{"@type":"Organization","@id":"https://www.edudhani.com/#org","name":"Neeraj Rawat — Design & Development","alternateName":"Neeraj Rawat","url":"https://www.edudhani.com","image":"https://www.edudhani.com/og.jpg","logo":{"@type":"ImageObject","url":"https://www.edudhani.com/icon-512.png","width":512,"height":512},"founder":{"@id":"https://edudhani.com/#neeraj"},"email":"neeraj@edudhani.com","contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"neeraj@edudhani.com","availableLanguage":"en","areaServed":["US","GB","CA","AU"]},"description":"Freelance web development, iOS app development, UI/UX design and graphic design, delivered remotely.","areaServed":[{"@type":"Country","name":"United States"},{"@type":"Country","name":"United Kingdom"},{"@type":"Country","name":"Canada"},{"@type":"Country","name":"Australia"},"Worldwide"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Web development","description":"Websites and web applications designed and built end to end."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"iOS app development","description":"Native iOS apps and games, from first sketch to the App Store."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"UI/UX design","description":"Product and interface design: user flows, wireframes and finished UI."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Graphic design","description":"Brand identity, social media creatives, posters and logos."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Photography","description":"Portrait, event and street photography."}}]}},{"@type":"WebSite","@id":"https://www.edudhani.com/#site","url":"https://www.edudhani.com","name":"Neeraj Rawat — Portfolio","publisher":{"@id":"https://edudhani.com/#neeraj"},"inLanguage":"en"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.edudhani.com/"},{"@type":"ListItem","position":2,"name":"Freelance iOS App Developer","item":"https://www.edudhani.com/app-developer/"}]}]}</script>
+<meta name="google-site-verification" content="dB3k2roAkI1S8861shwLsjVKNyl1q-TjchYYJWrG-18" /></head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<header class="rn" id="rn">
+  <div class="rn__in">
+    <nav aria-label="Primary"><ul><li><button data-nav="home">Home</button></li><li><button data-nav="door:0">Web Development</button></li><li><button data-nav="door:1" aria-current=page>App Development</button></li><li><button data-nav="door:2">UI/UX Design</button></li><li><button data-nav="door:3">Graphic Design</button></li><li><button data-nav="about">My story</button></li><li><button data-nav="contact">Contact</button></li></ul></nav>
+    <div class="rn__clock" aria-label="Local time"><span>Local time</span><b data-ftime>—</b><span class="d">•</span><span class="d" data-fdate></span></div>
+    <button class="rn__menu" id="rnMenu" aria-expanded="false" aria-controls="rnPanel"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menu</span></button>
+  </div>
+  <div class="rn__panel" id="rnPanel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="rn__phead">
+      <span class="rn__plbl">Menu</span>
+      <button class="rn__pclose" id="rnClose" aria-label="Close menu"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="rn__plist"><button data-nav="home">Home</button><button data-nav="door:0">Web Development</button><button data-nav="door:1" aria-current=page>App Development</button><button data-nav="door:2">UI/UX Design</button><button data-nav="door:3">Graphic Design</button><button data-nav="about">My story</button><button data-nav="contact">Contact</button></div>
+    <p class="rn__pfoot">Neeraj Rawat — available for new work<br>Replies within 5 hours</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="top"><a class="chip" href="../#works">← Back to the doors</a></div>
+  <section class="intro">
+    <h1>App Development</h1>
+    <div><p>iOS apps and games, designed and built end to end: from the first screen and the small interactions to the details that make an app feel at home on iPhone.</p></div>
+  </section>
+  <section class="stack" id="stack" aria-label="Projects"><!--pre-->
+  <article class="card" style="--i:0" aria-labelledby="p0">
+    <div class="card__in">
+      <div class="card__info">
+        <div class="app"><img src="icon-expense.webp" alt="" width="58" height="58" decoding="async" loading="eager"><p class="card__meta"><span>iOS app · Finance</span></p></div>
+        <h2 id="p0">Expense Tracker</h2>
+        <p class="sub">Personal finance, organised into books</p>
+        <p class="desc">Spending is grouped into expense books such as Personal, Travel and Business, each with its own budget. Add income or an expense in a couple of taps, see the balance, spend and budget used at a glance, and search across every entry.</p>
+        <ul class="tags"><li>Budgets</li><li>Expense books</li><li>Shortcuts &amp; Back Tap</li></ul>
+        <span class="note">Screen recording on iPhone</span>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="phone"><div class="phone__body">
+          <i class="phone__btn l" style="top:19%;height:4%"></i><i class="phone__btn l" style="top:26%;height:7.5%"></i><i class="phone__btn l" style="top:35%;height:7.5%"></i><i class="phone__btn r" style="top:28%;height:11%"></i>
+          <div class="phone__screen" style="background-image:url(data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABQBQCdASoWADAAPrFOoEunJCMhqqgA4BYJaQAAPY/9OjphkIk8XGYA6eEFf3dAe9tN3gAA/varJVrewwzMIzTFLawEO29Fx1JsHinvtEM2zUFTPr13RVQd9uhJzNhx6bwOr+5hOwzYEeeMEGNNChwNt7zrkEgAAAA=)">
+            <video muted loop playsinline preload="metadata" poster="app-expense.webp" src="app-expense.mp4"></video>
+            <div class="sbar"><span>9:41</span><span><svg aria-hidden="true" focusable="false" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.6 10.6 0 0 0 8 .3 10.6 10.6 0 0 0 .7 3.2L2 4.6a8.7 8.7 0 0 1 6-2.4Zm0 3.8c1.3 0 2.5.5 3.4 1.3l1.3-1.4A6.8 6.8 0 0 0 8 4.1a6.8 6.8 0 0 0-4.7 1.8l1.3 1.4C5.5 6.5 6.7 6 8 6Zm0 3.7c-.6 0-1.1.2-1.5.6L8 12l1.5-1.7c-.4-.4-.9-.6-1.5-.6Z"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 27 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3.2" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><path d="M24.5 4v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".45"/></svg></span></div><div class="island"></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card__dim"></div>
+  </article>
+  <article class="card flip" style="--i:1" aria-labelledby="p1">
+    <div class="card__in">
+      <div class="card__info">
+        <div class="app"><img src="icon-vault.webp" alt="" width="58" height="58" decoding="async" loading="lazy"><p class="card__meta"><span>iOS app · Privacy</span></p></div>
+        <h2 id="p1">Secret Vault</h2>
+        <p class="sub">A photo vault disguised as a calculator</p>
+        <p class="desc">It looks and works like an ordinary calculator. Type your secret equation and double-tap % to open a private vault: photos you import are hidden there and can be removed from your photo library.</p>
+        <ul class="tags"><li>Privacy</li><li>Equation passcode</li><li>Photos access</li></ul>
+        <span class="note">Recorded on iPhone with sample photos</span>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="phone"><div class="phone__body">
+          <i class="phone__btn l" style="top:19%;height:4%"></i><i class="phone__btn l" style="top:26%;height:7.5%"></i><i class="phone__btn l" style="top:35%;height:7.5%"></i><i class="phone__btn r" style="top:28%;height:11%"></i>
+          <div class="phone__screen" style="background-image:url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwBgCdASoWADAAPpVClkmlpCIhOrzIALASiWkA0YAs2W94CsvMnPEjrZH9/8puNKKooDEk+IeuVpgAAP7y2dGMKDtWIkcS87pXM5c73fkTCwUF+DRPBtVySJ2nAkgXYpkqGTouykU4hp5cR55AAA==)">
+            <video muted loop playsinline preload="metadata" poster="app-vault.webp" src="app-vault.mp4"></video>
+            <div class="sbar"><span>9:41</span><span><svg aria-hidden="true" focusable="false" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.6 10.6 0 0 0 8 .3 10.6 10.6 0 0 0 .7 3.2L2 4.6a8.7 8.7 0 0 1 6-2.4Zm0 3.8c1.3 0 2.5.5 3.4 1.3l1.3-1.4A6.8 6.8 0 0 0 8 4.1a6.8 6.8 0 0 0-4.7 1.8l1.3 1.4C5.5 6.5 6.7 6 8 6Zm0 3.7c-.6 0-1.1.2-1.5.6L8 12l1.5-1.7c-.4-.4-.9-.6-1.5-.6Z"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 27 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3.2" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><path d="M24.5 4v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".45"/></svg></span></div><div class="island"></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card__dim"></div>
+  </article>
+  <article class="card" style="--i:2" aria-labelledby="p2">
+    <div class="card__in">
+      <div class="card__info">
+        <div class="app"><img src="icon-brick.webp" alt="" width="58" height="58" decoding="async" loading="lazy"><p class="card__meta"><span>iOS game · Arcade</span></p></div>
+        <h2 id="p2">Brick Breaker</h2>
+        <p class="sub">Arcade game with pixel-art levels</p>
+        <p class="desc">A fast arcade brick breaker: pixel-art levels, multi-ball power-ups that flood the screen, combos and a live score, with a pause menu and level-by-level progression.</p>
+        <ul class="tags"><li>Game design</li><li>Power-ups</li><li>Level design</li></ul>
+        <span class="note">Gameplay recorded on iPhone</span>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="phone"><div class="phone__body">
+          <i class="phone__btn l" style="top:19%;height:4%"></i><i class="phone__btn l" style="top:26%;height:7.5%"></i><i class="phone__btn l" style="top:35%;height:7.5%"></i><i class="phone__btn r" style="top:28%;height:11%"></i>
+          <div class="phone__screen" style="background-image:url(data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAAAwBgCdASoWADAAPrFGnEmnI6KhNVQIAOAWCWQAx+Q5X7Fb2+drW7FLsX3d1xUlIStpj0XKMRUoP52gAP78ptUdXrARGOtskF8MifbUiH/I2pV9htfUcRcLEZsUP3eAJrueLZGNJKnWpRjMHdgv1VjyOxdpHawEbcckCq9I27rno3Us0eHZpDW7GUyMBuEKNr8UHt6C+GiJtKWqjfSRTnZKBO1LxxDHHMli2UNE0O2QAA==)">
+            <video muted loop playsinline preload="metadata" poster="app-brick.webp" src="app-brick.mp4"></video>
+            <div class="sbar"><span>9:41</span><span><svg aria-hidden="true" focusable="false" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.6 10.6 0 0 0 8 .3 10.6 10.6 0 0 0 .7 3.2L2 4.6a8.7 8.7 0 0 1 6-2.4Zm0 3.8c1.3 0 2.5.5 3.4 1.3l1.3-1.4A6.8 6.8 0 0 0 8 4.1a6.8 6.8 0 0 0-4.7 1.8l1.3 1.4C5.5 6.5 6.7 6 8 6Zm0 3.7c-.6 0-1.1.2-1.5.6L8 12l1.5-1.7c-.4-.4-.9-.6-1.5-.6Z"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 27 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3.2" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><path d="M24.5 4v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".45"/></svg></span></div><div class="island"></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card__dim"></div>
+  </article>
+  <article class="card flip" style="--i:3" aria-labelledby="p3">
+    <div class="card__in">
+      <div class="card__info">
+        <div class="app"><img src="icon-dice.webp" alt="" width="58" height="58" decoding="async" loading="lazy"><p class="card__meta"><span>iOS app · Utility</span></p></div>
+        <h2 id="p3">Dice</h2>
+        <p class="sub">A colourful dice roller</p>
+        <p class="desc">Roll several dice at once: each die fills its own block of colour and the total updates instantly, so a board-game night needs nothing but a phone.</p>
+        <ul class="tags"><li>Utility</li><li>Minimal UI</li><li>Tap to roll</li></ul>
+        <span class="note">Screen recording on iPhone</span>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="phone"><div class="phone__body">
+          <i class="phone__btn l" style="top:19%;height:4%"></i><i class="phone__btn l" style="top:26%;height:7.5%"></i><i class="phone__btn l" style="top:35%;height:7.5%"></i><i class="phone__btn r" style="top:28%;height:11%"></i>
+          <div class="phone__screen" style="background-image:url(data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAACQBACdASoWADAAPqlGnkmmJCMhMAqowBUJYgCDMfkgGEg4+mAlEH6d3GNpc0AA/rhzRmSQDP+chJNr/d1jZAbXbk4ynfkvNYiJnwJ5T43ypu3InS8X7SMq5QkGluq3yOIvkG7PRYsaKUYAAAA=)">
+            <video muted loop playsinline preload="metadata" poster="app-dice.webp" src="app-dice.mp4"></video>
+            <div class="sbar"><span>9:41</span><span><svg aria-hidden="true" focusable="false" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.6 10.6 0 0 0 8 .3 10.6 10.6 0 0 0 .7 3.2L2 4.6a8.7 8.7 0 0 1 6-2.4Zm0 3.8c1.3 0 2.5.5 3.4 1.3l1.3-1.4A6.8 6.8 0 0 0 8 4.1a6.8 6.8 0 0 0-4.7 1.8l1.3 1.4C5.5 6.5 6.7 6 8 6Zm0 3.7c-.6 0-1.1.2-1.5.6L8 12l1.5-1.7c-.4-.4-.9-.6-1.5-.6Z"/></svg><svg aria-hidden="true" focusable="false" viewBox="0 0 27 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3.2" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><path d="M24.5 4v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".45"/></svg></span></div><div class="island"></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card__dim"></div>
+  </article><!--/pre--></section>
+</main>
+<div class="sfw">
+<footer class="sf" id="contact-footer" aria-labelledby="sfTitle">
+  <div class="sf__in">
+    <p class="sf__eye"><i></i>Available for new work</p>
+    <h2 class="sf__h" id="sfTitle">Got a project?<span>Let's build it together.</span></h2>
+    <p class="sf__p">I'm taking on new freelance work: websites, apps, interfaces and visual content. Tell me what you're building and I'll get back to you within a day.</p>
+    <div class="sf__cta">
+      <button class="sf__btn" data-nav="contact">Start a project <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></b></button>
+      
+    </div>
+    <div class="sf__cols">
+      <div><h3>Work</h3><ul class="work"><li><a href="../web-developer/" data-nav="door:0">Web Development</a></li><li><a href="../app-developer/" data-nav="door:1">App Development</a></li><li><a href="../ui-ux-designer/" data-nav="door:2">UI/UX Design</a></li><li><a href="../graphic-designer/" data-nav="door:3">Graphic Design</a></li><li><a href="../photographer/" data-nav="door:4">Photography</a></li></ul></div>
+      <div><h3>Navigate</h3><ul><li><a href="../" data-nav="home">Home</a></li><li><a href="../#about" data-nav="about">My story</a></li><li><button data-nav="contact">Contact</button></li></ul></div>
+      <div><h3>Status</h3><ul><li class="st">Available for work</li><li class="st">Remote-first, worldwide</li><li class="st">Local time <span data-ftime>—</span></li></ul></div>
+    </div>
+    <div class="sf__bot"><span>© <span data-fyear>2026</span> Neeraj Rawat. Designed and built by Neeraj.</span><span class="sf__legal"><a href="../legal/" target="_top">Privacy &amp; credits</a></span><button data-nav="top">Back to top ↑</button></div>
+  </div>
+</footer>
+</div>
+<button class="totop" data-nav="top" aria-label="Back to top"><svg class="ring" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/></svg><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="lbl">Back to top</span></button>
+
+<script>
+const PROJECTS = [{"kind": "iOS app · Finance", "title": "Expense Tracker", "sub": "Personal finance, organised into books", "desc": "Spending is grouped into expense books such as Personal, Travel and Business, each with its own budget. Add income or an expense in a couple of taps, see the balance, spend and budget used at a glance, and search across every entry.", "tags": ["Budgets", "Expense books", "Shortcuts & Back Tap"], "video": "app-expense.mp4", "poster": "app-expense.webp", "icon": "icon-expense.webp", "note": "Screen recording on iPhone", "lqip": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABQBQCdASoWADAAPrFOoEunJCMhqqgA4BYJaQAAPY/9OjphkIk8XGYA6eEFf3dAe9tN3gAA/varJVrewwzMIzTFLawEO29Fx1JsHinvtEM2zUFTPr13RVQd9uhJzNhx6bwOr+5hOwzYEeeMEGNNChwNt7zrkEgAAAA="}, {"kind": "iOS app · Privacy", "title": "Secret Vault", "sub": "A photo vault disguised as a calculator", "desc": "It looks and works like an ordinary calculator. Type your secret equation and double-tap % to open a private vault: photos you import are hidden there and can be removed from your photo library.", "tags": ["Privacy", "Equation passcode", "Photos access"], "video": "app-vault.mp4", "poster": "app-vault.webp", "icon": "icon-vault.webp", "note": "Recorded on iPhone with sample photos", "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwBgCdASoWADAAPpVClkmlpCIhOrzIALASiWkA0YAs2W94CsvMnPEjrZH9/8puNKKooDEk+IeuVpgAAP7y2dGMKDtWIkcS87pXM5c73fkTCwUF+DRPBtVySJ2nAkgXYpkqGTouykU4hp5cR55AAA=="}, {"kind": "iOS game · Arcade", "title": "Brick Breaker", "sub": "Arcade game with pixel-art levels", "desc": "A fast arcade brick breaker: pixel-art levels, multi-ball power-ups that flood the screen, combos and a live score, with a pause menu and level-by-level progression.", "tags": ["Game design", "Power-ups", "Level design"], "video": "app-brick.mp4", "poster": "app-brick.webp", "icon": "icon-brick.webp", "note": "Gameplay recorded on iPhone", "lqip": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAAAwBgCdASoWADAAPrFGnEmnI6KhNVQIAOAWCWQAx+Q5X7Fb2+drW7FLsX3d1xUlIStpj0XKMRUoP52gAP78ptUdXrARGOtskF8MifbUiH/I2pV9htfUcRcLEZsUP3eAJrueLZGNJKnWpRjMHdgv1VjyOxdpHawEbcckCq9I27rno3Us0eHZpDW7GUyMBuEKNr8UHt6C+GiJtKWqjfSRTnZKBO1LxxDHHMli2UNE0O2QAA=="}, {"kind": "iOS app · Utility", "title": "Dice", "sub": "A colourful dice roller", "desc": "Roll several dice at once: each die fills its own block of colour and the total updates instantly, so a board-game night needs nothing but a phone.", "tags": ["Utility", "Minimal UI", "Tap to roll"], "video": "app-dice.mp4", "poster": "app-dice.webp", "icon": "icon-dice.webp", "note": "Screen recording on iPhone", "lqip": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAACQBACdASoWADAAPqlGnkmmJCMhMAqowBUJYgCDMfkgGEg4+mAlEH6d3GNpc0AA/rhzRmSQDP+chJNr/d1jZAbXbk4ynfkvNYiJnwJ5T43ypu3InS8X7SMq5QkGluq3yOIvkG7PRYsaKUYAAAA="}];
+const ARROW = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+const SIG = '<svg aria-hidden="true" focusable="false" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>';
+const WIFI = '<svg aria-hidden="true" focusable="false" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.6 10.6 0 0 0 8 .3 10.6 10.6 0 0 0 .7 3.2L2 4.6a8.7 8.7 0 0 1 6-2.4Zm0 3.8c1.3 0 2.5.5 3.4 1.3l1.3-1.4A6.8 6.8 0 0 0 8 4.1a6.8 6.8 0 0 0-4.7 1.8l1.3 1.4C5.5 6.5 6.7 6 8 6Zm0 3.7c-.6 0-1.1.2-1.5.6L8 12l1.5-1.7c-.4-.4-.9-.6-1.5-.6Z"/></svg>';
+const BATT = '<svg aria-hidden="true" focusable="false" viewBox="0 0 27 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3.2" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><path d="M24.5 4v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".45"/></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const stack = document.getElementById('stack');
+if (!stack.firstElementChild) stack.innerHTML = PROJECTS.map((p, i) => `
+  <article class="card${i % 2 ? ' flip' : ''}" style="--i:${i}" aria-labelledby="p${i}">
+    <div class="card__in">
+      <div class="card__info">
+        <div class="app"><img src="${p.icon}" alt="" width="58" height="58" decoding="async" loading="${i < 1 ? 'eager' : 'lazy'}"><p class="card__meta"><span>${esc(p.kind)}</span></p></div>
+        <h2 id="p${i}">${esc(p.title)}</h2>
+        <p class="sub">${esc(p.sub)}</p>
+        <p class="desc">${esc(p.desc)}</p>
+        <ul class="tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+        ${p.url ? `<a class="live" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">Visit live site ${ARROW}</a>` : `<span class="note">${esc(p.note || 'Screen recording of the build')}</span>`}
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="phone"><div class="phone__body">
+          <i class="phone__btn l" style="top:19%;height:4%"></i><i class="phone__btn l" style="top:26%;height:7.5%"></i><i class="phone__btn l" style="top:35%;height:7.5%"></i><i class="phone__btn r" style="top:28%;height:11%"></i>
+          <div class="phone__screen" style="background-image:url(${p.lqip})">
+            <video muted loop playsinline preload="metadata" poster="${p.poster}" src="${p.video}"></video>
+            <div class="sbar"><span>9:41</span><span>${SIG}${WIFI}${BATT}</span></div><div class="island"></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card__dim"></div>
+  </article>`).join('');
+
+const cards = [...stack.querySelectorAll('.card')];
+// a recording's screen takes the recording's own shape, so nothing is cropped or letterboxed
+/* Recordings play one at a time, and are plain videos: a real source, the browser's own poster and
+   metadata preload, exactly like the UI/UX page. Safari draws its own still from the poster, so
+   nothing has to be filled in by script before a screen can show a picture. Phones decode only a
+   few videos at once, so only the screen being looked at plays and the rest are paused. */
+const VIDS = cards.map(c => {
+  const v = c.querySelector('video'); if (!v) return null;
+  const scr = v.parentElement; scr.classList.add('vid');
+  const o = { c, v, scr, armed: false, failed: false };
+  const shape = () => { if (v.videoWidth) scr.style.setProperty('--ar', v.videoWidth + ' / ' + v.videoHeight); };
+  if (v.readyState >= 1) shape(); else v.addEventListener('loadedmetadata', shape, { once: true });
+  v.addEventListener('error', () => { o.failed = true; });      // the poster simply stays
+  return o;
+}).filter(Boolean);
+function arm(o){ o.armed = true; }
+function release(o){ o.armed = false; try { o.v.pause(); } catch (e) {} }
+let activeVid = null;
+function pickVideo(){
+  if (!window.__live){ VIDS.forEach(release); activeVid = null; return; }
+  // Which screen is the person actually looking at? Measure how much of each screen is
+  // on display (cards stack over one another, so a screen stops where the next card starts).
+  // Anything showing most of itself is a real candidate, and of those the one nearest the
+  // middle of the window wins, so a card just sliding in at the bottom cannot steal it.
+  const seen = [];
+  for (const o of VIDS){
+    if (o.failed || !o.c.classList.contains('on')) continue;
+    const r = o.scr.getBoundingClientRect();
+    if (r.height < 1) continue;
+    let top = Math.max(r.top, 0), bot = Math.min(r.bottom, innerHeight);
+    const i = cards.indexOf(o.c);
+    for (let k = i + 1; k < cards.length; k++){
+      const n = cards[k].getBoundingClientRect();
+      if (n.top < bot) bot = Math.min(bot, n.top);
+    }
+    const area = Math.max(0, bot - top);
+    if (area < 40) continue;
+    seen.push({ o, area, frac: area / r.height, dist: Math.abs((top + bot) / 2 - innerHeight / 2) });
+  }
+  let best = null;
+  const solid = seen.filter(x => x.frac >= 0.4);
+  if (solid.length) best = solid.sort((a, b) => a.dist - b.dist)[0].o;
+  else if (seen.length) best = seen.sort((a, b) => b.area - a.area)[0].o;
+  if (best !== activeVid){ VIDS.forEach(o => { if (o !== best) release(o); }); activeVid = best; }
+  if (best){ arm(best); best.v.play().catch(() => {}); }
+}
+window.__pickVideo = pickVideo;
+// each live page scrolls itself top to bottom and back on its screen
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// inside the home page the room is loaded early, out of sight: nothing plays until you have walked in and it has faded up
+window.__live = !document.documentElement.classList.contains('embed');
+window.__restartAll = () => {};
+const SPEED = 230, REST = 1100;           // screen pixels a second, pause at each end (ms)
+const shots = cards.map(c => {
+  const img = c.querySelector('img.page'), scr = c.querySelector('.phone__screen'); if (!img) return null;
+  const s = { c, img, scr, pos: 0, dist: 0, dir: 1, wait: REST, held: false };
+  const measure = () => { s.dist = Math.max(0, img.offsetHeight - scr.clientHeight); s.pos = Math.min(s.pos, s.dist); paint(s); };
+  if (img.complete && img.naturalWidth) measure(); else img.addEventListener('load', measure, { once: true });
+  s.measure = measure;
+  return s;
+}).filter(Boolean);
+function paint(s){ s.img.style.transform = `translate3d(0,${-s.pos.toFixed(1)}px,0)`; }
+addEventListener('resize', () => shots.forEach(s => s.measure()));
+// once a screen has been completely out of sight (scrolled away, or fully covered by the card stacked over it),
+// it starts again from the top of its page the next time it shows
+const screens = cards.map(c => ({ c, scr: c.querySelector('.phone__screen'), hidden: true, s: shots.find(x => x.c === c), v: c.querySelector('video') }));
+function restart(o){
+  if (o.s){ o.s.pos = 0; o.s.dir = 1; o.s.wait = REST; paint(o.s); }
+  if (o.v){ try { o.v.currentTime = 0; } catch (err) {} }
+}
+function checkHidden(){
+  screens.forEach((o, i) => {
+    const r = o.scr.getBoundingClientRect();
+    let hidden = r.bottom <= 0 || r.top >= innerHeight;
+    if (!hidden) for (let k = i + 1; k < cards.length; k++){ const n = cards[k].getBoundingClientRect(); if (n.top <= r.top + 1 && n.bottom >= r.bottom - 1){ hidden = true; break; } }
+    if (hidden && !o.hidden) restart(o);
+    o.hidden = hidden;
+    // which recording plays is decided in one place, by pickVideo()
+    if (o.s) o.s.covered = hidden;
+  });
+  window.__pickVideo?.();
+}
+window.__restartAll = () => { screens.forEach(restart); VIDS.forEach(release); activeVid = null; };
+addEventListener('scroll', checkHidden, { passive: true }); addEventListener('resize', checkHidden);
+let lastT = 0;
+function run(t){
+  if (!window.__live){ lastT = t; requestAnimationFrame(run); return; }
+  const dt = Math.min(64, t - (lastT || t)); lastT = t;
+  if (!reduced) for (const s of shots){
+    if (s.held || s.covered || !s.c.classList.contains('on') || !s.dist) continue;
+    if (s.wait > 0){ s.wait -= dt; continue; }
+    const left = s.dir > 0 ? s.dist - s.pos : s.pos;
+    const ease = Math.min(1, .3 + left / 160) * Math.min(1, .35 + (s.dist - left) / 160);   // eases in and out at each end
+    s.pos += s.dir * SPEED * ease * dt / 1000;
+    if (s.pos >= s.dist){ s.pos = s.dist; s.dir = -1; s.wait = REST; }
+    else if (s.pos <= 0){ s.pos = 0; s.dir = 1; s.wait = REST; }
+    paint(s);
+  }
+  requestAnimationFrame(run);
+}
+requestAnimationFrame(run);
+checkHidden();
+// play only what's on screen
+const io = new IntersectionObserver(es => es.forEach(e => {
+  const c = e.target; c.classList.toggle('on', e.isIntersecting);
+  if (e.isIntersecting) c.classList.add('seen');
+  window.__pickVideo?.();
+}), { threshold: .25 });
+cards.forEach(c => io.observe(c));
+// stacking: as the next card slides over, the one beneath settles back a little
+let ticking = false;
+function stackFx(){
+  ticking = false;
+  cards.forEach((c, i) => {
+    const next = cards[i + 1]; let p = 0;
+    if (next){ const top = parseFloat(getComputedStyle(c).top), h = c.offsetHeight; p = Math.min(1, Math.max(0, (top + h - next.getBoundingClientRect().top) / h)); }
+    c.style.transform = p ? `scale(${(1 - p * .06).toFixed(4)})` : '';
+    c.lastElementChild.style.opacity = (p * .28).toFixed(3);
+  });
+}
+if (!reduced){ addEventListener('scroll', () => { if (!ticking){ ticking = true; requestAnimationFrame(stackFx); } }, { passive: true }); stackFx(); }
+</script>
+<script>
+(() => {
+  const root = document.documentElement, EMBED = root.classList.contains('embed');
+  if (!EMBED) return;
+  const back = [...document.querySelectorAll('a[href="../#works"]')];
+  back.forEach(b => b.addEventListener('click', e => { e.preventDefault(); parent.postMessage({ wall: 'close' }, location.origin === 'null' ? '*' : location.origin); }));
+  addEventListener('keydown', e => { if (e.key === 'Escape') parent.postMessage({ wall: 'close' }, location.origin === 'null' ? '*' : location.origin); });
+  addEventListener('message', e => {
+    if (e.source !== parent) return;                      // only the home page holding this room may steer it
+    const m = e.data || {};
+    if (m.wall === 'enter'){ root.classList.remove('out'); scrollTo(0, 0); window.__restartAll(); requestAnimationFrame(() => root.classList.add('in'));
+      clearTimeout(window.__liveT); window.__liveT = setTimeout(() => { window.__live = true; checkHidden(); dispatchEvent(new Event('scroll')); }, 650); }
+    if (m.wall === 'exit'){ clearTimeout(window.__liveT); window.__live = false; root.classList.add('out'); root.classList.remove('in'); window.__pickVideo?.(); }   // __live is false now, so every decoder is handed back
+    if (m.wall === 'reset'){ root.classList.remove('out', 'in'); }
+    if (m.wall === 'mode'){ if (m.mode === 'dark') root.dataset.mode = 'dark'; else delete root.dataset.mode; }
+  });
+})();
+</script>
+
+<script>
+// press F for full screen (again, or Esc, to leave); ignored while typing
+(() => {
+  const typing = e => { const t = e.target; return t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)); };
+  const toggle = () => {
+    const d = document, el = d.documentElement;
+    if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+    else (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el)?.catch?.(() => {});
+  };
+  addEventListener('keydown', e => {
+    if ((e.key !== 'f' && e.key !== 'F') || e.metaKey || e.ctrlKey || e.altKey || typing(e)) return;
+    e.preventDefault();
+    if (window.top !== window) { try { parent.postMessage({ wall: 'fullscreen' }, location.origin === 'null' ? '*' : location.origin); } catch (_) {} return; }
+    toggle();
+  });
+  if (window.top === window) addEventListener('message', e => {
+    // only one of this page's own frames can ask for full screen
+    if (!e.data || e.data.wall !== 'fullscreen' || ![...document.querySelectorAll('iframe')].some(f => f.contentWindow === e.source)) return;
+    toggle();
+  });
+})();
+</script>
+
+<script>
+(() => {
+  // every image and recording starts on a shimmering placeholder, which lifts as soon as it has something to show
+  const done = el => el.parentElement && el.parentElement.classList.remove('skel');
+  const watch = el => {
+    const box = el.parentElement; if (!box || box.dataset.sk || el.closest('.app')) return; box.dataset.sk = 1;   // small app icons load instantly: no placeholder
+    if (el.tagName === 'IMG'){
+      if (el.complete && el.naturalWidth) return;
+      box.classList.add('skel');
+      el.addEventListener('load', () => done(el), { once: true }); el.addEventListener('error', () => done(el), { once: true });
+    } else {
+      // whenever it has to wait for more of the recording, the shimmer comes back over the poster
+      el.addEventListener('waiting', () => box.classList.add('skel-buf'));
+      ['playing', 'canplay', 'pause', 'error'].forEach(ev => el.addEventListener(ev, () => box.classList.remove('skel-buf')));
+      if (el.readyState >= 2) return;
+      box.classList.add('skel');
+      el.addEventListener('loadeddata', () => done(el), { once: true });
+      if (el.poster){ const im = new Image(); im.onload = () => done(el); im.src = el.poster; }
+    }
+  };
+  const scan = () => document.querySelectorAll('main img, main video').forEach(watch);
+  scan(); new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<script>
+(() => {
+  const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const tick = () => { const d = new Date(), h = d.getHours();
+    document.querySelectorAll('[data-ftime]').forEach(e => e.textContent = `${h % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`);
+    document.querySelectorAll('[data-fyear]').forEach(e => e.textContent = d.getFullYear()); };
+  tick(); setInterval(tick, 20000);
+  // size the footer name so it spans the full width with only a sliver of margin
+  const fit = () => document.querySelectorAll('.sf').forEach(f => {
+    const w = f.querySelector('.sf__word'); if (!w) return;
+    const span = [...w.children].find(s => getComputedStyle(s).display !== 'none'); if (!span) return;
+    w.style.setProperty('--wf', '100px');
+    const k = (f.clientWidth * .955) / span.getBoundingClientRect().width;
+    f.style.setProperty('--wf', (100 * k).toFixed(2) + 'px'); w.style.removeProperty('--wf');
+  });
+  fit(); addEventListener('resize', fit); document.fonts?.ready.then(fit);
+  // the footer's rounded corners show whatever sits directly above it: find that section's colour and paint it behind them
+  const sfw = document.querySelector('.sfw');
+  const above = () => {
+    if (!sfw) return;
+    const solid = e => { const c = getComputedStyle(e).backgroundColor; const m = c.match(/[\d.]+/g); return m && !(m.length > 3 && +m[3] < .05) ? c : ''; };
+    let col = '', e = sfw.previousElementSibling;
+    while (e){ if (e.getBoundingClientRect().width >= innerWidth * .9){ const c = solid(e); if (c) col = c; } e = e.lastElementChild; }
+    const bg = col || solid(document.body) || getComputedStyle(document.documentElement).backgroundColor;
+    sfw.style.setProperty('--above', bg);
+    // a dark section above: a hairline keeps the footer reading as its own section
+    const m = (bg.match(/[\d.]+/g) || [255, 255, 255]).map(Number);
+    sfw.classList.toggle('sfw--dark', (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255 < .25);
+  };
+  above(); addEventListener('load', above); addEventListener('resize', above);
+  new MutationObserver(above).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
+  // floating back-to-top: appears after the first screen, shows scroll progress, flips colour over dark backgrounds
+  const tt = document.querySelector('.totop');
+  if (tt) {
+    const c = tt.querySelector('.ring circle'); tt.style.setProperty('--len', (2 * Math.PI * 24).toFixed(2));
+    const lum = el => { for (let e = el; e && e !== document.documentElement; e = e.parentElement) {
+        const m = getComputedStyle(e).backgroundColor.match(/[\d.]+/g); if (!m) continue;
+        if (m.length > 3 && +m[3] < .5) continue; return (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255; }
+      const m = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g) || [255,255,255];
+      return (m.length > 3 && +m[3] < .5) ? (document.documentElement.dataset.mode === 'dark' ? 0 : 1) : (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255; };
+    let raf = 0;
+    const upd = () => { raf = 0;
+      const max = document.documentElement.scrollHeight - innerHeight, y = scrollY;
+      const bot = document.querySelector('.sf__bot');  // the footer has its own 'Back to top', so step aside once it's on screen
+      tt.classList.toggle('show', y > innerHeight * .9 && !(bot && bot.getBoundingClientRect().top < innerHeight - 8));
+      tt.style.setProperty('--p', max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+      const r = tt.getBoundingClientRect();
+      tt.style.pointerEvents = 'none';
+      const under = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      tt.style.pointerEvents = '';
+      if (under) tt.dataset.on = lum(under) < .45 ? 'dark' : 'light'; };
+    const q = () => { if (!raf) raf = requestAnimationFrame(upd); };
+    addEventListener('scroll', q, { passive: true }); addEventListener('resize', q);
+    new MutationObserver(q).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode', 'class'] });
+    upd();
+  }
+})();
+</script>
+
+<script>
+// "Back to the doors" stays on screen in the corner the whole time you're inside a room
+(() => {
+  const top = document.querySelector('.top .chip'); if (!top) return;
+  const bar = document.querySelector('.rn__in'); if (!bar) return;
+  const b = document.createElement('a');
+  b.className = 'backd'; b.href = top.getAttribute('href'); b.setAttribute('aria-label', 'Back to the doors');
+  b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to the doors</span>';
+  b.addEventListener('click', e => { e.preventDefault(); top.click(); });     // same exit as the link at the top
+  bar.insertBefore(b, bar.firstChild);                                        // first thing in the sticky bar, on the left
+  top.style.visibility = 'hidden'; top.tabIndex = -1;                      // the pill in the bar takes its place, so there is one way back, always on screen
+  requestAnimationFrame(() => b.classList.add('show'));
+})();
+</script>
+
+<script>
+(() => {
+  const root = document.documentElement, EMBED = root.classList.contains('embed');
+  const HOME = '../#works'.replace(/#works$/, '');
+  const SLUGS = ["web-developer", "app-developer", "ui-ux-designer", "graphic-designer", "photographer"];
+  const go = to => {
+    if (to === 'top'){ scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (EMBED){ parent.postMessage({ wall: 'go', to }, location.origin === 'null' ? '*' : location.origin); return; }
+    if (to === 'home') location.href = HOME;
+    else if (to === 'about') location.href = HOME + '#about';
+    else if (to === 'contact') location.href = HOME + '#contact';
+    else if (to.startsWith('door:')) location.href = HOME + '#' + SLUGS[+to.slice(5)];
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-nav]'); if (!b) return;
+    if (b.tagName === 'A' && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button)) return;   // new tab: let the link do it
+    e.preventDefault(); rn.classList.remove('open'); menu.setAttribute('aria-expanded', 'false');
+    const to = b.dataset.nav;
+    if (b.hasAttribute('aria-current')){ scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    go(to);
+  });
+  const rn = document.getElementById('rn'), menu = document.getElementById('rnMenu');
+  const panel = document.getElementById('rnPanel'), pclose = document.getElementById('rnClose');
+  // each line in the menu knows its place, so they rise in one after another
+  panel.querySelectorAll('.rn__plist button').forEach((b, i) => b.style.setProperty('--i', i));
+  const setMenu = o => {
+    rn.classList.toggle('open', o);
+    menu.setAttribute('aria-expanded', o);
+    root.classList.toggle('rn-lock', o);                 // the page behind stops scrolling
+    if (o) setTimeout(() => pclose.focus(), 60); else menu.focus();
+  };
+  menu.addEventListener('click', () => setMenu(!rn.classList.contains('open')));
+  pclose.addEventListener('click', () => setMenu(false));
+  addEventListener('keydown', e => {
+    if (!rn.classList.contains('open')) return;
+    if (e.key === 'Escape'){ setMenu(false); return; }
+    if (e.key !== 'Tab') return;                          // the keyboard stays inside the open menu
+    const f = [...panel.querySelectorAll('button')].filter(n => n.offsetWidth || n.offsetHeight);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!panel.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
+  panel.addEventListener('click', e => { if (e.target.closest('button[data-nav]')) setMenu(false); });
+  matchMedia('(min-width:1200px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+  const upd = () => rn.classList.toggle('stuck', scrollY > 10); addEventListener('scroll', upd, { passive: true }); upd();
+  // content that sticks (the project cards) parks below the navbar, never behind it
+  const navH = () => { root.style.setProperty('--nav-h', rn.offsetHeight + 'px'); root.style.setProperty('--rn-h', rn.offsetHeight + 'px'); };
+  navH(); addEventListener('resize', navH); new ResizeObserver(navH).observe(rn);
+  const M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const d = new Date(), short = matchMedia('(max-width: 767.98px)').matches; document.querySelectorAll('[data-fdate]').forEach(e => e.textContent = short ? `${d.getDate()} ${M[d.getMonth()].slice(0, 3)}` : `${d.getDate()} ${M[d.getMonth()]}, ${d.getFullYear()}`);
+})();
+</script>
+
+<style>
+.ck{position:fixed;left:50%;bottom:max(1rem,env(safe-area-inset-bottom));z-index:90;transform:translateX(-50%);width:min(34rem,calc(100% - 2rem));
+  display:flex;align-items:center;gap:1rem;padding:.9rem .9rem .9rem 1.2rem;border-radius:1.25rem;background:#1A1818;color:#E8E4E0;
+  box-shadow:0 18px 40px -16px rgba(0,0,0,.55),0 0 0 1px rgba(232,228,224,.12);font:400 .875rem/1.45 'Onest',ui-sans-serif,system-ui,sans-serif}
+.ck[hidden]{display:none}
+.ck p{margin:0;flex:1}.ck a{color:inherit}
+.ck div{display:flex;gap:.5rem;flex:none}
+.ck button{height:2.5rem;padding:0 1rem;border-radius:999px;border:1px solid rgba(232,228,224,.25);background:none;color:inherit;font:inherit;font-size:.8125rem;font-weight:600;line-height:1;cursor:pointer}
+.ck button[data-ck="yes"]{background:#E8E4E0;color:#1A1818;border-color:transparent}
+@media (max-width:539.98px){.ck{flex-direction:column;align-items:stretch}.ck div button{flex:1}}
+</style>
+<div class="ck" id="ck" role="region" aria-label="Analytics choice" hidden><p>May I count your visit with Google Analytics? It sets cookies. <a href="/legal/">Details</a></p><div><button type="button" data-ck="no">No thanks</button><button type="button" data-ck="yes">Allow</button></div></div>
+<script>
+(() => {
+  const ID = 'G-12PNLHKGHK', K = 'rishi-analytics';
+  let v = null; try { v = localStorage.getItem(K); } catch (e) {}
+  const load = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date()); gtag('config', ID);
+    const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID; document.head.appendChild(s);
+  };
+  if (v === 'yes') return load();
+  if (v === 'no') return;
+  const b = document.getElementById('ck'); b.hidden = false;
+  b.addEventListener('click', e => {
+    const c = e.target.closest('[data-ck]'); if (!c) return;
+    try { localStorage.setItem(K, c.dataset.ck); } catch (e) {}
+    b.hidden = true; if (c.dataset.ck === 'yes') load();
+  });
+})();
+</script>
+</body>
+</html>

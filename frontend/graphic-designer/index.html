@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Freelance Graphic Designer — Neeraj Rawat</title>
+<link rel="preload" href="../fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(../fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(../fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}</style>
+
+<meta name="description" content="Brand identity, social media creatives, posters and logo design. Freelance graphic designer working remotely with clients in the US, UK and worldwide." />
+<meta name="theme-color" content="#1A1818" />
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add('embed');try{if(localStorage.getItem('rishi-mode')==='dark')document.documentElement.dataset.mode='dark'}catch(e){}</script>
+<style>
+:root{--bg:#E8E4E0;--fg:#1A1818;--fg-rgb:26,24,24;--accent:#6B4F4F;--room:#FBFAF8;
+  --font:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;--serif:'Playfair Display',Georgia,'Times New Roman',serif;color-scheme:light}
+html[data-mode="dark"]{--bg:#1A1818;--fg:#E8E4E0;--fg-rgb:232,228,224;--accent:#D9C6C6;--room:#050505;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid #6B5C5C;outline-offset:3px}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:50;background:var(--room);animation:out .8s ease .15s forwards}
+@keyframes out{to{opacity:0;visibility:hidden}}
+html.embed .glow{animation:none;transition:opacity .45s ease,visibility 0s linear .45s}
+html.embed.in .glow{opacity:0;visibility:hidden}
+html.embed.out .glow{opacity:1;visibility:visible;transition:opacity .4s ease}
+
+.wrap{max-width:88rem;margin:0 auto;padding:24px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
+@media (min-width:1024px){.wrap{padding-inline:88px}}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:56px}
+.chip{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.14);font-size:14px;font-weight:500;cursor:pointer;transition:background .25s}
+.chip:hover{background:rgba(var(--fg-rgb),.05)}
+.intro{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding-bottom:9vh}
+.intro h1{white-space:nowrap;font-size:clamp(34px,8.2vw,104px);font-weight:600;letter-spacing:-.025em;line-height:.95}
+.intro p{max-width:52ch;font-size:17px;line-height:1.55;color:rgba(var(--fg-rgb),.68)}
+.intro .how{display:inline-flex;align-items:center;gap:10px;margin-top:8px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.intro .how i{display:block;width:34px;height:1px;background:currentColor;opacity:.6}
+
+/* ---------- brand worlds: each campaign hangs on its own line, in its own colours ---------- */
+.worlds{position:relative}
+.world{position:relative;height:var(--h,300vh)}
+.pin{position:sticky;top:var(--nav-h,64px);height:calc(100svh - var(--nav-h,64px));overflow:hidden;background:var(--wbg);color:var(--wfg);
+  display:flex;flex-direction:column;transition:background .6s ease,color .6s ease}
+.w-head{position:relative;z-index:3;display:grid;gap:10px;padding:clamp(18px,4vh,44px) max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));max-width:88rem;width:100%;margin:0 auto}
+@media (min-width:1024px){.w-head{padding-inline:88px;grid-template-columns:auto 1fr;align-items:end;column-gap:56px}}
+.w-kicker{grid-column:1/-1;display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--wacc)}
+.w-kicker i{display:block;width:28px;height:1px;background:currentColor}
+.w-name{font-family:var(--font);font-weight:700;font-size:clamp(40px,6.4vw,92px);line-height:.92;letter-spacing:-.04em;white-space:nowrap}
+.w-name em{font-style:normal;opacity:.55}
+.w-desc{max-width:46ch;font-size:15.5px;line-height:1.55;opacity:.78}
+.w-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.w-tags li{list-style:none;padding:6px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--wfg) 22%,transparent);font-size:12.5px;font-weight:500}
+
+/* the line, the pegs and the prints */
+.line{position:relative;flex:1;min-height:0}
+.track{position:absolute;left:0;top:clamp(26px,5vh,54px);display:flex;align-items:flex-start;gap:clamp(22px,3vw,46px);padding-inline:max(16px,7vw);will-change:transform}
+.track::before{content:"";position:absolute;left:-100vw;right:-100vw;top:9px;height:1.5px;background:color-mix(in srgb,var(--wfg) 55%,transparent);
+  box-shadow:0 5px 6px -3px rgba(0,0,0,.25)}
+.print{position:relative;flex:none;height:var(--ph);transform-origin:50% 0;will-change:transform;padding-top:2px}
+.print .peg{position:absolute;left:50%;top:-2px;width:14px;height:30px;margin-left:-7px;z-index:2;border-radius:3px 3px 2px 2px;
+  background:linear-gradient(90deg,#b98d5c,#d9b384 45%,#a97d4f);box-shadow:0 2px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.08)}
+.print .peg::after{content:"";position:absolute;left:3px;right:3px;top:11px;height:3px;border-radius:2px;background:#8a8580;box-shadow:0 1px 0 rgba(255,255,255,.4)}
+.paper{display:block;height:100%;margin-top:14px;padding:clamp(5px,.5vw,8px);background:#fbfaf7;border-radius:2px;
+  box-shadow:0 1px 1px rgba(0,0,0,.12),0 24px 40px -18px rgba(0,0,0,.45),0 50px 80px -40px rgba(0,0,0,.35);transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s ease;cursor:zoom-in}
+.paper img{display:block;height:100%;width:auto;background:#ddd}
+.print.dark .paper{background:#151414}
+.print:hover .paper,.paper:focus-visible{transform:translateY(-6px) scale(1.025);box-shadow:0 1px 1px rgba(0,0,0,.12),0 34px 54px -18px rgba(0,0,0,.5),0 60px 90px -40px rgba(0,0,0,.4)}
+/* a carousel hangs as a little stack of prints */
+.print.deck .paper{position:relative}
+.print.deck .paper::before,.print.deck .paper::after{content:"";position:absolute;inset:0;z-index:-1;background:#efece6;border-radius:2px;box-shadow:0 10px 20px -10px rgba(0,0,0,.4)}
+.print.deck .paper::before{transform:translate(9px,7px) rotate(2.2deg)}
+.print.deck .paper::after{transform:translate(17px,13px) rotate(4.2deg);background:#e4e0d8}
+.print .badge{position:absolute;left:clamp(10px,1vw,14px);bottom:clamp(10px,1vw,14px);padding:6px 10px;border-radius:999px;background:rgba(10,10,10,.82);color:#fff;
+  font-size:11.5px;font-weight:600;letter-spacing:.02em;pointer-events:none;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.w-foot{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;gap:16px;padding:0 max(16px,env(safe-area-inset-right)) clamp(14px,2.6vh,26px) max(16px,env(safe-area-inset-left));max-width:88rem;margin:0 auto}
+@media (min-width:1024px){.w-foot{padding-inline:88px}}
+.w-bar{flex:1;height:2px;border-radius:2px;background:color-mix(in srgb,var(--wfg) 16%,transparent);overflow:hidden}
+.w-bar i{display:block;height:100%;width:100%;background:var(--wacc);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+.w-hint{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.6;white-space:nowrap}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:90;display:grid;grid-template-rows:auto 1fr auto;background:rgba(12,11,11,.94);color:#fff;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.lb.open{opacity:1;visibility:visible;transition:opacity .35s ease}
+.lb__top{display:flex;justify-content:space-between;align-items:center;padding:16px max(16px,3vw)}
+.lb__t{font-size:14px;font-weight:600}.lb__t span{opacity:.55;font-weight:500;margin-left:10px}
+.lb__x{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.2);font-size:20px;line-height:1}
+.lb__stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:0 max(16px,7vw)}
+.lb__stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:3px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8);transition:opacity .2s ease,transform .35s cubic-bezier(.16,1,.3,1)}
+.lb__stage img.swap{opacity:0;transform:scale(.985)}
+.lb__stage.ld::after{content:"";position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(86%,calc(78vh * var(--ar,.8)));aspect-ratio:var(--ar,.8);max-height:92%;border-radius:3px;pointer-events:none;
+  background:linear-gradient(100deg,#231F1F 30%,#2F2A2A 50%,#231F1F 70%);background-size:220% 100%;animation:lbSk 1.25s linear infinite}
+@keyframes lbSk{from{background-position:120% 0}to{background-position:-100% 0}}
+.lb__nav{position:absolute;top:50%;width:52px;height:52px;margin-top:-26px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);font-size:20px}
+.lb__nav:hover{background:rgba(255,255,255,.14)}
+.lb__nav.prev{left:max(12px,2vw)}.lb__nav.next{right:max(12px,2vw)}
+.lb__dots{display:flex;justify-content:center;gap:6px;padding:16px;flex-wrap:wrap}
+.lb__dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25)}.lb__dots i.on{background:#fff}
+@media (max-width:767.98px){.lb__nav{display:none}.lb__stage{padding:0 12px}}
+
+@media (max-width:767.98px){
+  .w-head{gap:6px}
+  .w-name{font-size:clamp(34px,11vw,52px);white-space:normal}
+  .w-desc{font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .w-tags{display:none}
+  .track{gap:22px;padding-inline:20px}
+}
+@media (prefers-reduced-motion:reduce){.paper,.lb__stage img{transition:none}}
+
+.rn{position:sticky;top:0;z-index:40;transition:background .35s ease,box-shadow .35s ease}
+.rn{background:var(--bg)}
+.rn.stuck{box-shadow:0 1px 0 rgba(var(--fg-rgb),.1)}
+.rn__in{max-width:88rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.1rem max(16px,env(safe-area-inset-right)) 1.1rem max(16px,env(safe-area-inset-left));transition:padding .35s ease}
+.rn.stuck .rn__in{padding-block:.8rem}
+@media (min-width:1024px){.rn__in{padding-inline:88px}}
+.rn nav ul{display:none;list-style:none;margin:0;padding:0;gap:1.4rem;white-space:nowrap}
+.rn nav button{padding:0;border:0;background:none;color:var(--fg);font:inherit;font-size:1rem;font-weight:500;opacity:.8;cursor:pointer;transition:opacity .2s}
+.rn nav button:hover,.rn nav button[aria-current]{opacity:1}
+.rn nav button[aria-current]{text-decoration:underline;text-underline-offset:.35em;text-decoration-thickness:1px}
+.rn__clock{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.12);font-size:.875rem;font-weight:500;white-space:nowrap}
+.rn__clock span{color:rgba(var(--fg-rgb),.68)}
+.rn__menu{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:2.75rem;padding:0 1.05rem 0 .95rem;font:500 .9375rem/1 'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;border-radius:999px;border:1px solid rgba(var(--fg-rgb),.12);background:none;color:var(--fg);cursor:pointer}
+.rn__menu svg{width:1.1rem;height:1.1rem}
+/* ---------- the menu, full screen, on small screens ---------- */
+.rn__panel{position:fixed;inset:0;z-index:110;display:flex;flex-direction:column;
+  padding:max(1rem,env(safe-area-inset-top)) max(1.25rem,env(safe-area-inset-right)) max(1.5rem,env(safe-area-inset-bottom)) max(1.25rem,env(safe-area-inset-left));
+  background:var(--bg);color:var(--fg);visibility:hidden;opacity:0;
+  transition:opacity .4s cubic-bezier(.4,0,.2,1),visibility 0s linear .4s}
+.rn.open .rn__panel{visibility:visible;opacity:1;transition-delay:0s}
+/* a wash of colour sweeps up behind the items as it opens */
+.rn__panel::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(70% 55% at 12% 100%,rgba(164,85,44,.2),transparent 70%),
+             radial-gradient(60% 50% at 95% 4%,rgba(196,176,176,.18),transparent 72%);
+  opacity:0;transform:translateY(12%) scale(1.08);transition:opacity .6s ease,transform .9s cubic-bezier(.16,1,.3,1)}
+.rn.open .rn__panel::before{opacity:1;transform:none}
+.rn__phead{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;min-height:2.75rem;margin-bottom:auto}
+.rn__plbl{font:600 .75rem/1 'Onest',ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(var(--fg-rgb),.5)}
+.rn__pclose{display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border-radius:999px;
+  border:1px solid rgba(var(--fg-rgb),.14);background:none;color:var(--fg);cursor:pointer;transition:background .25s,transform .35s cubic-bezier(.16,1,.3,1)}
+.rn__pclose:hover{background:rgba(var(--fg-rgb),.08);transform:rotate(90deg)}
+.rn__pclose svg{width:1.15rem;height:1.15rem}
+.rn__plist{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:.1rem;padding-block:2rem}
+/* each line rises into place, one after the other */
+.rn__plist button{position:relative;display:flex;align-items:baseline;gap:.85rem;width:100%;padding:.45rem 0;border:0;background:none;color:var(--fg);
+  font:600 clamp(2rem,9.5vw,2.9rem)/1.06 'Onest',ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em;text-align:left;cursor:pointer;
+  opacity:0;transform:translateY(1.1rem);transition:opacity .5s ease,transform .66s cubic-bezier(.16,1,.3,1),color .25s ease}
+.rn.open .rn__plist button{opacity:1;transform:none;transition-delay:calc(var(--i,0) * 55ms + 90ms)}
+.rn__plist button::before{content:counter(rnc,decimal-leading-zero);counter-increment:rnc;
+  font:600 .8125rem/1 ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(var(--fg-rgb),.38);transition:color .25s}
+.rn__plist{counter-reset:rnc}
+.rn__plist button[aria-current]{color:var(--fg)}
+.rn__plist button[aria-current]::before{color:#A4552C}
+@media (hover:hover){.rn__plist button:hover{color:#A4552C}.rn__plist button:hover::before{color:#A4552C}}
+.rn__pfoot{position:relative;z-index:1;margin-top:auto;padding-top:1.25rem;border-top:1px solid rgba(var(--fg-rgb),.1);
+  font:500 .8125rem/1.4 'Onest',ui-sans-serif,system-ui,sans-serif;color:rgba(var(--fg-rgb),.55);
+  opacity:0;transform:translateY(.6rem);transition:opacity .5s ease .34s,transform .6s cubic-bezier(.16,1,.3,1) .34s}
+.rn.open .rn__pfoot{opacity:1;transform:none}
+html.rn-lock,html.rn-lock body{overflow:hidden}
+@media (prefers-reduced-motion:reduce){
+  .rn__panel,.rn__panel::before,.rn__plist button,.rn__pfoot{transition-duration:.01ms!important;transform:none!important}}
+
+/* ---------- where things sit in the bar ---------- */
+/* wide: the full nav shows, and "back" floats in the bottom-left corner instead of taking bar space */
+@media (min-width:1200px){
+  .rn nav ul{display:flex}
+  .rn__menu,.rn__panel{display:none!important}
+  .backd{position:fixed;left:max(1.5rem,env(safe-area-inset-left));bottom:max(1.5rem,calc(env(safe-area-inset-bottom) + 1rem));top:auto;z-index:60;
+    height:3rem;padding:0 1.25rem 0 1rem;border-color:transparent;
+    background:var(--bd-float,rgba(26,24,24,.9));color:var(--bd-floatfg,#E8E4E0);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    box-shadow:0 12px 30px -12px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+  .backd span{display:inline}
+  .backd:hover{background:var(--bd-float,rgba(26,24,24,1));border-color:transparent}
+}
+html[data-mode="dark"] .backd{--bd-float:rgba(232,228,224,.92);--bd-floatfg:#1A1818}
+/* narrow: back on the left, menu on the right, no clock */
+@media (max-width:1199.98px){
+  .rn__in{justify-content:space-between}
+  .rn nav{display:none}
+  .rn__clock{display:none}
+  .rn__menu{order:99;margin-left:auto}
+  .backd{order:-2}
+}
+
+/* ---------- footer ---------- */
+/* the footer slides up over the last 32px of the section above, so its rounded corners show that
+   section's real background (gradients and glows included) instead of a flat patch of colour */
+.sfw{position:relative;z-index:2;background:transparent;margin-top:-32px}
+.sfw--dark .sf{box-shadow:inset 0 1px 0 rgba(232,228,224,.12)}
+.sf{--sf-bg:#1A1818;--sf-fg:#E8E4E0;--sf-rgb:232,228,224;--sf-acc:#C4B0B0;position:relative;z-index:2;background:var(--sf-bg);color:var(--sf-fg);
+  border-radius:2rem 2rem 0 0;overflow:hidden;font-family:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif}
+html[data-mode="dark"] .sf{--sf-bg:#0F0E0E;box-shadow:inset 0 1px 0 rgba(232,228,224,.1)}
+.sf__in{max-width:88rem;margin:0 auto;padding:5.5rem 1.25rem 1.5rem}
+@media (min-width:1024px){.sf__in{padding:7rem 5.5rem 1.75rem}}
+html,body{overscroll-behavior-y:none}
+html{background:#1A1818}html[data-mode="dark"]{background:#0F0E0E}
+body{margin:0}
+.sf{margin-bottom:0}
+.sf__eye{display:inline-flex;align-items:center;gap:.6rem;font-size:.8125rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(var(--sf-rgb),.6)}
+.sf__eye i{width:.5rem;height:.5rem;border-radius:50%;background:#8FBF7A;box-shadow:0 0 0 0 rgba(143,191,122,.6);animation:sfPulse 2.2s ease-out infinite}
+@keyframes sfPulse{70%{box-shadow:0 0 0 .55rem rgba(143,191,122,0)}100%{box-shadow:0 0 0 0 rgba(143,191,122,0)}}
+.sf__h{margin:1.4rem 0 1.25rem;font-size:clamp(2.75rem,7.5vw,6.5rem);font-weight:600;line-height:.95;letter-spacing:-.035em}
+.sf__h span{display:block;color:rgba(var(--sf-rgb),.42)}
+.sf__p{max-width:46ch;font-size:1.0625rem;line-height:1.6;color:rgba(var(--sf-rgb),.7)}
+.sf__cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2.25rem}
+.sf__btn{display:inline-flex;align-items:center;gap:.8rem;height:3.5rem;padding:0 .55rem 0 1.6rem;border:0;border-radius:999px;background:var(--sf-fg);color:var(--sf-bg);
+  font:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.sf__btn b{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--sf-bg);color:var(--sf-fg)}
+.sf__btn svg{width:1.05rem;height:1.05rem;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.sf__btn:hover{transform:translateY(-2px)}.sf__btn:hover svg{transform:translateX(3px)}
+.sf__ghost{display:inline-flex;align-items:center;height:3.5rem;padding:0 1.5rem;border-radius:999px;border:1px solid rgba(var(--sf-rgb),.2);background:none;color:var(--sf-fg);
+  font:inherit;font-size:1rem;font-weight:500;cursor:pointer;transition:background .25s}
+.sf__ghost:hover{background:rgba(var(--sf-rgb),.07)}
+.sf__cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.25rem 1.5rem;margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(var(--sf-rgb),.12)}
+@media (min-width:768px){.sf__cols{grid-template-columns:2fr 1fr 1fr}}
+.sf__cols h3{margin-bottom:1rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(var(--sf-rgb),.66)}
+.sf__cols ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+@media (pointer:coarse),(max-width:767.98px){.sf__cols ul{gap:0}.sf__cols button,.sf__cols a,.sf__bot button{min-height:44px;min-width:44px;display:inline-flex;align-items:center}.sf__cols li.st{min-height:32px;display:flex;align-items:center}}
+.sf__cols button,.sf__cols a{padding:0;border:0;background:none;color:rgba(var(--sf-rgb),.85);font:inherit;font-size:.9375rem;font-weight:500;cursor:pointer;text-align:left;text-decoration:none;transition:color .2s}
+.sf__cols button:hover,.sf__cols a:hover{color:#fff}
+.sf__cols li.st{font-size:.9375rem;color:rgba(var(--sf-rgb),.85)}
+.sf__cols .work{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:.6rem 1.5rem}
+.sf__in{position:relative;z-index:1}
+/* the name runs the full width of the footer, edge to edge, behind the links and the bottom line */
+.sf__word{position:absolute;left:0;right:0;bottom:0;z-index:0;margin:0;padding:0 1.2vw;font-size:var(--wf,15vw);font-weight:700;line-height:.74;letter-spacing:-.055em;
+  color:rgba(var(--sf-rgb),.17);user-select:none;pointer-events:none;white-space:nowrap;text-align:center;transform:translateY(.05em)}
+.sf__word span{display:inline-block}
+.sf__word .short{display:none}
+@media (max-width:767.98px){.sf__word .full{display:none}.sf__word .short{display:inline-block}}
+
+.sf__bot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem;margin-top:1.75rem;font-size:.8125rem;color:rgba(var(--sf-rgb),.68)}
+.sf__bot button{padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}.sf__bot button:hover{color:var(--sf-fg)}
+.sf__legal a{color:inherit;text-decoration:underline;text-underline-offset:.2em;text-decoration-color:rgba(var(--sf-rgb),.35)}.sf__legal a:hover{color:var(--sf-fg)}
+@media (pointer:coarse),(max-width:767.98px){.sf__legal a{min-height:44px;display:inline-flex;align-items:center}}
+@media (prefers-reduced-motion:reduce){.sf__eye i{animation:none}}
+/* ---------- floating back-to-top ---------- */
+.totop{--tt-bg:#1A1818;--tt-fg:#E8E4E0;--tt-ring:232,228,224;position:fixed;right:max(1.25rem,env(safe-area-inset-right));bottom:max(1.25rem,env(safe-area-inset-bottom));z-index:60;
+  display:grid;place-items:center;width:3.25rem;height:3.25rem;padding:0;border:0;border-radius:50%;background:var(--tt-bg);color:var(--tt-fg);cursor:pointer;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.45),0 0 0 1px rgba(var(--tt-ring),.14);
+  opacity:0;visibility:hidden;transform:translateY(.75rem) scale(.9);
+  transition:opacity .35s ease,visibility 0s linear .35s,transform .45s cubic-bezier(.16,1,.3,1),background .3s ease,color .3s ease,box-shadow .3s ease}
+.totop.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.totop[data-on="dark"]{--tt-bg:#E8E4E0;--tt-fg:#1A1818;--tt-ring:26,24,24}
+.totop svg.ar{width:1.15rem;height:1.15rem;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.totop svg.ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
+.totop .ring circle{fill:none;stroke:currentColor;stroke-width:2;opacity:.85;stroke-dasharray:var(--len);stroke-dashoffset:calc(var(--len) * (1 - var(--p,0)));transition:stroke-dashoffset .12s linear}
+.totop .lbl{position:absolute;right:calc(100% + .6rem);top:50%;padding:.4rem .75rem;border-radius:999px;background:var(--tt-bg);color:var(--tt-fg);font:500 .8125rem/1 'Onest',ui-sans-serif,system-ui,sans-serif;
+  white-space:nowrap;pointer-events:none;opacity:0;transform:translate(.4rem,-50%);transition:opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1);box-shadow:0 0 0 1px rgba(var(--tt-ring),.14)}
+@media (hover:hover){.totop:hover{transform:translateY(-3px)}.totop:hover svg.ar{transform:translateY(-3px)}.totop:hover .lbl{opacity:1;transform:translate(0,-50%)}}
+.totop:focus-visible{outline:2px solid #C4B0B0;outline-offset:3px}
+@media (max-width:767.98px){.totop{width:3rem;height:3rem}}
+@media (prefers-reduced-motion:reduce){.totop,.totop svg.ar{transition:opacity .2s ease,visibility 0s linear .2s}}
+
+.skel{position:relative}
+.skel::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;opacity:1;
+  background:linear-gradient(100deg,#E2DDD8 30%,#F1EDE9 50%,#E2DDD8 70%);background-size:220% 100%;animation:skel 1.25s linear infinite}
+html[data-mode="dark"] .skel::after{background-image:linear-gradient(100deg,#231F1F 30%,#2F2A2A 50%,#231F1F 70%)}
+@keyframes skel{from{background-position:120% 0}to{background-position:-100% 0}}
+/* a recording that is still buffering: a light sweep over its poster until it plays */
+.skel-buf{position:relative}
+.skel-buf::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);background-size:220% 100%;animation:skel 1.25s linear infinite}
+@media (prefers-reduced-motion:reduce){.skel::after{animation:none}}
+
+/* "Back to the doors" sits in the room's sticky header: it stays on screen the whole
+   time you are inside a room, but it is part of the bar rather than floating over the page,
+   so it never covers anything you are reading. */
+.backd{order:-2;flex:none;display:inline-flex;align-items:center;gap:.5rem;height:2.75rem;padding:0 1.1rem 0 .85rem;
+  border:1px solid rgba(var(--fg-rgb),.14);border-radius:999px;background:rgba(var(--fg-rgb),.05);color:var(--fg);
+  font:500 .9375rem/1 'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap;
+  opacity:0;transform:translateX(-.5rem);transition:opacity .35s ease,transform .45s cubic-bezier(.16,1,.3,1),background .25s ease,border-color .25s ease}
+.backd.show{opacity:1;transform:none}
+.backd svg{width:1.05rem;height:1.05rem;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+@media (hover:hover){.backd:hover{background:rgba(var(--fg-rgb),.1);border-color:rgba(var(--fg-rgb),.26)}.backd:hover svg{transform:translateX(-3px)}}
+.backd:focus-visible{outline:2px solid #C4B0B0;outline-offset:3px}
+/* phones keep the words on both pills; on the very narrowest screens they just get a little smaller */
+@media (max-width:359.98px){.backd,.rn__menu{font-size:.8125rem}.backd{padding:0 .85rem 0 .7rem}.rn__menu{padding:0 .85rem}}
+/* the leftover top row above each room's title, and the gap under the intro */
+.top{display:none!important}
+.intro{padding-bottom:clamp(28px,4vw,44px)!important}
+.rn__in{min-width:0}
+.rn nav{min-width:0}
+</style>
+<link rel="canonical" href="https://www.edudhani.com/graphic-designer/" />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<meta name="author" content="Neeraj Rawat" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Neeraj Rawat" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://www.edudhani.com/graphic-designer/" />
+<meta property="og:title" content="Freelance Graphic Designer — Neeraj Rawat" />
+<meta property="og:description" content="Brand identity, social media creatives, posters and logo design. Freelance graphic designer working remotely with clients in the US, UK and worldwide." />
+<meta property="og:image" content="https://www.edudhani.com/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Neeraj Rawat&#39;s portfolio" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Freelance Graphic Designer — Neeraj Rawat" />
+<meta name="twitter:description" content="Brand identity, social media creatives, posters and logo design. Freelance graphic designer working remotely with clients in the US, UK and worldwide." />
+<meta name="twitter:image" content="https://www.edudhani.com/og.jpg" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://edudhani.com/#neeraj","name":"Neeraj Rawat","url":"https://www.edudhani.com","jobTitle":"Freelance Developer, Designer and Photographer","image":"https://www.edudhani.com/og.jpg","description":"Freelance web and iOS developer, UI/UX designer, graphic designer and photographer working remotely with clients worldwide.","knowsAbout":["Web development","iOS app development","UI/UX design","Graphic design","Brand identity","Photography"],"address":{"@type":"PostalAddress","addressCountry":"IN"},"knowsLanguage":["en"],"worksFor":{"@id":"https://www.edudhani.com/#org"}},{"@type":"Organization","@id":"https://www.edudhani.com/#org","name":"Neeraj Rawat — Design & Development","alternateName":"Neeraj Rawat","url":"https://www.edudhani.com","image":"https://www.edudhani.com/og.jpg","logo":{"@type":"ImageObject","url":"https://www.edudhani.com/icon-512.png","width":512,"height":512},"founder":{"@id":"https://edudhani.com/#neeraj"},"email":"neeraj@edudhani.com","contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"neeraj@edudhani.com","availableLanguage":"en","areaServed":["US","GB","CA","AU"]},"description":"Freelance web development, iOS app development, UI/UX design and graphic design, delivered remotely.","areaServed":[{"@type":"Country","name":"United States"},{"@type":"Country","name":"United Kingdom"},{"@type":"Country","name":"Canada"},{"@type":"Country","name":"Australia"},"Worldwide"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Web development","description":"Websites and web applications designed and built end to end."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"iOS app development","description":"Native iOS apps and games, from first sketch to the App Store."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"UI/UX design","description":"Product and interface design: user flows, wireframes and finished UI."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Graphic design","description":"Brand identity, social media creatives, posters and logos."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Photography","description":"Portrait, event and street photography."}}]}},{"@type":"WebSite","@id":"https://www.edudhani.com/#site","url":"https://www.edudhani.com","name":"Neeraj Rawat — Portfolio","publisher":{"@id":"https://edudhani.com/#neeraj"},"inLanguage":"en"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.edudhani.com/"},{"@type":"ListItem","position":2,"name":"Freelance Graphic Designer","item":"https://www.edudhani.com/graphic-designer/"}]}]}</script>
+<meta name="google-site-verification" content="dB3k2roAkI1S8861shwLsjVKNyl1q-TjchYYJWrG-18" /></head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<header class="rn" id="rn">
+  <div class="rn__in">
+    <nav aria-label="Primary"><ul><li><button data-nav="home">Home</button></li><li><button data-nav="door:0">Web Development</button></li><li><button data-nav="door:1">App Development</button></li><li><button data-nav="door:2">UI/UX Design</button></li><li><button data-nav="door:3" aria-current=page>Graphic Design</button></li><li><button data-nav="about">My story</button></li><li><button data-nav="contact">Contact</button></li></ul></nav>
+    <div class="rn__clock" aria-label="Local time"><span>Local time</span><b data-ftime>—</b><span class="d">•</span><span class="d" data-fdate></span></div>
+    <button class="rn__menu" id="rnMenu" aria-expanded="false" aria-controls="rnPanel"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menu</span></button>
+  </div>
+  <div class="rn__panel" id="rnPanel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="rn__phead">
+      <span class="rn__plbl">Menu</span>
+      <button class="rn__pclose" id="rnClose" aria-label="Close menu"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="rn__plist"><button data-nav="home">Home</button><button data-nav="door:0">Web Development</button><button data-nav="door:1">App Development</button><button data-nav="door:2">UI/UX Design</button><button data-nav="door:3" aria-current=page>Graphic Design</button><button data-nav="about">My story</button><button data-nav="contact">Contact</button></div>
+    <p class="rn__pfoot">Neeraj Rawat — available for new work<br>Replies within 5 hours</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+  <div class="top"><a class="chip" href="../#works">← Back to the doors</a></div>
+  <section class="intro">
+    <h1>Graphic Design</h1>
+    <p>Brand campaigns, social media creatives, posters and logos. Each brand hangs on its own line, in its own colours: scroll to walk along it, click any print to see it up close.</p>
+    <span class="how"><i></i>Scroll to walk the line</span>
+  </section>
+  </div>
+  <section class="worlds" id="worlds" aria-label="Graphic design work"><!--pre-->
+  <section class="world" data-k="qodoro" data-i="0" style="--wbg:#1A1818;--wfg:#E8E4E0;--wacc:#C4B0B0" aria-label="Qodoro Realty">
+    <div class="pin">
+      <header class="w-head">
+        <p class="w-kicker"><span>01</span><i></i><span>Social campaign · Real estate</span></p>
+        <h2 class="w-name">Qodoro <em>Realty</em></h2>
+        <div><p class="w-desc">Posts for a real-estate brand built on warm tones, editorial type and calm architecture and interiors, selling a feeling of home rather than square feet.</p><ul class="w-tags"><li>Editorial layouts</li><li>Instagram posts</li><li>Brand guidelines</li></ul></div>
+      </header>
+      <div class="line"><div class="track">
+        <figure class="print" data-ii="0" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 1"><img src="qod-1.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="1" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 2"><img src="qod-16.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="2" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 3"><img src="qod-17.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="3" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 4"><img src="qod-26.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="4" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 5"><img src="qod-27.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="5" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 6"><img src="qod-31.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="6" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 7"><img src="qod-32.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="7" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 8"><img src="qod-center.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="8" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Qodoro Realty 9"><img src="qod-left.webp" alt="" loading="eager" decoding="async" width="800" height="1000"></button>
+        </figure>
+      </div></div>
+      <div class="w-foot"><div class="w-bar"><i></i></div><span class="w-hint">Scroll →</span></div>
+    </div>
+  </section>
+  <section class="world" data-k="himspring" data-i="1" style="--wbg:#E8E4E0;--wfg:#1A1818;--wacc:#6B4F4F" aria-label="Himspring">
+    <div class="pin">
+      <header class="w-head">
+        <p class="w-kicker"><span>02</span><i></i><span>Social campaign · Premium water</span></p>
+        <h2 class="w-name"><em>Himspring</em></h2>
+        <div><p class="w-desc">A social campaign for a premium Himalayan water brand: cool light, clean headlines and quiet details that make a bottle of water feel like luxury.</p><ul class="w-tags"><li>Art direction</li><li>Instagram posts</li><li>Brand voice</li></ul></div>
+      </header>
+      <div class="line"><div class="track">
+        <figure class="print" data-ii="0" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 1"><img src="him-27.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="1" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 2"><img src="him-28.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="2" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 3"><img src="him-31.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="3" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 4"><img src="him-32.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="4" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 5"><img src="him-33.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="5" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 6"><img src="him-37.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="6" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 7"><img src="him-43.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="7" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 8"><img src="him-44.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="8" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 9"><img src="him-45.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="9" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 10"><img src="him-47.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="10" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Himspring 11"><img src="him-49.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure>
+      </div></div>
+      <div class="w-foot"><div class="w-bar"><i></i></div><span class="w-hint">Himspring</span></div>
+    </div>
+  </section>
+  <section class="world" data-k="kallisto" data-i="2" style="--wbg:#C4B0B0;--wfg:#1A1818;--wacc:#4A3C3C" aria-label="Kallisto Miorah">
+    <div class="pin">
+      <header class="w-head">
+        <p class="w-kicker"><span>03</span><i></i><span>Posts &amp; stories · Fashion</span></p>
+        <h2 class="w-name">Kallisto <em>Miorah</em></h2>
+        <div><p class="w-desc">Posts and stories for a contemporary womenswear label: fashion-editorial layouts, product callouts and shop-the-look stories in soft, editorial tones.</p><ul class="w-tags"><li>Fashion editorial</li><li>Posts &amp; stories</li><li>Product callouts</li></ul></div>
+      </header>
+      <div class="line"><div class="track">
+        <figure class="print" data-ii="0" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 1"><img src="kal-post-1.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="1" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 2"><img src="kal-2.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="2" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 3"><img src="kal-post-2.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="3" style="--ar:1">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 4"><img src="kal-post-3.webp" alt="" loading="lazy" decoding="async" width="1000" height="1000"></button>
+        </figure><figure class="print" data-ii="4" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 5"><img src="kal-post-4.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"></button>
+        </figure><figure class="print" data-ii="5" style="--ar:0.562">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 6"><img src="kal-story-2.webp" alt="" loading="lazy" decoding="async" width="562" height="1000"></button>
+        </figure><figure class="print" data-ii="6" style="--ar:0.562">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 7"><img src="kal-story-4.webp" alt="" loading="lazy" decoding="async" width="562" height="1000"></button>
+        </figure><figure class="print" data-ii="7" style="--ar:0.562">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 8"><img src="kal-story-7.webp" alt="" loading="lazy" decoding="async" width="562" height="1000"></button>
+        </figure><figure class="print" data-ii="8" style="--ar:0.562">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 9"><img src="kal-story-8.webp" alt="" loading="lazy" decoding="async" width="562" height="1000"></button>
+        </figure><figure class="print" data-ii="9" style="--ar:0.562">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Kallisto Miorah 10"><img src="kal-story-9.webp" alt="" loading="lazy" decoding="async" width="562" height="1000"></button>
+        </figure>
+      </div></div>
+      <div class="w-foot"><div class="w-bar"><i></i></div><span class="w-hint">Kallisto Miorah</span></div>
+    </div>
+  </section>
+  <section class="world" data-k="wbt" data-i="3" style="--wbg:#6B5C5C;--wfg:#F3EEEC;--wacc:#E8D6D6" aria-label="WeBuildTech">
+    <div class="pin">
+      <header class="w-head">
+        <p class="w-kicker"><span>04</span><i></i><span>Carousels · AI company</span></p>
+        <h2 class="w-name">WeBuildTech</h2>
+        <div><p class="w-desc">Swipe-through explainers for an AI company on crowd safety at railways, smarter stadiums, AI in EdTech and the Mahakumbh. Click a stack to swipe through it.</p><ul class="w-tags"><li>Carousels</li><li>Information design</li><li>Storytelling</li></ul></div>
+      </header>
+      <div class="line"><div class="track">
+        <figure class="print deck" data-ii="0" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open AI in Railway 1"><img src="wbt-railway-1.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"><span class="badge">Carousel · 6 slides</span></button>
+        </figure><figure class="print deck" data-ii="1" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open AI in stadium 2"><img src="wbt-stadium-1.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"><span class="badge">Carousel · 7 slides</span></button>
+        </figure><figure class="print deck" data-ii="2" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Edtech 3"><img src="wbt-edtech-1.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"><span class="badge">Carousel · 7 slides</span></button>
+        </figure><figure class="print deck" data-ii="3" style="--ar:0.8">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open mahakumbh 4"><img src="wbt-kumbh-1.webp" alt="" loading="lazy" decoding="async" width="800" height="1000"><span class="badge">Carousel · 7 slides</span></button>
+        </figure>
+      </div></div>
+      <div class="w-foot"><div class="w-bar"><i></i></div><span class="w-hint">WeBuildTech</span></div>
+    </div>
+  </section>
+  <section class="world" data-k="posters" data-i="4" style="--wbg:#1A1818;--wfg:#E8E4E0;--wacc:#C4B0B0" aria-label="Posters &amp; logos">
+    <div class="pin">
+      <header class="w-head">
+        <p class="w-kicker"><span>05</span><i></i><span>Events · Identity</span></p>
+        <h2 class="w-name">Posters & logos</h2>
+        <div><p class="w-desc">Posters for college fests and clubs, festive creatives and logo marks, from bold type-led launches to clean identities.</p><ul class="w-tags"><li>Event posters</li><li>Logo design</li><li>Typography</li></ul></div>
+      </header>
+      <div class="line"><div class="track">
+        <figure class="print" data-ii="0" style="--ar:1.7679558011049723">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 1"><img src="pos-theme.webp" alt="" loading="lazy" decoding="async" width="1600" height="905"></button>
+        </figure><figure class="print" data-ii="1" style="--ar:0.562">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 2"><img src="pos-club-showcase.webp" alt="" loading="lazy" decoding="async" width="562" height="1000"></button>
+        </figure><figure class="print" data-ii="2" style="--ar:0.707">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 3"><img src="pos-recruitment-poster.webp" alt="" loading="lazy" decoding="async" width="707" height="1000"></button>
+        </figure><figure class="print" data-ii="3" style="--ar:1">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 4"><img src="pos-wbt-26-jan.webp" alt="" loading="lazy" decoding="async" width="1000" height="1000"></button>
+        </figure><figure class="print dark" data-ii="4" style="--ar:1">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 5"><img src="logo-foodicted.webp" alt="" loading="lazy" decoding="async" width="500" height="500"></button>
+        </figure><figure class="print dark" data-ii="5" style="--ar:1.5314285714285714">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 6"><img src="logo-wbt-logo.webp" alt="" loading="lazy" decoding="async" width="1072" height="700"></button>
+        </figure><figure class="print dark" data-ii="6" style="--ar:1">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open Posters &amp; logos 7"><img src="logo-rishi-photography.webp" alt="" loading="lazy" decoding="async" width="500" height="500"></button>
+        </figure>
+      </div></div>
+      <div class="w-foot"><div class="w-bar"><i></i></div><span class="w-hint">Posters &amp; logos</span></div>
+    </div>
+  </section><!--/pre--></section>
+</main>
+<div class="sfw">
+<footer class="sf" id="contact-footer" aria-labelledby="sfTitle">
+  <div class="sf__in">
+    <p class="sf__eye"><i></i>Available for new work</p>
+    <h2 class="sf__h" id="sfTitle">Got a project?<span>Let's build it together.</span></h2>
+    <p class="sf__p">I'm taking on new freelance work: websites, apps, interfaces and visual content. Tell me what you're building and I'll get back to you within a day.</p>
+    <div class="sf__cta">
+      <button class="sf__btn" data-nav="contact">Start a project <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></b></button>
+      
+    </div>
+    <div class="sf__cols">
+      <div><h3>Work</h3><ul class="work"><li><a href="../web-developer/" data-nav="door:0">Web Development</a></li><li><a href="../app-developer/" data-nav="door:1">App Development</a></li><li><a href="../ui-ux-designer/" data-nav="door:2">UI/UX Design</a></li><li><a href="../graphic-designer/" data-nav="door:3">Graphic Design</a></li><li><a href="../photographer/" data-nav="door:4">Photography</a></li></ul></div>
+      <div><h3>Navigate</h3><ul><li><a href="../" data-nav="home">Home</a></li><li><a href="../#about" data-nav="about">My story</a></li><li><button data-nav="contact">Contact</button></li></ul></div>
+      <div><h3>Status</h3><ul><li class="st">Available for work</li><li class="st">Remote-first, worldwide</li><li class="st">Local time <span data-ftime>—</span></li></ul></div>
+    </div>
+    <div class="sf__bot"><span>© <span data-fyear>2026</span> Neeraj Rawat. Designed and built by Neeraj.</span><span class="sf__legal"><a href="../legal/" target="_top">Privacy &amp; credits</a></span><button data-nav="top">Back to top ↑</button></div>
+  </div>
+</footer>
+</div>
+<button class="totop" data-nav="top" aria-label="Back to top"><svg class="ring" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/></svg><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="lbl">Back to top</span></button>
+
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Design viewer" hidden>
+  <div class="lb__top"><p class="lb__t" id="lbT"></p><button class="lb__x" id="lbX" aria-label="Close">×</button></div>
+  <div class="lb__stage"><button class="lb__nav prev" id="lbP" aria-label="Previous">←</button><img id="lbI" alt=""><button class="lb__nav next" id="lbN" aria-label="Next">→</button></div>
+  <div class="lb__dots" id="lbD"></div>
+</div>
+
+<script>
+const GD = {"himspring": [{"f": "him-27.webp", "w": 800, "h": 1000, "k": "him-27"}, {"f": "him-28.webp", "w": 800, "h": 1000, "k": "him-28"}, {"f": "him-31.webp", "w": 800, "h": 1000, "k": "him-31"}, {"f": "him-32.webp", "w": 800, "h": 1000, "k": "him-32"}, {"f": "him-33.webp", "w": 800, "h": 1000, "k": "him-33"}, {"f": "him-37.webp", "w": 800, "h": 1000, "k": "him-37"}, {"f": "him-43.webp", "w": 800, "h": 1000, "k": "him-43"}, {"f": "him-44.webp", "w": 800, "h": 1000, "k": "him-44"}, {"f": "him-45.webp", "w": 800, "h": 1000, "k": "him-45"}, {"f": "him-47.webp", "w": 800, "h": 1000, "k": "him-47"}, {"f": "him-49.webp", "w": 800, "h": 1000, "k": "him-49"}], "qodoro": [{"f": "qod-1.webp", "w": 800, "h": 1000, "k": "qod-1"}, {"f": "qod-16.webp", "w": 800, "h": 1000, "k": "qod-16"}, {"f": "qod-17.webp", "w": 800, "h": 1000, "k": "qod-17"}, {"f": "qod-26.webp", "w": 800, "h": 1000, "k": "qod-26"}, {"f": "qod-27.webp", "w": 800, "h": 1000, "k": "qod-27"}, {"f": "qod-31.webp", "w": 800, "h": 1000, "k": "qod-31"}, {"f": "qod-32.webp", "w": 800, "h": 1000, "k": "qod-32"}, {"f": "qod-center.webp", "w": 800, "h": 1000, "k": "qod-center"}, {"f": "qod-left.webp", "w": 800, "h": 1000, "k": "qod-left"}], "kallisto": [{"f": "kal-post-1.webp", "w": 800, "h": 1000, "k": "kal-post-1"}, {"f": "kal-2.webp", "w": 800, "h": 1000, "k": "kal-2"}, {"f": "kal-post-2.webp", "w": 800, "h": 1000, "k": "kal-post-2"}, {"f": "kal-post-3.webp", "w": 1000, "h": 1000, "k": "kal-post-3"}, {"f": "kal-post-4.webp", "w": 800, "h": 1000, "k": "kal-post-4"}, {"f": "kal-story-2.webp", "w": 562, "h": 1000, "k": "kal-story-2"}, {"f": "kal-story-4.webp", "w": 562, "h": 1000, "k": "kal-story-4"}, {"f": "kal-story-7.webp", "w": 562, "h": 1000, "k": "kal-story-7"}, {"f": "kal-story-8.webp", "w": 562, "h": 1000, "k": "kal-story-8"}, {"f": "kal-story-9.webp", "w": 562, "h": 1000, "k": "kal-story-9"}], "wbt": [{"slides": [{"f": "wbt-railway-1.webp", "w": 800, "h": 1000}, {"f": "wbt-railway-2.webp", "w": 800, "h": 1000}, {"f": "wbt-railway-3.webp", "w": 800, "h": 1000}, {"f": "wbt-railway-4.webp", "w": 800, "h": 1000}, {"f": "wbt-railway-5.webp", "w": 800, "h": 1000}, {"f": "wbt-railway-6.webp", "w": 800, "h": 1000}], "title": "AI in Railway"}, {"slides": [{"f": "wbt-stadium-1.webp", "w": 800, "h": 1000}, {"f": "wbt-stadium-2.webp", "w": 800, "h": 1000}, {"f": "wbt-stadium-3.webp", "w": 800, "h": 1000}, {"f": "wbt-stadium-4.webp", "w": 800, "h": 1000}, {"f": "wbt-stadium-5.webp", "w": 800, "h": 1000}, {"f": "wbt-stadium-6.webp", "w": 800, "h": 1000}, {"f": "wbt-stadium-7.webp", "w": 800, "h": 1000}], "title": "AI in stadium"}, {"slides": [{"f": "wbt-edtech-1.webp", "w": 800, "h": 1000}, {"f": "wbt-edtech-2.webp", "w": 800, "h": 1000}, {"f": "wbt-edtech-3.webp", "w": 800, "h": 1000}, {"f": "wbt-edtech-4.webp", "w": 800, "h": 1000}, {"f": "wbt-edtech-5.webp", "w": 800, "h": 1000}, {"f": "wbt-edtech-6.webp", "w": 800, "h": 1000}, {"f": "wbt-edtech-7.webp", "w": 800, "h": 1000}], "title": "Edtech"}, {"slides": [{"f": "wbt-kumbh-1.webp", "w": 800, "h": 1000}, {"f": "wbt-kumbh-2.webp", "w": 800, "h": 1000}, {"f": "wbt-kumbh-3.webp", "w": 800, "h": 1000}, {"f": "wbt-kumbh-4.webp", "w": 800, "h": 1000}, {"f": "wbt-kumbh-5.webp", "w": 800, "h": 1000}, {"f": "wbt-kumbh-6.webp", "w": 800, "h": 1000}, {"f": "wbt-kumbh-7.webp", "w": 800, "h": 1000}], "title": "mahakumbh"}], "posters": [{"f": "pos-theme.webp", "w": 1600, "h": 905, "k": "pos-theme"}, {"f": "pos-club-showcase.webp", "w": 562, "h": 1000, "k": "pos-club-showcase"}, {"f": "pos-recruitment-poster.webp", "w": 707, "h": 1000, "k": "pos-recruitment-poster"}, {"f": "pos-wbt-26-jan.webp", "w": 1000, "h": 1000, "k": "pos-wbt-26-jan"}], "logos": [{"f": "logo-foodicted.webp", "w": 500, "h": 500, "k": "logo-foodicted"}, {"f": "logo-wbt-logo.webp", "w": 1072, "h": 700, "k": "logo-wbt-logo"}, {"f": "logo-rishi-photography.webp", "w": 500, "h": 500, "k": "logo-rishi-photography"}]};
+// a curated edit: the strongest pieces only, no near-duplicates and no plain lifestyle photos
+const pick = (list, keys) => keys.map(k => list.find(it => it.k === k)).filter(Boolean);
+const WORLDS = [
+  { k: 'qodoro', name: 'Qodoro <em>Realty</em>', label: 'Qodoro Realty', kicker: 'Social campaign · Real estate',
+    desc: 'Posts for a real-estate brand built on warm tones, editorial type and calm architecture and interiors, selling a feeling of home rather than square feet.',
+    tags: ['Editorial layouts', 'Instagram posts', 'Brand guidelines'], bg: '#1A1818', fg: '#E8E4E0', acc: '#C4B0B0', items: pick(GD.qodoro, ['qod-1','qod-16','qod-17','qod-26','qod-27','qod-31','qod-32','qod-center','qod-left']) },
+  { k: 'himspring', name: '<em>Himspring</em>', label: 'Himspring', kicker: 'Social campaign · Premium water',
+    desc: 'A social campaign for a premium Himalayan water brand: cool light, clean headlines and quiet details that make a bottle of water feel like luxury.',
+    tags: ['Art direction', 'Instagram posts', 'Brand voice'], bg: '#E8E4E0', fg: '#1A1818', acc: '#6B4F4F', items: pick(GD.himspring, ['him-27','him-28','him-31','him-32','him-33','him-37','him-43','him-44','him-45','him-47','him-49']) },
+  { k: 'kallisto', name: 'Kallisto <em>Miorah</em>', label: 'Kallisto Miorah', kicker: 'Posts & stories · Fashion',
+    desc: 'Posts and stories for a contemporary womenswear label: fashion-editorial layouts, product callouts and shop-the-look stories in soft, editorial tones.',
+    tags: ['Fashion editorial', 'Posts & stories', 'Product callouts'], bg: '#C4B0B0', fg: '#1A1818', acc: '#4A3C3C', items: pick(GD.kallisto, ['kal-post-1','kal-2','kal-post-2','kal-post-3','kal-post-4','kal-story-2','kal-story-4','kal-story-7','kal-story-8','kal-story-9']) },
+  { k: 'wbt', name: 'WeBuildTech', label: 'WeBuildTech', kicker: 'Carousels · AI company',
+    desc: 'Swipe-through explainers for an AI company on crowd safety at railways, smarter stadiums, AI in EdTech and the Mahakumbh. Click a stack to swipe through it.',
+    tags: ['Carousels', 'Information design', 'Storytelling'], bg: '#6B5C5C', fg: '#F3EEEC', acc: '#E8D6D6',
+    items: GD.wbt.map(c => Object.assign({}, c.slides[0], { deck: c.slides, title: c.title })) },
+  { k: 'posters', name: 'Posters & logos', label: 'Posters & logos', kicker: 'Events · Identity',
+    desc: 'Posters for college fests and clubs, festive creatives and logo marks, from bold type-led launches to clean identities.',
+    tags: ['Event posters', 'Logo design', 'Typography'], bg: '#1A1818', fg: '#E8E4E0', acc: '#C4B0B0',
+    items: GD.posters.filter(p => p.k !== 'pos-theme-launch').concat(GD.logos.map(l => Object.assign({ dark: true }, l))) },
+];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const host = document.getElementById('worlds');
+if (!host.firstElementChild) host.innerHTML = WORLDS.map((w, wi) => `
+  <section class="world" data-k="${w.k}" data-i="${wi}" style="--wbg:${w.bg};--wfg:${w.fg};--wacc:${w.acc}" aria-label="${esc(w.label)}">
+    <div class="pin">
+      <header class="w-head">
+        <p class="w-kicker"><span>${String(wi + 1).padStart(2, '0')}</span><i></i><span>${esc(w.kicker)}</span></p>
+        <h2 class="w-name">${w.name}</h2>
+        <div><p class="w-desc">${esc(w.desc)}</p><ul class="w-tags">${w.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>
+      </header>
+      <div class="line"><div class="track">
+        ${w.items.map((it, ii) => `<figure class="print${it.deck ? ' deck' : ''}${it.dark ? ' dark' : ''}" data-ii="${ii}" style="--ar:${it.w / it.h}">
+          <span class="peg" aria-hidden="true"></span>
+          <button class="paper" aria-label="Open ${esc(it.title || w.label)} ${ii + 1}"><img src="${it.f}" alt="" loading="${wi < 1 ? 'eager' : 'lazy'}" decoding="async" width="${it.w}" height="${it.h}">${it.deck ? `<span class="badge">Carousel · ${it.deck.length} slides</span>` : ''}</button>
+        </figure>`).join('')}
+      </div></div>
+      <div class="w-foot"><div class="w-bar"><i></i></div><span class="w-hint">${wi === 0 ? 'Scroll →' : esc(w.label)}</span></div>
+    </div>
+  </section>`).join('');
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const worlds = [...host.querySelectorAll('.world')].map(el => ({ el, pin: el.querySelector('.pin'), track: el.querySelector('.track'), bar: el.querySelector('.w-bar'),
+  prints: [...el.querySelectorAll('.print')].map((p, k) => ({ el: p, a: 0, v: 0, ph: Math.random() * 6.28, sp: .7 + Math.random() * .5 })), dist: 0, x: 0, lx: 0 }));
+
+// size: every print hangs at the same height; each world is as tall as its line is long
+function layout(){
+  const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 64;
+  const vh = innerHeight - nav;
+  worlds.forEach(w => {
+    const head = w.el.querySelector('.w-head').offsetHeight;
+    const ph = Math.max(150, Math.min(vh - head - (innerWidth < 768 ? 110 : 150), innerWidth < 768 ? 420 : 560));
+    w.el.style.setProperty('--ph', ph + 'px');
+    w.prints.forEach(p => { const img = p.el.querySelector('img'); img.style.width = (ph - 30) * (+p.el.style.getPropertyValue('--ar')) + 'px'; });
+    // stop exactly when the last print is fully in view (the wire itself runs off both edges, so it doesn't count)
+    const last = w.prints[w.prints.length - 1].el, pad = parseFloat(getComputedStyle(w.track).paddingLeft) || 0;
+    w.dist = Math.max(0, last.offsetLeft + last.offsetWidth + pad - innerWidth);
+    w.el.style.setProperty('--h', (vh + w.dist * (innerWidth < 768 ? 1.1 : 1)) + 'px');
+  });
+}
+layout(); addEventListener('resize', layout); document.fonts?.ready.then(layout);
+
+// scrolling down walks you along the line; the prints swing as they pass, as if the line moved
+let lastT = 0, active = -1;
+function frame(t){
+  const dt = Math.min(48, t - (lastT || t)) / 16.67; lastT = t;
+  const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 64;
+  worlds.forEach((w, i) => {
+    const r = w.el.getBoundingClientRect(), span = Math.max(1, r.height - (innerHeight - nav));
+    const p = Math.min(1, Math.max(0, (nav - r.top) / span));
+    w.x = -p * w.dist;
+    const vel = (w.x - w.lx) / Math.max(dt, .5); w.lx = w.x;
+    w.track.style.transform = `translate3d(${w.x.toFixed(1)}px,0,0)`;
+    w.bar.style.setProperty('--p', p.toFixed(4));
+    const on = r.top < innerHeight && r.bottom > nav;
+    if (!on || reduced) return;
+    w.prints.forEach(pr => {
+      const idle = Math.sin(t / 1000 * pr.sp + pr.ph) * 1.1;
+      const target = Math.max(-11, Math.min(11, vel * .55)) + idle;
+      pr.v += (target - pr.a) * .045 * dt; pr.v *= Math.pow(.88, dt); pr.a += pr.v * dt;
+      pr.el.style.transform = `rotate(${pr.a.toFixed(2)}deg)`;
+    });
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// ---------- lightbox ----------
+const lb = document.getElementById('lb'), lbI = document.getElementById('lbI'), lbT = document.getElementById('lbT'), lbD = document.getElementById('lbD');
+let L = { items: [], i: 0, title: '' }, lastFocus = null;
+function show(i){
+  L.i = (i + L.items.length) % L.items.length;
+  lbI.classList.add('swap');
+  const it = L.items[L.i], pre = new Image(); pre.src = it.f;
+  const stage = lbI.parentElement;
+  const go = () => { lbI.src = it.f; lbI.classList.remove('swap'); stage.classList.remove('ld'); };
+  if (pre.complete) go(); else { if (it.w && it.h) stage.style.setProperty('--ar', (it.w / it.h).toFixed(4)); stage.classList.add('ld'); pre.onload = go; pre.onerror = go; }
+  lbI.alt = `${L.title}, ${L.i + 1} of ${L.items.length}`;   // so a screen reader names the poster on screen
+  lbT.innerHTML = `${esc(L.title)}<span>${L.i + 1} / ${L.items.length}</span>`;
+  lbD.innerHTML = L.items.length <= 40 ? L.items.map((_, k) => `<i class="${k === L.i ? 'on' : ''}"></i>`).join('') : '';
+}
+function open(items, i, title){
+  L = { items, i, title }; lastFocus = document.activeElement;
+  lb.hidden = false; requestAnimationFrame(() => lb.classList.add('open')); show(i);
+  document.getElementById('lbX').focus({ preventScroll: true });
+}
+function close(){ lb.classList.remove('open'); setTimeout(() => { lb.hidden = true; }, 360); lastFocus?.focus?.({ preventScroll: true }); }
+host.addEventListener('click', e => {
+  const b = e.target.closest('.paper'); if (!b) return;
+  const wEl = b.closest('.world'), w = WORLDS[+wEl.dataset.i], ii = +b.closest('.print').dataset.ii, it = w.items[ii];
+  if (it.deck) open(it.deck, 0, it.title); else open(w.items, ii, w.label);
+});
+document.getElementById('lbX').addEventListener('click', close);
+document.getElementById('lbP').addEventListener('click', () => show(L.i - 1));
+document.getElementById('lbN').addEventListener('click', () => show(L.i + 1));
+lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('lb__stage')) close(); });
+addEventListener('keydown', e => {
+  if (lb.hidden) return;
+  if (e.key === 'Escape'){ e.stopImmediatePropagation(); close(); }
+  if (e.key === 'ArrowRight') show(L.i + 1);
+  if (e.key === 'ArrowLeft') show(L.i - 1);
+  if (e.key === 'Tab'){
+    // Tab stays inside the open lightbox instead of walking onto the gallery behind it
+    const f = [...lb.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')].filter(n => n.offsetWidth || n.offsetHeight || n.getClientRects().length);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!lb.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+}, true);
+let sx = 0, sy = 0;
+lb.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) show(L.i + (dx < 0 ? 1 : -1)); }, { passive: true });
+</script>
+<script>
+(() => {
+  const root = document.documentElement, EMBED = root.classList.contains('embed');
+  if (!EMBED) return;
+  const back = [...document.querySelectorAll('a[href="../#works"]')];
+  back.forEach(b => b.addEventListener('click', e => { e.preventDefault(); parent.postMessage({ wall: 'close' }, location.origin === 'null' ? '*' : location.origin); }));
+  addEventListener('keydown', e => { if (e.key === 'Escape') parent.postMessage({ wall: 'close' }, location.origin === 'null' ? '*' : location.origin); });
+  addEventListener('message', e => {
+    if (e.source !== parent) return;                      // only the home page holding this room may steer it
+    const m = e.data || {};
+    if (m.wall === 'enter'){ root.classList.remove('out'); scrollTo(0, 0); requestAnimationFrame(() => root.classList.add('in')); }
+    if (m.wall === 'exit'){ root.classList.add('out'); root.classList.remove('in'); const lb = document.getElementById('lb'); lb.classList.remove('open'); lb.hidden = true; }
+    if (m.wall === 'reset'){ root.classList.remove('out', 'in'); }
+    if (m.wall === 'mode'){ if (m.mode === 'dark') root.dataset.mode = 'dark'; else delete root.dataset.mode; }
+  });
+})();
+</script>
+
+<script>
+// press F for full screen (again, or Esc, to leave); ignored while typing
+(() => {
+  const typing = e => { const t = e.target; return t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)); };
+  const toggle = () => {
+    const d = document, el = d.documentElement;
+    if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+    else (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el)?.catch?.(() => {});
+  };
+  addEventListener('keydown', e => {
+    if ((e.key !== 'f' && e.key !== 'F') || e.metaKey || e.ctrlKey || e.altKey || typing(e)) return;
+    e.preventDefault();
+    if (window.top !== window) { try { parent.postMessage({ wall: 'fullscreen' }, location.origin === 'null' ? '*' : location.origin); } catch (_) {} return; }
+    toggle();
+  });
+  if (window.top === window) addEventListener('message', e => {
+    // only one of this page's own frames can ask for full screen
+    if (!e.data || e.data.wall !== 'fullscreen' || ![...document.querySelectorAll('iframe')].some(f => f.contentWindow === e.source)) return;
+    toggle();
+  });
+})();
+</script>
+
+<script>
+(() => {
+  // every image and recording starts on a shimmering placeholder, which lifts as soon as it has something to show
+  const done = el => el.parentElement && el.parentElement.classList.remove('skel');
+  const watch = el => {
+    const box = el.parentElement; if (!box || box.dataset.sk || el.closest('.app')) return; box.dataset.sk = 1;   // small app icons load instantly: no placeholder
+    if (el.tagName === 'IMG'){
+      if (el.complete && el.naturalWidth) return;
+      box.classList.add('skel');
+      el.addEventListener('load', () => done(el), { once: true }); el.addEventListener('error', () => done(el), { once: true });
+    } else {
+      // whenever it has to wait for more of the recording, the shimmer comes back over the poster
+      el.addEventListener('waiting', () => box.classList.add('skel-buf'));
+      ['playing', 'canplay', 'pause', 'error'].forEach(ev => el.addEventListener(ev, () => box.classList.remove('skel-buf')));
+      if (el.readyState >= 2) return;
+      box.classList.add('skel');
+      el.addEventListener('loadeddata', () => done(el), { once: true });
+      if (el.poster){ const im = new Image(); im.onload = () => done(el); im.src = el.poster; }
+    }
+  };
+  const scan = () => document.querySelectorAll('main img, main video').forEach(watch);
+  scan(); new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<script>
+(() => {
+  const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const tick = () => { const d = new Date(), h = d.getHours();
+    document.querySelectorAll('[data-ftime]').forEach(e => e.textContent = `${h % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`);
+    document.querySelectorAll('[data-fyear]').forEach(e => e.textContent = d.getFullYear()); };
+  tick(); setInterval(tick, 20000);
+  // size the footer name so it spans the full width with only a sliver of margin
+  const fit = () => document.querySelectorAll('.sf').forEach(f => {
+    const w = f.querySelector('.sf__word'); if (!w) return;
+    const span = [...w.children].find(s => getComputedStyle(s).display !== 'none'); if (!span) return;
+    w.style.setProperty('--wf', '100px');
+    const k = (f.clientWidth * .955) / span.getBoundingClientRect().width;
+    f.style.setProperty('--wf', (100 * k).toFixed(2) + 'px'); w.style.removeProperty('--wf');
+  });
+  fit(); addEventListener('resize', fit); document.fonts?.ready.then(fit);
+  // the footer's rounded corners show whatever sits directly above it: find that section's colour and paint it behind them
+  const sfw = document.querySelector('.sfw');
+  const above = () => {
+    if (!sfw) return;
+    const solid = e => { const c = getComputedStyle(e).backgroundColor; const m = c.match(/[\d.]+/g); return m && !(m.length > 3 && +m[3] < .05) ? c : ''; };
+    let col = '', e = sfw.previousElementSibling;
+    while (e){ if (e.getBoundingClientRect().width >= innerWidth * .9){ const c = solid(e); if (c) col = c; } e = e.lastElementChild; }
+    const bg = col || solid(document.body) || getComputedStyle(document.documentElement).backgroundColor;
+    sfw.style.setProperty('--above', bg);
+    // a dark section above: a hairline keeps the footer reading as its own section
+    const m = (bg.match(/[\d.]+/g) || [255, 255, 255]).map(Number);
+    sfw.classList.toggle('sfw--dark', (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255 < .25);
+  };
+  above(); addEventListener('load', above); addEventListener('resize', above);
+  new MutationObserver(above).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
+  // floating back-to-top: appears after the first screen, shows scroll progress, flips colour over dark backgrounds
+  const tt = document.querySelector('.totop');
+  if (tt) {
+    const c = tt.querySelector('.ring circle'); tt.style.setProperty('--len', (2 * Math.PI * 24).toFixed(2));
+    const lum = el => { for (let e = el; e && e !== document.documentElement; e = e.parentElement) {
+        const m = getComputedStyle(e).backgroundColor.match(/[\d.]+/g); if (!m) continue;
+        if (m.length > 3 && +m[3] < .5) continue; return (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255; }
+      const m = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g) || [255,255,255];
+      return (m.length > 3 && +m[3] < .5) ? (document.documentElement.dataset.mode === 'dark' ? 0 : 1) : (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255; };
+    let raf = 0;
+    const upd = () => { raf = 0;
+      const max = document.documentElement.scrollHeight - innerHeight, y = scrollY;
+      const bot = document.querySelector('.sf__bot');  // the footer has its own 'Back to top', so step aside once it's on screen
+      tt.classList.toggle('show', y > innerHeight * .9 && !(bot && bot.getBoundingClientRect().top < innerHeight - 8));
+      tt.style.setProperty('--p', max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+      const r = tt.getBoundingClientRect();
+      tt.style.pointerEvents = 'none';
+      const under = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      tt.style.pointerEvents = '';
+      if (under) tt.dataset.on = lum(under) < .45 ? 'dark' : 'light'; };
+    const q = () => { if (!raf) raf = requestAnimationFrame(upd); };
+    addEventListener('scroll', q, { passive: true }); addEventListener('resize', q);
+    new MutationObserver(q).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode', 'class'] });
+    upd();
+  }
+})();
+</script>
+
+<script>
+// "Back to the doors" stays on screen in the corner the whole time you're inside a room
+(() => {
+  const top = document.querySelector('.top .chip'); if (!top) return;
+  const bar = document.querySelector('.rn__in'); if (!bar) return;
+  const b = document.createElement('a');
+  b.className = 'backd'; b.href = top.getAttribute('href'); b.setAttribute('aria-label', 'Back to the doors');
+  b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to the doors</span>';
+  b.addEventListener('click', e => { e.preventDefault(); top.click(); });     // same exit as the link at the top
+  bar.insertBefore(b, bar.firstChild);                                        // first thing in the sticky bar, on the left
+  top.style.visibility = 'hidden'; top.tabIndex = -1;                      // the pill in the bar takes its place, so there is one way back, always on screen
+  requestAnimationFrame(() => b.classList.add('show'));
+})();
+</script>
+
+<script>
+(() => {
+  const root = document.documentElement, EMBED = root.classList.contains('embed');
+  const HOME = '../#works'.replace(/#works$/, '');
+  const SLUGS = ["web-developer", "app-developer", "ui-ux-designer", "graphic-designer", "photographer"];
+  const go = to => {
+    if (to === 'top'){ scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (EMBED){ parent.postMessage({ wall: 'go', to }, location.origin === 'null' ? '*' : location.origin); return; }
+    if (to === 'home') location.href = HOME;
+    else if (to === 'about') location.href = HOME + '#about';
+    else if (to === 'contact') location.href = HOME + '#contact';
+    else if (to.startsWith('door:')) location.href = HOME + '#' + SLUGS[+to.slice(5)];
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-nav]'); if (!b) return;
+    if (b.tagName === 'A' && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button)) return;   // new tab: let the link do it
+    e.preventDefault(); rn.classList.remove('open'); menu.setAttribute('aria-expanded', 'false');
+    const to = b.dataset.nav;
+    if (b.hasAttribute('aria-current')){ scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    go(to);
+  });
+  const rn = document.getElementById('rn'), menu = document.getElementById('rnMenu');
+  const panel = document.getElementById('rnPanel'), pclose = document.getElementById('rnClose');
+  // each line in the menu knows its place, so they rise in one after another
+  panel.querySelectorAll('.rn__plist button').forEach((b, i) => b.style.setProperty('--i', i));
+  const setMenu = o => {
+    rn.classList.toggle('open', o);
+    menu.setAttribute('aria-expanded', o);
+    root.classList.toggle('rn-lock', o);                 // the page behind stops scrolling
+    if (o) setTimeout(() => pclose.focus(), 60); else menu.focus();
+  };
+  menu.addEventListener('click', () => setMenu(!rn.classList.contains('open')));
+  pclose.addEventListener('click', () => setMenu(false));
+  addEventListener('keydown', e => {
+    if (!rn.classList.contains('open')) return;
+    if (e.key === 'Escape'){ setMenu(false); return; }
+    if (e.key !== 'Tab') return;                          // the keyboard stays inside the open menu
+    const f = [...panel.querySelectorAll('button')].filter(n => n.offsetWidth || n.offsetHeight);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!panel.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
+  panel.addEventListener('click', e => { if (e.target.closest('button[data-nav]')) setMenu(false); });
+  matchMedia('(min-width:1200px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+  const upd = () => rn.classList.toggle('stuck', scrollY > 10); addEventListener('scroll', upd, { passive: true }); upd();
+  // content that sticks (the project cards) parks below the navbar, never behind it
+  const navH = () => { root.style.setProperty('--nav-h', rn.offsetHeight + 'px'); root.style.setProperty('--rn-h', rn.offsetHeight + 'px'); };
+  navH(); addEventListener('resize', navH); new ResizeObserver(navH).observe(rn);
+  const M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const d = new Date(), short = matchMedia('(max-width: 767.98px)').matches; document.querySelectorAll('[data-fdate]').forEach(e => e.textContent = short ? `${d.getDate()} ${M[d.getMonth()].slice(0, 3)}` : `${d.getDate()} ${M[d.getMonth()]}, ${d.getFullYear()}`);
+})();
+</script>
+
+<style>
+.ck{position:fixed;left:50%;bottom:max(1rem,env(safe-area-inset-bottom));z-index:90;transform:translateX(-50%);width:min(34rem,calc(100% - 2rem));
+  display:flex;align-items:center;gap:1rem;padding:.9rem .9rem .9rem 1.2rem;border-radius:1.25rem;background:#1A1818;color:#E8E4E0;
+  box-shadow:0 18px 40px -16px rgba(0,0,0,.55),0 0 0 1px rgba(232,228,224,.12);font:400 .875rem/1.45 'Onest',ui-sans-serif,system-ui,sans-serif}
+.ck[hidden]{display:none}
+.ck p{margin:0;flex:1}.ck a{color:inherit}
+.ck div{display:flex;gap:.5rem;flex:none}
+.ck button{height:2.5rem;padding:0 1rem;border-radius:999px;border:1px solid rgba(232,228,224,.25);background:none;color:inherit;font:inherit;font-size:.8125rem;font-weight:600;line-height:1;cursor:pointer}
+.ck button[data-ck="yes"]{background:#E8E4E0;color:#1A1818;border-color:transparent}
+@media (max-width:539.98px){.ck{flex-direction:column;align-items:stretch}.ck div button{flex:1}}
+</style>
+<div class="ck" id="ck" role="region" aria-label="Analytics choice" hidden><p>May I count your visit with Google Analytics? It sets cookies. <a href="/legal/">Details</a></p><div><button type="button" data-ck="no">No thanks</button><button type="button" data-ck="yes">Allow</button></div></div>
+<script>
+(() => {
+  const ID = 'G-12PNLHKGHK', K = 'rishi-analytics';
+  let v = null; try { v = localStorage.getItem(K); } catch (e) {}
+  const load = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date()); gtag('config', ID);
+    const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID; document.head.appendChild(s);
+  };
+  if (v === 'yes') return load();
+  if (v === 'no') return;
+  const b = document.getElementById('ck'); b.hidden = false;
+  b.addEventListener('click', e => {
+    const c = e.target.closest('[data-ck]'); if (!c) return;
+    try { localStorage.setItem(K, c.dataset.ck); } catch (e) {}
+    b.hidden = true; if (c.dataset.ck === 'yes') load();
+  });
+})();
+</script>
+</body>
+</html>

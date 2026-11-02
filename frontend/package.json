@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-frontend",
+  "version": "1.0.0",
+  "description": "Frontend static server with byte-range video streaming and backend API proxy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}

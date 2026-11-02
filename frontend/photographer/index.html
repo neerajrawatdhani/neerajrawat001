@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Photography — Neeraj Rawat</title>
+<link rel="preload" href="../fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(../fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(../fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}</style>
+
+<meta name="description" content="A wall of photographs by Neeraj Rawat: portraits, events and street photography you can drag through in any direction." />
+<meta name="theme-color" content="#030303" />
+<script>document.documentElement.classList.add('pre');if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add('embed');try{if(localStorage.getItem('rishi-mode')==='dark')document.documentElement.dataset.mode='dark'}catch(e){}</script>
+<style>
+/* Layout: an endless wall of photos filling the screen; small chrome floats over it. */
+:root{
+  --bg:#030306; --fg:#E8E4E0; --fg-rgb:232,228,224; --chip:rgba(18,17,17,.62); --chip-line:rgba(232,228,224,.12);
+  --scrim:rgba(0,0,0,.92); --ease:cubic-bezier(.16,1,.3,1);
+  --font:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.25s}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);font-family:var(--font);-webkit-font-smoothing:antialiased}
+button,a{font:inherit;color:inherit;text-decoration:none;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid #C4B0B0;outline-offset:3px}
+
+.wall{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;perspective:1300px;
+  background:transparent}
+.wall.drag{cursor:grabbing}
+.sky{position:fixed;inset:0;width:100%;height:100%;display:block;transition:opacity 1.6s ease .2s}
+html.pre .sky{opacity:0;transition:none}
+html.out .sky{opacity:0;transition:opacity .5s ease}
+.space{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
+.cell{position:absolute;left:0;top:0;will-change:transform}
+/* each photo drifts on its own slow orbit */
+@keyframes drift{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  33%{transform:translate3d(var(--fx),var(--fy),0) rotate(var(--fr))}
+  66%{transform:translate3d(calc(var(--fx) * -.7),calc(var(--fy) * .6),0) rotate(calc(var(--fr) * -.6))}}
+.fl{width:100%;height:100%;animation:drift var(--fd,12s) ease-in-out var(--fdl,0s) infinite}
+.ph{position:relative;width:100%;height:100%;border-radius:4px;overflow:hidden;background:#0d0d0d center/cover no-repeat;scale:var(--z,1);
+  box-shadow:0 0 0 1px rgba(255,255,255,.05);
+  transition:transform 1s var(--ease) var(--dl,0s),opacity .6s ease var(--dl,0s),scale .5s var(--ease)}
+.ph img{display:block;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease;-webkit-user-drag:none;pointer-events:none}
+.ph img.ok{opacity:1}
+.ph::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.07) 50%,transparent 70%);transform:translateX(-100%)}
+.ph:has(img:not(.ok))::after{opacity:1;animation:phSk 1.3s linear infinite}
+@keyframes phSk{to{transform:translateX(100%)}}
+@media (prefers-reduced-motion:reduce){.ph::after{animation:none!important}}
+@media (hover:hover){ .wall:not(.drag) .cell:hover{z-index:2} .wall:not(.drag) .cell:hover .ph{scale:calc(var(--z,1) * 1.08)} }
+/* arriving: photos come forward out of the dark, nearest the middle first */
+html.pre .ph{opacity:0;transform:scale(.3) translateY(30px)}
+html.pre .ph,html.instant .ph{transition-duration:0s!important;transition-delay:0s!important}
+/* leaving: they sink back into it */
+html.out .ph{opacity:0;transform:scale(.55);transition:transform .55s cubic-bezier(.5,0,.75,0),opacity .45s ease}
+@media (prefers-reduced-motion:reduce){ .fl{animation:none} }
+
+@keyframes chromeIn{from{opacity:0}}
+.bar,.hint{transition:opacity .6s ease .9s}
+html.pre .bar,html.pre .hint,html.out .bar,html.out .hint{opacity:0;transition-delay:0s}
+.bar{position:fixed;left:0;right:0;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));pointer-events:none}
+.bar>*{pointer-events:auto}
+.chip{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px;border-radius:999px;background:var(--chip);border:1px solid var(--chip-line);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);font-size:14px;font-weight:500}
+.chip--title{font-weight:600;letter-spacing:-.01em}
+.chip--title small{font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(var(--fg-rgb),.55)}
+.hint{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));z-index:10;translate:-50% 0;transition:opacity .6s ease}
+.hint.gone{opacity:0;pointer-events:none}
+@media (max-width:560px){ .chip--title small{display:none} .chip{height:40px;padding:0 14px;font-size:13px} }
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:var(--scrim);opacity:0;transition:opacity .35s ease}
+.lb.open{opacity:1}
+.lb img{max-width:min(92vw,1800px);max-height:84vh;width:auto;height:auto;border-radius:6px;box-shadow:0 30px 80px -30px rgba(0,0,0,.55);
+  transform:scale(.97);transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.lb.open img{transform:none}
+.lb__close{position:fixed;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right))}
+.lb__nav{position:fixed;top:50%;translate:0 -50%}
+.lb__nav--p{left:max(16px,env(safe-area-inset-left))}.lb__nav--n{right:max(16px,env(safe-area-inset-right))}
+.lb__count{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));translate:-50% 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.skel{position:relative}
+.skel::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;opacity:1;
+  background:linear-gradient(100deg,#E2DDD8 30%,#F1EDE9 50%,#E2DDD8 70%);background-size:220% 100%;animation:skel 1.25s linear infinite}
+html[data-mode="dark"] .skel::after{background-image:linear-gradient(100deg,#231F1F 30%,#2F2A2A 50%,#231F1F 70%)}
+@keyframes skel{from{background-position:120% 0}to{background-position:-100% 0}}
+/* a recording that is still buffering: a light sweep over its poster until it plays */
+.skel-buf{position:relative}
+.skel-buf::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);background-size:220% 100%;animation:skel 1.25s linear infinite}
+@media (prefers-reduced-motion:reduce){.skel::after{animation:none}}
+</style>
+<link rel="canonical" href="https://www.edudhani.com/photographer/" />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<meta name="author" content="Neeraj Rawat" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Neeraj Rawat" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://www.edudhani.com/photographer/" />
+<meta property="og:title" content="Photography — Neeraj Rawat" />
+<meta property="og:description" content="A wall of photographs by Neeraj Rawat: portraits, events and street photography you can drag through in any direction." />
+<meta property="og:image" content="https://www.edudhani.com/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Neeraj Rawat&#39;s portfolio" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Photography — Neeraj Rawat" />
+<meta name="twitter:description" content="A wall of photographs by Neeraj Rawat: portraits, events and street photography you can drag through in any direction." />
+<meta name="twitter:image" content="https://www.edudhani.com/og.jpg" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://edudhani.com/#neeraj","name":"Neeraj Rawat","url":"https://therishithakor.com","jobTitle":"Freelance Developer, Designer and Photographer","image":"https://www.edudhani.com/og.jpg","description":"Freelance web and iOS developer, UI/UX designer, graphic designer and photographer working remotely with clients worldwide.","knowsAbout":["Web development","iOS app development","UI/UX design","Graphic design","Brand identity","Photography"],"address":{"@type":"PostalAddress","addressCountry":"IN"},"knowsLanguage":["en"],"worksFor":{"@id":"https://www.edudhani.com/#org"}},{"@type":"Organization","@id":"https://www.edudhani.com/#org","name":"Neeraj Rawat — Design & Development","alternateName":"Neeraj Rawat","url":"https://therishithakor.com","image":"https://www.edudhani.com/og.jpg","logo":{"@type":"ImageObject","url":"https://www.edudhani.com/icon-512.png","width":512,"height":512},"founder":{"@id":"https://edudhani.com/#neeraj"},"email":"neeraj@edudhani.com","contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"neeraj@edudhani.com","availableLanguage":"en","areaServed":["US","GB","CA","AU"]},"description":"Freelance web development, iOS app development, UI/UX design and graphic design, delivered remotely.","areaServed":[{"@type":"Country","name":"United States"},{"@type":"Country","name":"United Kingdom"},{"@type":"Country","name":"Canada"},{"@type":"Country","name":"Australia"},"Worldwide"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Web development","description":"Websites and web applications designed and built end to end."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"iOS app development","description":"Native iOS apps and games, from first sketch to the App Store."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"UI/UX design","description":"Product and interface design: user flows, wireframes and finished UI."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Graphic design","description":"Brand identity, social media creatives, posters and logos."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Photography","description":"Portrait, event and street photography."}}]}},{"@type":"WebSite","@id":"https://www.edudhani.com/#site","url":"https://therishithakor.com","name":"Neeraj Rawat — Portfolio","publisher":{"@id":"https://edudhani.com/#neeraj"},"inLanguage":"en"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.edudhani.com/"},{"@type":"ListItem","position":2,"name":"Photography","item":"https://www.edudhani.com/photographer/"}]}]}</script>
+<meta name="google-site-verification" content="dB3k2roAkI1S8861shwLsjVKNyl1q-TjchYYJWrG-18" /></head>
+<body>
+<main id="wallMain" style="display:contents">
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Photography by Neeraj</h1>
+<canvas class="sky" id="sky" aria-hidden="true"></canvas>
+<div class="wall" id="wall" role="region" aria-label="Photos floating in the dark. Drag, scroll or use the arrow keys to move around, then press Enter to open the photo in the middle of the screen." tabindex="0"><div class="space" id="space"></div></div>
+
+<div class="bar">
+  <a class="chip" href="../#works" id="back" style="min-height:44px">← Back to the doors</a>
+  <span class="chip chip--title">Photography</span>
+</div>
+<div class="chip hint" id="hint" aria-hidden="true">Drag in any direction</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo" hidden>
+  <img id="lbImg" alt="">
+  <button class="chip lb__close" id="lbClose">Close</button>
+  <button class="chip lb__nav lb__nav--p" id="lbPrev" aria-label="Previous photo">←</button>
+  <button class="chip lb__nav lb__nav--n" id="lbNext" aria-label="Next photo">→</button>
+  <span class="chip lb__count" id="lbCount"></span>
+</div>
+
+<script src="photos.js"></script>
+<script>
+(() => {
+  const EMBED = /[?&]embed\b/.test(location.search);   // running inside the home page, behind the door
+  const P = window.PHOTOS || [];
+  const N = P.length;
+  const root = document.documentElement;
+  const dark = root.dataset.mode === 'dark';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wall = document.getElementById('wall'), space = document.getElementById('space');
+
+  /* ---- layout: identical rules to make_wall.py, so the door's glimpse matches the first frame ---- */
+  /* ---- layout: rows of equal height, so wide and tall photos read at a similar size.
+     A patch of rows is built once and repeats endlessly in every direction. ---- */
+  let vw, vh, g, PW, PH, patch, ROWS = null;
+  /* photos run in rows of the same orientation, each row its own endless strip, so the gaps
+     between neighbours are the same everywhere; sizes are the same as before */
+  function buildRows(){
+    const mobile = vw < 640;
+    const side = (mobile ? vw * .56 : Math.min(380, vh * .44)) * .93;   // same apparent size as before (the depth scale is gone)
+    const A = side * side, minLen = vw * (mobile ? 2 : 1.7);            // rows long enough that no photo shows twice at once
+    const all = P.map((p, s) => { const r = p.w / p.h, w = Math.sqrt(A * r); return { s, r, w, h: w / r, c: p.c || s }; });
+    const groups = [all.filter(o => o.r < 1), all.filter(o => o.r >= 1)].filter(gr => gr.length);
+    const made = [];
+    for (const gr of groups){
+      gr.sort((a, b) => a.r - b.r);                    // similar shapes share a row, so their heights match
+      const total = gr.reduce((a, o) => a + o.w + g, 0);
+      const n = Math.max(1, Math.min(gr.length, mobile ? Math.floor(total / minLen) : Math.round(total / minLen)));
+      // similar shapes share a row (so heights match), but a row avoids holding two from the same series
+      const target = total / n, rowsOfGroup = Array.from({ length: n }, () => []), len = new Array(n).fill(0);
+      let cum = 0;
+      for (const o of gr){
+        const nat = Math.min(n - 1, Math.floor(cum / target)); cum += o.w + g;
+        const cand = [...Array(n).keys()].sort((p, q) => Math.abs(p - nat) - Math.abs(q - nat));
+        const score = k => (rowsOfGroup[k].filter(x => x.c === o.c).length * 3) + Math.abs(k - nat) + (len[k] + o.w > target * 1.18 ? 9 : 0);
+        const k = cand.reduce((best, k2) => score(k2) < score(best) ? k2 : best, cand[0]);
+        rowsOfGroup[k].push(o); len[k] += o.w + g;
+      }
+      made.push(rowsOfGroup);
+    }
+    // interleave tall and wide rows evenly
+    const [a = [], b = []] = made, seq = [];
+    let ia = 0, ib = 0;
+    while (ia < a.length || ib < b.length){
+      if (ib >= b.length || (ia < a.length && ia / a.length <= ib / b.length)) seq.push(a[ia++]); else seq.push(b[ib++]);
+    }
+    ROWS = []; let y = 0;
+    seq.filter(r => r.length).forEach((items, ri) => {
+      // order within the row so neighbours come from different series where possible
+      let ord = null, bestBad = 1e9;
+      for (let tries = 0; tries < 40 && bestBad > 0; tries++){
+        const left = items.slice(), o2 = [];
+        if (tries) left.push(...left.splice(0, tries % left.length));    // try different starting points
+        while (left.length){
+          const prev = o2[o2.length - 1];
+          let k = left.findIndex(o => !prev || o.c !== prev.c);
+          if (k < 0) k = 0;
+          o2.push(left.splice(k, 1)[0]);
+        }
+        let bad = 0; for (let k = 0; k < o2.length; k++) if (o2.length > 1 && o2[k].c === o2[(k + 1) % o2.length].c) bad++;
+        if (bad < bestBad){ bestBad = bad; ord = o2; }
+      }
+      const H = Math.max(...ord.map(o => o.h));
+      let x = 0; const cells = ord.map(o => { const c = { s: o.s, x, y: (H - o.h) / 2, w: o.w, h: o.h }; x += o.w + g; return c; });
+      ROWS.push({ y, H, L: x, off: ((ri * 0.381966) % 1) * x, cells });
+      y += H + g;
+    });
+    PH = y; PW = Math.max(...ROWS.map(r => r.L)); patch = [];
+    window.__rows = ROWS;
+  }
+  function build(){
+    vw = innerWidth; vh = innerHeight;
+    g = vw >= 640 ? 30 : 16;
+    buildRows(); return;
+    ROWS = null;
+    // every photo keeps its real proportions and gets about the same amount of space,
+    // so tall and wide shots are equally easy to see
+    const A = vw >= 640 ? Math.pow(Math.min(380, vh * .44), 2) : Math.pow(vw * .56, 2);
+    const rest = [];
+    for (let s = 0; s < N; s++){                                  // each photo once per block: never next to itself
+      const p = P[s], r = p.w / p.h, w = Math.sqrt(A * r);
+      rest.push({ s, w, h: w / r, c: p.c || s });
+    }
+    // pack them like a masonry wall: each photo goes where the skyline is lowest
+    PW = Math.max(vw * 1.15, Math.sqrt(rest.reduce((a, b) => a + (b.w + g) * (b.h + g), 0) * 1.6));
+    const sky = [{ x: 0, w: PW, y: 0 }];
+    patch = [];
+    const spot = it => {
+      let best = null;
+      for (let i = 0; i < sky.length; i++){
+        let x = sky[i].x; if (x + it.w > PW) break;
+        let y = 0, span = 0, j = i;
+        while (span < it.w + g && j < sky.length){ y = Math.max(y, sky[j].y); span += sky[j].w; j++; }
+        if (span < it.w + g && x + it.w + g > PW) continue;
+        if (!best || y < best.y) best = { x, y };
+      }
+      return best || { x: 0, y: Math.max(...sky.map(s => s.y)) };
+    };
+    // how many photos from the same series would sit right beside this spot (wrapping sideways too)
+    const near = (it, at) => {
+      let n = 0; const R = g * 3;
+      for (const q of patch){
+        if (q.c !== it.c) continue;
+        for (const off of [-PW, 0, PW]){
+          const gx = Math.max(q.x + off - (at.x + it.w), at.x - (q.x + off + q.w)), gy = Math.max(q.y - (at.y + it.h), at.y - (q.y + q.h));
+          if (gx < R && gy < R){ n++; break; }
+        }
+      }
+      return n;
+    };
+    while (rest.length){
+      // the next photo is the first one whose series isn't already right there
+      let pick = 0, at = spot(rest[0]), sc = near(rest[0], at);
+      for (let k = 1; k < rest.length && sc > 0; k++){
+        const a2 = spot(rest[k]), s2 = near(rest[k], a2);
+        if (s2 < sc){ pick = k; at = a2; sc = s2; }
+      }
+      const it = rest.splice(pick, 1)[0], best = at;
+      patch.push({ s: it.s, c: it.c, x: best.x, y: best.y, w: it.w, h: it.h });
+      // raise the skyline under the new photo
+      const L = best.x, R = Math.min(PW, best.x + it.w + g), top = best.y + it.h + g, next = [];
+      for (const s of sky){
+        if (s.x + s.w <= L || s.x >= R){ next.push(s); continue; }
+        if (s.x < L) next.push({ x: s.x, w: L - s.x, y: s.y });
+        if (s.x + s.w > R) next.push({ x: R, w: s.x + s.w - R, y: s.y });
+      }
+      next.push({ x: L, w: R - L, y: top });
+      next.sort((a, b) => a.x - b.x);
+      sky.length = 0; sky.push(...next);
+    }
+    PH = Math.max(...sky.map(s => s.y));
+  }
+  const mod = (a, b) => ((a % b) + b) % b;
+  /* ---- camera with inertia ---- */
+  let camX = 0, camY = 0, vx = 0, vy = 0, dragging = false, moved = 0, lastT = 0;
+  function centre(){ camX = PW * .3; camY = PH * .25; }
+
+  /* ---- virtualised cells: only what's on screen exists in the DOM ---- */
+  const live = new Map(), pool = [];
+  function cellFor(key, s){
+    let el = live.get(key);
+    if (el) return el;
+    el = pool.pop() || (() => {
+      const d = document.createElement('div'); d.className = 'cell';
+      d.innerHTML = '<div class="fl"><div class="ph"><img alt="" draggable="false" decoding="async"></div></div>';
+      const im = d.querySelector('img'); im.onload = () => im.classList.add('ok');
+      space.appendChild(d); return d;
+    })();
+    const ph = el.firstChild.firstChild, im = ph.firstChild, p = P[s];
+    if (el.dataset.k !== key){
+      // each placement gets its own depth and its own slow drift
+      el.dataset.k = key;
+      const r = n => { let h = 2166136261; for (const ch of key + n) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return ((h >>> 0) % 1000) / 1000; };
+      const z = ROWS ? 1 : .86 + r('z') * .14;
+      ph.style.setProperty('--z', z.toFixed(3));
+      const fl = el.firstChild;
+      const amp = ROWS ? .25 : 1;
+      fl.style.setProperty('--fx', ((r('x') - .5) * 14 * amp).toFixed(1) + 'px');
+      fl.style.setProperty('--fy', ((r('y') - .5) * 18 * amp).toFixed(1) + 'px');
+      fl.style.setProperty('--fr', ((r('r') - .5) * 1.4 * amp).toFixed(2) + 'deg');
+      fl.style.setProperty('--fd', (10 + r('d') * 8).toFixed(1) + 's');
+      fl.style.setProperty('--fdl', (-r('l') * 18).toFixed(1) + 's');
+    }
+    if (el.dataset.s !== String(s)){
+      el.dataset.s = s;
+      ph.style.backgroundImage = `url(${p.t}),url(${p.q})`;  // cached photo paints at once; blurred placeholder underneath
+      im.classList.remove('ok'); im.src = p.t;
+      if (im.complete && im.naturalWidth) im.classList.add('ok');
+      else if (!booted) im.decoding = 'sync';
+    }
+    el.style.display = '';
+    live.set(key, el);
+    return el;
+  }
+  function render(){
+    const seen = new Set();
+    if (ROWS){
+      const iy0 = Math.floor((camY - 400) / PH), iy1 = Math.floor((camY + vh) / PH);
+      for (let iy = iy0; iy <= iy1; iy++) ROWS.forEach((row, ri) => {
+        const ry = row.y + iy * PH - camY;
+        if (ry + row.H < -40 || ry > vh + 40) return;
+        const base = camX + row.off;
+        const ix0 = Math.floor((base - 400) / row.L), ix1 = Math.floor((base + vw) / row.L);
+        for (let ix = ix0; ix <= ix1; ix++) row.cells.forEach((c, k) => {
+          const x = c.x + ix * row.L - base, y = ry + c.y;
+          if (x + c.w < -40 || x > vw + 40) return;
+          const key = `${ix}:${iy}:${ri}:${k}`;
+          const el = cellFor(key, c.s);
+          el.style.width = c.w + 'px'; el.style.height = c.h + 'px';
+          el.style.transform = `translate3d(${x}px,${y}px,0)`;
+          if (arriving){ const d = Math.hypot(x + c.w / 2 - vw / 2, y + c.h / 2 - vh / 2) / Math.hypot(vw / 2, vh / 2);
+            el.firstChild.firstChild.style.setProperty('--dl', (d * .22 + (seen.size % 5) * .02).toFixed(3) + 's'); }
+          seen.add(key);
+        });
+      });
+      for (const [key, el] of live) if (!seen.has(key)){ live.delete(key); el.style.display = 'none'; pool.push(el); }
+      return;
+    }
+    const ix0 = Math.floor((camX - 400) / PW), ix1 = Math.floor((camX + vw) / PW);
+    const iy0 = Math.floor((camY - 400) / PH), iy1 = Math.floor((camY + vh) / PH);
+    for (let ix = ix0; ix <= ix1; ix++) for (let iy = iy0; iy <= iy1; iy++){
+      for (let k = 0; k < patch.length; k++){
+        const c = patch[k];
+        const x = c.x + ix * PW - camX, y = c.y + iy * PH - camY;
+        if (x + c.w < -40 || x > vw + 40 || y + c.h < -40 || y > vh + 40) continue;
+        const key = `${ix}:${iy}:${k}`;
+        const el = cellFor(key, c.s);
+        el.style.width = c.w + 'px'; el.style.height = c.h + 'px';
+        el.style.transform = `translate3d(${x}px,${y}px,0)`;
+        if (arriving){ const d = Math.hypot(x + c.w / 2 - vw / 2, y + c.h / 2 - vh / 2) / Math.hypot(vw / 2, vh / 2);
+          el.firstChild.firstChild.style.setProperty('--dl', (d * .22 + (seen.size % 5) * .02).toFixed(3) + 's'); }
+        seen.add(key);
+      }
+    }
+    for (const [key, el] of live) if (!seen.has(key)){ live.delete(key); el.style.display = 'none'; pool.push(el); }
+  }
+
+
+  let tiltX = 0, tiltY = 0, mvx = 0, mvy = 0;
+  /* ---- deep space behind the wall: far stars and faint haze, drifting slowly as you move (parallax) ---- */
+  const sky = document.getElementById('sky'), sx = sky.getContext('2d');
+  const TILE = 1600, STARS = [], NEB = [];
+  (function seed(){
+    let a = 987654321;
+    const rnd = () => (a = Math.imul(a ^ (a >>> 15), 2246822507) ^ Math.imul(a ^ (a >>> 13), 3266489909), ((a >>> 0) % 1e6) / 1e6);
+    for (let i = 0; i < 520; i++){ const m = Math.pow(rnd(), 3.2); STARS.push({ x: rnd() * TILE, y: rnd() * TILE, a: .2 + m * .75, s: .7 + m * 1.5, w: rnd() < .12 }); }
+    const tones = ['196,176,176', '107,92,92', '150,128,140', '120,110,150'];
+    for (let i = 0; i < 6; i++) NEB.push({ x: rnd() * TILE, y: rnd() * TILE, r: 260 + rnd() * 380, c: tones[i % 4], a: .07 + rnd() * .07 });
+  })();
+  function sizeSky(){ const dpr = Math.min(devicePixelRatio || 1, 2); sky.width = Math.round(innerWidth * dpr); sky.height = Math.round(innerHeight * dpr); sx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  let skyX = NaN, skyY = NaN;
+  function drawSky(){
+    const ox = camX * .12, oy = camY * .12;
+    if (ox === skyX && oy === skyY) return; skyX = ox; skyY = oy;
+    const w = innerWidth, h = innerHeight;
+    sx.globalCompositeOperation = 'source-over'; sx.fillStyle = '#030306'; sx.fillRect(0, 0, w, h);
+    sx.globalCompositeOperation = 'lighter';
+    const hx = camX * .06, hy = camY * .06;          // haze is further away still
+    for (const n of NEB) for (let ix = -1; ix <= Math.ceil(w / TILE); ix++) for (let iy = -1; iy <= Math.ceil(h / TILE); iy++){
+      const x = mod(n.x - hx, TILE) + ix * TILE, y = mod(n.y - hy, TILE) + iy * TILE;
+      if (x + n.r < 0 || y + n.r < 0 || x - n.r > w || y - n.r > h) continue;
+      const g = sx.createRadialGradient(x, y, 0, x, y, n.r);
+      g.addColorStop(0, `rgba(${n.c},${n.a})`); g.addColorStop(.45, `rgba(${n.c},${n.a * .45})`); g.addColorStop(1, `rgba(${n.c},0)`);
+      sx.fillStyle = g; sx.fillRect(x - n.r, y - n.r, n.r * 2, n.r * 2);
+    }
+    for (const s of STARS){
+      const x0 = mod(s.x - ox, TILE), y0 = mod(s.y - oy, TILE);
+      for (let x = x0; x < w; x += TILE) for (let y = y0; y < h; y += TILE){
+        sx.fillStyle = s.w ? `rgba(255,236,220,${s.a})` : `rgba(226,230,255,${s.a})`; sx.fillRect(x, y, s.s, s.s);
+      }
+    }
+  }
+
+  function tick(t){
+    const dt = Math.min(48, t - (lastT || t)) / 16.67; lastT = t;
+    // the whole field leans a little in the direction you move it, as if it has mass
+    const sx = dragging ? mvx : vx, sy = dragging ? mvy : vy;
+    const txT = Math.max(-5, Math.min(5, sy * .35)), tyT = Math.max(-5, Math.min(5, -sx * .35));
+    tiltX += (txT - tiltX) * .08 * dt; tiltY += (tyT - tiltY) * .08 * dt;
+    mvx *= .85; mvy *= .85;
+    if (!reduced) space.style.transform = `rotateX(${tiltX.toFixed(3)}deg) rotateY(${tiltY.toFixed(3)}deg)`;
+    if (!dragging && (Math.abs(vx) > .05 || Math.abs(vy) > .05)){
+      camX += vx * dt; camY += vy * dt;
+      const f = Math.pow(.94, dt); vx *= f; vy *= f;
+      render();
+    }
+    drawSky();
+    requestAnimationFrame(tick);
+  }
+
+  /* ---- input: drag (mouse/touch/pen), wheel/trackpad, keys ---- */
+  let px = 0, py = 0, downX = 0, downY = 0, samples = [];
+  wall.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    dragging = true; moved = 0; vx = vy = 0; px = downX = e.clientX; py = downY = e.clientY; samples = [{ x: px, y: py, t: e.timeStamp }];
+    wall.setPointerCapture(e.pointerId); wall.classList.add('drag'); hideHint();
+  });
+  wall.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - px, dy = e.clientY - py; px = e.clientX; py = e.clientY;
+    camX -= dx; camY -= dy; mvx = -dx; mvy = -dy; moved = Math.max(moved, Math.hypot(px - downX, py - downY));
+    samples.push({ x: px, y: py, t: e.timeStamp }); if (samples.length > 6) samples.shift();
+    render();
+  });
+  const end = e => {
+    if (!dragging) return;
+    dragging = false; wall.classList.remove('drag');
+    const a = samples[0], b = samples[samples.length - 1], dt = Math.max(1, b.t - a.t);
+    if (b.t - a.t < 120 && !reduced){ vx = -(b.x - a.x) / dt * 16.67; vy = -(b.y - a.y) / dt * 16.67; }
+    if (moved < 6){
+      const hit = document.elementsFromPoint(e.clientX, e.clientY).map(n => n.closest?.('.cell')).find(Boolean);
+      if (hit) openLb(+hit.dataset.s);
+    }
+  };
+  wall.addEventListener('pointerup', end);
+  wall.addEventListener('pointercancel', end);
+  addEventListener('wheel', e => {
+    if (!lb.hidden) return;
+    e.preventDefault();
+    let dx = e.deltaX, dy = e.deltaY;
+    if (e.deltaMode === 1){ dx *= 32; dy *= 32; }
+    if (e.shiftKey && !dx){ dx = dy; dy = 0; }
+    camX += dx; camY += dy; vx = vy = 0; render(); hideHint();
+  }, { passive: false });
+  addEventListener('keydown', e => {
+    if (!lb.hidden){
+      if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1);
+  if (e.key === 'Tab'){
+    // Tab stays inside the open lightbox instead of walking onto the gallery behind it
+    const f = [...lb.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')].filter(n => n.offsetWidth || n.offsetHeight || n.getClientRects().length);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!lb.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+      return;
+    }
+    const s = 22, m = { ArrowLeft: [-s, 0], ArrowRight: [s, 0], ArrowUp: [0, -s], ArrowDown: [0, s] }[e.key];
+    if (m){ e.preventDefault(); vx += m[0] * .5; vy += m[1] * .5; hideHint(); }
+    // the photos can only be clicked, so the keyboard opens whichever one sits in the middle of the screen
+    if ((e.key === 'Enter' || e.key === ' ') && document.activeElement === wall){
+      e.preventDefault();
+      const hit = document.elementsFromPoint(innerWidth / 2, innerHeight / 2).map(n => n.closest?.('.cell')).find(Boolean);
+      if (hit) openLb(+hit.dataset.s); else hideHint();
+    }
+    if (e.key === 'Escape') leave();
+  });
+
+  /* ---- lightbox (the only place full-size photos load) ---- */
+  const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
+  let cur = 0;
+  function show(i){
+    cur = mod(i, N); const p = P[cur];
+    lbImg.src = p.t;                                       // instant (cached thumbnail) ...
+    const full = new Image(); full.decoding = 'async'; full.src = p.f;
+    full.onload = () => { if (cur === mod(i, N)) lbImg.src = p.f; };   // ... then the sharp one
+    lbImg.alt = `Photo ${cur + 1} of ${N}`;
+    document.getElementById('lbCount').textContent = `${cur + 1} / ${N}`;
+    new Image().src = P[mod(cur + 1, N)].f;                // warm the next one
+  }
+  function openLb(i){ show(i); lb.hidden = false; requestAnimationFrame(() => lb.classList.add('open')); document.getElementById('lbClose').focus(); }
+  function closeLb(){ lb.classList.remove('open'); setTimeout(() => { lb.hidden = true; wall.focus(); }, 300); }
+  const step = d => show(cur + d);
+  document.getElementById('lbClose').onclick = closeLb;
+  document.getElementById('lbPrev').onclick = () => step(-1);
+  document.getElementById('lbNext').onclick = () => step(1);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+  function leave(){
+    if (EMBED) parent.postMessage({ wall: 'close' }, location.origin === 'null' ? '*' : location.origin);
+    else location.href = document.getElementById('back').href;
+  }
+  document.getElementById('back').addEventListener('click', e => { if (EMBED){ e.preventDefault(); leave(); } });
+  addEventListener('message', e => {
+    const m = e.data || {};
+    if (e.source !== parent) return;
+    if (m.wall === 'mode'){ if (m.mode === 'dark') root.dataset.mode = 'dark'; else delete root.dataset.mode; }
+    if (m.wall === 'enter'){ arrive(); hinted = false; hint.classList.remove('gone'); setTimeout(hideHint, 6000); wall.focus({ preventScroll: true }); }
+    if (m.wall === 'exit'){ root.classList.add('out'); }
+    if (m.wall === 'reset'){
+      if (!lb.hidden){ lb.hidden = true; lb.classList.remove('open'); }
+      root.classList.add('instant', 'pre'); root.classList.remove('out');
+      vx = vy = 0; centre(); arriving = true; render();
+      requestAnimationFrame(() => root.classList.remove('instant'));
+    }
+  });
+  const hint = document.getElementById('hint');
+  let hinted = false;
+  function hideHint(){ if (!hinted){ hinted = true; hint.classList.add('gone'); } }
+  setTimeout(hideHint, 6000);
+
+  addEventListener('resize', () => { sizeSky(); skyX = NaN; const cx = camX + vw / 2, cy = camY + vh / 2; build(); camX = cx - vw / 2; camY = cy - vh / 2; render(); });
+
+  let booted = false, arriving = true;
+  sizeSky(); build(); centre(); render(); booted = true;
+  requestAnimationFrame(tick);
+  // the photos come forward out of the dark, nearest the middle first
+  function arrive(){
+    arriving = false;
+    root.classList.remove('instant');
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('pre')));
+  }
+  const firstImgs = [...document.querySelectorAll('.cell img')];
+  const decoded = Promise.race([Promise.all(firstImgs.map(im => im.decode?.().then(() => im.classList.add('ok')).catch(() => {}))), new Promise(r => setTimeout(r, 1500))]);
+  if (!EMBED){ decoded.then(arrive); wall.focus({ preventScroll: true }); }
+})();
+</script>
+</main>
+
+<script>
+// press F for full screen (again, or Esc, to leave); ignored while typing
+(() => {
+  const typing = e => { const t = e.target; return t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)); };
+  const toggle = () => {
+    const d = document, el = d.documentElement;
+    if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+    else (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el)?.catch?.(() => {});
+  };
+  addEventListener('keydown', e => {
+    if ((e.key !== 'f' && e.key !== 'F') || e.metaKey || e.ctrlKey || e.altKey || typing(e)) return;
+    e.preventDefault();
+    if (window.top !== window) { try { parent.postMessage({ wall: 'fullscreen' }, location.origin === 'null' ? '*' : location.origin); } catch (_) {} return; }
+    toggle();
+  });
+  if (window.top === window) addEventListener('message', e => {
+    // only one of this page's own frames can ask for full screen
+    if (!e.data || e.data.wall !== 'fullscreen' || ![...document.querySelectorAll('iframe')].some(f => f.contentWindow === e.source)) return;
+    toggle();
+  });
+})();
+</script>
+
+<script>
+(() => {
+  // every image and recording starts on a shimmering placeholder, which lifts as soon as it has something to show
+  const done = el => el.parentElement && el.parentElement.classList.remove('skel');
+  const watch = el => {
+    const box = el.parentElement; if (!box || box.dataset.sk || el.closest('.app')) return; box.dataset.sk = 1;   // small app icons load instantly: no placeholder
+    if (el.tagName === 'IMG'){
+      if (el.complete && el.naturalWidth) return;
+      box.classList.add('skel');
+      el.addEventListener('load', () => done(el), { once: true }); el.addEventListener('error', () => done(el), { once: true });
+    } else {
+      // whenever it has to wait for more of the recording, the shimmer comes back over the poster
+      el.addEventListener('waiting', () => box.classList.add('skel-buf'));
+      ['playing', 'canplay', 'pause', 'error'].forEach(ev => el.addEventListener(ev, () => box.classList.remove('skel-buf')));
+      if (el.readyState >= 2) return;
+      box.classList.add('skel');
+      el.addEventListener('loadeddata', () => done(el), { once: true });
+      if (el.poster){ const im = new Image(); im.onload = () => done(el); im.src = el.poster; }
+    }
+  };
+  const scan = () => document.querySelectorAll('.ph img').forEach(watch);
+  scan(); new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<style>
+.ck{position:fixed;left:50%;bottom:max(1rem,env(safe-area-inset-bottom));z-index:90;transform:translateX(-50%);width:min(34rem,calc(100% - 2rem));
+  display:flex;align-items:center;gap:1rem;padding:.9rem .9rem .9rem 1.2rem;border-radius:1.25rem;background:#1A1818;color:#E8E4E0;
+  box-shadow:0 18px 40px -16px rgba(0,0,0,.55),0 0 0 1px rgba(232,228,224,.12);font:400 .875rem/1.45 'Onest',ui-sans-serif,system-ui,sans-serif}
+.ck[hidden]{display:none}
+.ck p{margin:0;flex:1}.ck a{color:inherit}
+.ck div{display:flex;gap:.5rem;flex:none}
+.ck button{height:2.5rem;padding:0 1rem;border-radius:999px;border:1px solid rgba(232,228,224,.25);background:none;color:inherit;font:inherit;font-size:.8125rem;font-weight:600;line-height:1;cursor:pointer}
+.ck button[data-ck="yes"]{background:#E8E4E0;color:#1A1818;border-color:transparent}
+@media (max-width:539.98px){.ck{flex-direction:column;align-items:stretch}.ck div button{flex:1}}
+</style>
+<div class="ck" id="ck" role="region" aria-label="Analytics choice" hidden><p>May I count your visit with Google Analytics? It sets cookies. <a href="/legal/">Details</a></p><div><button type="button" data-ck="no">No thanks</button><button type="button" data-ck="yes">Allow</button></div></div>
+<script>
+(() => {
+  const ID = 'G-12PNLHKGHK', K = 'rishi-analytics';
+  let v = null; try { v = localStorage.getItem(K); } catch (e) {}
+  const load = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date()); gtag('config', ID);
+    const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID; document.head.appendChild(s);
+  };
+  if (v === 'yes') return load();
+  if (v === 'no') return;
+  const b = document.getElementById('ck'); b.hidden = false;
+  b.addEventListener('click', e => {
+    const c = e.target.closest('[data-ck]'); if (!c) return;
+    try { localStorage.setItem(K, c.dataset.ck); } catch (e) {}
+    b.hidden = true; if (c.dataset.ck === 'yes') load();
+  });
+})();
+</script>
+</body>
+</html>
