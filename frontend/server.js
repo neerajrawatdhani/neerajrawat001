@@ -1,9 +1,12 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+let nodemailer = null;
+try {
+  nodemailer = require('nodemailer');
+} catch (e) {}
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
-const BACKEND_PORT = process.env.BACKEND_PORT ? parseInt(process.env.BACKEND_PORT, 10) : 5000;
 const ROOT = __dirname;
 
 const MIME_TYPES = {
@@ -25,33 +28,167 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf',
 };
 
-// Proxy request to backend on port 5000 with resilient fallback
-function proxyToBackend(req, res) {
-  const options = {
-    hostname: 'localhost',
-    port: BACKEND_PORT,
-    path: req.url,
-    method: req.method,
-    headers: { ...req.headers, host: `localhost:${BACKEND_PORT}` }
-  };
+// In-memory data store for standalone environments
+let visitCount = 18;
+const inquiriesList = [];
 
-  const proxyReq = http.request(options, (proxyRes) => {
-    res.writeHead(proxyRes.statusCode, proxyRes.headers);
-    proxyRes.pipe(res);
-  });
+// Setup Nodemailer transporter if available
+const SMTP_USER = process.env.SMTP_USER || 'neerajrawatdhani@gmail.com';
+const SMTP_PASS = process.env.SMTP_PASS || 'rwqu hghn cuct vuzp';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || SMTP_USER;
 
-  proxyReq.on('error', (err) => {
-    console.warn(`[Frontend Proxy Notice] Backend port ${BACKEND_PORT} currently offline for ${req.url}:`, err.message);
-    // Return safe fallback for stats/health to avoid 502 in console during development
-    if (req.url.startsWith('/api/stats')) {
-      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-      return res.end(JSON.stringify({ success: true, visits: 1, devMode: true }));
+let transporter = null;
+if (nodemailer && SMTP_USER && SMTP_PASS) {
+  try {
+    transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT || '465', 10),
+      secure: process.env.SMTP_SECURE !== 'false',
+      auth: { user: SMTP_USER, pass: SMTP_PASS }
+    });
+  } catch (e) {
+    console.warn('[SMTP Notice] Mailer setup deferred:', e.message);
+  }
+}
+
+// Handle all /api/* endpoints directly
+function handleApi(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, HEAD');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200);
+    return res.end();
+  }
+
+  const cleanUrl = req.url.split('?')[0];
+
+  // Health
+  if (cleanUrl === '/api/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({
+      status: "ok",
+      uptime: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+      smtpReady: !!transporter
+    }));
+  }
+
+  // Status
+  if (cleanUrl === '/api/status') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({
+      available: true,
+      statusMessage: "Available for enterprise inquiries and product collaborations",
+      responseTime: "Replies within 5 hours",
+      serverTime: new Date().toISOString()
+    }));
+  }
+
+  // Stats visit
+  if (cleanUrl === '/api/stats/visit' || cleanUrl === '/api/stats') {
+    if (req.method === 'POST') visitCount++;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ success: true, visits: visitCount }));
+  }
+
+  // Contact form submission
+  if (cleanUrl === '/api/contact' || cleanUrl === '/api/inquiries') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: "Method not allowed" }));
     }
-    res.writeHead(503, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-    res.end(JSON.stringify({ error: "Backend service offline on port " + BACKEND_PORT }));
-  });
 
-  req.pipe(proxyReq);
+    let rawBody = '';
+    req.on('data', chunk => rawBody += chunk);
+    req.on('end', async () => {
+      let body = {};
+      try {
+        body = JSON.parse(rawBody || '{}');
+      } catch (e) {
+        body = {};
+      }
+
+      const name = (body.name || '').trim();
+      const mobile = (body.mobile || body.phone || '').trim();
+      const email = (body.email || body.mail || '').trim();
+      const budget = (body.budget || 'Flexible / To be discussed').trim();
+      const message = (body.message || body.project || '').trim();
+      const consent = body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1;
+
+      if (!name) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: false, error: "Please enter your name." }));
+      }
+      if (!mobile) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: false, error: "Please provide your mobile number." }));
+      }
+      if (!email || !email.includes('@')) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: false, error: "Please provide a valid email ID." }));
+      }
+      if (!message) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: false, error: "Please provide a brief description of your project." }));
+      }
+      if (!consent) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({
+          success: false,
+          error: "Consent is required: please confirm that your details will not be shared with any third party."
+        }));
+      }
+
+      const inquiry = {
+        id: 'inq_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        timestamp: new Date().toISOString(),
+        channel: (body.channel || 'Email').trim(),
+        name,
+        mobile,
+        email,
+        budget,
+        message,
+        consent: true
+      };
+      inquiriesList.unshift(inquiry);
+
+      // Send emails asynchronously
+      if (transporter) {
+        const fromAddress = `"Neeraj Rawat | Dhani Tech" <${SMTP_USER}>`;
+        transporter.sendMail({
+          from: fromAddress,
+          to: ADMIN_EMAIL,
+          replyTo: email,
+          subject: inquiry.channel === 'WhatsApp'
+            ? `💬 [WhatsApp Lead] New Project Inquiry: ${name} (${budget})`
+            : `🚀 New Project Inquiry: ${name} (${budget})`,
+          html: `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>New Project Inquiry</h2><p><b>Name:</b> ${name}</p><p><b>Phone:</b> ${mobile}</p><p><b>Email:</b> ${email}</p><p><b>Budget:</b> ${budget}</p><p><b>Channel:</b> ${inquiry.channel}</p><p><b>Message:</b><br>${message}</p></div>`
+        }).catch(err => console.error('[SMTP Error]:', err.message));
+
+        transporter.sendMail({
+          from: fromAddress,
+          to: email,
+          replyTo: ADMIN_EMAIL,
+          subject: `Thank you for reaching out, ${name} | Dhani Tech & EduDhani`,
+          html: `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>Hello ${name},</h2><p>Thank you for contacting me. I will reply to you within 5 hours.</p><p>Best regards,<br><b>Neeraj Rawat</b><br>Founder & CEO, EduDhani</p></div>`
+        }).catch(err => console.error('[SMTP Auto-Reply Error]:', err.message));
+      }
+
+      res.writeHead(201, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        success: true,
+        message: `Thank you, ${name}! Your inquiry has been received. I will reply to ${email} within 5 hours.`,
+        inquiry
+      }));
+    });
+    return;
+  }
+
+  // Unhandled API
+  res.writeHead(404, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ error: "Endpoint not found" }));
 }
 
 const server = http.createServer((req, res) => {
@@ -60,14 +197,14 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     });
     return res.end();
   }
 
-  // Check if it's an API request meant for the backend
+  // Check if it's an API request
   if (req.url.startsWith('/api/') || req.url === '/api') {
-    return proxyToBackend(req, res);
+    return handleApi(req, res);
   }
 
   let reqPath = decodeURIComponent(req.url.split('?')[0]);
