@@ -1,6 +1,8 @@
-/home        / 200
-/work        / 200
-/works       / 200
-/my-story    / 200
-/about       / 200
-/contact     / 200
+/home        /index.html   200
+/home/*      /index.html   200
+/work        /index.html   200
+/works       /index.html   200
+/my-story    /index.html   200
+/about       /index.html   200
+/contact     /index.html   200
+/legal       /legal/index.html 200

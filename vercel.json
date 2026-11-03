@@ -1,13 +1,17 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "backend/server.js", "use": "@vercel/node" },
-    { "src": "frontend/**", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/backend/server.js" },
-    { "src": "/(home|work|works|my-story|about|contact)", "dest": "/frontend/index.html" },
-    { "src": "/legal", "dest": "/frontend/legal/index.html" },
-    { "src": "/(.*)", "dest": "/frontend/$1" }
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/home", "destination": "/frontend/index.html" },
+    { "source": "/home/(.*)", "destination": "/frontend/index.html" },
+    { "source": "/work", "destination": "/frontend/index.html" },
+    { "source": "/works", "destination": "/frontend/index.html" },
+    { "source": "/my-story", "destination": "/frontend/index.html" },
+    { "source": "/about", "destination": "/frontend/index.html" },
+    { "source": "/contact", "destination": "/frontend/index.html" },
+    { "source": "/legal", "destination": "/frontend/legal/index.html" },
+    { "source": "/api/(.*)", "destination": "/backend/server.js" },
+    { "source": "/(.*)", "destination": "/frontend/$1" }
   ]
 }
