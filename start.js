@@ -1,59 +1,67 @@
-const { spawn } = require('child_process');
 const path = require('path');
 
-const rootDir = __dirname;
-const backendDir = path.join(rootDir, 'backend');
-const frontendDir = path.join(rootDir, 'frontend');
+// If running in production or cloud host (PORT set) or UNIFIED mode
+const isCloudOrProd = process.env.NODE_ENV === 'production' || !!process.env.PORT;
 
-console.log('====================================================');
-console.log('🚀 Starting Portfolio Backend (:5000) & Frontend (:4000)');
-console.log('====================================================');
+if (isCloudOrProd || process.env.UNIFIED === 'true') {
+  console.log('====================================================');
+  console.log('⚡ Starting Dhani Tech Unified Production Server');
+  console.log('====================================================');
+  require('./backend/server.js');
+} else {
+  // Local development mode: Spawns Backend (:5000) and Frontend (:4000)
+  const { spawn } = require('child_process');
+  const rootDir = __dirname;
+  const backendDir = path.join(rootDir, 'backend');
+  const frontendDir = path.join(rootDir, 'frontend');
 
-// 1. Start Backend on port 5000
-const backend = spawn('node', ['server.js'], {
-  cwd: backendDir,
-  env: { ...process.env, PORT: '5000' },
-  stdio: 'pipe'
-});
+  console.log('====================================================');
+  console.log('🚀 Starting Portfolio Backend (:5000) & Frontend (:4000)');
+  console.log('====================================================');
 
-backend.stdout.on('data', data => {
-  process.stdout.write(`[Backend:5000] ${data}`);
-});
+  const backend = spawn('node', ['server.js'], {
+    cwd: backendDir,
+    env: { ...process.env, PORT: '5000' },
+    stdio: 'pipe'
+  });
 
-backend.stderr.on('data', data => {
-  process.stderr.write(`[Backend:5000 ERR] ${data}`);
-});
+  backend.stdout.on('data', data => {
+    process.stdout.write(`[Backend:5000] ${data}`);
+  });
 
-backend.on('exit', code => {
-  console.log(`[Backend:5000] process exited with code ${code}`);
-});
+  backend.stderr.on('data', data => {
+    process.stderr.write(`[Backend:5000 ERR] ${data}`);
+  });
 
-// 2. Start Frontend on port 4000
-const frontend = spawn('node', ['server.js'], {
-  cwd: frontendDir,
-  env: { ...process.env, PORT: '4000', BACKEND_PORT: '5000' },
-  stdio: 'pipe'
-});
+  backend.on('exit', code => {
+    console.log(`[Backend:5000] process exited with code ${code}`);
+  });
 
-frontend.stdout.on('data', data => {
-  process.stdout.write(`[Frontend:4000] ${data}`);
-});
+  const frontend = spawn('node', ['server.js'], {
+    cwd: frontendDir,
+    env: { ...process.env, PORT: '4000', BACKEND_PORT: '5000' },
+    stdio: 'pipe'
+  });
 
-frontend.stderr.on('data', data => {
-  process.stderr.write(`[Frontend:4000 ERR] ${data}`);
-});
+  frontend.stdout.on('data', data => {
+    process.stdout.write(`[Frontend:4000] ${data}`);
+  });
 
-frontend.on('exit', code => {
-  console.log(`[Frontend:4000] process exited with code ${code}`);
-});
+  frontend.stderr.on('data', data => {
+    process.stderr.write(`[Frontend:4000 ERR] ${data}`);
+  });
 
-// Clean termination
-function shutdown() {
-  console.log('\nStopping servers...');
-  backend.kill('SIGTERM');
-  frontend.kill('SIGTERM');
-  process.exit();
+  frontend.on('exit', code => {
+    console.log(`[Frontend:4000] process exited with code ${code}`);
+  });
+
+  function shutdown() {
+    console.log('\nStopping servers...');
+    backend.kill('SIGTERM');
+    frontend.kill('SIGTERM');
+    process.exit();
+  }
+
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 }
-
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);

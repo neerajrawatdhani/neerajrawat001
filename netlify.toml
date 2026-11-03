@@ -1,0 +1,37 @@
+[build]
+  publish = "frontend"
+
+[[redirects]]
+  from = "/home"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/work"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/works"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/my-story"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/legal"
+  to = "/legal/index.html"
+  status = 200

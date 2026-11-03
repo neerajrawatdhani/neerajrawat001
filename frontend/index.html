@@ -3,7 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<base href="/" />
+<script>
+(function(){
+  try {
+    var p = window.location.pathname;
+    var subroutes = ['home', 'work', 'works', 'my-story', 'about', 'contact', 'legal'];
+    var parts = p.split('/').filter(Boolean);
+    if (parts.length > 0) {
+      var last = parts[parts.length - 1].toLowerCase().replace(/\.html$/, '');
+      if (subroutes.indexOf(last) !== -1 || last === 'index') {
+        parts.pop();
+      }
+    }
+    var baseHref = window.location.origin + '/' + (parts.length ? parts.join('/') + '/' : '');
+    var baseTag = document.querySelector('base');
+    if (!baseTag) {
+      baseTag = document.createElement('base');
+      document.head.insertBefore(baseTag, document.head.firstChild);
+    }
+    baseTag.setAttribute('href', baseHref);
+    window.__APP_BASE__ = baseHref;
+  } catch(e) {
+    window.__APP_BASE__ = '/';
+  }
+})();
+</script>
 <title>Neeraj Rawat — Founder &amp; CEO, EduDhani (School ERP) | UI/UX &amp; Graphic Designer</title>
 <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}</style>
@@ -2688,7 +2712,8 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
   function loadRoom(i){
     if (frames[i]) return;
     const f = document.createElement('iframe');
-    f.src = ROUTES[i] + '?embed';
+    const base = window.__APP_BASE__ || '';
+    f.src = base + ROUTES[i] + '?embed';
     f.title = TITLES[i];
     f.tabIndex = -1;
     f.addEventListener('load', () => { ready[i] = true; if (i === cur) frameReady = true; f.contentWindow?.postMessage({ wall: 'mode', mode: root.dataset.mode === 'dark' ? 'dark' : 'light' }, location.origin === 'null' ? '*' : location.origin); }, { once: true });
@@ -3256,11 +3281,23 @@ if (['#works', '#about', '#contact'].includes(location.hash) || isWorksRoute || 
 /* ---------- Lenis smooth scroll ---------- */
 try {
   if (matchMedia('(hover: none), (pointer: coarse)').matches || root.classList.contains('lite')) throw 0;   // phones and modest devices keep native momentum scrolling
-  const { default: Lenis } = await import('lenis');
-  lenis = new Lenis({ smoothWheel: true }); window.__lenis = lenis;
-  if (!scrollEnabled) lenis.stop();
-  const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
-  requestAnimationFrame(raf);
+  let Lenis = null;
+  try {
+    const mod = await import('lenis');
+    Lenis = mod.default || mod;
+  } catch (e1) {
+    try {
+      const fallbackUrl = (window.__APP_BASE__ || '') + 'vendor/lenis.min.mjs';
+      const mod = await import(fallbackUrl);
+      Lenis = mod.default || mod;
+    } catch (e2) {}
+  }
+  if (Lenis) {
+    lenis = new Lenis({ smoothWheel: true }); window.__lenis = lenis;
+    if (!scrollEnabled) lenis.stop();
+    const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+  }
 } catch (err) { /* native scrolling as fallback */ }
 </script>
 

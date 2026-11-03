@@ -6,7 +6,17 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
+
+// Locate frontend directory dynamically
+const candidateFrontendDirs = [
+  path.resolve(__dirname, '..', 'frontend'),
+  path.resolve(__dirname, 'frontend'),
+  path.resolve(process.cwd(), 'frontend'),
+  path.resolve(process.cwd())
+];
+const FRONTEND_DIR = candidateFrontendDirs.find(d => fs.existsSync(path.join(d, 'index.html'))) || candidateFrontendDirs[0];
+console.log(`[Server] Static frontend root identified at: ${FRONTEND_DIR}`);
 
 // Setup Nodemailer transporter with Gmail SMTP
 let transporter = null;
@@ -32,24 +42,32 @@ if (process.env.SMTP_USER && process.env.SMTP_PASS) {
   console.warn('[SMTP] No email credentials found in .env; email dispatch disabled.');
 }
 
-// Data directory & storage files
-const DATA_DIR = path.join(__dirname, 'data');
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Data directory & storage setup with zero-fail in-memory and /tmp fallback
+let DATA_DIR = path.join(__dirname, 'data');
+const memStore = {};
+
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  fs.accessSync(DATA_DIR, fs.constants.W_OK);
+} catch (e) {
+  // If running in a read-only container/serverless env, fallback to /tmp
+  try {
+    const tmpData = path.join('/tmp', 'dhani-tech-data');
+    if (!fs.existsSync(tmpData)) fs.mkdirSync(tmpData, { recursive: true });
+    DATA_DIR = tmpData;
+    console.log('[Storage] Using writable temporary data directory:', DATA_DIR);
+  } catch (err) {
+    console.warn('[Storage] Read-only disk detected. Operating with in-memory caching fallback.');
+  }
 }
 
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
 const CONFIG_FILE = path.join(DATA_DIR, 'config.json');
 const STATS_FILE = path.join(DATA_DIR, 'stats.json');
 
-function initFile(filePath, defaultValue) {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2), 'utf8');
-  }
-}
-
-initFile(INQUIRIES_FILE, []);
-initFile(CONFIG_FILE, {
+const DEFAULT_CONFIG = {
   name: "Neeraj Rawat",
   title: "Founder & CEO, EduDhani (School ERP) | UI/UX & Graphic Designer",
   available: true,
@@ -59,33 +77,65 @@ initFile(CONFIG_FILE, {
   email: process.env.SMTP_USER || "neerajrawatdhani@gmail.com",
   website: "https://www.edudhani.com",
   location: "India / Remote",
-  timezone: "Asia/Kolkata"
-});
-initFile(STATS_FILE, { visits: 0, inquiries: 0, lastVisited: null });
+  timezone: "Asia/Kolkata",
+  socials: {
+    website: "https://www.edudhani.com",
+    github: "https://github.com",
+    twitter: "https://twitter.com",
+    linkedin: "https://linkedin.com",
+    instagram: "https://instagram.com"
+  }
+};
 
-function readJson(file) {
+const DEFAULT_STATS = { visits: 0, inquiries: 0, lastVisited: null };
+
+function initFile(filePath, defaultValue) {
+  memStore[path.basename(filePath)] = defaultValue;
   try {
-    return JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2), 'utf8');
+    } else {
+      memStore[path.basename(filePath)] = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
   } catch (err) {
-    console.error(`Error reading ${file}:`, err.message);
-    return null;
+    console.warn(`[Storage Warning] Cannot initialize ${filePath} on disk; loaded to memory.`);
   }
 }
 
+initFile(INQUIRIES_FILE, []);
+initFile(CONFIG_FILE, DEFAULT_CONFIG);
+initFile(STATS_FILE, DEFAULT_STATS);
+
+function readJson(file) {
+  const key = path.basename(file);
+  try {
+    if (fs.existsSync(file)) {
+      const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
+      memStore[key] = parsed;
+      return parsed;
+    }
+  } catch (err) {
+    console.error(`Error reading ${file}, using memory cache:`, err.message);
+  }
+  return memStore[key] || null;
+}
+
 function writeJson(file, data) {
+  const key = path.basename(file);
+  memStore[key] = data;
   try {
     fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
-    console.error(`Error writing ${file}:`, err.message);
-    return false;
+    console.warn(`Warning writing ${file} to disk, maintained in memory:`, err.message);
+    return true; // memory fallback guarantees zero API disruption
   }
 }
 
 // Middleware
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
@@ -93,12 +143,18 @@ app.use(express.urlencoded({ extended: true }));
 
 // Request logger
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  if (!req.url.startsWith('/fonts') && !req.url.startsWith('/vendor')) {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  }
   next();
 });
 
-// Root route
-app.get('/', (req, res) => {
+// ----------------------------------------------------
+// 1. API ROUTES
+// ----------------------------------------------------
+
+// API Index
+app.get('/api', (req, res) => {
   res.json({
     service: "Dhani Tech Portfolio & EduDhani Backend API",
     status: "running",
@@ -272,7 +328,7 @@ async function sendInquiryEmails(inquiry) {
   }
 }
 
-// 4. Contact / Inquiry Submission
+// Contact / Inquiry Submission
 app.post(['/api/contact', '/api/inquiries'], async (req, res) => {
   const body = req.body || {};
   const name = (body.name || '').trim();
@@ -282,19 +338,10 @@ app.post(['/api/contact', '/api/inquiries'], async (req, res) => {
   const message = (body.message || body.project || '').trim();
   const consent = body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1;
 
-  // Validation
-  if (!name) {
-    return res.status(400).json({ success: false, error: "Please enter your name." });
-  }
-  if (!mobile) {
-    return res.status(400).json({ success: false, error: "Please provide your mobile number." });
-  }
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ success: false, error: "Please provide a valid email ID." });
-  }
-  if (!message) {
-    return res.status(400).json({ success: false, error: "Please provide a brief description of your project." });
-  }
+  if (!name) return res.status(400).json({ success: false, error: "Please enter your name." });
+  if (!mobile) return res.status(400).json({ success: false, error: "Please provide your mobile number." });
+  if (!email || !email.includes('@')) return res.status(400).json({ success: false, error: "Please provide a valid email ID." });
+  if (!message) return res.status(400).json({ success: false, error: "Please provide a brief description of your project." });
   if (!consent) {
     return res.status(400).json({
       success: false,
@@ -321,14 +368,12 @@ app.post(['/api/contact', '/api/inquiries'], async (req, res) => {
   inquiries.unshift(newInquiry);
   writeJson(INQUIRIES_FILE, inquiries);
 
-  // Increment stats
   const stats = readJson(STATS_FILE) || { visits: 0, inquiries: 0 };
   stats.inquiries = (stats.inquiries || 0) + 1;
   writeJson(STATS_FILE, stats);
 
   console.log(`[Backend] New Inquiry from ${newInquiry.name} | Phone: ${newInquiry.mobile} | Email: ${newInquiry.email} | Budget: ${newInquiry.budget}`);
 
-  // Send email notifications asynchronously
   sendInquiryEmails(newInquiry).catch(err => {
     console.error('[SMTP Background Error]:', err.message);
   });
@@ -340,7 +385,7 @@ app.post(['/api/contact', '/api/inquiries'], async (req, res) => {
   });
 });
 
-// 5. Get all inquiries
+// Get all inquiries
 app.get('/api/inquiries', (req, res) => {
   const inquiries = readJson(INQUIRIES_FILE) || [];
   res.json({
@@ -349,7 +394,7 @@ app.get('/api/inquiries', (req, res) => {
   });
 });
 
-// 6. Delete an inquiry
+// Delete an inquiry
 app.delete('/api/inquiries/:id', (req, res) => {
   const id = req.params.id;
   const inquiries = readJson(INQUIRIES_FILE) || [];
@@ -361,21 +406,121 @@ app.delete('/api/inquiries/:id', (req, res) => {
   res.json({ success: true, message: `Inquiry ${id} deleted` });
 });
 
-// 7. Stats
+// Stats: supports GET, POST, and HEAD without throwing 404
+app.all(['/api/stats/visit'], (req, res) => {
+  const stats = readJson(STATS_FILE) || { visits: 0, inquiries: 0 };
+  if (req.method === 'POST') {
+    stats.visits = (stats.visits || 0) + 1;
+    stats.lastVisited = new Date().toISOString();
+    writeJson(STATS_FILE, stats);
+  }
+  res.json({ success: true, visits: stats.visits });
+});
+
 app.get('/api/stats', (req, res) => {
   const stats = readJson(STATS_FILE) || { visits: 0, inquiries: 0 };
   res.json(stats);
 });
 
-app.post('/api/stats/visit', (req, res) => {
-  const stats = readJson(STATS_FILE) || { visits: 0, inquiries: 0 };
-  stats.visits = (stats.visits || 0) + 1;
-  stats.lastVisited = new Date().toISOString();
-  writeJson(STATS_FILE, stats);
-  res.json({ success: true, visits: stats.visits });
+// ----------------------------------------------------
+// 2. FULL-STACK UNIFIED FRONTEND SERVING
+// ----------------------------------------------------
+
+// Virtual route prefix stripping (e.g., if a browser requests /home/card/win_sub.webp or /home/vendor/lenis.min.mjs)
+const VIRTUAL_PREFIXES = ['/home/', '/work/', '/works/', '/my-story/', '/about/', '/contact/'];
+app.use((req, res, next) => {
+  for (const vp of VIRTUAL_PREFIXES) {
+    if (req.url.startsWith(vp)) {
+      const stripped = req.url.slice(vp.length - 1);
+      const filePath = path.join(FRONTEND_DIR, decodeURIComponent(stripped.split('?')[0]));
+      if (fs.existsSync(filePath) && !fs.statSync(filePath).isDirectory()) {
+        req.url = stripped;
+        break;
+      }
+    }
+  }
+  next();
+});
+
+// Clean SPA section routes -> serve index.html
+const SPA_ROUTES = ['/home', '/work', '/works', '/my-story', '/about', '/contact', '/legal'];
+SPA_ROUTES.forEach(route => {
+  app.get([route, route + '/'], (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+  });
+});
+
+// Video streaming helper for .mp4 media
+app.get('*.mp4', (req, res, next) => {
+  const reqPath = decodeURIComponent(req.path);
+  const filePath = path.join(FRONTEND_DIR, reqPath);
+  if (!fs.existsSync(filePath)) return next();
+
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+  const range = req.headers.range;
+
+  if (range) {
+    const parts = range.replace(/bytes=/, "").split("-");
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunksize = (end - start) + 1;
+    const file = fs.createReadStream(filePath, { start, end });
+    res.writeHead(206, {
+      'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunksize,
+      'Content-Type': 'video/mp4',
+    });
+    file.pipe(res);
+  } else {
+    res.writeHead(200, {
+      'Content-Length': fileSize,
+      'Content-Type': 'video/mp4',
+    });
+    fs.createReadStream(filePath).pipe(res);
+  }
+});
+
+// Static assets from frontend directory
+app.use(express.static(FRONTEND_DIR, {
+  extensions: ['html'],
+  index: 'index.html',
+  maxAge: '1h'
+}));
+
+// Route fallback for subpage directories (e.g. /photographer -> /photographer/index.html)
+const SUBPAGES = ['photographer', 'app-developer', 'web-developer', 'ui-ux-designer', 'graphic-designer', 'ability-card', 'legal'];
+SUBPAGES.forEach(sp => {
+  app.get([`/${sp}`, `/${sp}/`], (req, res) => {
+    const target = path.join(FRONTEND_DIR, sp, 'index.html');
+    if (fs.existsSync(target)) {
+      res.sendFile(target);
+    } else {
+      res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+    }
+  });
+});
+
+// Root route serves the website
+app.get('/', (req, res) => {
+  res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+});
+
+// Any unmatched GET request falls back to index.html (SPA guarantee)
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: "Endpoint not found: " + req.path });
+  }
+  res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
 });
 
 // Start listening
 app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+  console.log(`====================================================`);
+  console.log(`⚡ Dhani Tech Full-Stack Unified Server`);
+  console.log(`🌐 Website & API live at: http://localhost:${PORT}`);
+  console.log(`📁 Frontend: ${FRONTEND_DIR}`);
+  console.log(`💾 Database: ${DATA_DIR}`);
+  console.log(`====================================================`);
 });

@@ -1,5 +1,19 @@
 [
   {
+    "id": "inq_1793668043149_527ac",
+    "timestamp": "2026-11-03T01:07:23.149Z",
+    "channel": "WhatsApp",
+    "name": "Neeraj Verification Client",
+    "mobile": "+91 87081 67959",
+    "email": "test.client@example.com",
+    "budget": "₹1,00,000 – ₹2,50,000",
+    "message": "Testing contact flow after full deployment fixes.",
+    "consent": true,
+    "consentStatement": "Confirmed: Details will not be shared with any third party and will solely be used for project communication.",
+    "ip": "::1",
+    "userAgent": "Unknown"
+  },
+  {
     "id": "inq_1793660977842_k25yb",
     "timestamp": "2026-11-02T23:09:37.842Z",
     "channel": "WhatsApp",
