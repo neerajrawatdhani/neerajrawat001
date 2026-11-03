@@ -442,8 +442,23 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
+// Subpages dedicated route handler
+const SUBPAGES = ['photographer', 'app-developer', 'web-developer', 'ui-ux-designer', 'graphic-designer', 'ability-card', 'legal'];
+SUBPAGES.forEach(sp => {
+  app.get([`/${sp}`, `/${sp}/`], (req, res) => {
+    const target = path.join(FRONTEND_DIR, sp, 'index.html');
+    if (fs.existsSync(target)) {
+      res.sendFile(target);
+    } else {
+      res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+    }
+  });
+});
+
 // Clean SPA section routes -> serve index.html
-const SPA_ROUTES = ['/home', '/work', '/works', '/my-story', '/about', '/contact', '/legal'];
+const SPA_ROUTES = ['/home', '/work', '/works', '/my-story', '/about', '/contact'];
 SPA_ROUTES.forEach(route => {
   app.get([route, route + '/'], (req, res) => {
     res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
@@ -482,6 +497,28 @@ app.get('*.mp4', (req, res, next) => {
   }
 });
 
+// Resilient font resolution
+app.get('*/onest-latin*', (req, res, next) => {
+  const fontName = path.basename(req.path);
+  const fontPath = path.join(FRONTEND_DIR, 'fonts', fontName);
+  if (fs.existsSync(fontPath)) {
+    res.setHeader('Content-Type', 'font/woff2');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    return fs.createReadStream(fontPath).pipe(res);
+  }
+  next();
+});
+
+// Resilient Lenis resolution
+app.get('*/lenis.min.mjs', (req, res, next) => {
+  const lenisPath = path.join(FRONTEND_DIR, 'vendor', 'lenis.min.mjs');
+  if (fs.existsSync(lenisPath)) {
+    res.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+    return fs.createReadStream(lenisPath).pipe(res);
+  }
+  next();
+});
+
 // Static assets from frontend directory
 app.use(express.static(FRONTEND_DIR, {
   extensions: ['html'],
@@ -489,18 +526,7 @@ app.use(express.static(FRONTEND_DIR, {
   maxAge: '1h'
 }));
 
-// Route fallback for subpage directories (e.g. /photographer -> /photographer/index.html)
-const SUBPAGES = ['photographer', 'app-developer', 'web-developer', 'ui-ux-designer', 'graphic-designer', 'ability-card', 'legal'];
-SUBPAGES.forEach(sp => {
-  app.get([`/${sp}`, `/${sp}/`], (req, res) => {
-    const target = path.join(FRONTEND_DIR, sp, 'index.html');
-    if (fs.existsSync(target)) {
-      res.sendFile(target);
-    } else {
-      res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
-    }
-  });
-});
+
 
 // Root route serves the website
 app.get('/', (req, res) => {

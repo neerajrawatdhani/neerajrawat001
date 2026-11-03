@@ -29,7 +29,7 @@ const MIME_TYPES = {
 };
 
 // In-memory data store for standalone environments
-let visitCount = 18;
+let visitCount = 22;
 const inquiriesList = [];
 
 // Setup Nodemailer transporter if available
@@ -208,9 +208,26 @@ const server = http.createServer((req, res) => {
   }
 
   let reqPath = decodeURIComponent(req.url.split('?')[0]);
-
-  // Clean SPA section routes: /home, /work, /my-story, /contact -> serve index.html directly
   const cleanNorm = reqPath.replace(/\/index\.html$/, '').replace(/\/$/, '').toLowerCase();
+
+  // 1. SUBPAGES: explicitly serve their dedicated index.html (never fallback to home!)
+  const SUBPAGES = ['photographer', 'app-developer', 'web-developer', 'ui-ux-designer', 'graphic-designer', 'ability-card', 'legal'];
+  for (const sp of SUBPAGES) {
+    if (cleanNorm === '/' + sp) {
+      const spIndex = path.join(ROOT, sp, 'index.html');
+      if (fs.existsSync(spIndex)) {
+        res.writeHead(200, {
+          'Content-Length': fs.statSync(spIndex).size,
+          'Content-Type': 'text/html; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        });
+        fs.createReadStream(spIndex).pipe(res);
+        return;
+      }
+    }
+  }
+
+  // 2. Clean SPA section routes: /home, /work, /my-story, /contact -> serve index.html directly
   const cleanRoutes = ['/home', '/work', '/works', '/my-story', '/about', '/contact', ''];
   if (cleanRoutes.includes(cleanNorm)) {
     const indexPath = path.join(ROOT, 'index.html');
@@ -222,7 +239,37 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Virtual route prefix stripping (e.g., if a browser requests /home/card/win_sub.webp)
+  // 3. Resilient font resolution: any request for onest-latin from any path
+  if (reqPath.includes('onest-latin')) {
+    const fontName = path.basename(reqPath);
+    const fontPath = path.join(ROOT, 'fonts', fontName);
+    if (fs.existsSync(fontPath)) {
+      res.writeHead(200, {
+        'Content-Length': fs.statSync(fontPath).size,
+        'Content-Type': 'font/woff2',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'public, max-age=31536000, immutable'
+      });
+      fs.createReadStream(fontPath).pipe(res);
+      return;
+    }
+  }
+
+  // 4. Resilient Lenis resolution: any request for lenis.min.mjs from any subpath
+  if (reqPath.includes('lenis.min.mjs')) {
+    const lenisPath = path.join(ROOT, 'vendor', 'lenis.min.mjs');
+    if (fs.existsSync(lenisPath)) {
+      res.writeHead(200, {
+        'Content-Length': fs.statSync(lenisPath).size,
+        'Content-Type': 'text/javascript; charset=utf-8',
+        'Access-Control-Allow-Origin': '*'
+      });
+      fs.createReadStream(lenisPath).pipe(res);
+      return;
+    }
+  }
+
+  // 5. Virtual route prefix stripping (e.g., if a browser requests /home/card/win_sub.webp)
   const virtualPrefixes = ['/home/', '/work/', '/works/', '/my-story/', '/about/', '/contact/'];
   for (const vp of virtualPrefixes) {
     if (reqPath.startsWith(vp)) {
@@ -241,18 +288,12 @@ const server = http.createServer((req, res) => {
 
   let filePath = path.join(ROOT, reqPath);
 
-  // If path is a directory without trailing slash, redirect with trailing slash
+  // If path is a directory, serve its index.html directly (NO 301 loop!)
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
-    res.writeHead(301, { Location: reqPath + '/' });
-    res.end();
-    return;
-  }
-
-  // If file doesn't exist, try adding /index.html
-  if (!fs.existsSync(filePath) && fs.existsSync(filePath + '/index.html')) {
-    res.writeHead(301, { Location: reqPath + '/' });
-    res.end();
-    return;
+    const dirIdx = path.join(filePath, 'index.html');
+    if (fs.existsSync(dirIdx)) {
+      filePath = dirIdx;
+    }
   }
 
   // Any non-file path fallback to index.html
