@@ -1,31 +1,8 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/photographer", "destination": "/photographer/index.html" },
-    { "source": "/photographer/", "destination": "/photographer/index.html" },
-    { "source": "/web-developer", "destination": "/web-developer/index.html" },
-    { "source": "/web-developer/", "destination": "/web-developer/index.html" },
-    { "source": "/graphic-designer", "destination": "/graphic-designer/index.html" },
-    { "source": "/graphic-designer/", "destination": "/graphic-designer/index.html" },
-    { "source": "/ui-ux-designer", "destination": "/ui-ux-designer/index.html" },
-    { "source": "/ui-ux-designer/", "destination": "/ui-ux-designer/index.html" },
-    { "source": "/app-developer", "destination": "/app-developer/index.html" },
-    { "source": "/app-developer/", "destination": "/app-developer/index.html" },
-    { "source": "/ability-card", "destination": "/ability-card/index.html" },
-    { "source": "/ability-card/", "destination": "/ability-card/index.html" },
-    { "source": "/legal", "destination": "/legal/index.html" },
-    { "source": "/legal/", "destination": "/legal/index.html" },
-    { "source": "/home", "destination": "/index.html" },
-    { "source": "/home/", "destination": "/index.html" },
-    { "source": "/work", "destination": "/index.html" },
-    { "source": "/work/", "destination": "/index.html" },
-    { "source": "/works", "destination": "/index.html" },
-    { "source": "/works/", "destination": "/index.html" },
-    { "source": "/my-story", "destination": "/index.html" },
-    { "source": "/my-story/", "destination": "/index.html" },
-    { "source": "/about", "destination": "/index.html" },
-    { "source": "/about/", "destination": "/index.html" },
-    { "source": "/contact", "destination": "/index.html" },
-    { "source": "/contact/", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
