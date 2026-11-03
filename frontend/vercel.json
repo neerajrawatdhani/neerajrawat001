@@ -17,5 +17,6 @@
     { "source": "/legal", "destination": "/legal/index.html" },
     { "source": "/legal/(.*)", "destination": "/legal/$1" },
     { "source": "/((?!api/|card/|fonts/|vendor/|.*\\..*).*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
