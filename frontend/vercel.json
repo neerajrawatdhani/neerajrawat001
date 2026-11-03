@@ -1,8 +1,21 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/photographer", "destination": "/photographer/index.html" },
+    { "source": "/photographer/(.*)", "destination": "/photographer/$1" },
+    { "source": "/web-developer", "destination": "/web-developer/index.html" },
+    { "source": "/web-developer/(.*)", "destination": "/web-developer/$1" },
+    { "source": "/graphic-designer", "destination": "/graphic-designer/index.html" },
+    { "source": "/graphic-designer/(.*)", "destination": "/graphic-designer/$1" },
+    { "source": "/ui-ux-designer", "destination": "/ui-ux-designer/index.html" },
+    { "source": "/ui-ux-designer/(.*)", "destination": "/ui-ux-designer/$1" },
+    { "source": "/app-developer", "destination": "/app-developer/index.html" },
+    { "source": "/app-developer/(.*)", "destination": "/app-developer/$1" },
+    { "source": "/ability-card", "destination": "/ability-card/index.html" },
+    { "source": "/ability-card/(.*)", "destination": "/ability-card/$1" },
+    { "source": "/legal", "destination": "/legal/index.html" },
+    { "source": "/legal/(.*)", "destination": "/legal/$1" },
+    { "source": "/((?!api/|card/|fonts/|vendor/|.*\\..*).*)", "destination": "/index.html" }
   ]
 }

@@ -1,8 +1,9 @@
-/home        /index.html   200
-/home/*      /index.html   200
-/work        /index.html   200
-/works       /index.html   200
-/my-story    /index.html   200
-/about       /index.html   200
-/contact     /index.html   200
-/legal       /legal/index.html 200
+/api/*       /.netlify/functions/api/:splat  200
+/photographer/*  /photographer/:splat  200
+/web-developer/*  /web-developer/:splat  200
+/graphic-designer/*  /graphic-designer/:splat  200
+/ui-ux-designer/*  /ui-ux-designer/:splat  200
+/app-developer/*  /app-developer/:splat  200
+/ability-card/*  /ability-card/:splat  200
+/legal/*  /legal/:splat  200
+/*           /index.html                     200

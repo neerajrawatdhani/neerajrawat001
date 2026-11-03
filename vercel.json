@@ -1,20 +1,21 @@
 {
   "version": 2,
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/backend/server.js" },
     { "source": "/photographer", "destination": "/frontend/photographer/index.html" },
-    { "source": "/photographer/", "destination": "/frontend/photographer/index.html" },
+    { "source": "/photographer/(.*)", "destination": "/frontend/photographer/$1" },
     { "source": "/web-developer", "destination": "/frontend/web-developer/index.html" },
-    { "source": "/web-developer/", "destination": "/frontend/web-developer/index.html" },
+    { "source": "/web-developer/(.*)", "destination": "/frontend/web-developer/$1" },
     { "source": "/graphic-designer", "destination": "/frontend/graphic-designer/index.html" },
-    { "source": "/graphic-designer/", "destination": "/frontend/graphic-designer/index.html" },
+    { "source": "/graphic-designer/(.*)", "destination": "/frontend/graphic-designer/$1" },
     { "source": "/ui-ux-designer", "destination": "/frontend/ui-ux-designer/index.html" },
-    { "source": "/ui-ux-designer/", "destination": "/frontend/ui-ux-designer/index.html" },
+    { "source": "/ui-ux-designer/(.*)", "destination": "/frontend/ui-ux-designer/$1" },
     { "source": "/app-developer", "destination": "/frontend/app-developer/index.html" },
-    { "source": "/app-developer/", "destination": "/frontend/app-developer/index.html" },
+    { "source": "/app-developer/(.*)", "destination": "/frontend/app-developer/$1" },
     { "source": "/ability-card", "destination": "/frontend/ability-card/index.html" },
-    { "source": "/ability-card/", "destination": "/frontend/ability-card/index.html" },
+    { "source": "/ability-card/(.*)", "destination": "/frontend/ability-card/$1" },
     { "source": "/legal", "destination": "/frontend/legal/index.html" },
-    { "source": "/legal/", "destination": "/frontend/legal/index.html" },
+    { "source": "/legal/(.*)", "destination": "/frontend/legal/$1" },
     { "source": "/home", "destination": "/frontend/index.html" },
     { "source": "/home/", "destination": "/frontend/index.html" },
     { "source": "/work", "destination": "/frontend/index.html" },
@@ -27,7 +28,7 @@
     { "source": "/about/", "destination": "/frontend/index.html" },
     { "source": "/contact", "destination": "/frontend/index.html" },
     { "source": "/contact/", "destination": "/frontend/index.html" },
-    { "source": "/api/(.*)", "destination": "/backend/server.js" },
+    { "source": "/((?!api/|card/|fonts/|vendor/|.*\\..*).*)", "destination": "/frontend/index.html" },
     { "source": "/(.*)", "destination": "/frontend/$1" }
   ]
 }
