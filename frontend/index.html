@@ -2835,11 +2835,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
   }
   const pick = i => { cur = i; frame = frames[i]; frameReady = !!ready[i]; frames.forEach((f, k) => f && f.classList.toggle('cur', k === i)); };
   const toWall = msg => { try { frame?.contentWindow?.postMessage(msg, location.origin === 'null' ? '*' : location.origin); } catch (e) {} };
-  // start fetching the wall once the doors are near, so a click never waits
-  if ('IntersectionObserver' in window){
-    const near = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)){ near.disconnect(); setTimeout(() => { warm(4); setTimeout(() => [0, 1, 2, 3].forEach(warm), 1500); }, 600); } }, { rootMargin: '200px' });
-    near.observe(sec);
-  }
+  // Rooms load on demand when a door is clicked (inside enter(i)) to avoid wasting bandwidth preloading all 5 rooms' videos/images.
 
   // hovering the doors: promote them to a GPU layer and pre-render them at the zoom the walk-through will use,
   // so clicking has nothing heavy left to do (a paused animation makes the browser raster at its peak scale)
@@ -2851,8 +2847,6 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
   sec.addEventListener('pointerenter', lift);
   doorsState.forEach((d, i) => {
     d.way.addEventListener('focus', lift);
-    d.way.addEventListener('pointerenter', () => warm(i));
-    d.way.addEventListener('focus', () => warm(i));
     if (canHover){
       d.way.addEventListener('mouseenter', () => { if (!busy) d.s.set(.1); });
       d.way.addEventListener('mouseleave', () => { if (!busy) d.s.set(0); });

@@ -3,9 +3,11 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const nodemailer = require('nodemailer');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
 
 // Locate frontend directory dynamically
@@ -129,6 +131,87 @@ function writeJson(file, data) {
   } catch (err) {
     console.warn(`Warning writing ${file} to disk, maintained in memory:`, err.message);
     return true; // memory fallback guarantees zero API disruption
+  }
+}
+
+// Block automated WordPress, PHP, exploit scanners & aggressive scraper bots early to conserve Render bandwidth
+const BLOCKED_BOT_PATH_REGEX = /(?:^|\/)(?:wp-(?:admin|login|content|includes|json|config|cron|signup|register|trackback|activate|mail|settings|load|blog-header)|wordpress|xmlrpc\.php|wlwmanifest\.xml|phpmyadmin|pma|adminer|cgi-bin|actuator|boaform|eval-stdin|\.env|\.git|\.svn|\.htaccess)(?:[/?#.]|$)|\.(?:php|asp|aspx|jsp|cgi|sql|bak|old|swp)(?:$|[/?#])/i;
+const BLOCKED_UA_REGEX = /(?:bytespider|gptbot|ccbot|claudebot|ahrefsbot|semrushbot|mj12bot|dotbot|petalbot|blexbot|dataforseobot|scrapy|masscan|zgrab|nikto|sqlmap|wpscan|nuclei)/i;
+
+// Lightweight per-IP rate limiter (max 150 requests / 60s) to stop single-IP bandwidth loops
+const ipRateMap = new Map();
+const RATE_WINDOW_MS = 60 * 1000;
+const RATE_MAX_REQ = 150;
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of ipRateMap) {
+    if (now > entry.resetAt) ipRateMap.delete(ip);
+  }
+}, RATE_WINDOW_MS).unref();
+
+app.use((req, res, next) => {
+  let decodedPath = req.path || '';
+  try {
+    decodedPath = decodeURIComponent(decodedPath);
+  } catch (e) {
+    // Malformed URI encoding — fall back to raw path
+  }
+  if (BLOCKED_BOT_PATH_REGEX.test(decodedPath) || BLOCKED_BOT_PATH_REGEX.test(req.originalUrl || '')) {
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.set('X-Robots-Tag', 'noindex');
+    return res.status(403).end();
+  }
+
+  const ua = req.headers['user-agent'] || '';
+  if (!decodedPath.startsWith('/api/') && BLOCKED_UA_REGEX.test(ua)) {
+    res.set('Cache-Control', 'public, max-age=86400');
+    return res.status(403).end();
+  }
+
+  const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  let bucket = ipRateMap.get(clientIp);
+  if (!bucket || now > bucket.resetAt) {
+    bucket = { count: 1, resetAt: now + RATE_WINDOW_MS };
+    ipRateMap.set(clientIp, bucket);
+  } else {
+    bucket.count++;
+    if (bucket.count > RATE_MAX_REQ) {
+      res.set('Retry-After', '60');
+      return res.status(429).end();
+    }
+  }
+
+  next();
+});
+
+// Pre-compressed gzip cache for HTML/text responses (~80% bandwidth reduction on Render)
+const gzipCache = new Map();
+function sendCompressedFile(req, res, filePath, contentType = 'text/html; charset=utf-8', cacheControl = 'public, max-age=3600') {
+  try {
+    const stat = fs.statSync(filePath);
+    const acceptEnc = String(req.headers['accept-encoding'] || '');
+    const useGzip = acceptEnc.includes('gzip');
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', cacheControl);
+    res.setHeader('Vary', 'Accept-Encoding');
+
+    if (useGzip) {
+      const cached = gzipCache.get(filePath);
+      let gzBuf;
+      if (cached && cached.mtimeMs === stat.mtimeMs) {
+        gzBuf = cached.buf;
+      } else {
+        gzBuf = zlib.gzipSync(fs.readFileSync(filePath), { level: 6 });
+        gzipCache.set(filePath, { mtimeMs: stat.mtimeMs, buf: gzBuf });
+      }
+      res.setHeader('Content-Encoding', 'gzip');
+      res.setHeader('Content-Length', gzBuf.length);
+      return res.status(200).send(gzBuf);
+    }
+    return res.sendFile(filePath);
+  } catch (err) {
+    return res.status(404).end();
   }
 }
 
@@ -444,28 +527,33 @@ app.use((req, res, next) => {
 
 
 
-// Subpages dedicated route handler
+// Root route serves compressed index.html
+app.get('/', (req, res) => {
+  sendCompressedFile(req, res, path.join(FRONTEND_DIR, 'index.html'));
+});
+
+// Subpages dedicated route handler (gzip-compressed)
 const SUBPAGES = ['photographer', 'app-developer', 'web-developer', 'ui-ux-designer', 'graphic-designer', 'ability-card', 'legal'];
 SUBPAGES.forEach(sp => {
   app.get([`/${sp}`, `/${sp}/`], (req, res) => {
     const target = path.join(FRONTEND_DIR, sp, 'index.html');
     if (fs.existsSync(target)) {
-      res.sendFile(target);
+      sendCompressedFile(req, res, target);
     } else {
-      res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+      sendCompressedFile(req, res, path.join(FRONTEND_DIR, 'index.html'));
     }
   });
 });
 
-// Clean SPA section routes -> serve index.html
+// Clean SPA section routes -> serve compressed index.html
 const SPA_ROUTES = ['/home', '/work', '/works', '/my-story', '/about', '/contact'];
 SPA_ROUTES.forEach(route => {
   app.get([route, route + '/'], (req, res) => {
-    res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+    sendCompressedFile(req, res, path.join(FRONTEND_DIR, 'index.html'));
   });
 });
 
-// Video streaming helper for .mp4 media
+// Video streaming helper for .mp4 media (with long-lived browser cache)
 app.get('*.mp4', (req, res, next) => {
   const reqPath = decodeURIComponent(req.path);
   const filePath = path.join(FRONTEND_DIR, reqPath);
@@ -486,12 +574,14 @@ app.get('*.mp4', (req, res, next) => {
       'Accept-Ranges': 'bytes',
       'Content-Length': chunksize,
       'Content-Type': 'video/mp4',
+      'Cache-Control': 'public, max-age=2592000, immutable',
     });
     file.pipe(res);
   } else {
     res.writeHead(200, {
       'Content-Length': fileSize,
       'Content-Type': 'video/mp4',
+      'Cache-Control': 'public, max-age=2592000, immutable',
     });
     fs.createReadStream(filePath).pipe(res);
   }
@@ -513,32 +603,32 @@ app.get('*/onest-latin*', (req, res, next) => {
 app.get('*/lenis.min.mjs', (req, res, next) => {
   const lenisPath = path.join(FRONTEND_DIR, 'vendor', 'lenis.min.mjs');
   if (fs.existsSync(lenisPath)) {
-    res.setHeader('Content-Type', 'text/javascript; charset=utf-8');
-    return fs.createReadStream(lenisPath).pipe(res);
+    return sendCompressedFile(req, res, lenisPath, 'text/javascript; charset=utf-8', 'public, max-age=31536000, immutable');
   }
   next();
 });
 
-// Static assets from frontend directory
+// Static assets from frontend directory (long cache for media/fonts/scripts to save Render bandwidth)
 app.use(express.static(FRONTEND_DIR, {
   extensions: ['html'],
-  index: 'index.html',
-  maxAge: '1h'
+  index: false,
+  maxAge: '30d',
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    } else if (/\.(webp|png|jpe?g|gif|svg|ico|woff2?|ttf|mp4|mjs|js|css)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+    }
+  }
 }));
 
-
-
-// Root route serves the website
-app.get('/', (req, res) => {
-  res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
-});
-
-// Any unmatched GET request falls back to index.html (SPA guarantee)
-app.get('*', (req, res) => {
+// Any unmatched request returns an empty 404 (0 bytes) so unknown bot/scanner probes never download index.html
+app.use((req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: "Endpoint not found: " + req.path });
   }
-  res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+  res.set('Cache-Control', 'public, max-age=3600');
+  return res.status(404).end();
 });
 
 // Start listening

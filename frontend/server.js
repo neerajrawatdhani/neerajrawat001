@@ -191,7 +191,24 @@ function handleApi(req, res) {
   res.end(JSON.stringify({ error: "Endpoint not found" }));
 }
 
+// Block automated WordPress & PHP bot probes early to conserve bandwidth
+const BLOCKED_BOT_PATH_REGEX = /(?:^|\/)(?:wp-(?:admin|login|content|includes|json|config|cron|signup|register|trackback|activate|mail|settings|load|blog-header)|wordpress|xmlrpc\.php|wlwmanifest\.xml)(?:[/?#.]|$)|\.php(?:$|[/?#])/i;
+
 const server = http.createServer((req, res) => {
+  const rawPath = (req.url || '/').split('?')[0];
+  let decodedPath = rawPath;
+  try {
+    decodedPath = decodeURIComponent(rawPath);
+  } catch (e) {}
+  if (BLOCKED_BOT_PATH_REGEX.test(decodedPath) || BLOCKED_BOT_PATH_REGEX.test(req.url || '')) {
+    res.writeHead(403, {
+      'Cache-Control': 'public, max-age=86400',
+      'X-Robots-Tag': 'noindex',
+      'Content-Length': '0'
+    });
+    return res.end();
+  }
+
   // CORS support
   if (req.method === 'OPTIONS') {
     res.writeHead(200, {
