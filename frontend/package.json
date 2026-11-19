@@ -1,15 +1,12 @@
 {
   "name": "portfolio-frontend",
   "version": "1.0.0",
-  "description": "Frontend static server with byte-range video streaming and backend API proxy",
-  "main": "server.js",
+  "description": "Frontend portfolio with static CDN assets and Vercel serverless API",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node dev-server.js",
+    "dev": "node dev-server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^18.0.9",
     "nodemailer": "^10.3.1"
   }
 }

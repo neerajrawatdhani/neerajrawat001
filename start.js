@@ -37,7 +37,7 @@ if (isCloudOrProd || process.env.UNIFIED === 'true') {
     console.log(`[Backend:5000] process exited with code ${code}`);
   });
 
-  const frontend = spawn('node', ['server.js'], {
+  const frontend = spawn('node', ['dev-server.js'], {
     cwd: frontendDir,
     env: { ...process.env, PORT: '4000', BACKEND_PORT: '5000' },
     stdio: 'pipe'
