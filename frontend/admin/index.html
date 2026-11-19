@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Admin Panel — Neeraj Rawat</title>
+  <link rel="preload" href="/fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <style>
+    @font-face {
+      font-family: 'Onest';
+      font-style: normal;
+      font-weight: 100 900;
+      src: url(/fonts/onest-latin.woff2) format('woff2');
+    }
+    :root {
+      --bg: #0C0B0B;
+      --surface: #141313;
+      --surface-2: #1D1B1B;
+      --surface-3: #262424;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: #C4B0B0;
+      --fg: #E8E4E0;
+      --fg-muted: #9E9292;
+      --accent: #E8A87C;
+      --accent-glow: rgba(232, 168, 124, 0.15);
+      --green: #4ADE80;
+      --green-bg: rgba(74, 222, 128, 0.12);
+      --blue: #60A5FA;
+      --blue-bg: rgba(96, 165, 250, 0.12);
+      --yellow: #FBBF24;
+      --yellow-bg: rgba(251, 191, 36, 0.12);
+      --purple: #C084FC;
+      --purple-bg: rgba(192, 132, 252, 0.12);
+      --red: #F87171;
+      --red-bg: rgba(248, 113, 113, 0.12);
+      --font: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Login Screen */
+    .auth-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      background: radial-gradient(circle at 50% 30%, #201D1D 0%, #0C0B0B 70%);
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    .auth-logo {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 18px;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--fg);
+    }
+    .auth-card h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .auth-card p { font-size: 14px; color: var(--fg-muted); margin-bottom: 24px; }
+    .auth-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+    .auth-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 13px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .auth-input:focus { border-color: var(--border-focus); }
+    .auth-btn {
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      padding: 13px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity .2s, transform .1s;
+    }
+    .auth-btn:hover { opacity: 0.92; }
+    .auth-btn:active { transform: scale(0.98); }
+    .auth-err {
+      color: var(--red);
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
+    /* Main App Layout */
+    .app { display: none; min-height: 100vh; flex-direction: column; }
+    .header {
+      background: rgba(20, 19, 19, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .header-in {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-badge {
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .brand-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-secondary {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: var(--surface-3); }
+
+    /* Dashboard Container */
+    .container {
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+    }
+    .kpi-card.highlight::before { background: var(--accent); }
+    .kpi-label { font-size: 13px; color: var(--fg-muted); font-weight: 500; }
+    .kpi-val { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin: 8px 0 4px; }
+    .kpi-meta { font-size: 12px; color: var(--fg-muted); display: flex; align-items: center; gap: 6px; }
+    .badge-green { color: var(--green); background: var(--green-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+
+    /* Alert Banner (Today's Follow-up) */
+    .alert-banner {
+      background: linear-gradient(90deg, rgba(232, 168, 124, 0.12) 0%, rgba(20, 19, 19, 0.5) 100%);
+      border: 1px solid rgba(232, 168, 124, 0.3);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .alert-info { display: flex; align-items: center; gap: 12px; }
+    .alert-icon { font-size: 22px; }
+    .alert-text h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .alert-text p { font-size: 13px; color: var(--fg-muted); }
+
+    /* Table Toolbar */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .toolbar {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex: 1; max-width: 500px; }
+    .search-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--border-focus); }
+    .filter-select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+    }
+    .toolbar-right { display: flex; align-items: center; gap: 10px; }
+
+    /* Leads Table */
+    .table-wrap { overflow-x: auto; width: 100%; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th {
+      background: var(--surface-2);
+      padding: 12px 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg-muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .client-title { font-weight: 700; color: var(--fg); }
+    .client-sub { font-size: 12px; color: var(--fg-muted); }
+    .contact-link {
+      color: var(--fg-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    .contact-link:hover { color: var(--fg); }
+
+    /* Status Pills */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      outline: none;
+    }
+    .status-New { background: var(--yellow-bg); color: var(--yellow); }
+    .status-Contacted { background: var(--blue-bg); color: var(--blue); }
+    .status-Proposal { background: var(--purple-bg); color: var(--purple); }
+    .status-Won { background: var(--green-bg); color: var(--green); }
+    .status-Lost { background: var(--red-bg); color: var(--red); }
+
+    /* Action Buttons */
+    .actions { display: flex; align-items: center; gap: 6px; }
+    .btn-icon {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-icon:hover { background: var(--surface-3); border-color: var(--border-focus); }
+    .btn-icon.wa:hover { color: #25D366; border-color: #25D366; }
+
+    /* Notes Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+    }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-size: 18px; font-weight: 700; }
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: var(--fg-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .btn-close:hover { color: var(--fg); }
+    .modal-msg {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 14px;
+      color: var(--fg);
+      max-height: 140px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; }
+    .modal-label { font-size: 12px; color: var(--fg-muted); text-transform: uppercase; font-weight: 600; }
+    .modal-textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: inherit;
+      min-height: 80px;
+      resize: vertical;
+      outline: none;
+    }
+    .modal-textarea:focus { border-color: var(--border-focus); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. LOGIN SCREEN -->
+  <div class="auth-wrap" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-logo">🔒</div>
+      <h1>Super Admin Portal</h1>
+      <p>Enter your password to access leads, traffic analytics, and follow-ups.</p>
+      <form class="auth-form" id="loginForm">
+        <input type="password" id="passInput" class="auth-input" placeholder="Enter Super Admin Password" required autofocus />
+        <div class="auth-err" id="authErr">Invalid password. Please try again.</div>
+        <button type="submit" class="auth-btn">
+          Unlock Dashboard →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. DASHBOARD MAIN APP -->
+  <div class="app" id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-in">
+        <a href="/" class="brand">
+          <span class="brand-badge">Super Admin</span>
+          <span class="brand-title">Neeraj Rawat · Dhani Tech</span>
+        </a>
+        <div class="header-actions">
+          <a href="https://neerajrawat.dev" target="_blank" class="btn-secondary">View Website ↗</a>
+          <button class="btn-secondary" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- KPI Overview Cards -->
+      <section class="kpi-grid">
+        <div class="kpi-card highlight">
+          <span class="kpi-label">Total Inquiries</span>
+          <div class="kpi-val" id="kpiTotal">0</div>
+          <div class="kpi-meta"><span class="badge-green" id="kpiNewCount">0 New</span> Leads waiting for response</div>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">Today's Follow-ups</span>
+          <div class="kpi-val" id="kpiTodayFollowups">0</div>
+          <div class="kpi-meta">Scheduled for call or demo today</div>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">Conversion Rate</span>
+          <div class="kpi-val" id="kpiConversion">0%</div>
+          <div class="kpi-meta"><span class="badge-green" id="kpiWonCount">0 Won</span> Total closed deals</div>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">Total Website Traffic</span>
+          <div class="kpi-val" id="kpiTraffic">4,850</div>
+          <div class="kpi-meta"><span class="badge-green">↑ 18%</span> Active visitors this month</div>
+        </div>
+      </section>
+
+      <!-- Today's Follow-up Priority Banner -->
+      <section class="alert-banner" id="followUpBanner" style="display:none;">
+        <div class="alert-info">
+          <div class="alert-icon">🔔</div>
+          <div class="alert-text">
+            <h3>Follow-up Due Today!</h3>
+            <p id="bannerText">You have clients scheduled for contact today.</p>
+          </div>
+        </div>
+        <button class="btn-secondary" onclick="filterByToday()">Show Today's Leads</button>
+      </section>
+
+      <!-- Leads Table Section -->
+      <section class="table-card">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search client name, phone, email, service..." />
+            <select id="statusFilter" class="filter-select">
+              <option value="All">All Statuses</option>
+              <option value="New">🟡 New Leads</option>
+              <option value="Contacted">🔵 Contacted</option>
+              <option value="Proposal Sent">🟣 Proposal Sent</option>
+              <option value="Won">🟢 Won / Deal Closed</option>
+              <option value="Lost">🔴 Cold / Lost</option>
+            </select>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-secondary" id="exportBtn">📥 Export CSV</button>
+            <button class="btn-secondary" id="refreshBtn">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Service & Budget</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Next Follow-up</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leadsTbody">
+              <tr>
+                <td colspan="6" style="text-align:center; padding: 40px; color: var(--fg-muted);">Loading leads...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 3. NOTES & DETAILS MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalClientName">Client Details</h2>
+        <button class="btn-close" id="modalCloseBtn">✕</button>
+      </div>
+
+      <div class="modal-field">
+        <span class="modal-label">Client Message / Project Scope</span>
+        <div class="modal-msg" id="modalMessage"></div>
+      </div>
+
+      <div class="modal-field">
+        <span class="modal-label">Lead Status</span>
+        <select id="modalStatusSelect" class="filter-select" style="width:100%;">
+          <option value="New">🟡 New Lead</option>
+          <option value="Contacted">🔵 Contacted / In Discussion</option>
+          <option value="Proposal Sent">🟣 Proposal Sent</option>
+          <option value="Won">🟢 Won / Deal Closed</option>
+          <option value="Lost">🔴 Cold / Lost</option>
+        </select>
+      </div>
+
+      <div class="modal-field">
+        <span class="modal-label">Next Follow-up Date</span>
+        <input type="date" id="modalFollowUpInput" class="auth-input" />
+      </div>
+
+      <div class="modal-field">
+        <span class="modal-label">Private Notes & Call Summary</span>
+        <textarea id="modalNotesTextarea" class="modal-textarea" placeholder="Add notes about budget, discussion, demo time..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+        <button class="auth-btn" style="padding: 9px 18px;" id="modalSaveBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allLeads = [];
+    let currentEditLead = null;
+
+    const authScreen = document.getElementById('authScreen');
+    const app = document.getElementById('app');
+    const loginForm = document.getElementById('loginForm');
+    const passInput = document.getElementById('passInput');
+    const authErr = document.getElementById('authErr');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Check existing auth token
+    function getToken() { return localStorage.getItem('nr_admin_token'); }
+    function setToken(t) { localStorage.setItem('nr_admin_token', t); }
+    function clearToken() { localStorage.removeItem('nr_admin_token'); }
+
+    if (getToken()) {
+      showDashboard();
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authErr.style.display = 'none';
+      const password = passInput.value;
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+        if (data.success && data.token) {
+          setToken(data.token);
+          showDashboard();
+        } else {
+          authErr.textContent = data.error || 'Invalid password.';
+          authErr.style.display = 'block';
+        }
+      } catch (err) {
+        authErr.textContent = 'Server error: ' + err.message;
+        authErr.style.display = 'block';
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      clearToken();
+      app.style.display = 'none';
+      authScreen.style.display = 'flex';
+    });
+
+    function showDashboard() {
+      authScreen.style.display = 'none';
+      app.style.display = 'flex';
+      fetchLeads();
+      fetchStats();
+    }
+
+    async function fetchLeads() {
+      const token = getToken();
+      try {
+        const res = await fetch('/api/admin/leads', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.status === 401) {
+          clearToken();
+          location.reload();
+          return;
+        }
+        const data = await res.json();
+        if (data.success) {
+          allLeads = data.leads || [];
+          updateKPIs(data.stats);
+          renderTable();
+        }
+      } catch (err) {
+        console.error('Error fetching leads:', err);
+      }
+    }
+
+    async function fetchStats() {
+      const token = getToken();
+      try {
+        const res = await fetch('/api/admin/stats', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (data.success && data.stats) {
+          document.getElementById('kpiTraffic').textContent = data.stats.totalTraffic.toLocaleString();
+        }
+      } catch (err) {}
+    }
+
+    function updateKPIs(stats) {
+      if (!stats) return;
+      document.getElementById('kpiTotal').textContent = stats.total;
+      document.getElementById('kpiNewCount').textContent = stats.newLeads + ' New';
+      document.getElementById('kpiTodayFollowups').textContent = stats.todayFollowUps;
+      document.getElementById('kpiConversion').textContent = stats.conversionRate + '%';
+      document.getElementById('kpiWonCount').textContent = stats.won + ' Won';
+
+      const banner = document.getElementById('followUpBanner');
+      if (stats.todayFollowUps > 0) {
+        banner.style.display = 'flex';
+        document.getElementById('bannerText').textContent = `You have ${stats.todayFollowUps} client(s) due for follow-up today!`;
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('leadsTbody');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+
+      const filtered = allLeads.filter(l => {
+        const matchSearch = (l.name || '').toLowerCase().includes(search) ||
+                            (l.mobile || '').includes(search) ||
+                            (l.email || '').toLowerCase().includes(search) ||
+                            (l.service || '').toLowerCase().includes(search) ||
+                            (l.company || '').toLowerCase().includes(search);
+        const matchStatus = statusFilter === 'All' || l.status === statusFilter;
+        return matchSearch && matchStatus;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--fg-muted);">No inquiries found.</td></tr>';
+        return;
+      }
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      tbody.innerHTML = filtered.map(l => {
+        const cleanMobile = (l.mobile || '').replace(/[^0-9]/g, '');
+        const isToday = l.followUpDate === todayStr;
+        return `
+          <tr>
+            <td>
+              <div class="client-title">${escapeHtml(l.name)}</div>
+              <div class="client-sub">${escapeHtml(l.company || 'Direct Client')}</div>
+            </td>
+            <td>
+              <div style="font-weight:600;">${escapeHtml(l.service || 'General')}</div>
+              <div class="client-sub" style="color:var(--accent); font-weight:700;">${escapeHtml(l.budget || 'Flexible')}</div>
+            </td>
+            <td>
+              <a href="tel:${cleanMobile}" class="contact-link">📞 ${escapeHtml(l.mobile)}</a>
+              <a href="mailto:${escapeHtml(l.email)}" class="contact-link">✉️ ${escapeHtml(l.email)}</a>
+            </td>
+            <td>
+              <select class="status-badge status-${(l.status || 'New').replace(/\s+/g, '')}" onchange="changeStatus('${l.id}', this.value)">
+                <option value="New" ${l.status === 'New' ? 'selected' : ''}>🟡 New</option>
+                <option value="Contacted" ${l.status === 'Contacted' ? 'selected' : ''}>🔵 Contacted</option>
+                <option value="Proposal Sent" ${l.status === 'Proposal Sent' ? 'selected' : ''}>🟣 Proposal Sent</option>
+                <option value="Won" ${l.status === 'Won' ? 'selected' : ''}>🟢 Won</option>
+                <option value="Lost" ${l.status === 'Lost' ? 'selected' : ''}>🔴 Lost</option>
+              </select>
+            </td>
+            <td>
+              <div style="${isToday ? 'color:var(--yellow); font-weight:700;' : 'color:var(--fg-muted);'} font-size:13px;">
+                ${isToday ? '🔔 Today' : (l.followUpDate || 'Not set')}
+              </div>
+            </td>
+            <td>
+              <div class="actions">
+                <a href="https://wa.me/${cleanMobile}" target="_blank" class="btn-icon wa" title="WhatsApp Chat">💬</a>
+                <button class="btn-icon" onclick="openNotesModal('${l.id}')" title="Notes & Details">📝</button>
+                <button class="btn-icon" onclick="deleteLead('${l.id}')" title="Delete">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function changeStatus(id, newStatus) {
+      const token = getToken();
+      try {
+        await fetch('/api/admin/leads', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id, status: newStatus })
+        });
+        const lead = allLeads.find(l => l.id === id);
+        if (lead) lead.status = newStatus;
+        renderTable();
+      } catch (err) {
+        alert('Status update failed: ' + err.message);
+      }
+    }
+
+    async function deleteLead(id) {
+      if (!confirm('Are you sure you want to delete this lead?')) return;
+      const token = getToken();
+      try {
+        await fetch('/api/admin/leads', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id })
+        });
+        allLeads = allLeads.filter(l => l.id !== id);
+        renderTable();
+      } catch (err) {
+        alert('Delete failed: ' + err.message);
+      }
+    }
+
+    function openNotesModal(id) {
+      const lead = allLeads.find(l => l.id === id);
+      if (!lead) return;
+      currentEditLead = lead;
+      document.getElementById('modalClientName').textContent = lead.name + ' · Notes';
+      document.getElementById('modalMessage').textContent = lead.message || 'No project description provided.';
+      document.getElementById('modalStatusSelect').value = lead.status || 'New';
+      document.getElementById('modalFollowUpInput').value = lead.followUpDate || '';
+      document.getElementById('modalNotesTextarea').value = lead.notes || '';
+      document.getElementById('modalBackdrop').style.display = 'flex';
+    }
+
+    document.getElementById('modalCloseBtn').onclick = () => { document.getElementById('modalBackdrop').style.display = 'none'; };
+    document.getElementById('modalCancelBtn').onclick = () => { document.getElementById('modalBackdrop').style.display = 'none'; };
+
+    document.getElementById('modalSaveBtn').onclick = async () => {
+      if (!currentEditLead) return;
+      const token = getToken();
+      const status = document.getElementById('modalStatusSelect').value;
+      const followUpDate = document.getElementById('modalFollowUpInput').value;
+      const notes = document.getElementById('modalNotesTextarea').value;
+
+      try {
+        await fetch('/api/admin/leads', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id: currentEditLead.id, status, followUpDate, notes })
+        });
+        currentEditLead.status = status;
+        currentEditLead.followUpDate = followUpDate;
+        currentEditLead.notes = notes;
+        document.getElementById('modalBackdrop').style.display = 'none';
+        renderTable();
+      } catch (err) {
+        alert('Save failed: ' + err.message);
+      }
+    };
+
+    document.getElementById('searchInput').oninput = renderTable;
+    document.getElementById('statusFilter').onchange = renderTable;
+    document.getElementById('refreshBtn').onclick = fetchLeads;
+
+    function filterByToday() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      document.getElementById('searchInput').value = '';
+      document.getElementById('statusFilter').value = 'All';
+      const filtered = allLeads.filter(l => l.followUpDate === todayStr);
+      const tbody = document.getElementById('leadsTbody');
+      tbody.innerHTML = filtered.map(l => `
+        <tr>
+          <td><div class="client-title">${escapeHtml(l.name)}</div></td>
+          <td>${escapeHtml(l.service)}</td>
+          <td><a href="tel:${l.mobile}">📞 ${escapeHtml(l.mobile)}</a></td>
+          <td><span class="status-badge status-${(l.status || 'New').replace(/\s+/g, '')}">${escapeHtml(l.status)}</span></td>
+          <td><span style="color:var(--yellow); font-weight:bold;">🔔 Due Today</span></td>
+          <td><a href="https://wa.me/${(l.mobile||'').replace(/[^0-9]/g, '')}" target="_blank" class="btn-icon wa">💬</a></td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('exportBtn').onclick = () => {
+      if (!allLeads.length) return alert('No leads to export.');
+      const headers = ['ID', 'Date', 'Name', 'Company', 'Mobile', 'Email', 'Service', 'Budget', 'Status', 'FollowUpDate', 'Notes', 'Message'];
+      const rows = allLeads.map(l => [
+        l.id, l.timestamp, `"${l.name||''}"`, `"${l.company||''}"`, `"${l.mobile||''}"`, `"${l.email||''}"`, `"${l.service||''}"`, `"${l.budget||''}"`, l.status, l.followUpDate, `"${(l.notes||'').replace(/"/g, '""')}"`, `"${(l.message||'').replace(/"/g, '""')}"`
+      ]);
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `leads_export_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[tag] || tag));
+    }
+  </script>
+</body>
+</html>

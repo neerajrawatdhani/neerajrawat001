@@ -2,6 +2,22 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    {
+      "has": [
+        { "type": "host", "value": "admin.neerajrawat.dev" }
+      ],
+      "source": "/",
+      "destination": "/admin/index.html"
+    },
+    {
+      "has": [
+        { "type": "host", "value": "admin.neerajrawat.dev" }
+      ],
+      "source": "/(.*)",
+      "destination": "/admin/$1"
+    },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/", "destination": "/admin/index.html" },
     { "source": "/home", "destination": "/" },
     { "source": "/home/", "destination": "/" },
     { "source": "/work", "destination": "/" },
