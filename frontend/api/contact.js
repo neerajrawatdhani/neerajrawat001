@@ -39,8 +39,11 @@ module.exports = async (req, res) => {
   const name = (body.name || '').trim();
   const mobile = (body.mobile || body.phone || '').trim();
   const email = (body.email || body.mail || '').trim();
+  const country = (body.country || 'India (+91)').trim();
+  const countryCode = (body.countryCode || 'IN').trim();
   const budget = (body.budget || 'Flexible / To be discussed').trim();
-  const service = (body.service || 'General Inquiry').trim();
+  const service = (body.service || 'Web & Custom Solutions').trim();
+  const channel = (body.channel || 'Website Form').trim();
   const message = (body.message || body.project || '').trim();
   const consent = body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1;
 
@@ -58,8 +61,10 @@ module.exports = async (req, res) => {
   const inquiry = {
     id: 'inq_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
     timestamp: new Date().toISOString(),
-    channel: (body.channel || 'Website Form').trim(),
+    channel,
     name,
+    country,
+    countryCode,
     mobile,
     email,
     service,
@@ -67,7 +72,7 @@ module.exports = async (req, res) => {
     message,
     status: 'New',
     followUpDate: new Date(Date.now() + 24 * 3600 * 1000).toISOString().split('T')[0],
-    notes: 'Inquiry submitted from live website.',
+    notes: `Inquiry submitted via ${channel}. Consent confirmed.`,
     consent: true
   };
 
@@ -95,10 +100,13 @@ module.exports = async (req, res) => {
               🚀 New Project Inquiry Received
             </h2>
             <p><strong>Client Name:</strong> ${name}</p>
+            <p><strong>Country:</strong> ${country}</p>
+            <p><strong>Channel:</strong> ${channel}</p>
             <p><strong>Mobile Number:</strong> ${mobile} &nbsp; (<a href="https://wa.me/${mobile.replace(/[^0-9]/g, '')}">WhatsApp</a> | <a href="tel:${mobile}">Call</a>)</p>
             <p><strong>Email ID:</strong> ${email}</p>
             <p><strong>Service:</strong> ${service}</p>
             <p><strong>Budget:</strong> ${budget}</p>
+            <p><strong>Data Privacy Consent:</strong> Confirmed (Client approved)</p>
             <div style="margin-top: 16px; padding: 16px; background: #ffffff; border: 1px solid #d5cdca; border-radius: 8px;">
               <h4 style="margin: 0 0 8px 0;">Project Description:</h4>
               <p style="margin: 0; line-height: 1.6; white-space: pre-wrap;">${message}</p>

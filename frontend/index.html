@@ -2043,13 +2043,30 @@ function validateAndGetFormData() {
   const d = new FormData(form);
   const code = opt.getAttribute('data-code') || '';
   const fullMobile = `${code} ${fMobile.value.trim()}`.trim();
+  const countryName = opt.text.trim();
+  const projectText = (d.get('project') || '').trim();
+
+  let inferredService = 'Web & Custom Solutions';
+  const pLower = projectText.toLowerCase();
+  if (pLower.includes('erp') || pLower.includes('school') || pLower.includes('edudhani')) {
+    inferredService = 'School ERP (EduDhani)';
+  } else if (pLower.includes('ui') || pLower.includes('ux') || pLower.includes('figma') || pLower.includes('redesign')) {
+    inferredService = 'UI/UX Design';
+  } else if (pLower.includes('app') || pLower.includes('ios') || pLower.includes('android') || pLower.includes('mobile')) {
+    inferredService = 'Mobile App Development';
+  } else if (pLower.includes('logo') || pLower.includes('graphic') || pLower.includes('brand') || pLower.includes('banner')) {
+    inferredService = 'Graphic & Brand Identity';
+  }
 
   return {
     name: (d.get('name') || '').trim(),
+    country: countryName,
+    countryCode: opt.value,
     mobile: fullMobile,
     email: (d.get('email') || '').trim(),
+    service: inferredService,
     budget: (d.get('budget') || 'Flexible / To be discussed').trim(),
-    project: (d.get('project') || '').trim()
+    project: projectText
   };
 }
 
@@ -2065,7 +2082,7 @@ if (btnWa) {
     const data = validateAndGetFormData();
     if (!data) return;
 
-    const { name, mobile, email, budget, project } = data;
+    const { name, country, countryCode, mobile, email, service, budget, project } = data;
     const waText = formatWhatsAppText(name, mobile, email, budget, project);
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
 
@@ -2076,7 +2093,7 @@ if (btnWa) {
     fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, mobile, email, budget, message: project, channel: 'WhatsApp', consent: true })
+      body: JSON.stringify({ name, country, countryCode, mobile, email, service, budget, message: project, channel: 'WhatsApp', consent: true })
     }).catch(err => console.warn('Backend sync:', err));
 
     // Display confirmation
@@ -2100,7 +2117,7 @@ form.addEventListener('submit', e => {
   const data = validateAndGetFormData();
   if (!data) return;
 
-  const { name, mobile, email, budget, project } = data;
+  const { name, country, countryCode, mobile, email, service, budget, project } = data;
 
   const subject = `New project enquiry from ${name} (${budget})`;
   const body = `Hi Neeraj,\n\nMobile: ${mobile}\nEmail: ${email}\nBudget: ${budget}\n\nProject details:\n${project}\n\n— ${name}\n\n[Consent confirmed: Details will not be shared with any third party]`;
@@ -2117,7 +2134,7 @@ form.addEventListener('submit', e => {
   fetch('/api/contact', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, mobile, email, budget, message: project, channel: 'Email', consent: true })
+    body: JSON.stringify({ name, country, countryCode, mobile, email, service, budget, message: project, channel: 'Email', consent: true })
   })
     .then(r => {
       if (!r.ok) return r.json().then(j => { throw new Error(j.error || r.status); });

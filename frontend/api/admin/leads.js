@@ -34,7 +34,9 @@ module.exports = async (req, res) => {
       won: leads.filter(l => l.status === 'Won').length,
       lost: leads.filter(l => l.status === 'Lost').length,
       todayFollowUps: leads.filter(l => l.followUpDate === todayStr).length,
-      conversionRate: leads.length ? Math.round((leads.filter(l => l.status === 'Won').length / leads.length) * 100) : 0
+      conversionRate: leads.length ? Math.round((leads.filter(l => l.status === 'Won').length / leads.length) * 100) : 0,
+      whatsappLeads: leads.filter(l => (l.channel || '').toLowerCase().includes('whatsapp')).length,
+      emailLeads: leads.filter(l => (l.channel || '').toLowerCase().includes('email') || (l.channel || '').toLowerCase().includes('form')).length
     };
 
     return res.status(200).json({
