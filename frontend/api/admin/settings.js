@@ -38,10 +38,10 @@ module.exports = async (req, res) => {
         isConfigured: Boolean(settings.smtpUser && settings.smtpPass),
         adminEmail: settings.adminEmail,
         fromName: settings.fromName,
-        providers: settings.providers,
-        dataTiers: settings.dataTiers,
-        digitalProducts: settings.digitalProducts,
-        devPresets: settings.devPresets,
+        operatingCosts: settings.operatingCosts,
+        implementationItems: settings.implementationItems,
+        scalingBands: settings.scalingBands,
+        metaPricingIndia: settings.metaPricingIndia,
         paymentGateway: settings.paymentGateway || {
           mode: 'test',
           testKeyId: 'rzp_test_51aBCD12345678',
@@ -130,10 +130,8 @@ module.exports = async (req, res) => {
     if (body.adminEmail) updates.adminEmail = body.adminEmail.trim();
     if (body.fromName) updates.fromName = body.fromName.trim();
     if (body.adminPassword) updates.adminPassword = body.adminPassword.trim();
-    if (body.providers) updates.providers = body.providers;
-    if (body.dataTiers) updates.dataTiers = body.dataTiers;
-    if (body.digitalProducts) updates.digitalProducts = body.digitalProducts;
-    if (body.devPresets) updates.devPresets = body.devPresets;
+    if (body.operatingCosts) updates.operatingCosts = body.operatingCosts;
+    if (body.implementationItems) updates.implementationItems = body.implementationItems;
     if (body.paymentGateway) updates.paymentGateway = body.paymentGateway;
 
     saveSettings(updates);

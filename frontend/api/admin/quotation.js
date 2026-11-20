@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const { getSettings } = require('../_settings');
-const { updateLead, loadLeads } = require('../_leads');
+const { updateLead } = require('../_leads');
 
 function checkAuth(req) {
   const auth = req.headers.authorization || '';
@@ -34,21 +34,23 @@ module.exports = async (req, res) => {
     clientEmail,
     clientMobile = '',
     quoteNumber,
-    duration = '1 Year (Annual)',
+    quoteDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
     currency = 'INR',
-    devItems = [],
-    infraItems = [],
-    digitalProducts = [],
-    dataTier = 'Starter Tier (Up to 1 GB / 500 Students)',
-    dataTierCost = 0,
-    totalDev = 0,
-    totalInfra = 0,
-    totalProducts = 0,
-    grandTotal = 0,
-    year2Renewal = 0,
-    year3Renewal = 0,
-    notes = '',
-    validUntil = ''
+    // Section 1: One-time implementation
+    websiteDevFee = 50000,
+    waIntegrationFee = 8000,
+    // Section 2 & 3: Operating costs
+    vpsFee = 12000,
+    vpsRenewal = 15000,
+    domainFee = 1800,
+    domainRenewal = 2200,
+    mongodbFee = 10000,
+    mongodbRenewal = 10000,
+    backupFee = 3000,
+    backupRenewal = 3000,
+    whatsappAllowance = 3500,
+    whatsappRenewal = 3500,
+    customNotes = ''
   } = body;
 
   if (!clientName || !clientEmail) {
@@ -58,272 +60,324 @@ module.exports = async (req, res) => {
   const sym = currency === 'USD' ? '$' : '₹';
   const settings = getSettings();
 
-  // If leadId provided, automatically update lead in pipeline to "Proposal Sent"
+  // Computations matching Gurukulam School PDF exact mathematics
+  const totalOneTime = Number(websiteDevFee) + Number(waIntegrationFee);
+  const totalOperatingY1 = Number(vpsFee) + Number(domainFee) + Number(mongodbFee) + Number(backupFee) + Number(whatsappAllowance);
+  const grandTotalY1 = totalOneTime + totalOperatingY1;
+  const grandTotalRenewal = Number(vpsRenewal) + Number(domainRenewal) + Number(mongodbRenewal) + Number(backupRenewal) + Number(whatsappRenewal);
+
+  // Auto-update lead in CRM pipeline if leadId passed
   if (leadId) {
     try {
       updateLead(leadId, {
         status: 'Proposal Sent',
         company: clientCompany || undefined,
-        notes: `Quotation #${quoteNumber || 'QT-' + Date.now().toString().slice(-4)} (${sym}${Number(grandTotal).toLocaleString('en-IN')}) sent for ${duration}. ${notes ? 'Notes: ' + notes : ''}`
+        notes: `Gurukulam Proposal #${quoteNumber || 'QT-' + Date.now().toString().slice(-4)} (${sym}${grandTotalY1.toLocaleString('en-IN')} Year 1 / ${sym}${grandTotalRenewal.toLocaleString('en-IN')} renewal) sent to ${clientEmail}.`
       });
     } catch (e) {
       console.error('[Lead Quote Update Error]:', e.message);
     }
   }
 
-  // Generate HTML Quotation Tables
-  const devRowsHtml = devItems.map((item, idx) => `
-    <tr style="border-bottom: 1px solid #eee;">
-      <td style="padding: 10px 12px; font-size: 13px;">${idx + 1}. <strong>${item.name || 'Service'}</strong><br><span style="color: #666; font-size: 12px;">${item.desc || ''}</span></td>
-      <td style="padding: 10px 12px; font-size: 13px; text-align: right; font-weight: bold;">${sym}${Number(item.cost || 0).toLocaleString('en-IN')}</td>
-    </tr>
-  `).join('');
-
-  const infraRowsHtml = infraItems.map((item, idx) => `
-    <tr style="border-bottom: 1px solid #eee;">
-      <td style="padding: 10px 12px; font-size: 13px;">
-        <strong>${item.provider || 'Provider'}</strong> — ${item.name || item.type || 'Cloud Infrastructure'}<br>
-        <span style="color: #666; font-size: 12px;">${item.specs || ''} (${item.period || duration})</span>
-      </td>
-      <td style="padding: 10px 12px; font-size: 13px; text-align: right; font-weight: bold;">${sym}${Number(item.cost || 0).toLocaleString('en-IN')}</td>
-    </tr>
-  `).join('');
-
-  const productsRowsHtml = digitalProducts.map((p, idx) => `
-    <tr style="border-bottom: 1px solid #eee;">
-      <td style="padding: 10px 12px; font-size: 13px;">
-        <strong>${p.title || p.name}</strong> <span style="background:#e8a87c22; color:#a4552c; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">${p.badge || 'Digital Product'}</span><br>
-        <span style="color: #666; font-size: 12px;">${p.desc || ''}</span>
-      </td>
-      <td style="padding: 10px 12px; font-size: 13px; text-align: right; font-weight: bold;">${sym}${Number(p.price || 0).toLocaleString('en-IN')}</td>
-    </tr>
-  `).join('');
-
+  // Exact 10-section Gurukulam School HTML Proposal
   const emailHtml = `
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 32px 24px; background: #faf9f6; color: #1a1818; border: 1px solid #e0deda; border-radius: 14px;">
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 740px; margin: 0 auto; padding: 36px 28px; background: #ffffff; color: #1a1a1a; line-height: 1.5; border: 1px solid #e2e8f0; border-radius: 12px;">
       
-      <!-- Brand Header -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1a1818; padding-bottom: 20px; margin-bottom: 24px;">
-        <div>
-          <h1 style="margin: 0; font-size: 24px; color: #1a1818; font-weight: 800; letter-spacing: -0.02em;">Dhani Tech</h1>
-          <p style="margin: 4px 0 0 0; font-size: 13px; color: #6b5c5c;">Neeraj Rawat · Founder &amp; CEO, EduDhani (School ERP)<br>Web, Mobile App &amp; Cloud Engineering</p>
-        </div>
-        <div style="text-align: right;">
-          <span style="display: inline-block; background: #1a1818; color: #ffffff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">Official Quotation</span>
-          <p style="margin: 6px 0 0 0; font-size: 13px; font-weight: bold;">Quote #${quoteNumber || 'QT-' + Date.now().toString().slice(-4)}</p>
-          <p style="margin: 2px 0 0 0; font-size: 12px; color: #6b5c5c;">Date: ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-        </div>
-      </div>
-
-      <!-- Client & Business Box -->
-      <div style="background: #ffffff; border: 1px solid #e0deda; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-        <div>
-          <span style="font-size: 11px; text-transform: uppercase; color: #9e9292; font-weight: bold;">Quotation Prepared For:</span>
-          <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #1a1818;">${clientName}</p>
-          ${clientCompany ? `<p style="margin: 2px 0 0 0; font-size: 14px; font-weight: 600; color: #a4552c;">🏢 ${clientCompany}</p>` : ''}
-          <p style="margin: 2px 0 0 0; font-size: 13px; color: #6b5c5c;">${clientEmail} ${clientMobile ? '· ' + clientMobile : ''}</p>
-        </div>
-        <div style="text-align: right;">
-          <span style="font-size: 11px; text-transform: uppercase; color: #9e9292; font-weight: bold;">Selected Hosting / Service Duration:</span>
-          <p style="margin: 4px 0 0 0; font-size: 15px; font-weight: bold; color: #e8a87c;">${duration}</p>
-          ${validUntil ? `<p style="margin: 2px 0 0 0; font-size: 12px; color: #6b5c5c;">Valid Until: ${validUntil}</p>` : ''}
+      <!-- Proposal Header -->
+      <div style="border-bottom: 2px solid #0f172a; padding-bottom: 20px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; text-transform: uppercase;">
+              ${clientCompany ? clientCompany.toUpperCase() : clientName.toUpperCase()}
+            </h1>
+            <p style="margin: 4px 0 0 0; font-size: 14px; color: #475569; font-weight: 500;">
+              Website, Complete Admin Dashboard &amp; WhatsApp Business API | Annual Cost Proposal | ${quoteDate}
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <span style="display: inline-block; background: #0f172a; color: #ffffff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">
+              Official Proposal
+            </span>
+            <div style="margin-top: 4px; font-size: 13px; font-weight: bold; color: #0f172a;">Quote #${quoteNumber || 'QT-' + Date.now().toString().slice(-4)}</div>
+          </div>
         </div>
       </div>
 
-      <!-- Section 1: Professional Development & Design Fees -->
+      <!-- Project Overview -->
       <div style="margin-bottom: 24px;">
-        <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #1a1818; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
-          1. Professional Engineering &amp; Development Fees
-        </h3>
-        <table style="width: 100%; border-collapse: collapse; background: #ffffff; border: 1px solid #e0deda; border-radius: 8px; overflow: hidden;">
+        <h3 style="margin: 0 0 6px 0; font-size: 15px; font-weight: 800; color: #0f172a;">Project overview</h3>
+        <p style="margin: 0; font-size: 13px; color: #334155;">
+          Development of a responsive school website and secure content-management admin dashboard, with an additional WhatsApp Business Platform (Meta Cloud API) integration. Figures are indicative annual budgets in INR, not vendor invoices.
+        </p>
+      </div>
+
+      <!-- 1. One-time development & integration -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">1. One-time development &amp; integration</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1; margin-bottom: 12px;">
           <thead>
-            <tr style="background: #f4f2ee; text-align: left;">
-              <th style="padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #6b5c5c;">Deliverables</th>
-              <th style="padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #6b5c5c; text-align: right;">Amount (${currency})</th>
+            <tr style="background: #0f172a; color: #ffffff; text-align: left;">
+              <th style="padding: 10px 14px; font-weight: 700;">Deliverable</th>
+              <th style="padding: 10px 14px; font-weight: 700; text-align: right; width: 180px;">One-time charge</th>
             </tr>
           </thead>
           <tbody>
-            ${devRowsHtml || '<tr><td colspan="2" style="padding:10px 12px; font-size:13px; color:#888;">Custom Software &amp; Platform Architecture</td></tr>'}
-            <tr style="background: #faf9f6; font-weight: bold;">
-              <td style="padding: 10px 12px; font-size: 13px;">Subtotal (Development Fees)</td>
-              <td style="padding: 10px 12px; font-size: 13px; text-align: right; color: #1a1818;">${sym}${Number(totalDev).toLocaleString('en-IN')}</td>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+              <td style="padding: 10px 14px;">School website + complete admin content-management dashboard</td>
+              <td style="padding: 10px 14px; text-align: right; font-weight: bold;">${sym}${Number(websiteDevFee).toLocaleString('en-IN')}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+              <td style="padding: 10px 14px;">WhatsApp Cloud API integration allowance (additional)</td>
+              <td style="padding: 10px 14px; text-align: right; font-weight: bold;">${sym}${Number(waIntegrationFee).toLocaleString('en-IN')}</td>
+            </tr>
+            <tr style="background: #ffffff; font-weight: bold; border-top: 2px solid #0f172a;">
+              <td style="padding: 10px 14px;">Total one-time implementation investment</td>
+              <td style="padding: 10px 14px; text-align: right; color: #0f172a; font-size: 15px;">${sym}${totalOneTime.toLocaleString('en-IN')}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 11.5px; color: #475569; margin: 4px 0 6px 0; line-height: 1.5;">
+          <strong>Included website scope:</strong> Home, About, Admissions, Academics, Facilities, Gallery, News/Notices, Events, Contact, responsive UI, enquiry forms, SEO basics, admin login, content and gallery management, notices/events, admission enquiries, basic roles and deployment. The website quotation does not include a complete school ERP such as fees, attendance, payroll or transport.
+        </p>
+        <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.5;">
+          <strong>WhatsApp integration scope:</strong> Meta business setup assistance, approved-template integration, opt-in aware admissions enquiry acknowledgement and selected school notices, secure server-side API calls, delivery-status webhook handling, error logging and basic admin send/history view. Business verification, template approval and third-party service fees are subject to Meta/provider policies.
+        </p>
+      </div>
+
+      <!-- 2. First-year annual operating budget -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">2. First-year annual operating budget</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+          <thead>
+            <tr style="background: #0f172a; color: #ffffff; text-align: left;">
+              <th style="padding: 10px 14px; font-weight: 700;">Cost component</th>
+              <th style="padding: 10px 14px; font-weight: 700; width: 150px;">Annual allowance</th>
+              <th style="padding: 10px 14px; font-weight: 700;">Basis</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+              <td style="padding: 9px 14px;">VPS hosting (application + API)</td>
+              <td style="padding: 9px 14px; font-weight: bold;">${sym}${Number(vpsFee).toLocaleString('en-IN')}</td>
+              <td style="padding: 9px 14px; color: #64748b; font-size: 12px;">Estimated Year 1</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+              <td style="padding: 9px 14px;">.com domain registration</td>
+              <td style="padding: 9px 14px; font-weight: bold;">${sym}${Number(domainFee).toLocaleString('en-IN')}</td>
+              <td style="padding: 9px 14px; color: #64748b; font-size: 12px;">Estimated initial cost</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+              <td style="padding: 9px 14px;">MongoDB Atlas Flex database</td>
+              <td style="padding: 9px 14px; font-weight: bold;">${sym}${Number(mongodbFee).toLocaleString('en-IN')}</td>
+              <td style="padding: 9px 14px; color: #64748b; font-size: 12px;">Low-usage planning budget</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+              <td style="padding: 9px 14px;">Backup / storage</td>
+              <td style="padding: 9px 14px; font-weight: bold;">${sym}${Number(backupFee).toLocaleString('en-IN')}</td>
+              <td style="padding: 9px 14px; color: #64748b; font-size: 12px;">Budget reserve</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+              <td style="padding: 9px 14px;">Meta WhatsApp messaging</td>
+              <td style="padding: 9px 14px; font-weight: bold;">${sym}${Number(whatsappAllowance).toLocaleString('en-IN')}</td>
+              <td style="padding: 9px 14px; color: #64748b; font-size: 12px;">Usage illustration below</td>
+            </tr>
+            <tr style="background: #f1f5f9; font-weight: bold; border-top: 1px solid #cbd5e1;">
+              <td style="padding: 10px 14px;">Total first-year operating cost</td>
+              <td style="padding: 10px 14px; font-size: 14px; color: #0f172a;">${sym}${totalOperatingY1.toLocaleString('en-IN')}</td>
+              <td style="padding: 10px 14px; color: #64748b; font-size: 12px;">Before taxes and BSP fees</td>
+            </tr>
+            <tr style="background: #e2e8f0; font-weight: 800; border-top: 2px solid #0f172a;">
+              <td style="padding: 11px 14px; font-size: 14px;">First-year project total</td>
+              <td style="padding: 11px 14px; font-size: 16px; color: #0f172a;">${sym}${grandTotalY1.toLocaleString('en-IN')}</td>
+              <td style="padding: 11px 14px; color: #0f172a; font-size: 12px;">${sym}${totalOneTime.toLocaleString('en-IN')} implementation + ${sym}${totalOperatingY1.toLocaleString('en-IN')} running</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Section 2: Cloud Infrastructure & Hosting Providers -->
-      ${infraItems.length > 0 ? `
-        <div style="margin-bottom: 24px;">
-          <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #1a1818; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
-            2. Cloud Infrastructure, Hosting &amp; Domain (${duration})
-          </h3>
-          <table style="width: 100%; border-collapse: collapse; background: #ffffff; border: 1px solid #e0deda; border-radius: 8px; overflow: hidden;">
-            <thead>
-              <tr style="background: #f4f2ee; text-align: left;">
-                <th style="padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #6b5c5c;">Provider &amp; Service</th>
-                <th style="padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #6b5c5c; text-align: right;">Amount (${currency})</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${infraRowsHtml}
-              <tr style="background: #faf9f6; font-weight: bold;">
-                <td style="padding: 10px 12px; font-size: 13px;">Subtotal (Infrastructure for ${duration})</td>
-                <td style="padding: 10px 12px; font-size: 13px; text-align: right; color: #1a1818;">${sym}${Number(totalInfra).toLocaleString('en-IN')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ` : ''}
-
-      <!-- Section 3: Digital Products & Modular Add-ons -->
-      ${digitalProducts.length > 0 ? `
-        <div style="margin-bottom: 24px;">
-          <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #1a1818; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
-            3. Digital Products &amp; Software Licenses
-          </h3>
-          <table style="width: 100%; border-collapse: collapse; background: #ffffff; border: 1px solid #e0deda; border-radius: 8px; overflow: hidden;">
-            <thead>
-              <tr style="background: #f4f2ee; text-align: left;">
-                <th style="padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #6b5c5c;">Product / Add-on</th>
-                <th style="padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #6b5c5c; text-align: right;">Amount (${currency})</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${productsRowsHtml}
-              <tr style="background: #faf9f6; font-weight: bold;">
-                <td style="padding: 10px 12px; font-size: 13px;">Subtotal (Digital Products)</td>
-                <td style="padding: 10px 12px; font-size: 13px; text-align: right; color: #1a1818;">${sym}${Number(totalProducts).toLocaleString('en-IN')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ` : ''}
-
-      <!-- Multi-Year & Renewal Breakdown Box -->
-      <div style="background: #ffffff; border: 2px solid #e0deda; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
-        <h4 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: #1a1818; font-weight: 700;">
-          📊 Multi-Year &amp; Renewal Pricing Breakdown
-        </h4>
-        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 0;"><strong>Year 1 Total Investment</strong> (Dev Fees + First Year Cloud Hosting + Licenses):</td>
-            <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #e8a87c; font-size: 16px;">${sym}${Number(grandTotal).toLocaleString('en-IN')}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 0;"><strong>Year 2 Renewal</strong> (Cloud Hosting, Domain &amp; Maintenance only — No Dev Fee):</td>
-            <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #1a1818;">${sym}${Number(year2Renewal || totalInfra).toLocaleString('en-IN')} / year</td>
-          </tr>
-          ${year3Renewal > 0 ? `
-            <tr>
-              <td style="padding: 8px 0;"><strong>Year 3 Renewal</strong> (Cloud Hosting, Domain &amp; Maintenance only):</td>
-              <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #1a1818;">${sym}${Number(year3Renewal).toLocaleString('en-IN')} / year</td>
+      <!-- 3. Second-year onward — annual renewal -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">3. Second-year onward — annual renewal</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1; text-align: center;">
+          <thead>
+            <tr style="background: #0f172a; color: #ffffff;">
+              <th style="padding: 10px 8px; font-weight: 700;">VPS</th>
+              <th style="padding: 10px 8px; font-weight: 700;">Domain renewal</th>
+              <th style="padding: 10px 8px; font-weight: 700;">MongoDB</th>
+              <th style="padding: 10px 8px; font-weight: 700;">Backups</th>
+              <th style="padding: 10px 8px; font-weight: 700;">WhatsApp</th>
+              <th style="padding: 10px 8px; font-weight: 700; background: #1e293b;">Total/year</th>
             </tr>
-          ` : ''}
+          </thead>
+          <tbody>
+            <tr style="background: #ffffff; font-weight: bold;">
+              <td style="padding: 12px 8px;">${sym}${Number(vpsRenewal).toLocaleString('en-IN')}</td>
+              <td style="padding: 12px 8px;">${sym}${Number(domainRenewal).toLocaleString('en-IN')}</td>
+              <td style="padding: 12px 8px;">${sym}${Number(mongodbRenewal).toLocaleString('en-IN')}</td>
+              <td style="padding: 12px 8px;">${sym}${Number(backupRenewal).toLocaleString('en-IN')}</td>
+              <td style="padding: 12px 8px;">${sym}${Number(whatsappRenewal).toLocaleString('en-IN')}</td>
+              <td style="padding: 12px 8px; font-size: 15px; color: #0f172a; background: #f8fafc;">${sym}${grandTotalRenewal.toLocaleString('en-IN')}</td>
+            </tr>
+          </tbody>
         </table>
-      </div>
-
-      <!-- Data & Storage Scaling Tiers Table -->
-      <div style="background: #ffffff; border: 1px solid #e0deda; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
-        <h4 style="margin: 0 0 8px 0; font-size: 14px; text-transform: uppercase; color: #1a1818; font-weight: 700;">
-          📈 Database &amp; Cloud Storage Scaling Matrix
-        </h4>
-        <p style="margin: 0 0 12px 0; font-size: 12px; color: #6b5c5c;">भविष्य में यदि छात्रों/उपयोगकर्ताओं की संख्या व डेटा बढ़ता है, तो लागत इस प्रकार रहेगी:</p>
-        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-          <tr style="background: #f4f2ee; font-weight: bold;">
-            <th style="padding: 8px 10px; text-align: left;">Data Tier / Volume</th>
-            <th style="padding: 8px 10px; text-align: left;">Capacity</th>
-            <th style="padding: 8px 10px; text-align: right;">Annual Cost</th>
-          </tr>
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 10px;"><strong>Starter Tier</strong> (Included)</td>
-            <td style="padding: 8px 10px;">Up to 1 GB · ~500 Students</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #4ADE80;">₹0 (Included)</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 10px;"><strong>Growth Tier</strong></td>
-            <td style="padding: 8px 10px;">1 GB – 10 GB · ~2,500 Students</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold;">+₹4,800 / year</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 10px;"><strong>Enterprise Tier</strong></td>
-            <td style="padding: 8px 10px;">10 GB – 50 GB+ · 10,000+ Students</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold;">+₹12,000 / year</td>
-          </tr>
-        </table>
-      </div>
-
-      <!-- Section: Meta WhatsApp Business API Official Pricing & Direct API Advantage -->
-      <div style="background: #ffffff; border: 1px solid #e0deda; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1a1818; font-weight: 700;">
-            💬 Meta WhatsApp Business Cloud API — Official India Rates
-          </h4>
-          <span style="font-size:11px; color:#25D366; font-weight:bold; background:rgba(37,211,102,0.12); padding:3px 8px; border-radius:4px;">Direct Meta Account</span>
-        </div>
-        <p style="margin: 0 0 10px 0; font-size: 12px; color: #6b5c5c;">
-          WhatsApp API is billed directly by Meta (Facebook) to your payment method with <strong>zero middleman markup</strong>:
+        <p style="font-size: 11.5px; color: #475569; margin: 8px 0 0 0; line-height: 1.5;">
+          The ${sym}${Number(websiteDevFee).toLocaleString('en-IN')} website development fee and ${sym}${Number(waIntegrationFee).toLocaleString('en-IN')} WhatsApp integration fee are one-time and are <strong>not repeated</strong> in the renewal figure. Ongoing technical maintenance or change requests are separate.
         </p>
-        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom:12px;">
-          <tr style="background: #f4f2ee; font-weight: bold;">
-            <th style="padding: 8px 10px; text-align: left;">Category</th>
-            <th style="padding: 8px 10px; text-align: left;">Use Case</th>
-            <th style="padding: 8px 10px; text-align: right;">Meta Rate (India)</th>
-          </tr>
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 10px;"><strong>Utility Messages</strong></td>
-            <td style="padding: 8px 10px;">Fee receipts, admission updates, attendance &amp; marks alerts</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #1a1818;">₹0.1150 / msg</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 10px;"><strong>Authentication</strong></td>
-            <td style="padding: 8px 10px;">Login OTPs &amp; parent verification codes</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #1a1818;">₹0.1150 / msg</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px 10px;"><strong>Marketing Messages</strong></td>
-            <td style="padding: 8px 10px;">Admission announcements &amp; promotional broadcasts</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #1a1818;">₹0.8631 / msg</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 10px;"><strong>Service (Inbound)</strong></td>
-            <td style="padding: 8px 10px;">Replies to parent inquiries within 24-hr customer window</td>
-            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #25D366;">₹0.1150 / msg</td>
-          </tr>
+      </div>
+
+      <!-- 4. Meta pricing for India (effective 01 October 2026) -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">4. Meta pricing for India (effective 01 October 2026)</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+          <thead>
+            <tr style="background: #0f172a; color: #ffffff; text-align: left;">
+              <th style="padding: 9px 12px;">Message category</th>
+              <th style="padding: 9px 12px; width: 200px;">Meta rate / delivered message</th>
+              <th style="padding: 9px 12px;">Common school use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold;">Utility</td><td style="padding: 8px 12px; font-weight: bold; color: #0f172a;">₹0.1150</td><td style="padding: 8px 12px; color: #475569;">Operational updates / eligible reminders</td></tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;"><td style="padding: 8px 12px; font-weight: bold;">Authentication</td><td style="padding: 8px 12px; font-weight: bold; color: #0f172a;">₹0.1150</td><td style="padding: 8px 12px; color: #475569;">OTP / verification</td></tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold;">Marketing</td><td style="padding: 8px 12px; font-weight: bold; color: #0f172a;">₹0.8631</td><td style="padding: 8px 12px; color: #475569;">Promotional admissions campaigns / offers</td></tr>
+            <tr style="background: #f8fafc;"><td style="padding: 8px 12px; font-weight: bold;">Service reply</td><td style="padding: 8px 12px; font-weight: bold; color: #0f172a;">₹0.1150 after applicable allowance</td><td style="padding: 8px 12px; color: #475569;">Replies to incoming chats</td></tr>
+          </tbody>
         </table>
-        <div style="background:#f9f8f6; padding:10px 14px; border-radius:6px; font-size:11.5px; color:#555; line-height:1.5;">
-          💡 <strong>Direct Cloud API vs. Third-Party Portals:</strong> Unlike third-party SaaS vendors who charge ₹0.40–₹0.85 per message plus ₹3,000/mo platform rental, our direct integration connects directly to your Meta Developer Account. You pay Meta directly at actual wholesale cost, saving up to 70% annually.
+      </div>
+
+      <!-- 5. Illustrative annual messaging cost -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">5. Illustrative annual messaging cost</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; border: 1px solid #cbd5e1; text-align: right;">
+          <thead>
+            <tr style="background: #0f172a; color: #ffffff; text-align: left;">
+              <th style="padding: 9px 12px;">Usage scenario (annual deliveries)</th>
+              <th style="padding: 9px 12px; text-align: right;">Utility</th>
+              <th style="padding: 9px 12px; text-align: right;">Marketing</th>
+              <th style="padding: 9px 12px; text-align: right; background: #1e293b;">Meta estimate/year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0; text-align: left;"><td style="padding: 8px 12px;">Small: 5,000 utility + 500 marketing</td><td style="padding: 8px 12px; text-align: right;">₹575</td><td style="padding: 8px 12px; text-align: right;">₹432</td><td style="padding: 8px 12px; text-align: right; font-weight: bold;">₹1,007</td></tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc; text-align: left;"><td style="padding: 8px 12px; font-weight: 700;">Base: 12,000 utility + 2,400 marketing</td><td style="padding: 8px 12px; text-align: right; font-weight: 700;">₹1,380</td><td style="padding: 8px 12px; text-align: right; font-weight: 700;">₹2,071</td><td style="padding: 8px 12px; text-align: right; font-weight: 800; color: #0f172a; background: #edf2f7;">₹3,451 (~₹3,500 budget)</td></tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; text-align: left;"><td style="padding: 8px 12px;">Growing: 60,000 utility + 12,000 marketing</td><td style="padding: 8px 12px; text-align: right;">₹6,900</td><td style="padding: 8px 12px; text-align: right;">₹10,357</td><td style="padding: 8px 12px; text-align: right; font-weight: bold;">₹17,257</td></tr>
+            <tr style="text-align: left;"><td style="padding: 8px 12px;">Large: 240,000 utility + 48,000 marketing</td><td style="padding: 8px 12px; text-align: right;">₹27,600</td><td style="padding: 8px 12px; text-align: right;">₹41,429</td><td style="padding: 8px 12px; text-align: right; font-weight: bold;">₹69,029</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size: 11.5px; color: #475569; margin: 6px 0 0 0;">
+          Base case = approximately 1,000 utility messages and 200 marketing messages per month. The quotation budgets ₹3,500/year for Meta usage (rounded), rather than promising a fixed Meta subscription. Messaging is usage-based and may be billed monthly.
+        </p>
+      </div>
+
+      <!-- 6. Direct Meta API vs. third-party WhatsApp provider -->
+      <div style="margin-bottom: 28px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 800; color: #0f172a;">6. Direct Meta API vs. third-party WhatsApp provider</h3>
+        <p style="margin: 0 0 8px 0; font-size: 12px; color: #334155; line-height: 1.5;">
+          The proposed budget assumes direct Meta Cloud API integration with no added BSP/SaaS subscription. If the school selects a business solution provider, shared inbox, campaign SaaS or chatbot vendor, that provider may add monthly platform charges and/or markups on Meta message rates. Those optional fees are not included.
+        </p>
+        <p style="margin: 0; font-size: 11px; color: #64748b; line-height: 1.4;">
+          <strong>Conditions for activation:</strong> The school must have an eligible Meta business account, verified/approved business assets where required, a compatible WhatsApp sender number, an active billing method, accepted message templates, appropriate recipient opt-in, and an approved messaging use case. Meta approval and throughput are not guaranteed.
+        </p>
+      </div>
+
+      <!-- 7. Infrastructure scaling — annual budget bands -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">7. Infrastructure scaling — annual budget bands</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; border: 1px solid #cbd5e1; text-align: center;">
+          <thead>
+            <tr style="background: #0f172a; color: #ffffff;">
+              <th style="padding: 9px 10px; text-align: left;">Scenario</th>
+              <th style="padding: 9px 10px;">VPS/year</th>
+              <th style="padding: 9px 10px;">MongoDB/year</th>
+              <th style="padding: 9px 10px;">Domain + storage/year</th>
+              <th style="padding: 9px 10px; background: #1e293b;">Infrastructure/year (excl. WhatsApp)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0; text-align: center;"><td style="padding: 8px 10px; text-align: left; font-weight: bold;">Starting</td><td>₹12k–15k</td><td>₹9k–12k</td><td>₹4k–6k</td><td style="font-weight: bold; background: #f8fafc;">₹25k–33k</td></tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc; text-align: center;"><td style="padding: 8px 10px; text-align: left; font-weight: bold;">Growing</td><td>₹15k–30k</td><td>₹12k–36k</td><td>₹5k–12k</td><td style="font-weight: bold; background: #edf2f7;">₹32k–78k</td></tr>
+            <tr style="text-align: center;"><td style="padding: 8px 10px; text-align: left; font-weight: bold;">High usage</td><td>₹30k–60k+</td><td>₹65k–90k+</td><td>₹8k–25k+</td><td style="font-weight: bold; background: #f8fafc;">₹103k–175k+</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size: 11.5px; color: #475569; margin: 6px 0 0 0;">
+          Add actual annual Meta messaging cost from Section 5 to the applicable infrastructure scenario. WhatsApp usage grows with the number and category of delivered messages, not directly with website visitor traffic. Higher traffic may separately require more VPS capacity, database resources, storage or caching.
+        </p>
+      </div>
+
+      <!-- 8. MongoDB and domain pricing notes -->
+      <div style="margin-bottom: 28px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 800; color: #0f172a;">8. MongoDB and domain pricing notes</h3>
+        <p style="margin: 0 0 8px 0; font-size: 12px; color: #334155; line-height: 1.5;">
+          MongoDB Atlas M0 Free is available for limited testing. Atlas Flex typically costs about USD 8–30/month (USD 96–360/year), depending on use. Dedicated clusters cost more; an M10-class baseline may start around USD 720/year before data transfer, backups and regional variations. The quotation sets aside ₹10,000/year for initial MongoDB usage, which is not a fixed guaranteed vendor rate.
+        </p>
+        <p style="margin: 0; font-size: 12px; color: #334155; line-height: 1.5;">
+          For a .com domain, the proposal budgets ₹1,800 for registration and ₹2,200/year for renewal. Actual price depends on registrar, available domain name, taxes and currency. VPS estimates are planning allowances: promotional hosting prices may require multi-year prepayment, and renewals can differ from introductory offers.
+        </p>
+      </div>
+
+      <!-- 9. Commercial summary -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">9. Commercial summary</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+          <thead>
+            <tr style="background: #0f172a; color: #ffffff; text-align: left;">
+              <th style="padding: 10px 14px; width: 140px;">Period</th>
+              <th style="padding: 10px 14px; width: 160px;">Estimate (INR)</th>
+              <th style="padding: 10px 14px;">Composition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+              <td style="padding: 11px 14px; font-weight: bold;">Year 1</td>
+              <td style="padding: 11px 14px; font-weight: 800; font-size: 15px; color: #0f172a;">${sym}${grandTotalY1.toLocaleString('en-IN')}</td>
+              <td style="padding: 11px 14px; color: #334155;">Website ${sym}${Number(websiteDevFee).toLocaleString('en-IN')} + WhatsApp integration ${sym}${Number(waIntegrationFee).toLocaleString('en-IN')} + hosting/domain/DB/backup ${sym}${(totalOperatingY1 - Number(whatsappAllowance)).toLocaleString('en-IN')} + Meta usage ${sym}${Number(whatsappAllowance).toLocaleString('en-IN')}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+              <td style="padding: 11px 14px; font-weight: bold;">Year 2 onward</td>
+              <td style="padding: 11px 14px; font-weight: 800; font-size: 15px; color: #0f172a;">${sym}${grandTotalRenewal.toLocaleString('en-IN')} / year</td>
+              <td style="padding: 11px 14px; color: #334155;">VPS/domain/DB/backup renewal ${sym}${(grandTotalRenewal - Number(whatsappRenewal)).toLocaleString('en-IN')} + Meta usage ${sym}${Number(whatsappRenewal).toLocaleString('en-IN')}</td>
+            </tr>
+            <tr style="background: #ffffff;">
+              <td style="padding: 11px 14px; font-weight: bold;">Higher usage</td>
+              <td style="padding: 11px 14px; font-weight: bold; color: #64748b;">Variable</td>
+              <td style="padding: 11px 14px; color: #64748b;">Infrastructure upgrades + additional WhatsApp messages</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 11.5px; color: #64748b; margin: 8px 0 0 0; line-height: 1.5;">
+          All figures exclude applicable GST and vendor-specific charges. The ${sym}${Number(waIntegrationFee).toLocaleString('en-IN')} integration amount is a proposed additional development allowance, subject to agreement; the original ${sym}${Number(websiteDevFee).toLocaleString('en-IN')} website quote is unchanged. Recurring support, content production, paid emails/SMS, unrelated ERP features and vendor SaaS subscriptions are excluded.
+        </p>
+      </div>
+
+      <!-- 10. Public pricing references -->
+      <div style="margin-bottom: 28px; background: #f1f5f9; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="margin: 0 0 8px 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase;">
+          10. Public pricing references (checked 03 November 2026)
+        </h3>
+        <ul style="margin: 0; padding-left: 18px; font-size: 11.5px; color: #3b82f6; line-height: 1.6;">
+          <li><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/" style="color: #2563eb; text-decoration: none;">Meta WhatsApp Pricing Documentation</a></li>
+          <li><a href="https://www.mongodb.com/docs/atlas/billing/atlas-flex-costs/" style="color: #2563eb; text-decoration: none;">MongoDB Atlas Flex Pricing &amp; Billing</a></li>
+          <li><a href="https://www.hostinger.com/in/vps-hosting" style="color: #2563eb; text-decoration: none;">Hostinger VPS Cloud Hosting Plans</a></li>
+          <li><a href="https://www.namecheap.com/support/knowledgebase/article.aspx/10840/2201/com-price-change-november-1-2026/" style="color: #2563eb; text-decoration: none;">Namecheap .COM Registry Price Updates</a></li>
+          <li><a href="https://botsense.io/whatsapp-api-pricing-india/" style="color: #2563eb; text-decoration: none;">India WhatsApp Cloud API Rate Index</a></li>
+        </ul>
+        <div style="margin-top: 10px; font-size: 11px; color: #64748b;">
+          Prepared for: <strong>${clientCompany || clientName}</strong> | Proposal date: ${quoteDate}
         </div>
       </div>
 
-      <!-- Grand Total Investment Box -->
-      <div style="background: #1a1818; color: #ffffff; border-radius: 12px; padding: 22px 24px; margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-          <span style="font-size: 16px; font-weight: bold;">Initial Project Investment (${duration})</span>
-          <span style="font-size: 30px; font-weight: 800; color: #e8a87c;">${sym}${Number(grandTotal).toLocaleString('en-IN')}</span>
-        </div>
-      </div>
-
-      <!-- Notes / Terms -->
-      ${notes ? `
-        <div style="background: #ffffff; border: 1px solid #e0deda; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;">
-          <h4 style="margin: 0 0 6px 0; font-size: 13px; text-transform: uppercase; color: #6b5c5c;">Notes &amp; Delivery Terms:</h4>
-          <p style="margin: 0; font-size: 13px; line-height: 1.6; white-space: pre-wrap;">${notes}</p>
-        </div>
-      ` : ''}
-
-      <!-- Contact & Action Footer -->
-      <div style="border-top: 1px solid #e0deda; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <!-- Footer Contact -->
+      <div style="border-top: 2px solid #0f172a; padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <div>
-          <p style="margin: 0; font-weight: bold; font-size: 14px;">Neeraj Rawat</p>
-          <p style="margin: 2px 0 0 0; font-size: 12px; color: #6b5c5c;">
-            Direct WhatsApp / Phone: <a href="https://wa.me/918708167959" style="color: #1a1818; font-weight: bold; text-decoration: none;">+91 87081 67959</a><br>
-            Website: <a href="https://neerajrawat.dev" style="color: #6b5c5c;">neerajrawat.dev</a>
+          <p style="margin: 0; font-weight: 800; font-size: 15px; color: #0f172a;">Neeraj Rawat</p>
+          <p style="margin: 2px 0 0 0; font-size: 12px; color: #475569;">
+            Dhani Tech · Direct WhatsApp / Call: <a href="https://wa.me/918708167959" style="color: #0f172a; font-weight: bold; text-decoration: none;">+91 87081 67959</a><br>
+            Official Website: <a href="https://neerajrawat.dev" style="color: #2563eb; text-decoration: none;">neerajrawat.dev</a>
           </p>
         </div>
         <div>
-          <a href="https://wa.me/918708167959?text=${encodeURIComponent(`Hi Neeraj, I have reviewed Quotation #${quoteNumber || ''} for ${clientName}${clientCompany ? ' (' + clientCompany + ')' : ''} (${sym}${Number(grandTotal).toLocaleString('en-IN')}). Let's proceed.`)}" 
-             style="display: inline-block; background: #25D366; color: #ffffff; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold;">
+          <a href="https://wa.me/918708167959?text=${encodeURIComponent(`Hi Neeraj, I have reviewed the Commercial Proposal #${quoteNumber || ''} for ${clientCompany || clientName} (${sym}${grandTotalY1.toLocaleString('en-IN')} Year 1 / ${sym}${grandTotalRenewal.toLocaleString('en-IN')} renewal). Let's proceed.`)}" 
+             style="display: inline-block; background: #25D366; color: #ffffff; padding: 11px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700;">
             Accept &amp; Chat on WhatsApp →
           </a>
         </div>
@@ -351,7 +405,7 @@ module.exports = async (req, res) => {
         to: clientEmail.trim(),
         cc: settings.smtpUser.trim(), // Keep Neeraj in CC for record
         replyTo: settings.smtpUser.trim(),
-        subject: `📄 Project Quotation #${quoteNumber || 'QT'} for ${clientName}${clientCompany ? ' (' + clientCompany + ')' : ''} — Dhani Tech`,
+        subject: `📄 Commercial Proposal & Quotation #${quoteNumber || 'QT'} for ${clientCompany ? clientCompany + ' (' + clientName + ')' : clientName} — Dhani Tech`,
         html: emailHtml
       });
 

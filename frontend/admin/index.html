@@ -936,48 +936,37 @@
         <input type="text" id="setFromName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
       </div>
 
-      <!-- Cloud Provider & Infrastructure Pricing -->
+      <!-- Annual Operating Costs (As per Gurukulam Proposal PDF) -->
       <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
-        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">🌐 Cloud Infrastructure &amp; Service Provider Pricing (Annual ₹)</h3>
-        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Standard rates used to calculate client quotations and multi-year renewals automatically.</p>
+        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">🌐 Annual Operating Budget Standard Rates (₹ / yr)</h3>
+        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Standard infrastructure rates based on the official Gurukulam Proposal PDF (Year 1 vs. Year 2 Renewal).</p>
         
         <div class="quote-grid-2">
           <div class="modal-field">
-            <label class="modal-label">Hostinger Web / Cloud Hosting (₹ / yr)</label>
-            <input type="number" id="setHostingerPrice" class="auth-input" value="4500" min="0" />
+            <label class="modal-label">VPS Hosting (Year 1 / Renewal)</label>
+            <div style="display:flex; gap:8px;">
+              <input type="number" id="setVpsY1Price" class="auth-input" value="12000" placeholder="Year 1: 12000" />
+              <input type="number" id="setVpsRenewalPrice" class="auth-input" value="15000" placeholder="Renewal: 15000" />
+            </div>
           </div>
           <div class="modal-field">
-            <label class="modal-label">Dedicated VPS Cloud Server (₹ / yr)</label>
-            <input type="number" id="setVpsPrice" class="auth-input" value="14000" min="0" />
+            <label class="modal-label">.com Domain (Year 1 / Renewal)</label>
+            <div style="display:flex; gap:8px;">
+              <input type="number" id="setDomainY1Price" class="auth-input" value="1800" placeholder="Year 1: 1800" />
+              <input type="number" id="setDomainRenewalPrice" class="auth-input" value="2200" placeholder="Renewal: 2200" />
+            </div>
           </div>
           <div class="modal-field">
-            <label class="modal-label">Custom Domain (.com / .in / .dev) (₹ / yr)</label>
-            <input type="number" id="setDomainPrice" class="auth-input" value="999" min="0" />
+            <label class="modal-label">MongoDB Atlas Flex Database (₹ / yr)</label>
+            <input type="number" id="setMongoDbPrice" class="auth-input" value="10000" min="0" />
           </div>
           <div class="modal-field">
-            <label class="modal-label">MongoDB Atlas Cloud Database (₹ / yr)</label>
-            <input type="number" id="setMongoDbPrice" class="auth-input" value="7500" min="0" />
+            <label class="modal-label">Cloud Backup &amp; Storage Reserve (₹ / yr)</label>
+            <input type="number" id="setBackupPrice" class="auth-input" value="3000" min="0" />
           </div>
           <div class="modal-field">
-            <label class="modal-label">Business Email / Google Workspace (₹ / yr)</label>
-            <input type="number" id="setBusinessEmailPrice" class="auth-input" value="2500" min="0" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Data Scaling Slabs (डेटा स्केलिंग स्लैब्स) -->
-      <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
-        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">📊 Data &amp; Storage Scaling Slabs (डेटा स्केलिंग स्लैब्स)</h3>
-        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Incremental costs when student or user database scales over Year 1, Year 2, and Year 3.</p>
-        
-        <div class="quote-grid-2">
-          <div class="modal-field">
-            <label class="modal-label">Growth Tier (+₹ / yr) [1GB–10GB / 2500 Students]</label>
-            <input type="number" id="setTierGrowthPrice" class="auth-input" value="3500" min="0" />
-          </div>
-          <div class="modal-field">
-            <label class="modal-label">Enterprise Tier (+₹ / yr) [10GB–50GB+ / 10000+ Students]</label>
-            <input type="number" id="setTierEnterprisePrice" class="auth-input" value="9500" min="0" />
+            <label class="modal-label">Meta WhatsApp Messaging Allowance (₹ / yr)</label>
+            <input type="number" id="setWaAllowancePrice" class="auth-input" value="3500" min="0" />
           </div>
         </div>
       </div>
@@ -1062,49 +1051,59 @@
 
       <!-- Add / Edit Product Form -->
       <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; margin: 16px 0;">
-        <h3 id="prodFormTitle" style="font-size:14px; font-weight:700; color:#fff; margin-bottom:12px;">➕ Add New Digital Product</h3>
+        <h3 id="prodFormTitle" style="font-size:14px; font-weight:700; color:#fff; margin-bottom:12px;">➕ Add New Digital Product / File</h3>
         <input type="hidden" id="adminProdId" value="" />
         
         <div class="quote-grid-2">
           <div class="modal-field">
-            <label class="modal-label">Product Title / Software Name *</label>
-            <input type="text" id="adminProdTitle" class="auth-input" placeholder="e.g. EduDhani — Complete School ERP" required />
+            <label class="modal-label">Product Title / Digital File Name *</label>
+            <input type="text" id="adminProdTitle" class="auth-input" placeholder="e.g. Automated GST Billing &amp; Tax Ledger Excel Sheet" required />
           </div>
           <div class="modal-field">
             <label class="modal-label">Category *</label>
-            <input type="text" id="adminProdCategory" class="auth-input" placeholder="e.g. SaaS Software, Mobile Applications, API &amp; Automation" required />
+            <select id="adminProdCategory" class="auth-input">
+              <option value="Excel Sheets">📊 Excel Sheets</option>
+              <option value="Digital Files">📁 Digital Files &amp; Bundles</option>
+              <option value="Templates &amp; Docs">📄 Templates &amp; Documents</option>
+              <option value="Code &amp; Scripts">💻 Code &amp; Web Scripts</option>
+            </select>
           </div>
         </div>
 
         <div class="quote-grid-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
           <div class="modal-field">
             <label class="modal-label">Price (₹ INR) *</label>
-            <input type="number" id="adminProdPrice" class="auth-input" placeholder="65000" min="0" required />
+            <input type="number" id="adminProdPrice" class="auth-input" placeholder="499" min="0" required />
           </div>
           <div class="modal-field">
-            <label class="modal-label">Pricing Period / License</label>
-            <input type="text" id="adminProdPeriod" class="auth-input" value="One-Time License" placeholder="One-Time License / Per Year" />
+            <label class="modal-label">File Format / Extension</label>
+            <input type="text" id="adminProdFormat" class="auth-input" value="Microsoft Excel (.xlsx)" placeholder="e.g. .xlsx, .zip, .pdf, Canva Link" />
           </div>
           <div class="modal-field">
             <label class="modal-label">Badge Tag</label>
-            <input type="text" id="adminProdBadge" class="auth-input" value="Popular" placeholder="Flagship ERP, Mobile App, Automation" />
+            <input type="text" id="adminProdBadge" class="auth-input" value="Best Seller" placeholder="e.g. Best Seller, Excel Sheet, Popular, New" />
           </div>
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Download URL / File Link (Delivered to customer upon payment)</label>
+          <input type="url" id="adminProdDownloadUrl" class="auth-input" placeholder="https://drive.google.com/your-download-file-link" />
         </div>
 
         <div class="modal-field" style="margin-top:10px;">
           <label class="modal-label">Product Description</label>
-          <textarea id="adminProdDesc" class="auth-input" rows="2" placeholder="Brief summary of what the software does, who it is for, and key deliverables."></textarea>
+          <textarea id="adminProdDesc" class="auth-input" rows="2" placeholder="Brief summary of the digital spreadsheet, file contents, and how it helps the customer."></textarea>
         </div>
 
         <div class="modal-field" style="margin-top:10px;">
-          <label class="modal-label">Features List (1 per line)</label>
-          <textarea id="adminProdFeatures" class="auth-input" rows="3" placeholder="Automated Fee Receipts via WhatsApp&#10;CBSE Marksheet Generation&#10;Android &amp; iOS Parent App&#10;Daily Cloud Database Backups"></textarea>
+          <label class="modal-label">Features / Contents (1 per line)</label>
+          <textarea id="adminProdFeatures" class="auth-input" rows="3" placeholder="Automated GST Tax Calculation&#10;Client Payment Ledger &amp; Balance Sheet&#10;One-Click PDF Invoice Export&#10;Instant Download with Lifetime Access"></textarea>
         </div>
 
         <div class="quote-grid-2" style="margin-top:10px;">
           <div class="modal-field">
-            <label class="modal-label">Live Demo / Product URL</label>
-            <input type="url" id="adminProdDemoUrl" class="auth-input" placeholder="https://neerajrawat.dev/work" />
+            <label class="modal-label">Preview / Demo URL (Optional)</label>
+            <input type="url" id="adminProdDemoUrl" class="auth-input" placeholder="https://neerajrawat.dev" />
           </div>
           <div class="modal-field">
             <label class="modal-label">Publish Status</label>
@@ -1152,37 +1151,35 @@
     </div>
   </div>
 
-  <!-- 5. COMMERCIAL QUOTATION & PROPOSAL GENERATOR MODAL -->
+  <!-- 5. COMMERCIAL QUOTATION & PROPOSAL GENERATOR MODAL (GURUKULAM PDF EXACT STRUCTURE) -->
   <div class="modal-backdrop" id="quoteModalBackdrop" style="display:none;">
-    <div class="modal quote-modal">
+    <div class="modal quote-modal" style="max-width:920px; max-height:92vh; overflow-y:auto;">
       <div class="modal-header">
-        <h2 class="modal-title">📄 Commercial Proposal &amp; Quotation Generator</h2>
+        <div>
+          <h2 class="modal-title">📄 Commercial Proposal &amp; Quotation Generator</h2>
+          <p style="font-size:12px; color:var(--fg-muted); margin:4px 0 0 0;">Configured to the exact 10-section Gurukulam School annual cost proposal structure.</p>
+        </div>
         <button class="btn-close" id="quoteCloseBtn">✕</button>
       </div>
 
-      <div class="modal-consent-badge">
-        <span>⚡</span>
-        <span>Auto-computes Developer Fee, Hostinger / VPS / Domain / MongoDB infrastructure costs, Multi-Year Renewals, and Data Scaling tiers.</span>
-      </div>
-
-      <!-- Client & Business Profile -->
+      <!-- Client & Institution Information -->
       <div class="quote-section">
         <div class="quote-section-title">
-          <span>👤 Client &amp; Business Information</span>
-          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Appears on official quotation header</span>
+          <span>👤 Client &amp; Institution Profile</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Proposal header information</span>
         </div>
         <div class="quote-grid-2">
           <div class="modal-field">
             <label class="modal-label">Client / Contact Person Name *</label>
-            <input type="text" id="qClientName" class="auth-input" placeholder="e.g., Rajesh Sharma" required />
+            <input type="text" id="qClientName" class="auth-input" placeholder="e.g. Principal / Director" required />
           </div>
           <div class="modal-field">
-            <label class="modal-label">Business / School / Organization Name</label>
-            <input type="text" id="qClientCompany" class="auth-input" placeholder="e.g., Saint Paul Senior Secondary School" />
+            <label class="modal-label">School / Institution / Business Name *</label>
+            <input type="text" id="qClientCompany" class="auth-input" placeholder="e.g. Gurukulam Senior Secondary School" required />
           </div>
           <div class="modal-field">
             <label class="modal-label">Client Email Address *</label>
-            <input type="email" id="qClientEmail" class="auth-input" placeholder="client@institution.com" required />
+            <input type="email" id="qClientEmail" class="auth-input" placeholder="contact@gurukulam.edu.in" required />
           </div>
           <div class="modal-field">
             <label class="modal-label">Client Mobile / WhatsApp</label>
@@ -1191,163 +1188,124 @@
         </div>
       </div>
 
-      <!-- Scope Duration & Base Engineering Fee -->
+      <!-- Section 1: One-Time Development & Integration -->
       <div class="quote-section">
         <div class="quote-section-title">
-          <span>🛠️ Project Scope, Term &amp; Developer Fee</span>
-          <span style="font-size:11px; color:var(--accent); text-transform:none;">Developer fee is charged ONLY once (Year 1)</span>
+          <span>1. One-time development &amp; integration</span>
+          <span style="font-size:11px; color:var(--accent); text-transform:none;">One-time implementation fee</span>
         </div>
         <div class="quote-grid-2">
           <div class="modal-field">
-            <label class="modal-label">Deployment Term / Duration</label>
-            <select id="qDuration" class="auth-input" onchange="calculateQuoteTotals()">
-              <option value="1 Year" selected>1 Year Deployment (Annual Contract)</option>
-              <option value="2 Years">2 Years Deployment (Multi-Year Contract)</option>
-              <option value="3 Years">3 Years Enterprise Deployment (Long-Term SLA)</option>
-            </select>
+            <label class="modal-label">School Website + Complete Admin CMS Dashboard (₹)</label>
+            <input type="number" id="qWebsiteDevFee" class="auth-input" value="50000" min="0" oninput="calculateQuoteTotals()" />
+            <span style="font-size:11px; color:var(--fg-muted);">Home, About, Admissions, Academics, Facilities, Gallery, News, Events, Forms, SEO, Admin login.</span>
           </div>
           <div class="modal-field">
-            <label class="modal-label">Currency</label>
-            <select id="qCurrency" class="auth-input" onchange="calculateQuoteTotals()">
-              <option value="INR" selected>₹ INR (Indian Rupee)</option>
-              <option value="USD">$ USD (US Dollar)</option>
-            </select>
+            <label class="modal-label">WhatsApp Cloud API Integration Allowance (₹)</label>
+            <input type="number" id="qWaIntegrationFee" class="auth-input" value="8000" min="0" oninput="calculateQuoteTotals()" />
+            <span style="font-size:11px; color:var(--fg-muted);">Meta business setup, template integration, admissions enquiry acknowledgement &amp; webhooks.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: First-Year Annual Operating Budget -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>2. First-year annual operating budget</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Infrastructure planning budget</span>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
+          <div class="modal-field">
+            <label class="modal-label">VPS Hosting (App + API)</label>
+            <input type="number" id="qVpsFee" class="auth-input" value="12000" min="0" oninput="calculateQuoteTotals()" />
           </div>
           <div class="modal-field">
-            <label class="modal-label">Custom Development &amp; Setup Fee *</label>
-            <input type="number" id="qDevFee" class="auth-input" value="25000" min="0" oninput="calculateQuoteTotals()" />
+            <label class="modal-label">.com Domain Registration</label>
+            <input type="number" id="qDomainFee" class="auth-input" value="1800" min="0" oninput="calculateQuoteTotals()" />
           </div>
           <div class="modal-field">
-            <label class="modal-label">Development Scope Title</label>
-            <input type="text" id="qDevTitle" class="auth-input" value="Full-Stack Web Application / ERP Engineering" />
+            <label class="modal-label">MongoDB Atlas Flex DB</label>
+            <input type="number" id="qMongoDbFee" class="auth-input" value="10000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Backup / Cloud Storage</label>
+            <input type="number" id="qBackupFee" class="auth-input" value="3000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Meta WhatsApp Messaging</label>
+            <input type="number" id="qWaMessagingFee" class="auth-input" value="3500" min="0" oninput="calculateQuoteTotals()" />
           </div>
         </div>
       </div>
 
-      <!-- Cloud Infrastructure & Services -->
+      <!-- Section 3: Second-Year Onward — Annual Renewal -->
       <div class="quote-section">
         <div class="quote-section-title">
-          <span>🌐 Cloud Infrastructure &amp; Service Providers</span>
-          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Select services required for client</span>
+          <span>3. Second-year onward — annual renewal</span>
+          <span style="font-size:11px; color:var(--green); text-transform:none;">✅ ₹0 Website &amp; WhatsApp dev fees repeated</span>
         </div>
-        <div>
-          <div class="quote-check-row">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="chkHostinger" checked onchange="calculateQuoteTotals()" />
-              <span>Hostinger Web / Cloud Hosting (Standard Managed Cloud Server)</span>
-            </label>
-            <div style="font-weight:700;"><span id="priceHostinger">₹4,500</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
+          <div class="modal-field">
+            <label class="modal-label">VPS Renewal (₹/yr)</label>
+            <input type="number" id="qVpsRenewal" class="auth-input" value="15000" min="0" oninput="calculateQuoteTotals()" />
           </div>
-          <div class="quote-check-row">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="chkVps" onchange="calculateQuoteTotals()" />
-              <span>Dedicated VPS High-Performance Cloud Server</span>
-            </label>
-            <div style="font-weight:700;"><span id="priceVps">₹14,000</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          <div class="modal-field">
+            <label class="modal-label">Domain Renewal (₹/yr)</label>
+            <input type="number" id="qDomainRenewal" class="auth-input" value="2200" min="0" oninput="calculateQuoteTotals()" />
           </div>
-          <div class="quote-check-row">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="chkDomain" checked onchange="calculateQuoteTotals()" />
-              <span>Custom Domain Name (.com / .in / .dev registration &amp; DNS)</span>
-            </label>
-            <div style="font-weight:700;"><span id="priceDomain">₹999</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          <div class="modal-field">
+            <label class="modal-label">MongoDB (₹/yr)</label>
+            <input type="number" id="qMongoDbRenewal" class="auth-input" value="10000" min="0" oninput="calculateQuoteTotals()" />
           </div>
-          <div class="quote-check-row">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="chkMongoDb" checked onchange="calculateQuoteTotals()" />
-              <span>MongoDB Atlas Cloud Database (Managed Replica Set &amp; Backups)</span>
-            </label>
-            <div style="font-weight:700;"><span id="priceMongoDb">₹7,500</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          <div class="modal-field">
+            <label class="modal-label">Backups (₹/yr)</label>
+            <input type="number" id="qBackupRenewal" class="auth-input" value="3000" min="0" oninput="calculateQuoteTotals()" />
           </div>
-          <div class="quote-check-row">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="chkBusinessEmail" checked onchange="calculateQuoteTotals()" />
-              <span>Business Email / Google Workspace Suite</span>
-            </label>
-            <div style="font-weight:700;"><span id="priceBusinessEmail">₹2,500</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          <div class="modal-field">
+            <label class="modal-label">WhatsApp (₹/yr)</label>
+            <input type="number" id="qWaRenewal" class="auth-input" value="3500" min="0" oninput="calculateQuoteTotals()" />
           </div>
         </div>
       </div>
 
-      <!-- Data Scaling Slabs (डेटा स्केलिंग स्लैब्स) -->
-      <div class="quote-section">
-        <div class="quote-section-title">
-          <span>📊 Data &amp; Storage Scaling Slabs (डेटा स्केलिंग स्लैब्स)</span>
-          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Multi-year storage &amp; capacity forecast</span>
-        </div>
-        <div class="quote-tier-grid" id="dataTierGrid">
-          <div class="quote-tier-card selected" id="tierCard-starter" onclick="selectDataTier('starter')">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <span style="font-weight:700; font-size:13px; color:#fff;">Starter Slab</span>
-              <span style="font-size:11px; color:var(--accent); font-weight:700;">Included</span>
-            </div>
-            <div style="font-size:11px; color:var(--fg-muted); line-height:1.4;">Up to 1 GB Storage<br>~500 Students / Records</div>
-            <div style="font-size:12px; font-weight:700; color:#fff; margin-top:6px;">₹0 / yr extra</div>
-          </div>
-
-          <div class="quote-tier-card" id="tierCard-growth" onclick="selectDataTier('growth')">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <span style="font-weight:700; font-size:13px; color:#fff;">Growth Slab</span>
-              <span style="font-size:11px; color:var(--yellow); font-weight:700;">Popular</span>
-            </div>
-            <div style="font-size:11px; color:var(--fg-muted); line-height:1.4;">1 GB – 10 GB Storage<br>~2,500 Students / Records</div>
-            <div style="font-size:12px; font-weight:700; color:#fff; margin-top:6px;">+<span id="labelTierGrowth">₹3,500</span> / yr</div>
-          </div>
-
-          <div class="quote-tier-card" id="tierCard-enterprise" onclick="selectDataTier('enterprise')">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <span style="font-weight:700; font-size:13px; color:#fff;">Enterprise Slab</span>
-              <span style="font-size:11px; color:var(--blue); font-weight:700;">High Volume</span>
-            </div>
-            <div style="font-size:11px; color:var(--fg-muted); line-height:1.4;">10 GB – 50 GB+ Storage<br>10,000+ Students / Records</div>
-            <div style="font-size:12px; font-weight:700; color:#fff; margin-top:6px;">+<span id="labelTierEnterprise">₹9,500</span> / yr</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Digital Products & Software Addons -->
-      <div class="quote-section">
-        <div class="quote-section-title">
-          <span>📦 Digital Products &amp; Software Licenses</span>
-          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Add turnkey modules to proposal</span>
-        </div>
-        <div id="qProductsList">
-          <!-- Populated from products catalog -->
-        </div>
-      </div>
-
-      <!-- Real-Time Commercial Breakdown (Year 1 vs Year 2 vs Year 3) -->
+      <!-- Real-Time Commercial Summary Cards (Gurukulam Section 9) -->
       <div class="quote-breakdown-box">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="margin:0; font-size:15px; font-weight:700; color:#fff;">📈 Commercial Investment Breakdown</h3>
-          <span style="background:rgba(0,210,106,0.15); color:var(--accent); font-size:12px; font-weight:700; padding:3px 10px; border-radius:999px;">Transparent Multi-Year Pricing</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="margin:0; font-size:15px; font-weight:700; color:#fff;">📈 9. Commercial Summary</h3>
+          <span style="background:rgba(0,210,106,0.15); color:var(--accent); font-size:12px; font-weight:700; padding:3px 10px; border-radius:999px;">Transparent Breakdown</span>
         </div>
 
-        <div class="quote-years-grid">
-          <div class="quote-year-card highlight">
-            <div style="font-size:11px; color:var(--accent); font-weight:700; text-transform:uppercase;">Year 1 Initial Investment</div>
-            <div style="font-size:22px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear1">₹0</div>
-            <div style="font-size:11px; color:var(--fg-muted);">Dev Fee + 1st Year Cloud Infra + Product Licenses</div>
+        <div class="quote-years-grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
+          <div class="quote-year-card highlight" style="padding:16px;">
+            <div style="font-size:12px; color:var(--accent); font-weight:700; text-transform:uppercase;">Year 1 Initial Investment</div>
+            <div style="font-size:26px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear1">₹88,300</div>
+            <div style="font-size:11px; color:var(--fg-muted);" id="compYear1">₹58,000 Implementation + ₹30,300 Running</div>
           </div>
 
-          <div class="quote-year-card">
-            <div style="font-size:11px; color:var(--yellow); font-weight:700; text-transform:uppercase;">Year 2 Renewal (Cloud Only)</div>
-            <div style="font-size:20px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear2">₹0</div>
-            <div style="font-size:11px; color:var(--green); font-weight:600;">✅ ₹0 Dev Fee charged</div>
-          </div>
-
-          <div class="quote-year-card">
-            <div style="font-size:11px; color:var(--blue); font-weight:700; text-transform:uppercase;">Year 3 Renewal (Cloud Only)</div>
-            <div style="font-size:20px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear3">₹0</div>
-            <div style="font-size:11px; color:var(--fg-muted);">Domain + Cloud + SLA Maintenance</div>
+          <div class="quote-year-card" style="padding:16px;">
+            <div style="font-size:12px; color:var(--yellow); font-weight:700; text-transform:uppercase;">Year 2 Onward Renewal</div>
+            <div style="font-size:26px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear2">₹33,700 / yr</div>
+            <div style="font-size:11px; color:var(--green); font-weight:600;">✅ One-time development fees ₹58,000 NOT repeated</div>
           </div>
         </div>
       </div>
 
-      <div id="quoteFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm); margin-top:8px;"></div>
+      <!-- Section 4 & 5 & 7 Reference Preview -->
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px; margin-top:14px; font-size:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-weight:700; color:#fff;">💬 Section 4: Meta WhatsApp Pricing for India (01 Oct 2026)</span>
+          <span style="color:var(--accent);">Utility: ₹0.1150 · Auth: ₹0.1150 · Marketing: ₹0.8631</span>
+        </div>
+        <div style="color:var(--fg-muted); line-height:1.5;">
+          <strong>Section 5 Messaging Scenarios:</strong> Small (₹1,007) · Base (12k utility + 2.4k marketing: ~₹3,500) · Growing (₹17,257) · Large (₹69,029)<br>
+          <strong>Section 7 Scaling Bands:</strong> Starting (₹25k–33k) · Growing (₹32k–78k) · High usage (₹103k–175k+)
+        </div>
+      </div>
+
+      <div id="quoteFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm); margin-top:12px;"></div>
 
       <!-- Action Buttons -->
-      <div class="modal-footer" style="justify-content:space-between; flex-wrap:wrap; gap:8px;">
+      <div class="modal-footer" style="justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:16px;">
         <button type="button" class="btn-secondary" onclick="printQuotation()" title="Print or save PDF proposal">
           🖨️ Print / Save PDF
         </button>
@@ -1357,7 +1315,7 @@
           </button>
           <button type="button" class="btn-secondary" id="quoteCancelBtn">Cancel</button>
           <button type="button" class="auth-btn" id="sendQuoteBtn" style="padding:9px 22px; background:var(--accent); color:#000; font-weight:700;">
-            ✉️ Send Email to Client
+            ✉️ Send Official Proposal Email
           </button>
         </div>
       </div>
@@ -2021,11 +1979,14 @@
           <tr>
             <td>
               <div style="font-weight:700; color:#fff;">${escapeHtml(p.title || p.name)}</div>
-              ${p.badge ? `<span style="background:rgba(232,168,124,0.15); color:var(--accent); font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; text-transform:uppercase;">${escapeHtml(p.badge)}</span>` : ''}
+              <div style="display:flex; gap:6px; margin-top:2px;">
+                ${p.fileFormat ? `<span style="background:rgba(255,255,255,0.08); font-size:10px; color:#bbb; padding:1px 5px; border-radius:3px;">${escapeHtml(p.fileFormat)}</span>` : ''}
+                ${p.badge ? `<span style="background:rgba(232,168,124,0.15); color:var(--accent); font-size:10px; font-weight:700; padding:1px 5px; border-radius:3px; text-transform:uppercase;">${escapeHtml(p.badge)}</span>` : ''}
+              </div>
             </td>
-            <td><span style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.category || 'Software')}</span></td>
+            <td><span style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.category || 'Excel Sheets')}</span></td>
             <td style="font-weight:700; color:var(--green);">₹${(p.price || 0).toLocaleString('en-IN')}</td>
-            <td style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.period || 'One-Time License')}</td>
+            <td style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.period || 'Instant Download')}</td>
             <td>
               <span style="display:inline-block; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; ${isActive ? 'background:rgba(74,222,128,0.15); color:#4ade80;' : 'background:rgba(255,255,255,0.08); color:#aaa;'}">
                 ${isActive ? '🟢 Active' : '⏸️ Draft'}
@@ -2045,15 +2006,16 @@
     function resetProductForm() {
       document.getElementById('adminProdId').value = '';
       document.getElementById('adminProdTitle').value = '';
-      document.getElementById('adminProdCategory').value = 'SaaS Software';
+      document.getElementById('adminProdCategory').value = 'Excel Sheets';
       document.getElementById('adminProdPrice').value = '';
-      document.getElementById('adminProdPeriod').value = 'One-Time License';
-      document.getElementById('adminProdBadge').value = 'Popular';
+      document.getElementById('adminProdFormat').value = 'Microsoft Excel (.xlsx)';
+      document.getElementById('adminProdBadge').value = 'Best Seller';
+      document.getElementById('adminProdDownloadUrl').value = '';
       document.getElementById('adminProdDesc').value = '';
       document.getElementById('adminProdFeatures').value = '';
       document.getElementById('adminProdDemoUrl').value = '';
       document.getElementById('adminProdStatus').value = 'Active';
-      document.getElementById('prodFormTitle').textContent = '➕ Add New Digital Product';
+      document.getElementById('prodFormTitle').textContent = '➕ Add New Digital Product / File';
       document.getElementById('adminProdSaveBtn').textContent = 'Save Product';
       document.getElementById('adminProdCancelEditBtn').style.display = 'none';
     }
@@ -2063,15 +2025,16 @@
       if (!prod) return;
       document.getElementById('adminProdId').value = prod.id;
       document.getElementById('adminProdTitle').value = prod.title || prod.name || '';
-      document.getElementById('adminProdCategory').value = prod.category || 'SaaS Software';
+      document.getElementById('adminProdCategory').value = prod.category || 'Excel Sheets';
       document.getElementById('adminProdPrice').value = prod.price || 0;
-      document.getElementById('adminProdPeriod').value = prod.period || 'One-Time License';
+      document.getElementById('adminProdFormat').value = prod.fileFormat || 'Microsoft Excel (.xlsx)';
       document.getElementById('adminProdBadge').value = prod.badge || '';
+      document.getElementById('adminProdDownloadUrl').value = prod.downloadUrl || '';
       document.getElementById('adminProdDesc').value = prod.desc || '';
       document.getElementById('adminProdFeatures').value = Array.isArray(prod.features) ? prod.features.join('\n') : (prod.features || '');
       document.getElementById('adminProdDemoUrl').value = prod.demoUrl || '';
       document.getElementById('adminProdStatus').value = prod.status || 'Active';
-      document.getElementById('prodFormTitle').textContent = '✏️ Edit Digital Product: ' + (prod.title || prod.name);
+      document.getElementById('prodFormTitle').textContent = '✏️ Edit: ' + (prod.title || prod.name);
       document.getElementById('adminProdSaveBtn').textContent = 'Update Product';
       document.getElementById('adminProdCancelEditBtn').style.display = 'inline-block';
       document.getElementById('adminProdTitle').focus();
@@ -2088,8 +2051,9 @@
         const title = document.getElementById('adminProdTitle').value.trim();
         const category = document.getElementById('adminProdCategory').value.trim();
         const price = parseFloat(document.getElementById('adminProdPrice').value) || 0;
-        const period = document.getElementById('adminProdPeriod').value.trim();
+        const fileFormat = document.getElementById('adminProdFormat').value.trim();
         const badge = document.getElementById('adminProdBadge').value.trim();
+        const downloadUrl = document.getElementById('adminProdDownloadUrl').value.trim();
         const desc = document.getElementById('adminProdDesc').value.trim();
         const featuresText = document.getElementById('adminProdFeatures').value.trim();
         const demoUrl = document.getElementById('adminProdDemoUrl').value.trim();
@@ -2108,8 +2072,8 @@
         try {
           const method = id ? 'PATCH' : 'POST';
           const payload = id
-            ? { id, title, category, price, period, badge, desc, features, demoUrl, status }
-            : { title, category, price, period, badge, desc, features, demoUrl, status };
+            ? { id, title, category, price, period: 'Instant Download', fileFormat, badge, downloadUrl, desc, features, demoUrl, status }
+            : { title, category, price, period: 'Instant Download', fileFormat, badge, downloadUrl, desc, features, demoUrl, status };
 
           const res = await fetch('/api/products', {
             method,
@@ -2164,7 +2128,7 @@
       document.getElementById('refreshAdminProdsBtn').onclick = loadAdminProductsList;
     }
 
-    // ============ QUOTATION BUILDER & COMMERCIAL ENGINE ============
+    // ============ COMMERCIAL PROPOSAL BUILDER (EXACT GURUKULAM PDF MATH) ============
     const quoteModalBackdrop = document.getElementById('quoteModalBackdrop');
     const openQuoteBtn = document.getElementById('openQuoteBtn');
     const quoteCloseBtn = document.getElementById('quoteCloseBtn');
@@ -2173,101 +2137,49 @@
     const quoteFeedback = document.getElementById('quoteFeedback');
 
     let currentQuoteLeadId = null;
-    let selectedDataTier = 'starter';
-    let availableProducts = [
-      { id: 'prod_school_erp', name: 'EduDhani School ERP & Institution Portal', priceYearly: 48000, desc: 'Admissions, Fee Collection, Attendance & WhatsApp Engine' },
-      { id: 'prod_mobile_app', name: 'Dedicated Mobile App Suite (Android & iOS)', priceYearly: 24000, desc: 'Push Alerts, Fee Pay, Homework & Live Tracking' },
-      { id: 'prod_wa_engine', name: 'Automated WhatsApp Notification Bot', priceYearly: 12000, desc: 'Official Cloud API automated alerts & 2-way bot' },
-      { id: 'prod_pg_module', name: 'Smart Payment Gateway & Reconciliation Kit', priceYearly: 8000, desc: 'Razorpay / Cashfree instant settlement & auto GST' },
-      { id: 'prod_amc_support', name: 'Annual Cloud Maintenance & Priority AMC Support', priceYearly: 18000, desc: 'Weekly cloud DB backups, SSL & 2-hour emergency SLA' }
-    ];
-
-    function selectDataTier(tier) {
-      selectedDataTier = tier;
-      document.querySelectorAll('.quote-tier-card').forEach(el => el.classList.remove('selected'));
-      const activeCard = document.getElementById('tierCard-' + tier);
-      if (activeCard) activeCard.classList.add('selected');
-      calculateQuoteTotals();
-    }
-
-    function renderProductsForQuote() {
-      const wrap = document.getElementById('qProductsList');
-      if (!wrap) return;
-      const sym = (document.getElementById('qCurrency')?.value === 'USD') ? '$' : '₹';
-      wrap.innerHTML = availableProducts.map(p => `
-        <div class="quote-check-row">
-          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <input type="checkbox" class="chk-quote-prod" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-price="${p.priceYearly}" onchange="calculateQuoteTotals()" />
-            <div>
-              <div style="font-weight:600; color:#fff;">${escapeHtml(p.name)}</div>
-              <div style="font-size:11px; color:var(--fg-muted);">${escapeHtml(p.desc || '')}</div>
-            </div>
-          </label>
-          <div style="font-weight:700; white-space:nowrap;">
-            ${sym}${(p.priceYearly || 0).toLocaleString()} <span style="font-size:11px; color:var(--fg-muted);">/ yr</span>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    async function loadProductsCatalogForQuote() {
-      renderProductsForQuote();
-      try {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        if (data && data.success && Array.isArray(data.products) && data.products.length > 0) {
-          availableProducts = data.products;
-          renderProductsForQuote();
-        }
-      } catch(e) {}
-    }
 
     function calculateQuoteTotals() {
-      const sym = (document.getElementById('qCurrency')?.value === 'USD') ? '$' : '₹';
-      const devFee = parseFloat(document.getElementById('qDevFee')?.value) || 0;
-      
-      const hostingerPrice = parseFloat(document.getElementById('setHostingerPrice')?.value) || 4500;
-      const vpsPrice = parseFloat(document.getElementById('setVpsPrice')?.value) || 14000;
-      const domainPrice = parseFloat(document.getElementById('setDomainPrice')?.value) || 999;
-      const mongodbPrice = parseFloat(document.getElementById('setMongoDbPrice')?.value) || 7500;
-      const emailPrice = parseFloat(document.getElementById('setBusinessEmailPrice')?.value) || 2500;
+      const websiteDev = parseFloat(document.getElementById('qWebsiteDevFee')?.value) || 50000;
+      const waIntegration = parseFloat(document.getElementById('qWaIntegrationFee')?.value) || 8000;
+      const totalOneTime = websiteDev + waIntegration;
 
-      let totalInfra = 0;
-      if (document.getElementById('chkHostinger')?.checked) totalInfra += hostingerPrice;
-      if (document.getElementById('chkVps')?.checked) totalInfra += vpsPrice;
-      if (document.getElementById('chkDomain')?.checked) totalInfra += domainPrice;
-      if (document.getElementById('chkMongoDb')?.checked) totalInfra += mongodbPrice;
-      if (document.getElementById('chkBusinessEmail')?.checked) totalInfra += emailPrice;
+      const vps = parseFloat(document.getElementById('qVpsFee')?.value) || 12000;
+      const domain = parseFloat(document.getElementById('qDomainFee')?.value) || 1800;
+      const mongodb = parseFloat(document.getElementById('qMongoDbFee')?.value) || 10000;
+      const backup = parseFloat(document.getElementById('qBackupFee')?.value) || 3000;
+      const waMsg = parseFloat(document.getElementById('qWaMessagingFee')?.value) || 3500;
+      const totalOperatingY1 = vps + domain + mongodb + backup + waMsg;
 
-      let dataTierCost = 0;
-      if (selectedDataTier === 'growth') {
-        dataTierCost = parseFloat(document.getElementById('setTierGrowthPrice')?.value) || 3500;
-      } else if (selectedDataTier === 'enterprise') {
-        dataTierCost = parseFloat(document.getElementById('setTierEnterprisePrice')?.value) || 9500;
-      }
+      const vpsRen = parseFloat(document.getElementById('qVpsRenewal')?.value) || 15000;
+      const domainRen = parseFloat(document.getElementById('qDomainRenewal')?.value) || 2200;
+      const mongodbRen = parseFloat(document.getElementById('qMongoDbRenewal')?.value) || 10000;
+      const backupRen = parseFloat(document.getElementById('qBackupRenewal')?.value) || 3000;
+      const waRen = parseFloat(document.getElementById('qWaRenewal')?.value) || 3500;
+      const totalRenewal = vpsRen + domainRen + mongodbRen + backupRen + waRen;
 
-      let totalProducts = 0;
-      document.querySelectorAll('.chk-quote-prod:checked').forEach(cb => {
-        totalProducts += parseFloat(cb.dataset.price) || 0;
-      });
+      const grandTotalY1 = totalOneTime + totalOperatingY1;
 
-      const year1Total = devFee + totalInfra + dataTierCost + totalProducts;
-      const year2Renewal = totalInfra + dataTierCost;
-      const year3Renewal = totalInfra + dataTierCost;
-
-      if (document.getElementById('sumYear1')) document.getElementById('sumYear1').textContent = sym + year1Total.toLocaleString('en-IN');
-      if (document.getElementById('sumYear2')) document.getElementById('sumYear2').textContent = sym + year2Renewal.toLocaleString('en-IN');
-      if (document.getElementById('sumYear3')) document.getElementById('sumYear3').textContent = sym + year3Renewal.toLocaleString('en-IN');
+      if (document.getElementById('sumYear1')) document.getElementById('sumYear1').textContent = '₹' + grandTotalY1.toLocaleString('en-IN');
+      if (document.getElementById('compYear1')) document.getElementById('compYear1').textContent = `₹${totalOneTime.toLocaleString('en-IN')} Implementation + ₹${totalOperatingY1.toLocaleString('en-IN')} Running`;
+      if (document.getElementById('sumYear2')) document.getElementById('sumYear2').textContent = '₹' + totalRenewal.toLocaleString('en-IN') + ' / yr';
 
       return {
-        devFee,
-        totalInfra,
-        dataTierCost,
-        totalProducts,
-        year1Total,
-        year2Renewal,
-        year3Renewal,
-        currencySym: sym
+        totalOneTime,
+        totalOperatingY1,
+        grandTotalY1,
+        totalRenewal,
+        websiteDev,
+        waIntegration,
+        vps,
+        domain,
+        mongodb,
+        backup,
+        waMsg,
+        vpsRen,
+        domainRen,
+        mongodbRen,
+        backupRen,
+        waRen
       };
     }
 
@@ -2279,8 +2191,6 @@
       document.getElementById('qClientEmail').value = lead ? (lead.email || '') : '';
       document.getElementById('qClientMobile').value = lead ? (lead.mobile || '') : '';
       
-      loadAdminSettings();
-      loadProductsCatalogForQuote();
       calculateQuoteTotals();
       quoteModalBackdrop.style.display = 'flex';
     }
@@ -2300,6 +2210,103 @@
 
     async function sendQuotationEmail() {
       const clientName = document.getElementById('qClientName').value.trim();
+      const clientCompany = document.getElementById('qClientCompany').value.trim();
+      const clientEmail = document.getElementById('qClientEmail').value.trim();
+      const clientMobile = document.getElementById('qClientMobile').value.trim();
+
+      if (!clientName || !clientEmail) {
+        alert('Client Name और Email आवश्यक हैं!');
+        return;
+      }
+
+      const totals = calculateQuoteTotals();
+      const token = getToken();
+
+      sendQuoteBtn.disabled = true;
+      sendQuoteBtn.textContent = 'Sending Proposal…';
+      quoteFeedback.style.display = 'block';
+      quoteFeedback.style.background = 'rgba(232, 168, 124, 0.12)';
+      quoteFeedback.style.color = 'var(--accent)';
+      quoteFeedback.textContent = 'Compiling 10-Section Gurukulam Proposal and dispatching via Gmail SMTP…';
+
+      try {
+        const res = await fetch('/api/admin/quotation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            leadId: currentQuoteLeadId,
+            clientName,
+            clientCompany,
+            clientEmail,
+            clientMobile,
+            websiteDevFee: totals.websiteDev,
+            waIntegrationFee: totals.waIntegration,
+            vpsFee: totals.vps,
+            domainFee: totals.domain,
+            mongodbFee: totals.mongodb,
+            backupFee: totals.backup,
+            whatsappAllowance: totals.waMsg,
+            vpsRenewal: totals.vpsRen,
+            domainRenewal: totals.domainRen,
+            mongodbRenewal: totals.mongodbRen,
+            backupRenewal: totals.backupRen,
+            whatsappRenewal: totals.waRen
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          quoteFeedback.style.background = 'rgba(74, 222, 128, 0.12)';
+          quoteFeedback.style.color = 'var(--green)';
+          quoteFeedback.textContent = '✅ ' + data.message;
+          alert('✅ ' + data.message);
+          setTimeout(closeQuoteModal, 1500);
+          fetchLeads();
+        } else {
+          quoteFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+          quoteFeedback.style.color = 'var(--red)';
+          quoteFeedback.textContent = '❌ ' + (data.error || 'Failed to dispatch proposal email.');
+        }
+      } catch (err) {
+        quoteFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+        quoteFeedback.style.color = 'var(--red)';
+        quoteFeedback.textContent = '❌ Network Error: ' + err.message;
+      } finally {
+        sendQuoteBtn.disabled = false;
+        sendQuoteBtn.textContent = '✉️ Send Official Proposal Email';
+      }
+    }
+
+    if (sendQuoteBtn) sendQuoteBtn.onclick = sendQuotationEmail;
+
+    function shareQuotationWhatsApp() {
+      const clientName = document.getElementById('qClientName').value.trim() || 'Client';
+      const clientCompany = document.getElementById('qClientCompany').value.trim();
+      const clientMobile = (document.getElementById('qClientMobile').value || '').replace(/[^0-9]/g, '');
+      const totals = calculateQuoteTotals();
+
+      let msg = `*📄 Commercial Proposal & Cost Breakdown*\n`;
+      msg += `*For:* ${clientCompany || clientName}\n`;
+      msg += `*By:* Neeraj Rawat | Dhani Tech\n\n`;
+      msg += `*1. One-time Implementation:* ₹${totals.totalOneTime.toLocaleString('en-IN')}\n`;
+      msg += `   • Website + Admin CMS: ₹${totals.websiteDev.toLocaleString('en-IN')}\n`;
+      msg += `   • WhatsApp Cloud API Allowance: ₹${totals.waIntegration.toLocaleString('en-IN')}\n\n`;
+      msg += `*2. First-Year Operating Cost:* ₹${totals.totalOperatingY1.toLocaleString('en-IN')}\n`;
+      msg += `   • VPS, Domain, MongoDB Flex, Cloud Backups & Meta WhatsApp\n\n`;
+      msg += `*💰 Year 1 Total Investment:* ₹${totals.grandTotalY1.toLocaleString('en-IN')}\n`;
+      msg += `*🔄 Year 2 Onward Renewal:* ₹${totals.totalRenewal.toLocaleString('en-IN')} / year\n`;
+      msg += `_(Note: One-time dev fees are NOT charged in renewals)_\n\n`;
+      msg += `Detailed 10-section PDF proposal has been sent to your email. Let's connect to get started! 🚀`;
+
+      const targetMobile = clientMobile || '918708167959';
+      window.open(`https://wa.me/${targetMobile}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function printQuotation() {
+      window.print();
+    }
       const clientCompany = document.getElementById('qClientCompany').value.trim();
       const clientEmail = document.getElementById('qClientEmail').value.trim();
       const clientMobile = document.getElementById('qClientMobile').value.trim();

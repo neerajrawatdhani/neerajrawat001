@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
   // POST: Add new digital product
   if (req.method === 'POST') {
     const body = req.body || {};
-    const { title, category, price, period, badge, desc, features = [], demoUrl } = body;
+    const { title, category, price, period, badge, desc, fileFormat, downloadUrl, features = [], demoUrl } = body;
 
     if (!title || !price) {
       return res.status(400).json({ success: false, error: 'Product Title और Price आवश्यक हैं।' });
@@ -53,12 +53,14 @@ module.exports = async (req, res) => {
     const newProd = {
       id: 'prod_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
       title: title.trim(),
-      category: (category || 'Digital Product').trim(),
+      category: (category || 'Excel Sheets').trim(),
+      fileFormat: (fileFormat || 'Microsoft Excel (.xlsx)').trim(),
       price: Number(price) || 0,
       currency: 'INR',
-      period: (period || 'One-Time License').trim(),
-      badge: (badge || 'New').trim(),
+      period: (period || 'Instant Download').trim(),
+      badge: (badge || 'Digital File').trim(),
       desc: (desc || '').trim(),
+      downloadUrl: (downloadUrl || '').trim(),
       features: Array.isArray(features) ? features : (features ? features.split('\n').filter(Boolean) : []),
       demoUrl: (demoUrl || '').trim(),
       status: 'Active',
