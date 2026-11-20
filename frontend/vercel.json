@@ -1,5 +1,4 @@
 {
-  "cleanUrls": true,
   "redirects": [
     {
       "source": "/admin",
@@ -23,7 +22,7 @@
       "has": [
         { "type": "host", "value": "admin.neerajrawat.dev" }
       ],
-      "source": "/(fonts|card|vendor)/(.*)",
+      "source": "/(card|fonts|vendor)/(.*)",
       "destination": "/$1/$2"
     },
     {

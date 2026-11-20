@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true,
   "redirects": [
     {
       "source": "/admin",
@@ -32,14 +31,14 @@
         { "type": "host", "value": "admin.neerajrawat.dev" }
       ],
       "source": "/",
-      "destination": "/frontend/admin/index.html"
+      "destination": "/admin/index.html"
     },
     {
       "has": [
         { "type": "host", "value": "admin.neerajrawat.dev" }
       ],
       "source": "/(.*)",
-      "destination": "/frontend/admin/index.html"
+      "destination": "/admin/index.html"
     },
     { "source": "/robots.txt", "destination": "/frontend/robots.txt" },
     { "source": "/photographer", "destination": "/frontend/photographer/index.html" },

@@ -1,0 +1,2448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Admin Panel — Neeraj Rawat | Dhani Tech</title>
+  <link rel="preload" href="/fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <style>
+    @font-face {
+      font-family: 'Onest';
+      font-style: normal;
+      font-weight: 100 900;
+      src: url(/fonts/onest-latin.woff2) format('woff2');
+    }
+    :root {
+      --bg: #0C0B0B;
+      --surface: #141313;
+      --surface-2: #1D1B1B;
+      --surface-3: #262424;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: #C4B0B0;
+      --fg: #E8E4E0;
+      --fg-muted: #9E9292;
+      --accent: #E8A87C;
+      --accent-glow: rgba(232, 168, 124, 0.15);
+      --green: #4ADE80;
+      --green-bg: rgba(74, 222, 128, 0.12);
+      --blue: #60A5FA;
+      --blue-bg: rgba(96, 165, 250, 0.12);
+      --yellow: #FBBF24;
+      --yellow-bg: rgba(251, 191, 36, 0.12);
+      --purple: #C084FC;
+      --purple-bg: rgba(192, 132, 252, 0.12);
+      --red: #F87171;
+      --red-bg: rgba(248, 113, 113, 0.12);
+      --wa-color: #25D366;
+      --wa-bg: rgba(37, 211, 102, 0.12);
+      --font: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Login & Auth Screen */
+    .auth-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      background: radial-gradient(circle at 50% 30%, #201D1D 0%, #0C0B0B 70%);
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    .auth-logo {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 18px;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: var(--accent);
+    }
+    .auth-card h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .auth-card p { font-size: 14px; color: var(--fg-muted); margin-bottom: 22px; }
+    .auth-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+    .auth-label { font-size: 12px; color: var(--fg-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; display: block; }
+    .auth-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .auth-input:focus { border-color: var(--border-focus); }
+    .auth-btn {
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity .2s, transform .1s;
+    }
+    .auth-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .auth-err {
+      color: var(--red);
+      font-size: 13px;
+      text-align: center;
+      display: none;
+      margin-top: 4px;
+    }
+    .auth-success {
+      color: var(--green);
+      font-size: 13px;
+      text-align: center;
+      display: none;
+      margin-top: 4px;
+    }
+
+    /* Main Dashboard Layout */
+    .app { display: none; min-height: 100vh; flex-direction: column; }
+    .header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(12, 11, 11, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-in {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--fg); }
+    .brand-badge {
+      background: var(--accent-glow);
+      border: 1px solid rgba(232, 168, 124, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .brand-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-secondary {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: var(--surface-3); }
+
+    /* Dashboard Container */
+    .container {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Workflow Pipeline Bar */
+    .pipeline-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pipeline-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .pipeline-header h2 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .pipeline-header p { font-size: 13px; color: var(--fg-muted); }
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      position: relative;
+    }
+    .pipe-step {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+    }
+    .pipe-step:hover {
+      background: var(--surface-3);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+    .pipe-step.active {
+      border-color: var(--accent);
+      background: rgba(232, 168, 124, 0.08);
+    }
+    .pipe-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pipe-name { font-size: 14px; font-weight: 700; }
+    .pipe-desc { font-size: 12px; color: var(--fg-muted); line-height: 1.3; }
+    .pipe-count {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--border);
+    }
+    .kpi-card.highlight::before { background: var(--accent); }
+    .kpi-card.followup::before { background: var(--yellow); }
+    .kpi-card.won::before { background: var(--green); }
+    .kpi-card.channel::before { background: var(--wa-color); }
+    .kpi-label { font-size: 13px; color: var(--fg-muted); font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+    .kpi-val { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin: 8px 0 4px; }
+    .kpi-meta { font-size: 12px; color: var(--fg-muted); display: flex; align-items: center; gap: 6px; }
+    .badge-green { color: var(--green); background: var(--green-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+    .badge-yellow { color: var(--yellow); background: var(--yellow-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+    .badge-wa { color: var(--wa-color); background: var(--wa-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+
+    /* Alert Banner */
+    .alert-banner {
+      background: linear-gradient(90deg, rgba(251, 191, 36, 0.12) 0%, rgba(20, 19, 19, 0.6) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .alert-info { display: flex; align-items: center; gap: 12px; }
+    .alert-icon { font-size: 24px; }
+    .alert-text h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; color: #FFF; }
+    .alert-text p { font-size: 13px; color: var(--fg-muted); }
+
+    /* Table Toolbar */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .toolbar {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex: 1; max-width: 680px; flex-wrap: wrap; }
+    .search-input {
+      flex: 1;
+      min-width: 220px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--border-focus); }
+    .filter-select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+    }
+    .toolbar-right { display: flex; align-items: center; gap: 10px; }
+
+    /* Leads Table */
+    .table-wrap { overflow-x: auto; width: 100%; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+    th {
+      background: var(--surface-2);
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg-muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .client-title { font-weight: 700; color: var(--fg); font-size: 14px; }
+    .client-sub { font-size: 12px; color: var(--fg-muted); display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .channel-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .channel-wa { background: var(--wa-bg); color: var(--wa-color); }
+    .channel-email { background: var(--blue-bg); color: var(--blue); }
+    .budget-pill {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-glow);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(232, 168, 124, 0.25);
+    }
+    .service-tag {
+      font-weight: 600;
+      color: var(--fg);
+      font-size: 13px;
+    }
+    .scope-snippet {
+      font-size: 12px;
+      color: var(--fg-muted);
+      max-width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .contact-link {
+      color: var(--fg-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .contact-link:hover { color: var(--fg); }
+
+    /* Pipeline Status Dropdown */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      outline: none;
+      background: var(--surface-2);
+    }
+    .status-New { background: var(--yellow-bg); color: var(--yellow); border-color: rgba(251, 191, 36, 0.3); }
+    .status-Contacted { background: var(--blue-bg); color: var(--blue); border-color: rgba(96, 165, 250, 0.3); }
+    .status-Proposal { background: var(--purple-bg); color: var(--purple); border-color: rgba(192, 132, 252, 0.3); }
+    .status-Won { background: var(--green-bg); color: var(--green); border-color: rgba(74, 222, 128, 0.3); }
+    .status-Lost { background: var(--red-bg); color: var(--red); border-color: rgba(248, 113, 113, 0.3); }
+
+    /* Action Buttons */
+    .actions { display: flex; align-items: center; gap: 6px; }
+    .btn-icon {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+      font-size: 14px;
+    }
+    .btn-icon:hover { background: var(--surface-3); border-color: var(--border-focus); }
+    .btn-icon.wa:hover { color: var(--wa-color); border-color: var(--wa-color); background: var(--wa-bg); }
+
+    /* Modals Backdrop */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal {
+      width: 100%;
+      max-width: 640px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.85);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+    .modal-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: var(--fg-muted);
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .btn-close:hover { color: var(--fg); }
+
+    .modal-dossier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+    }
+    .dossier-item { display: flex; flex-direction: column; gap: 2px; }
+    .dossier-lbl { font-size: 11px; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; }
+    .dossier-val { font-size: 13px; font-weight: 600; color: var(--fg); }
+
+    .modal-msg {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 14px;
+      color: var(--fg);
+      max-height: 120px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; }
+    .modal-label { font-size: 12px; color: var(--fg-muted); text-transform: uppercase; font-weight: 700; }
+    .modal-textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: inherit;
+      min-height: 80px;
+      resize: vertical;
+      outline: none;
+    }
+    .modal-textarea:focus { border-color: var(--border-focus); }
+    .modal-consent-badge {
+      background: rgba(74, 222, 128, 0.08);
+      border: 1px solid rgba(74, 222, 128, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 14px; }
+
+    /* Quotation Builder Styles */
+    .quote-modal { max-width: 880px; width: 100%; }
+    .quote-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .quote-section { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 4px; }
+    .quote-section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--fg); letter-spacing: 0.04em; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .quote-check-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+    .quote-check-row:last-child { border-bottom: none; }
+    .quote-tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+    .quote-tier-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; cursor: pointer; transition: all 0.2s; text-align: left; }
+    .quote-tier-card.selected { border-color: var(--accent); background: rgba(0, 210, 106, 0.05); }
+    .quote-breakdown-box { background: linear-gradient(135deg, rgba(0, 210, 106, 0.08), rgba(59, 130, 246, 0.08)); border: 1px solid rgba(0, 210, 106, 0.3); border-radius: var(--radius-sm); padding: 16px; margin-top: 10px; }
+    .quote-years-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+    .quote-year-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+    .quote-year-card.highlight { border-color: var(--accent); }
+    @media (max-width: 768px) {
+      .quote-grid-2, .quote-tier-grid, .quote-years-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. LOGIN SCREEN -->
+  <div class="auth-wrap" id="authScreen">
+    <div class="auth-card" id="loginCard">
+      <div class="auth-logo">🔒</div>
+      <h1>Super Admin Portal</h1>
+      <p>Log in with your official admin email &amp; password.</p>
+      
+      <form class="auth-form" id="loginForm">
+        <div>
+          <label class="auth-label">Admin Email</label>
+          <input type="email" id="emailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" required />
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label class="auth-label" style="margin-bottom:0;">Password</label>
+            <a href="#" id="forgotPassLink" style="font-size:12px; color:var(--accent); text-decoration:none;">Forgot Password?</a>
+          </div>
+          <input type="password" id="passInput" class="auth-input" style="margin-top:4px;" placeholder="Enter password" required autofocus />
+        </div>
+        <div class="auth-err" id="authErr">Invalid credentials. Please try again.</div>
+        <button type="submit" class="auth-btn" id="loginBtn">
+          Unlock Dashboard →
+        </button>
+      </form>
+    </div>
+
+    <!-- FORGOT PASSWORD CARD (OTP RECOVERY) -->
+    <div class="auth-card" id="forgotCard" style="display:none;">
+      <div class="auth-logo">🔐</div>
+      <h1>Password Recovery</h1>
+      <p>Recover your Super Admin password via email OTP.</p>
+
+      <!-- Step 1: Request OTP -->
+      <div id="otpStep1">
+        <form class="auth-form" id="reqOtpForm" onsubmit="event.preventDefault(); sendOtpBtn.click();">
+          <div>
+            <label class="auth-label">Enter Registered Admin Email</label>
+            <input type="email" id="recoveryEmailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" placeholder="e.g. neerajrawat001.bizz@gmail.com" required autofocus />
+            <span style="font-size:11px; color:var(--fg-muted); display:block; margin-top:4px;">An official 6-digit OTP will be sent to your Gmail inbox.</span>
+          </div>
+          <div class="auth-err" id="otpErr1"></div>
+          <button type="button" class="auth-btn" id="sendOtpBtn">
+            Send 6-Digit OTP to Email →
+          </button>
+          <div style="text-align:center; margin-top:10px;">
+            <a href="#" id="backToLoginLink1" style="color:var(--fg-muted); font-size:13px; text-decoration:none;">← Back to Login</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2: Verify OTP & Reset -->
+      <div id="otpStep2" style="display:none;">
+        <form class="auth-form" id="verifyOtpForm" onsubmit="event.preventDefault(); verifyOtpBtn.click();">
+          <div class="modal-consent-badge" style="margin-bottom:8px;">
+            <span>📬</span>
+            <span id="otpSentMsg">6-digit OTP sent to your email. Check inbox &amp; spam.</span>
+          </div>
+          <div>
+            <label class="auth-label">Enter 6-Digit OTP</label>
+            <input type="text" id="otpInput" class="auth-input" maxlength="6" placeholder="• • • • • •" style="letter-spacing:6px; font-size:20px; font-weight:700; text-align:center; font-family:monospace;" required autofocus />
+          </div>
+          <div>
+            <label class="auth-label">New Password</label>
+            <input type="password" id="newPassInput" class="auth-input" placeholder="Enter new password (min 4 characters)" required />
+          </div>
+          <div>
+            <label class="auth-label">Confirm New Password</label>
+            <input type="password" id="confirmPassInput" class="auth-input" placeholder="Re-enter new password" required />
+          </div>
+          <div class="auth-err" id="otpErr2"></div>
+          <div class="auth-success" id="otpSuccess2"></div>
+          <button type="button" class="auth-btn" id="verifyOtpBtn">
+            Verify OTP &amp; Set New Password →
+          </button>
+          <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:13px;">
+            <a href="#" id="resendOtpLink" style="color:var(--accent); text-decoration:none;">🔄 Resend OTP</a>
+            <a href="#" id="backToLoginLink2" style="color:var(--fg-muted); text-decoration:none;">← Back to Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DASHBOARD MAIN APP -->
+  <div class="app" id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-in">
+        <a href="/" class="brand">
+          <span class="brand-badge">Super Admin</span>
+          <span class="brand-title">Neeraj Rawat · Dhani Tech</span>
+        </a>
+        <div class="header-actions">
+          <button class="btn-primary" id="openQuoteBtn" style="background:var(--accent); color:#000; font-weight:700; border:none; padding:8px 15px; border-radius:var(--radius-sm); cursor:pointer;">📄 Create Quotation</button>
+          <button class="btn-secondary" id="manageProductsBtn">📦 Digital Products</button>
+          <button class="btn-secondary" id="settingsBtn">⚙️ Settings</button>
+          <a href="https://neerajrawat.dev" target="_blank" class="btn-secondary">Website ↗</a>
+          <button class="btn-secondary" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+
+      <!-- Pipeline Workflow Steps -->
+      <section class="pipeline-section">
+        <div class="pipeline-header">
+          <div>
+            <h2>⚡ Inbound Lead &amp; Deal Pipeline</h2>
+            <p>Directly synchronized with website contact modal &amp; WhatsApp inquiries.</p>
+          </div>
+          <button class="btn-secondary" onclick="filterByStep('All')">Clear Step Filter</button>
+        </div>
+
+        <div class="pipeline-steps">
+          <div class="pipe-step" id="step-new" onclick="filterByStep('New')">
+            <div class="pipe-tag">
+              <span style="color:var(--yellow)">Step 1 · Inbound</span>
+              <span class="pipe-count" id="count-new">0</span>
+            </div>
+            <div class="pipe-name">New Leads</div>
+            <div class="pipe-desc">Form / WhatsApp submission captured</div>
+          </div>
+
+          <div class="pipe-step" id="step-contacted" onclick="filterByStep('Contacted')">
+            <div class="pipe-tag">
+              <span style="color:var(--blue)">Step 2 · Outreach</span>
+              <span class="pipe-count" id="count-contacted">0</span>
+            </div>
+            <div class="pipe-name">Contacted</div>
+            <div class="pipe-desc">Requirements &amp; budget discussed</div>
+          </div>
+
+          <div class="pipe-step" id="step-demo" onclick="filterByStep('Demo')">
+            <div class="pipe-tag">
+              <span style="color:var(--purple)">Step 3 · Demo &amp; Call</span>
+              <span class="pipe-count" id="count-demo">0</span>
+            </div>
+            <div class="pipe-name">Demo / Discovery</div>
+            <div class="pipe-desc">Live School ERP or portfolio walkthrough</div>
+          </div>
+
+          <div class="pipe-step" id="step-proposal" onclick="filterByStep('Proposal Sent')">
+            <div class="pipe-tag">
+              <span style="color:var(--accent)">Step 4 · Commercial</span>
+              <span class="pipe-count" id="count-proposal">0</span>
+            </div>
+            <div class="pipe-name">Proposal Sent</div>
+            <div class="pipe-desc">Scope milestones &amp; quotation delivered</div>
+          </div>
+
+          <div class="pipe-step" id="step-won" onclick="filterByStep('Won')">
+            <div class="pipe-tag">
+              <span style="color:var(--green)">Step 5 · Closed</span>
+              <span class="pipe-count" id="count-won">0</span>
+            </div>
+            <div class="pipe-name">Won Deals</div>
+            <div class="pipe-desc">Advance received &amp; project started</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KPI Overview Cards -->
+      <section class="kpi-grid">
+        <div class="kpi-card highlight">
+          <span class="kpi-label">Total Inquiries <span class="badge-green" id="kpiNewCount">0 New</span></span>
+          <div class="kpi-val" id="kpiTotal">0</div>
+          <div class="kpi-meta">Captured from website contact form &amp; WhatsApp</div>
+        </div>
+
+        <div class="kpi-card followup">
+          <span class="kpi-label">Today's Follow-ups <span class="badge-yellow">Action Needed</span></span>
+          <div class="kpi-val" id="kpiTodayFollowups">0</div>
+          <div class="kpi-meta">Scheduled for call, WhatsApp, or demo today</div>
+        </div>
+
+        <div class="kpi-card channel">
+          <span class="kpi-label">Inquiry Channels <span class="badge-wa">Live Sync</span></span>
+          <div class="kpi-val" style="font-size:24px; margin: 12px 0 6px;" id="kpiChannels">💬 0 · ✉️ 0</div>
+          <div class="kpi-meta"><span id="kpiWaCount">0</span> WhatsApp · <span id="kpiMailCount">0</span> Email Form</div>
+        </div>
+
+        <div class="kpi-card won">
+          <span class="kpi-label">Conversion Rate <span class="badge-green" id="kpiWonCount">0 Won</span></span>
+          <div class="kpi-val" id="kpiConversion">0%</div>
+          <div class="kpi-meta">Win percentage of qualified client inquiries</div>
+        </div>
+      </section>
+
+      <!-- Today's Follow-up Priority Banner -->
+      <section class="alert-banner" id="followUpBanner" style="display:none;">
+        <div class="alert-info">
+          <div class="alert-icon">🔔</div>
+          <div class="alert-text">
+            <h3>Follow-up Due Today!</h3>
+            <p id="bannerText">You have clients scheduled for contact today.</p>
+          </div>
+        </div>
+        <button class="btn-secondary" onclick="filterByToday()">Show Today's Leads Only</button>
+      </section>
+
+      <!-- Leads Table Section -->
+      <section class="table-card">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search client name, mobile, email, country, service..." />
+            <select id="statusFilter" class="filter-select">
+              <option value="All">All Pipeline Stages</option>
+              <option value="New">🟡 Step 1: New Leads</option>
+              <option value="Contacted">🔵 Step 2: Contacted</option>
+              <option value="Demo">🟣 Step 3: Demo / Meeting</option>
+              <option value="Proposal Sent">🟠 Step 4: Proposal Sent</option>
+              <option value="Won">🟢 Step 5: Won Deals</option>
+              <option value="Lost">🔴 Cold / Lost</option>
+            </select>
+            <select id="channelFilter" class="filter-select">
+              <option value="All">All Channels</option>
+              <option value="WhatsApp">💬 WhatsApp</option>
+              <option value="Email">✉️ Email Form</option>
+            </select>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-secondary" id="exportBtn">📥 Export CSV</button>
+            <button class="btn-secondary" id="refreshBtn">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Client &amp; Country</th>
+                <th>Channel</th>
+                <th>Requested Service &amp; Scope</th>
+                <th>Budget Tier</th>
+                <th>Direct Contact</th>
+                <th>Pipeline Stage</th>
+                <th>Follow-up</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leadsTbody">
+              <tr>
+                <td colspan="8" style="text-align:center; padding: 40px; color: var(--fg-muted);">Loading inquiries...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 3. CLIENT DOSSIER & NOTES MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalClientName">Client Dossier</h2>
+        <button class="btn-close" id="modalCloseBtn">✕</button>
+      </div>
+
+      <!-- Verified Contact Form Dossier Grid -->
+      <div class="modal-dossier-grid">
+        <div class="dossier-item">
+          <span class="dossier-lbl">Client Name</span>
+          <span class="dossier-val" id="dossierName">—</span>
+        </div>
+        <div class="dossier-item">
+          <span class="dossier-lbl">Country / Origin</span>
+          <span class="dossier-val" id="dossierCountry">—</span>
+        </div>
+        <div class="dossier-item">
+          <span class="dossier-lbl">Mobile Number</span>
+          <span class="dossier-val" id="dossierPhone">—</span>
+        </div>
+        <div class="dossier-item">
+          <span class="dossier-lbl">Email Address</span>
+          <span class="dossier-val" id="dossierEmail">—</span>
+        </div>
+        <div class="dossier-item">
+          <span class="dossier-lbl">Inquiry Channel</span>
+          <span class="dossier-val" id="dossierChannel">—</span>
+        </div>
+        <div class="dossier-item">
+          <span class="dossier-lbl">Estimated Budget</span>
+          <span class="dossier-val" id="dossierBudget" style="color:var(--accent); font-weight:700;">—</span>
+        </div>
+      </div>
+
+      <!-- Project Scope -->
+      <div class="modal-field">
+        <span class="modal-label">Project Description &amp; Scope</span>
+        <div class="modal-msg" id="modalMessage"></div>
+      </div>
+
+      <!-- Privacy Consent Badge -->
+      <div class="modal-consent-badge">
+        <span>🛡️</span>
+        <span><strong>Privacy Consent Verified:</strong> Client confirmed details will not be shared with any third party.</span>
+      </div>
+
+      <!-- Pipeline Stage Selector -->
+      <div class="modal-field">
+        <span class="modal-label">Pipeline Stage</span>
+        <select id="modalStatusSelect" class="filter-select" style="width:100%;">
+          <option value="New">🟡 Step 1: New Lead</option>
+          <option value="Contacted">🔵 Step 2: Contacted / Requirements Discussed</option>
+          <option value="Demo">🟣 Step 3: Live Demo / Discovery Call Scheduled</option>
+          <option value="Proposal Sent">🟠 Step 4: Proposal / Commercial Quotation Sent</option>
+          <option value="Won">🟢 Step 5: Won / Deal Closed</option>
+          <option value="Lost">🔴 Cold / Inactive</option>
+        </select>
+      </div>
+
+      <!-- Follow-up Date -->
+      <div class="modal-field">
+        <span class="modal-label">Next Follow-up Date</span>
+        <input type="date" id="modalFollowUpInput" class="auth-input" />
+      </div>
+
+      <!-- Private Notes -->
+      <div class="modal-field">
+        <span class="modal-label">Private Discussion Notes &amp; Call Summary</span>
+        <textarea id="modalNotesTextarea" class="modal-textarea" placeholder="Add discussion points, agreed milestones, demo feedback, budget negotiation..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+        <button class="auth-btn" style="padding: 9px 20px;" id="modalSaveBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. SETTINGS & SMTP CONFIGURATION MODAL -->
+  <div class="modal-backdrop" id="settingsBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">⚙️ Settings &amp; Gmail SMTP Configuration</h2>
+        <button class="btn-close" id="settingsCloseBtn">✕</button>
+      </div>
+
+      <div class="modal-consent-badge">
+        <span>🔒</span>
+        <span>All emails to clients and admin alerts are sent through this verified Gmail SMTP account.</span>
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Gmail Address (SMTP User)</label>
+        <input type="email" id="setSmtpUser" class="auth-input" value="neerajrawat001.bizz@gmail.com" />
+      </div>
+
+      <div class="modal-field">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <label class="modal-label" style="margin-bottom:0;">Google App Password (16 Characters)</label>
+          <a href="https://myaccount.google.com/apppasswords" target="_blank" style="font-size:11px; color:var(--accent); text-decoration:none;">Generate App Password ↗</a>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:4px;">
+          <input type="password" id="setSmtpPass" class="auth-input" value="bkou vujw zshy bplp" placeholder="xxxx xxxx xxxx xxxx" />
+          <button type="button" class="btn-secondary" id="togglePassVisibility" title="Show/Hide">👁️</button>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Admin Notification Email (New Lead Alerts)</label>
+        <input type="email" id="setAdminEmail" class="auth-input" value="neerajrawat001.bizz@gmail.com" />
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Sender Display Name</label>
+        <input type="text" id="setFromName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
+      </div>
+
+      <!-- Annual Operating Costs (As per Gurukulam Proposal PDF) -->
+      <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
+        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">🌐 Annual Operating Budget Standard Rates (₹ / yr)</h3>
+        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Standard infrastructure rates based on the official Gurukulam Proposal PDF (Year 1 vs. Year 2 Renewal).</p>
+        
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">VPS Hosting (Year 1 / Renewal)</label>
+            <div style="display:flex; gap:8px;">
+              <input type="number" id="setVpsY1Price" class="auth-input" value="12000" placeholder="Year 1: 12000" />
+              <input type="number" id="setVpsRenewalPrice" class="auth-input" value="15000" placeholder="Renewal: 15000" />
+            </div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">.com Domain (Year 1 / Renewal)</label>
+            <div style="display:flex; gap:8px;">
+              <input type="number" id="setDomainY1Price" class="auth-input" value="1800" placeholder="Year 1: 1800" />
+              <input type="number" id="setDomainRenewalPrice" class="auth-input" value="2200" placeholder="Renewal: 2200" />
+            </div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">MongoDB Atlas Flex Database (₹ / yr)</label>
+            <input type="number" id="setMongoDbPrice" class="auth-input" value="10000" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Cloud Backup &amp; Storage Reserve (₹ / yr)</label>
+            <input type="number" id="setBackupPrice" class="auth-input" value="3000" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Meta WhatsApp Messaging Allowance (₹ / yr)</label>
+            <input type="number" id="setWaAllowancePrice" class="auth-input" value="3500" min="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Gateway Configuration (Test vs Live API Keys & UPI) -->
+      <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
+        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">💳 Payment Gateway Configuration (Razorpay / UPI)</h3>
+        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Configure Test and Live API keys for instant digital product checkouts on the website.</p>
+        
+        <div class="modal-field" style="margin-bottom:12px;">
+          <label class="modal-label">Payment Gateway Mode</label>
+          <select id="setPgMode" class="auth-input">
+            <option value="test">🧪 Test Mode (Sandbox / Testing)</option>
+            <option value="live">🟢 Live Production Mode (Real Customer Payments)</option>
+          </select>
+        </div>
+
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:700; color:var(--yellow); margin-bottom:8px;">🧪 Test API Keys (Razorpay Sandbox)</div>
+          <div class="quote-grid-2">
+            <div class="modal-field">
+              <label class="modal-label">Test Key ID</label>
+              <input type="text" id="setPgTestKeyId" class="auth-input" placeholder="rzp_test_xxxxxxxxxxxxxx" />
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Test Key Secret</label>
+              <input type="password" id="setPgTestKeySecret" class="auth-input" placeholder="Test Secret Key" />
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:700; color:var(--green); margin-bottom:8px;">🟢 Live API Keys (Razorpay Production)</div>
+          <div class="quote-grid-2">
+            <div class="modal-field">
+              <label class="modal-label">Live Key ID</label>
+              <input type="text" id="setPgLiveKeyId" class="auth-input" placeholder="rzp_live_xxxxxxxxxxxxxx" />
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Live Key Secret</label>
+              <input type="password" id="setPgLiveKeySecret" class="auth-input" placeholder="Live Secret Key" />
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Merchant UPI ID / VPA</label>
+            <input type="text" id="setPgUpiId" class="auth-input" value="8708167959@paytm" placeholder="e.g. 8708167959@paytm" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Payee Name Displayed on UPI</label>
+            <input type="text" id="setPgUpiName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
+          </div>
+        </div>
+      </div>
+
+      <div id="settingsFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm);"></div>
+
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button type="button" class="btn-secondary" id="testSmtpBtn">
+          ✉️ Send Test Email
+        </button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-secondary" id="settingsCancelBtn">Cancel</button>
+          <button class="auth-btn" style="padding: 9px 20px;" id="saveSettingsBtn">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4B. DIGITAL PRODUCTS & MARKETPLACE MANAGER MODAL -->
+  <div class="modal-backdrop" id="productsModalBackdrop" style="display:none;">
+    <div class="modal" style="max-width:860px; max-height:92vh; overflow-y:auto;">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">📦 Digital Products &amp; Software Catalog</h2>
+          <p style="font-size:12px; color:var(--fg-muted); margin:4px 0 0 0;">Manage SaaS software, licenses, and add-ons sold directly on the website with instant online payment.</p>
+        </div>
+        <button class="btn-close" id="productsCloseBtn">✕</button>
+      </div>
+
+      <!-- Add / Edit Product Form -->
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; margin: 16px 0;">
+        <h3 id="prodFormTitle" style="font-size:14px; font-weight:700; color:#fff; margin-bottom:12px;">➕ Add New Digital Product / File</h3>
+        <input type="hidden" id="adminProdId" value="" />
+        
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Product Title / Digital File Name *</label>
+            <input type="text" id="adminProdTitle" class="auth-input" placeholder="e.g. Automated GST Billing &amp; Tax Ledger Excel Sheet" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Category *</label>
+            <select id="adminProdCategory" class="auth-input">
+              <option value="Excel Sheets">📊 Excel Sheets</option>
+              <option value="Digital Files">📁 Digital Files &amp; Bundles</option>
+              <option value="Templates &amp; Docs">📄 Templates &amp; Documents</option>
+              <option value="Code &amp; Scripts">💻 Code &amp; Web Scripts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="quote-grid-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
+          <div class="modal-field">
+            <label class="modal-label">Price (₹ INR) *</label>
+            <input type="number" id="adminProdPrice" class="auth-input" placeholder="499" min="0" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">File Format / Extension</label>
+            <input type="text" id="adminProdFormat" class="auth-input" value="Microsoft Excel (.xlsx)" placeholder="e.g. .xlsx, .zip, .pdf, Canva Link" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Badge Tag</label>
+            <input type="text" id="adminProdBadge" class="auth-input" value="Best Seller" placeholder="e.g. Best Seller, Excel Sheet, Popular, New" />
+          </div>
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Download URL / File Link (Delivered to customer upon payment)</label>
+          <input type="url" id="adminProdDownloadUrl" class="auth-input" placeholder="https://drive.google.com/your-download-file-link" />
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Product Description</label>
+          <textarea id="adminProdDesc" class="auth-input" rows="2" placeholder="Brief summary of the digital spreadsheet, file contents, and how it helps the customer."></textarea>
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Features / Contents (1 per line)</label>
+          <textarea id="adminProdFeatures" class="auth-input" rows="3" placeholder="Automated GST Tax Calculation&#10;Client Payment Ledger &amp; Balance Sheet&#10;One-Click PDF Invoice Export&#10;Instant Download with Lifetime Access"></textarea>
+        </div>
+
+        <div class="quote-grid-2" style="margin-top:10px;">
+          <div class="modal-field">
+            <label class="modal-label">Preview / Demo URL (Optional)</label>
+            <input type="url" id="adminProdDemoUrl" class="auth-input" placeholder="https://neerajrawat.dev" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Publish Status</label>
+            <select id="adminProdStatus" class="auth-input">
+              <option value="Active">🟢 Active (Visible in Store)</option>
+              <option value="Draft">⏸️ Draft (Hidden from Store)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+          <button type="button" class="btn-secondary" id="adminProdCancelEditBtn" style="display:none;">Cancel Edit</button>
+          <button type="button" class="auth-btn" id="adminProdSaveBtn" style="padding:8px 20px;">Save Product</button>
+        </div>
+      </div>
+
+      <!-- Existing Products Table -->
+      <div style="margin-top:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="font-size:14px; font-weight:700; color:#fff; margin:0;">Active Products in Store (<span id="adminProdCount">0</span>)</h3>
+          <button class="btn-secondary" id="refreshAdminProdsBtn" style="padding:4px 10px; font-size:12px;">🔄 Refresh</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="leads-table" style="width:100%; font-size:13px;">
+            <thead>
+              <tr>
+                <th>Product &amp; Badge</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>License</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTbody">
+              <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--fg-muted);">Loading products…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top:20px; justify-content:flex-end;">
+        <button class="btn-secondary" id="productsCloseFooterBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. COMMERCIAL QUOTATION & PROPOSAL GENERATOR MODAL (GURUKULAM PDF EXACT STRUCTURE) -->
+  <div class="modal-backdrop" id="quoteModalBackdrop" style="display:none;">
+    <div class="modal quote-modal" style="max-width:920px; max-height:92vh; overflow-y:auto;">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">📄 Commercial Proposal &amp; Quotation Generator</h2>
+          <p style="font-size:12px; color:var(--fg-muted); margin:4px 0 0 0;">Configured to the exact 10-section Gurukulam School annual cost proposal structure.</p>
+        </div>
+        <button class="btn-close" id="quoteCloseBtn">✕</button>
+      </div>
+
+      <!-- Client & Institution Information -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>👤 Client &amp; Institution Profile</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Proposal header information</span>
+        </div>
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Client / Contact Person Name *</label>
+            <input type="text" id="qClientName" class="auth-input" placeholder="e.g. Principal / Director" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">School / Institution / Business Name *</label>
+            <input type="text" id="qClientCompany" class="auth-input" placeholder="e.g. Gurukulam Senior Secondary School" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Client Email Address *</label>
+            <input type="email" id="qClientEmail" class="auth-input" placeholder="contact@gurukulam.edu.in" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Client Mobile / WhatsApp</label>
+            <input type="tel" id="qClientMobile" class="auth-input" placeholder="+91 98765 43210" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 1: One-Time Development & Integration -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>1. One-time development &amp; integration</span>
+          <span style="font-size:11px; color:var(--accent); text-transform:none;">One-time implementation fee</span>
+        </div>
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">School Website + Complete Admin CMS Dashboard (₹)</label>
+            <input type="number" id="qWebsiteDevFee" class="auth-input" value="50000" min="0" oninput="calculateQuoteTotals()" />
+            <span style="font-size:11px; color:var(--fg-muted);">Home, About, Admissions, Academics, Facilities, Gallery, News, Events, Forms, SEO, Admin login.</span>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">WhatsApp Cloud API Integration Allowance (₹)</label>
+            <input type="number" id="qWaIntegrationFee" class="auth-input" value="8000" min="0" oninput="calculateQuoteTotals()" />
+            <span style="font-size:11px; color:var(--fg-muted);">Meta business setup, template integration, admissions enquiry acknowledgement &amp; webhooks.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: First-Year Annual Operating Budget -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>2. First-year annual operating budget</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Infrastructure planning budget</span>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
+          <div class="modal-field">
+            <label class="modal-label">VPS Hosting (App + API)</label>
+            <input type="number" id="qVpsFee" class="auth-input" value="12000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">.com Domain Registration</label>
+            <input type="number" id="qDomainFee" class="auth-input" value="1800" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">MongoDB Atlas Flex DB</label>
+            <input type="number" id="qMongoDbFee" class="auth-input" value="10000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Backup / Cloud Storage</label>
+            <input type="number" id="qBackupFee" class="auth-input" value="3000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Meta WhatsApp Messaging</label>
+            <input type="number" id="qWaMessagingFee" class="auth-input" value="3500" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Second-Year Onward — Annual Renewal -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>3. Second-year onward — annual renewal</span>
+          <span style="font-size:11px; color:var(--green); text-transform:none;">✅ ₹0 Website &amp; WhatsApp dev fees repeated</span>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
+          <div class="modal-field">
+            <label class="modal-label">VPS Renewal (₹/yr)</label>
+            <input type="number" id="qVpsRenewal" class="auth-input" value="15000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Domain Renewal (₹/yr)</label>
+            <input type="number" id="qDomainRenewal" class="auth-input" value="2200" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">MongoDB (₹/yr)</label>
+            <input type="number" id="qMongoDbRenewal" class="auth-input" value="10000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Backups (₹/yr)</label>
+            <input type="number" id="qBackupRenewal" class="auth-input" value="3000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">WhatsApp (₹/yr)</label>
+            <input type="number" id="qWaRenewal" class="auth-input" value="3500" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Commercial Summary Cards (Gurukulam Section 9) -->
+      <div class="quote-breakdown-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="margin:0; font-size:15px; font-weight:700; color:#fff;">📈 9. Commercial Summary</h3>
+          <span style="background:rgba(0,210,106,0.15); color:var(--accent); font-size:12px; font-weight:700; padding:3px 10px; border-radius:999px;">Transparent Breakdown</span>
+        </div>
+
+        <div class="quote-years-grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
+          <div class="quote-year-card highlight" style="padding:16px;">
+            <div style="font-size:12px; color:var(--accent); font-weight:700; text-transform:uppercase;">Year 1 Initial Investment</div>
+            <div style="font-size:26px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear1">₹88,300</div>
+            <div style="font-size:11px; color:var(--fg-muted);" id="compYear1">₹58,000 Implementation + ₹30,300 Running</div>
+          </div>
+
+          <div class="quote-year-card" style="padding:16px;">
+            <div style="font-size:12px; color:var(--yellow); font-weight:700; text-transform:uppercase;">Year 2 Onward Renewal</div>
+            <div style="font-size:26px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear2">₹33,700 / yr</div>
+            <div style="font-size:11px; color:var(--green); font-weight:600;">✅ One-time development fees ₹58,000 NOT repeated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4 & 5 & 7 Reference Preview -->
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px; margin-top:14px; font-size:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-weight:700; color:#fff;">💬 Section 4: Meta WhatsApp Pricing for India (01 Oct 2026)</span>
+          <span style="color:var(--accent);">Utility: ₹0.1150 · Auth: ₹0.1150 · Marketing: ₹0.8631</span>
+        </div>
+        <div style="color:var(--fg-muted); line-height:1.5;">
+          <strong>Section 5 Messaging Scenarios:</strong> Small (₹1,007) · Base (12k utility + 2.4k marketing: ~₹3,500) · Growing (₹17,257) · Large (₹69,029)<br>
+          <strong>Section 7 Scaling Bands:</strong> Starting (₹25k–33k) · Growing (₹32k–78k) · High usage (₹103k–175k+)
+        </div>
+      </div>
+
+      <div id="quoteFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm); margin-top:12px;"></div>
+
+      <!-- Action Buttons -->
+      <div class="modal-footer" style="justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:16px;">
+        <button type="button" class="btn-secondary" onclick="printQuotation()" title="Print or save PDF proposal">
+          🖨️ Print / Save PDF
+        </button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-secondary" onclick="shareQuotationWhatsApp()" style="color:#25d366; border-color:rgba(37,211,102,0.3);">
+            💬 Share WhatsApp
+          </button>
+          <button type="button" class="btn-secondary" id="quoteCancelBtn">Cancel</button>
+          <button type="button" class="auth-btn" id="sendQuoteBtn" style="padding:9px 22px; background:var(--accent); color:#000; font-weight:700;">
+            ✉️ Send Official Proposal Email
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allLeads = [];
+    let currentEditLead = null;
+    let activeStepFilter = 'All';
+
+    const authScreen = document.getElementById('authScreen');
+    const app = document.getElementById('app');
+    const loginCard = document.getElementById('loginCard');
+    const forgotCard = document.getElementById('forgotCard');
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('emailInput');
+    const passInput = document.getElementById('passInput');
+    const authErr = document.getElementById('authErr');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+
+    // Forgot Password Flow
+    const forgotPassLink = document.getElementById('forgotPassLink');
+    const backToLoginLink1 = document.getElementById('backToLoginLink1');
+    const backToLoginLink2 = document.getElementById('backToLoginLink2');
+    const otpStep1 = document.getElementById('otpStep1');
+    const otpStep2 = document.getElementById('otpStep2');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const recoveryEmailInput = document.getElementById('recoveryEmailInput');
+    const otpInput = document.getElementById('otpInput');
+    const newPassInput = document.getElementById('newPassInput');
+    const confirmPassInput = document.getElementById('confirmPassInput');
+    const otpErr1 = document.getElementById('otpErr1');
+    const otpErr2 = document.getElementById('otpErr2');
+    const otpSuccess2 = document.getElementById('otpSuccess2');
+    const resendOtpLink = document.getElementById('resendOtpLink');
+
+    let currentResetToken = null;
+    let currentRecoveryEmail = '';
+
+    forgotPassLink.onclick = (e) => {
+      e.preventDefault();
+      loginCard.style.display = 'none';
+      forgotCard.style.display = 'block';
+      otpStep1.style.display = 'block';
+      otpStep2.style.display = 'none';
+      otpErr1.style.display = 'none';
+      recoveryEmailInput.focus();
+    };
+
+    const showLogin = (e) => {
+      if (e) e.preventDefault();
+      forgotCard.style.display = 'none';
+      loginCard.style.display = 'block';
+      authErr.style.display = 'none';
+      passInput.focus();
+    };
+    backToLoginLink1.onclick = showLogin;
+    backToLoginLink2.onclick = showLogin;
+
+    async function handleRequestOtp() {
+      otpErr1.style.display = 'none';
+      const emailVal = recoveryEmailInput.value.trim();
+
+      if (!emailVal) {
+        otpErr1.textContent = 'कृपया अपना एडमिन ईमेल दर्ज करें।';
+        otpErr1.style.display = 'block';
+        return;
+      }
+
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.textContent = 'Sending OTP to email…';
+
+      try {
+        const res = await fetch('/api/admin/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'request-otp', email: emailVal })
+        });
+        const data = await res.json();
+        if (data.success) {
+          currentResetToken = data.resetToken;
+          currentRecoveryEmail = data.email || emailVal;
+          otpStep1.style.display = 'none';
+          otpStep2.style.display = 'block';
+          document.getElementById('otpSentMsg').textContent = data.message || `6-digit OTP sent to ${currentRecoveryEmail}. Check inbox & spam.`;
+          otpInput.value = '';
+          newPassInput.value = '';
+          if (confirmPassInput) confirmPassInput.value = '';
+          otpInput.focus();
+        } else {
+          otpErr1.textContent = data.error || 'OTP भेजने में विफलता।';
+          otpErr1.style.display = 'block';
+        }
+      } catch (err) {
+        otpErr1.textContent = 'सर्वर कनेक्शन त्रुटि: ' + err.message;
+        otpErr1.style.display = 'block';
+      } finally {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = 'Send 6-Digit OTP to Email →';
+      }
+    }
+
+    sendOtpBtn.onclick = handleRequestOtp;
+    if (resendOtpLink) {
+      resendOtpLink.onclick = (e) => {
+        e.preventDefault();
+        handleRequestOtp();
+      };
+    }
+
+    verifyOtpBtn.onclick = async () => {
+      otpErr2.style.display = 'none';
+      otpSuccess2.style.display = 'none';
+      const otpVal = otpInput.value.trim();
+      const newPass = newPassInput.value.trim();
+      const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : newPass;
+
+      if (!otpVal || otpVal.length !== 6) {
+        otpErr2.textContent = 'कृपया ईमेल में आया सही 6-अंकीय OTP दर्ज करें।';
+        otpErr2.style.display = 'block';
+        return;
+      }
+      if (!newPass || newPass.length < 4) {
+        otpErr2.textContent = 'नया पासवर्ड कम से कम 4 अक्षरों का होना चाहिए।';
+        otpErr2.style.display = 'block';
+        return;
+      }
+      if (newPass !== confirmPass) {
+        otpErr2.textContent = 'दोनों पासवर्ड मेल नहीं खाते! कृपया पासवर्ड पुनः जाँचें।';
+        otpErr2.style.display = 'block';
+        return;
+      }
+
+      verifyOtpBtn.disabled = true;
+      verifyOtpBtn.textContent = 'Verifying & resetting…';
+
+      try {
+        const res = await fetch('/api/admin/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'verify-otp',
+            email: currentRecoveryEmail,
+            otp: otpVal,
+            newPassword: newPass,
+            resetToken: currentResetToken
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          otpSuccess2.textContent = data.message;
+          otpSuccess2.style.display = 'block';
+          setTimeout(() => {
+            showLogin();
+            passInput.value = newPass;
+            emailInput.value = currentRecoveryEmail;
+            authErr.style.display = 'none';
+          }, 1500);
+        } else {
+          otpErr2.textContent = data.error || 'OTP वेरिफिकेशन असफल।';
+          otpErr2.style.display = 'block';
+        }
+      } catch (err) {
+        otpErr2.textContent = 'त्रुटि: ' + err.message;
+        otpErr2.style.display = 'block';
+      } finally {
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.textContent = 'Verify OTP & Set New Password →';
+      }
+    };
+
+    function getToken() { return localStorage.getItem('nr_admin_token'); }
+    function setToken(t) { localStorage.setItem('nr_admin_token', t); }
+    function clearToken() { localStorage.removeItem('nr_admin_token'); }
+
+    if (getToken()) {
+      showDashboard();
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authErr.style.display = 'none';
+      const password = passInput.value.trim();
+      const email = emailInput.value.trim();
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Verifying…';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (data.success && data.token) {
+          setToken(data.token);
+          showDashboard();
+        } else {
+          authErr.textContent = data.error || 'गलत पासवर्ड! कृपया सही पासवर्ड डालें।';
+          authErr.style.display = 'block';
+        }
+      } catch (err) {
+        authErr.textContent = 'कनेक्शन त्रुटि! कृपया पुनः प्रयास करें।';
+        authErr.style.display = 'block';
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Unlock Dashboard →';
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      clearToken();
+      app.style.display = 'none';
+      authScreen.style.display = 'flex';
+      passInput.value = '';
+    });
+
+    function showDashboard() {
+      authScreen.style.display = 'none';
+      app.style.display = 'flex';
+      fetchLeads();
+      loadAdminSettings();
+    }
+
+    async function fetchLeads() {
+      const token = getToken();
+      if (!token) return;
+      try {
+        const res = await fetch('/api/admin/leads', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.status === 401) {
+          clearToken();
+          location.reload();
+          return;
+        }
+        const data = await res.json();
+        if (data.success) {
+          allLeads = data.leads || [];
+          updateKPIs(data.stats);
+          renderTable();
+        }
+      } catch (err) {
+        console.error('Fetch leads error:', err);
+      }
+    }
+
+    function updateKPIs(stats) {
+      if (!stats) return;
+      document.getElementById('kpiTotal').textContent = stats.total;
+      document.getElementById('kpiNewCount').textContent = stats.newLeads + ' New';
+      document.getElementById('kpiTodayFollowups').textContent = stats.todayFollowUps;
+      document.getElementById('kpiConversion').textContent = stats.conversionRate + '%';
+      document.getElementById('kpiWonCount').textContent = stats.won + ' Won';
+
+      const waCount = stats.whatsappLeads || allLeads.filter(l => (l.channel||'').toLowerCase().includes('whatsapp')).length;
+      const mailCount = stats.emailLeads || allLeads.filter(l => (l.channel||'').toLowerCase().includes('email') || (l.channel||'').toLowerCase().includes('form')).length;
+      document.getElementById('kpiChannels').textContent = `💬 ${waCount} · ✉️ ${mailCount}`;
+      document.getElementById('kpiWaCount').textContent = waCount;
+      document.getElementById('kpiMailCount').textContent = mailCount;
+
+      // Pipeline step counts
+      document.getElementById('count-new').textContent = allLeads.filter(l => l.status === 'New').length;
+      document.getElementById('count-contacted').textContent = allLeads.filter(l => l.status === 'Contacted').length;
+      document.getElementById('count-demo').textContent = allLeads.filter(l => l.status === 'Demo').length;
+      document.getElementById('count-proposal').textContent = allLeads.filter(l => l.status === 'Proposal Sent').length;
+      document.getElementById('count-won').textContent = allLeads.filter(l => l.status === 'Won').length;
+
+      const banner = document.getElementById('followUpBanner');
+      if (stats.todayFollowUps > 0) {
+        banner.style.display = 'flex';
+        document.getElementById('bannerText').textContent = `You have ${stats.todayFollowUps} client(s) due for follow-up today!`;
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+
+    function filterByStep(step) {
+      activeStepFilter = step;
+      document.querySelectorAll('.pipe-step').forEach(el => el.classList.remove('active'));
+      if (step !== 'All') {
+        const idMap = {
+          'New': 'step-new',
+          'Contacted': 'step-contacted',
+          'Demo': 'step-demo',
+          'Proposal Sent': 'step-proposal',
+          'Won': 'step-won'
+        };
+        if (idMap[step]) document.getElementById(idMap[step]).classList.add('active');
+      }
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('leadsTbody');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      const channelFilter = document.getElementById('channelFilter').value;
+
+      const filtered = allLeads.filter(l => {
+        const matchSearch = (l.name || '').toLowerCase().includes(search) ||
+                            (l.mobile || '').includes(search) ||
+                            (l.email || '').toLowerCase().includes(search) ||
+                            (l.country || '').toLowerCase().includes(search) ||
+                            (l.service || '').toLowerCase().includes(search) ||
+                            (l.budget || '').toLowerCase().includes(search) ||
+                            (l.message || '').toLowerCase().includes(search);
+
+        const matchStatus = (statusFilter === 'All' && activeStepFilter === 'All') ||
+                            (activeStepFilter !== 'All' ? l.status === activeStepFilter : l.status === statusFilter);
+
+        const matchChannel = channelFilter === 'All' ||
+                             (channelFilter === 'WhatsApp' && (l.channel || '').toLowerCase().includes('whatsapp')) ||
+                             (channelFilter === 'Email' && ((l.channel || '').toLowerCase().includes('email') || (l.channel || '').toLowerCase().includes('form')));
+
+        return matchSearch && matchStatus && matchChannel;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 40px; color: var(--fg-muted);">No client inquiries matching your search/filters.</td></tr>';
+        return;
+      }
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      tbody.innerHTML = filtered.map(l => {
+        const cleanMobile = (l.mobile || '').replace(/[^0-9]/g, '');
+        const isToday = l.followUpDate === todayStr;
+        const isWa = (l.channel || '').toLowerCase().includes('whatsapp');
+        const country = l.country || '🇮🇳 India (+91)';
+
+        return `
+          <tr>
+            <td>
+              <div class="client-title">${escapeHtml(l.name)}</div>
+              <div class="client-sub">
+                <span>${escapeHtml(country)}</span>
+                ${l.company ? `<span>· ${escapeHtml(l.company)}</span>` : ''}
+              </div>
+            </td>
+            <td>
+              <span class="channel-pill ${isWa ? 'channel-wa' : 'channel-email'}">
+                ${isWa ? '💬 WhatsApp' : '✉️ Form'}
+              </span>
+            </td>
+            <td>
+              <div class="service-tag">${escapeHtml(l.service || 'Web & Custom Solutions')}</div>
+              <div class="scope-snippet" title="${escapeHtml(l.message || '')}">${escapeHtml(l.message || 'No description provided')}</div>
+            </td>
+            <td>
+              <span class="budget-pill">${escapeHtml(l.budget || 'Flexible')}</span>
+            </td>
+            <td>
+              <a href="tel:${cleanMobile}" class="contact-link" title="Call directly">📞 ${escapeHtml(l.mobile)}</a>
+              <a href="mailto:${escapeHtml(l.email)}" class="contact-link" title="Send email">✉️ ${escapeHtml(l.email)}</a>
+            </td>
+            <td>
+              <select class="status-badge status-${(l.status || 'New').replace(/\s+/g, '')}" onchange="changeStatus('${l.id}', this.value)">
+                <option value="New" ${l.status === 'New' ? 'selected' : ''}>🟡 Step 1: New</option>
+                <option value="Contacted" ${l.status === 'Contacted' ? 'selected' : ''}>🔵 Step 2: Contacted</option>
+                <option value="Demo" ${l.status === 'Demo' ? 'selected' : ''}>🟣 Step 3: Demo</option>
+                <option value="Proposal Sent" ${l.status === 'Proposal Sent' ? 'selected' : ''}>🟠 Step 4: Proposal</option>
+                <option value="Won" ${l.status === 'Won' ? 'selected' : ''}>🟢 Step 5: Won</option>
+                <option value="Lost" ${l.status === 'Lost' ? 'selected' : ''}>🔴 Lost</option>
+              </select>
+            </td>
+            <td>
+              <div style="${isToday ? 'color:var(--yellow); font-weight:700;' : 'color:var(--fg-muted);'} font-size:12px;">
+                ${isToday ? '🔔 Due Today' : (l.followUpDate || 'Not set')}
+              </div>
+            </td>
+            <td>
+              <div class="actions">
+                <a href="https://wa.me/${cleanMobile}" target="_blank" class="btn-icon wa" title="Open WhatsApp Chat">💬</a>
+                <button class="btn-icon" onclick="createQuoteForLead('${l.id}')" title="Generate Commercial Quotation">📄</button>
+                <button class="btn-icon" onclick="openNotesModal('${l.id}')" title="View Full Dossier & Notes">📝</button>
+                <button class="btn-icon" onclick="deleteLead('${l.id}')" title="Delete Inquiry">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function changeStatus(id, newStatus) {
+      const token = getToken();
+      try {
+        await fetch('/api/admin/leads', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id, status: newStatus })
+        });
+        const lead = allLeads.find(l => l.id === id);
+        if (lead) lead.status = newStatus;
+        updateKPIs({
+          total: allLeads.length,
+          newLeads: allLeads.filter(l => l.status === 'New').length,
+          todayFollowUps: allLeads.filter(l => l.followUpDate === new Date().toISOString().split('T')[0]).length,
+          conversionRate: Math.round((allLeads.filter(l => l.status === 'Won').length / allLeads.length) * 100),
+          won: allLeads.filter(l => l.status === 'Won').length
+        });
+        renderTable();
+      } catch (err) {
+        alert('Status update failed: ' + err.message);
+      }
+    }
+
+    async function deleteLead(id) {
+      if (!confirm('Are you sure you want to delete this lead?')) return;
+      const token = getToken();
+      try {
+        await fetch('/api/admin/leads', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id })
+        });
+        allLeads = allLeads.filter(l => l.id !== id);
+        renderTable();
+      } catch (err) {
+        alert('Delete failed: ' + err.message);
+      }
+    }
+
+    function openNotesModal(id) {
+      const lead = allLeads.find(l => l.id === id);
+      if (!lead) return;
+      currentEditLead = lead;
+
+      document.getElementById('modalClientName').textContent = lead.name + ' · Client Dossier';
+      document.getElementById('dossierName').textContent = lead.name || '—';
+      document.getElementById('dossierCountry').textContent = lead.country || '🇮🇳 India (+91)';
+      document.getElementById('dossierPhone').textContent = lead.mobile || '—';
+      document.getElementById('dossierEmail').textContent = lead.email || '—';
+      document.getElementById('dossierChannel').textContent = (lead.channel || '').toLowerCase().includes('whatsapp') ? '💬 WhatsApp' : '✉️ Website Email Form';
+      document.getElementById('dossierBudget').textContent = lead.budget || 'Flexible / To be discussed';
+      document.getElementById('modalMessage').textContent = lead.message || 'No project description provided.';
+      document.getElementById('modalStatusSelect').value = lead.status || 'New';
+      document.getElementById('modalFollowUpInput').value = lead.followUpDate || '';
+      document.getElementById('modalNotesTextarea').value = lead.notes || '';
+
+      document.getElementById('modalBackdrop').style.display = 'flex';
+    }
+
+    document.getElementById('modalCloseBtn').onclick = () => { document.getElementById('modalBackdrop').style.display = 'none'; };
+    document.getElementById('modalCancelBtn').onclick = () => { document.getElementById('modalBackdrop').style.display = 'none'; };
+
+    document.getElementById('modalSaveBtn').onclick = async () => {
+      if (!currentEditLead) return;
+      const token = getToken();
+      const status = document.getElementById('modalStatusSelect').value;
+      const followUpDate = document.getElementById('modalFollowUpInput').value;
+      const notes = document.getElementById('modalNotesTextarea').value;
+
+      try {
+        await fetch('/api/admin/leads', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id: currentEditLead.id, status, followUpDate, notes })
+        });
+        currentEditLead.status = status;
+        currentEditLead.followUpDate = followUpDate;
+        currentEditLead.notes = notes;
+        document.getElementById('modalBackdrop').style.display = 'none';
+        renderTable();
+      } catch (err) {
+        alert('Save failed: ' + err.message);
+      }
+    };
+
+    // Settings Modal Handlers
+    const settingsBackdrop = document.getElementById('settingsBackdrop');
+    const settingsCloseBtn = document.getElementById('settingsCloseBtn');
+    const settingsCancelBtn = document.getElementById('settingsCancelBtn');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const testSmtpBtn = document.getElementById('testSmtpBtn');
+    const setSmtpUser = document.getElementById('setSmtpUser');
+    const setSmtpPass = document.getElementById('setSmtpPass');
+    const setAdminEmail = document.getElementById('setAdminEmail');
+    const setFromName = document.getElementById('setFromName');
+    const settingsFeedback = document.getElementById('settingsFeedback');
+    const togglePassVisibility = document.getElementById('togglePassVisibility');
+
+    togglePassVisibility.onclick = () => {
+      setSmtpPass.type = setSmtpPass.type === 'password' ? 'text' : 'password';
+    };
+
+    settingsBtn.onclick = () => {
+      settingsFeedback.style.display = 'none';
+      settingsBackdrop.style.display = 'flex';
+    };
+
+    const closeSettings = () => { settingsBackdrop.style.display = 'none'; };
+    settingsCloseBtn.onclick = closeSettings;
+    settingsCancelBtn.onclick = closeSettings;
+
+    testSmtpBtn.onclick = async () => {
+      settingsFeedback.style.display = 'block';
+      settingsFeedback.style.background = 'rgba(251, 191, 36, 0.12)';
+      settingsFeedback.style.color = 'var(--yellow)';
+      settingsFeedback.textContent = 'Testing connection and sending test email…';
+      testSmtpBtn.disabled = true;
+
+      const token = getToken();
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            action: 'test',
+            smtpUser: setSmtpUser.value.trim(),
+            smtpPass: setSmtpPass.value.trim(),
+            adminEmail: setAdminEmail.value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          settingsFeedback.style.background = 'rgba(74, 222, 128, 0.12)';
+          settingsFeedback.style.color = 'var(--green)';
+          settingsFeedback.textContent = '✅ ' + data.message;
+        } else {
+          settingsFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+          settingsFeedback.style.color = 'var(--red)';
+          settingsFeedback.textContent = '❌ ' + (data.error || 'Connection failed.');
+        }
+      } catch (err) {
+        settingsFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+        settingsFeedback.style.color = 'var(--red)';
+        settingsFeedback.textContent = '❌ Network error: ' + err.message;
+      } finally {
+        testSmtpBtn.disabled = false;
+      }
+    };
+
+    saveSettingsBtn.onclick = async () => {
+      const token = getToken();
+      saveSettingsBtn.disabled = true;
+      saveSettingsBtn.textContent = 'Saving…';
+
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            smtpUser: setSmtpUser.value.trim(),
+            smtpPass: setSmtpPass.value.trim(),
+            adminEmail: setAdminEmail.value.trim(),
+            fromName: setFromName.value.trim(),
+            pricing: {
+              hostingerAnnual: parseFloat(document.getElementById('setHostingerPrice').value) || 4500,
+              vpsAnnual: parseFloat(document.getElementById('setVpsPrice').value) || 14000,
+              domainAnnual: parseFloat(document.getElementById('setDomainPrice').value) || 999,
+              mongodbAnnual: parseFloat(document.getElementById('setMongoDbPrice').value) || 7500,
+              businessEmailAnnual: parseFloat(document.getElementById('setBusinessEmailPrice').value) || 2500
+            },
+            dataTiers: {
+              growthAnnual: parseFloat(document.getElementById('setTierGrowthPrice').value) || 3500,
+              enterpriseAnnual: parseFloat(document.getElementById('setTierEnterprisePrice').value) || 9500
+            },
+            paymentGateway: {
+              mode: document.getElementById('setPgMode')?.value || 'test',
+              testKeyId: document.getElementById('setPgTestKeyId')?.value.trim() || '',
+              testKeySecret: document.getElementById('setPgTestKeySecret')?.value.trim() || '',
+              liveKeyId: document.getElementById('setPgLiveKeyId')?.value.trim() || '',
+              liveKeySecret: document.getElementById('setPgLiveKeySecret')?.value.trim() || '',
+              upiId: document.getElementById('setPgUpiId')?.value.trim() || '8708167959@paytm',
+              upiName: document.getElementById('setPgUpiName')?.value.trim() || 'Neeraj Rawat | Dhani Tech'
+            }
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Settings, Pricing & Payment Gateway saved successfully!');
+          updateProviderPriceLabels();
+          closeSettings();
+        } else {
+          alert('Save error: ' + data.error);
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        saveSettingsBtn.disabled = false;
+        saveSettingsBtn.textContent = 'Save Settings';
+      }
+    };
+
+    function updateProviderPriceLabels() {
+      const sym = (document.getElementById('qCurrency')?.value === 'USD') ? '$' : '₹';
+      const h = parseFloat(document.getElementById('setHostingerPrice')?.value) || 4500;
+      const v = parseFloat(document.getElementById('setVpsPrice')?.value) || 14000;
+      const d = parseFloat(document.getElementById('setDomainPrice')?.value) || 999;
+      const m = parseFloat(document.getElementById('setMongoDbPrice')?.value) || 7500;
+      const e = parseFloat(document.getElementById('setBusinessEmailPrice')?.value) || 2500;
+      const tg = parseFloat(document.getElementById('setTierGrowthPrice')?.value) || 3500;
+      const te = parseFloat(document.getElementById('setTierEnterprisePrice')?.value) || 9500;
+
+      if (document.getElementById('priceHostinger')) document.getElementById('priceHostinger').textContent = sym + h.toLocaleString();
+      if (document.getElementById('priceVps')) document.getElementById('priceVps').textContent = sym + v.toLocaleString();
+      if (document.getElementById('priceDomain')) document.getElementById('priceDomain').textContent = sym + d.toLocaleString();
+      if (document.getElementById('priceMongoDb')) document.getElementById('priceMongoDb').textContent = sym + m.toLocaleString();
+      if (document.getElementById('priceBusinessEmail')) document.getElementById('priceBusinessEmail').textContent = sym + e.toLocaleString();
+      if (document.getElementById('labelTierGrowth')) document.getElementById('labelTierGrowth').textContent = sym + tg.toLocaleString();
+      if (document.getElementById('labelTierEnterprise')) document.getElementById('labelTierEnterprise').textContent = sym + te.toLocaleString();
+      calculateQuoteTotals();
+    }
+
+    async function loadAdminSettings() {
+      const token = getToken();
+      if (!token) return;
+      try {
+        const res = await fetch('/api/admin/settings', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (data.success && data.settings) {
+          const s = data.settings;
+          if (s.smtpUser && setSmtpUser) setSmtpUser.value = s.smtpUser;
+          if (s.smtpPass && setSmtpPass) setSmtpPass.value = s.smtpPass;
+          if (s.adminEmail && setAdminEmail) setAdminEmail.value = s.adminEmail;
+          if (s.fromName && setFromName) setFromName.value = s.fromName;
+          if (s.pricing) {
+            if (s.pricing.hostingerAnnual && document.getElementById('setHostingerPrice')) document.getElementById('setHostingerPrice').value = s.pricing.hostingerAnnual;
+            if (s.pricing.vpsAnnual && document.getElementById('setVpsPrice')) document.getElementById('setVpsPrice').value = s.pricing.vpsAnnual;
+            if (s.pricing.domainAnnual && document.getElementById('setDomainPrice')) document.getElementById('setDomainPrice').value = s.pricing.domainAnnual;
+            if (s.pricing.mongodbAnnual && document.getElementById('setMongoDbPrice')) document.getElementById('setMongoDbPrice').value = s.pricing.mongodbAnnual;
+            if (s.pricing.businessEmailAnnual && document.getElementById('setBusinessEmailPrice')) document.getElementById('setBusinessEmailPrice').value = s.pricing.businessEmailAnnual;
+          }
+          if (s.dataTiers) {
+            if (s.dataTiers.growthAnnual && document.getElementById('setTierGrowthPrice')) document.getElementById('setTierGrowthPrice').value = s.dataTiers.growthAnnual;
+            if (s.dataTiers.enterpriseAnnual && document.getElementById('setTierEnterprisePrice')) document.getElementById('setTierEnterprisePrice').value = s.dataTiers.enterpriseAnnual;
+          }
+          if (s.paymentGateway) {
+            const pg = s.paymentGateway;
+            if (document.getElementById('setPgMode')) document.getElementById('setPgMode').value = pg.mode || 'test';
+            if (document.getElementById('setPgTestKeyId')) document.getElementById('setPgTestKeyId').value = pg.testKeyId || '';
+            if (document.getElementById('setPgTestKeySecret')) document.getElementById('setPgTestKeySecret').value = pg.testKeySecret || '';
+            if (document.getElementById('setPgLiveKeyId')) document.getElementById('setPgLiveKeyId').value = pg.liveKeyId || '';
+            if (document.getElementById('setPgLiveKeySecret')) document.getElementById('setPgLiveKeySecret').value = pg.liveKeySecret || '';
+            if (document.getElementById('setPgUpiId')) document.getElementById('setPgUpiId').value = pg.upiId || '8708167959@paytm';
+            if (document.getElementById('setPgUpiName')) document.getElementById('setPgUpiName').value = pg.upiName || 'Neeraj Rawat | Dhani Tech';
+          }
+          updateProviderPriceLabels();
+        }
+      } catch(e) {}
+    }
+
+    // ============ DIGITAL PRODUCTS & STORE CATALOG MANAGER ============
+    const productsModalBackdrop = document.getElementById('productsModalBackdrop');
+    const manageProductsBtn = document.getElementById('manageProductsBtn');
+    const productsCloseBtn = document.getElementById('productsCloseBtn');
+    const productsCloseFooterBtn = document.getElementById('productsCloseFooterBtn');
+    let adminProductsList = [];
+
+    function openProductsModal() {
+      resetProductForm();
+      loadAdminProductsList();
+      if (productsModalBackdrop) productsModalBackdrop.style.display = 'flex';
+    }
+    function closeProductsModal() {
+      if (productsModalBackdrop) productsModalBackdrop.style.display = 'none';
+    }
+    if (manageProductsBtn) manageProductsBtn.onclick = openProductsModal;
+    if (productsCloseBtn) productsCloseBtn.onclick = closeProductsModal;
+    if (productsCloseFooterBtn) productsCloseFooterBtn.onclick = closeProductsModal;
+
+    async function loadAdminProductsList() {
+      const tbody = document.getElementById('adminProductsTbody');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--fg-muted);">Loading products…</td></tr>';
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.products)) {
+          adminProductsList = data.products;
+          renderAdminProductsTable();
+        }
+      } catch(e) {
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--red);">Error loading products: ${e.message}</td></tr>`;
+      }
+    }
+
+    function renderAdminProductsTable() {
+      const tbody = document.getElementById('adminProductsTbody');
+      const countEl = document.getElementById('adminProdCount');
+      if (countEl) countEl.textContent = adminProductsList.length;
+      if (!tbody) return;
+      if (!adminProductsList.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:var(--fg-muted);">No products found. Add your first digital product above!</td></tr>';
+        return;
+      }
+      tbody.innerHTML = adminProductsList.map(p => {
+        const isActive = (p.status || 'Active') === 'Active';
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:#fff;">${escapeHtml(p.title || p.name)}</div>
+              <div style="display:flex; gap:6px; margin-top:2px;">
+                ${p.fileFormat ? `<span style="background:rgba(255,255,255,0.08); font-size:10px; color:#bbb; padding:1px 5px; border-radius:3px;">${escapeHtml(p.fileFormat)}</span>` : ''}
+                ${p.badge ? `<span style="background:rgba(232,168,124,0.15); color:var(--accent); font-size:10px; font-weight:700; padding:1px 5px; border-radius:3px; text-transform:uppercase;">${escapeHtml(p.badge)}</span>` : ''}
+              </div>
+            </td>
+            <td><span style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.category || 'Excel Sheets')}</span></td>
+            <td style="font-weight:700; color:var(--green);">₹${(p.price || 0).toLocaleString('en-IN')}</td>
+            <td style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.period || 'Instant Download')}</td>
+            <td>
+              <span style="display:inline-block; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; ${isActive ? 'background:rgba(74,222,128,0.15); color:#4ade80;' : 'background:rgba(255,255,255,0.08); color:#aaa;'}">
+                ${isActive ? '🟢 Active' : '⏸️ Draft'}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-icon" onclick="editAdminProduct('${p.id}')" title="Edit Product">✏️</button>
+                <button class="btn-icon" onclick="deleteAdminProduct('${p.id}', '${escapeHtml(p.title || p.name).replace(/'/g, "\\'")}')" title="Delete Product" style="color:var(--red);">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function resetProductForm() {
+      document.getElementById('adminProdId').value = '';
+      document.getElementById('adminProdTitle').value = '';
+      document.getElementById('adminProdCategory').value = 'Excel Sheets';
+      document.getElementById('adminProdPrice').value = '';
+      document.getElementById('adminProdFormat').value = 'Microsoft Excel (.xlsx)';
+      document.getElementById('adminProdBadge').value = 'Best Seller';
+      document.getElementById('adminProdDownloadUrl').value = '';
+      document.getElementById('adminProdDesc').value = '';
+      document.getElementById('adminProdFeatures').value = '';
+      document.getElementById('adminProdDemoUrl').value = '';
+      document.getElementById('adminProdStatus').value = 'Active';
+      document.getElementById('prodFormTitle').textContent = '➕ Add New Digital Product / File';
+      document.getElementById('adminProdSaveBtn').textContent = 'Save Product';
+      document.getElementById('adminProdCancelEditBtn').style.display = 'none';
+    }
+
+    window.editAdminProduct = function(id) {
+      const prod = adminProductsList.find(p => p.id === id);
+      if (!prod) return;
+      document.getElementById('adminProdId').value = prod.id;
+      document.getElementById('adminProdTitle').value = prod.title || prod.name || '';
+      document.getElementById('adminProdCategory').value = prod.category || 'Excel Sheets';
+      document.getElementById('adminProdPrice').value = prod.price || 0;
+      document.getElementById('adminProdFormat').value = prod.fileFormat || 'Microsoft Excel (.xlsx)';
+      document.getElementById('adminProdBadge').value = prod.badge || '';
+      document.getElementById('adminProdDownloadUrl').value = prod.downloadUrl || '';
+      document.getElementById('adminProdDesc').value = prod.desc || '';
+      document.getElementById('adminProdFeatures').value = Array.isArray(prod.features) ? prod.features.join('\n') : (prod.features || '');
+      document.getElementById('adminProdDemoUrl').value = prod.demoUrl || '';
+      document.getElementById('adminProdStatus').value = prod.status || 'Active';
+      document.getElementById('prodFormTitle').textContent = '✏️ Edit: ' + (prod.title || prod.name);
+      document.getElementById('adminProdSaveBtn').textContent = 'Update Product';
+      document.getElementById('adminProdCancelEditBtn').style.display = 'inline-block';
+      document.getElementById('adminProdTitle').focus();
+    };
+
+    if (document.getElementById('adminProdCancelEditBtn')) {
+      document.getElementById('adminProdCancelEditBtn').onclick = resetProductForm;
+    }
+
+    if (document.getElementById('adminProdSaveBtn')) {
+      document.getElementById('adminProdSaveBtn').onclick = async function() {
+        const token = getToken();
+        const id = document.getElementById('adminProdId').value;
+        const title = document.getElementById('adminProdTitle').value.trim();
+        const category = document.getElementById('adminProdCategory').value.trim();
+        const price = parseFloat(document.getElementById('adminProdPrice').value) || 0;
+        const fileFormat = document.getElementById('adminProdFormat').value.trim();
+        const badge = document.getElementById('adminProdBadge').value.trim();
+        const downloadUrl = document.getElementById('adminProdDownloadUrl').value.trim();
+        const desc = document.getElementById('adminProdDesc').value.trim();
+        const featuresText = document.getElementById('adminProdFeatures').value.trim();
+        const demoUrl = document.getElementById('adminProdDemoUrl').value.trim();
+        const status = document.getElementById('adminProdStatus').value;
+
+        if (!title || !price) {
+          alert('Product Title और Price आवश्यक हैं!');
+          return;
+        }
+
+        const features = featuresText ? featuresText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+        const btn = document.getElementById('adminProdSaveBtn');
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+
+        try {
+          const method = id ? 'PATCH' : 'POST';
+          const payload = id
+            ? { id, title, category, price, period: 'Instant Download', fileFormat, badge, downloadUrl, desc, features, demoUrl, status }
+            : { title, category, price, period: 'Instant Download', fileFormat, badge, downloadUrl, desc, features, demoUrl, status };
+
+          const res = await fetch('/api/products', {
+            method,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert(id ? 'Product अपडेट हो गया!' : 'नया डिजिटल प्रोडक्ट सफलतापूर्वक जुड़ गया!');
+            resetProductForm();
+            loadAdminProductsList();
+          } else {
+            alert('Error: ' + data.error);
+          }
+        } catch(e) {
+          alert('Network error: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = id ? 'Update Product' : 'Save Product';
+        }
+      };
+    }
+
+    window.deleteAdminProduct = async function(id, name) {
+      if (!confirm(`क्या आप सच में "${name}" प्रोडक्ट को डिलीट करना चाहते हैं?`)) return;
+      const token = getToken();
+      try {
+        const res = await fetch('/api/products', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Product डिलीट हो गया!');
+          loadAdminProductsList();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch(e) {
+        alert('Network error: ' + e.message);
+      }
+    };
+
+    if (document.getElementById('refreshAdminProdsBtn')) {
+      document.getElementById('refreshAdminProdsBtn').onclick = loadAdminProductsList;
+    }
+
+    // ============ COMMERCIAL PROPOSAL BUILDER (EXACT GURUKULAM PDF MATH) ============
+    const quoteModalBackdrop = document.getElementById('quoteModalBackdrop');
+    const openQuoteBtn = document.getElementById('openQuoteBtn');
+    const quoteCloseBtn = document.getElementById('quoteCloseBtn');
+    const quoteCancelBtn = document.getElementById('quoteCancelBtn');
+    const sendQuoteBtn = document.getElementById('sendQuoteBtn');
+    const quoteFeedback = document.getElementById('quoteFeedback');
+
+    let currentQuoteLeadId = null;
+
+    function calculateQuoteTotals() {
+      const websiteDev = parseFloat(document.getElementById('qWebsiteDevFee')?.value) || 50000;
+      const waIntegration = parseFloat(document.getElementById('qWaIntegrationFee')?.value) || 8000;
+      const totalOneTime = websiteDev + waIntegration;
+
+      const vps = parseFloat(document.getElementById('qVpsFee')?.value) || 12000;
+      const domain = parseFloat(document.getElementById('qDomainFee')?.value) || 1800;
+      const mongodb = parseFloat(document.getElementById('qMongoDbFee')?.value) || 10000;
+      const backup = parseFloat(document.getElementById('qBackupFee')?.value) || 3000;
+      const waMsg = parseFloat(document.getElementById('qWaMessagingFee')?.value) || 3500;
+      const totalOperatingY1 = vps + domain + mongodb + backup + waMsg;
+
+      const vpsRen = parseFloat(document.getElementById('qVpsRenewal')?.value) || 15000;
+      const domainRen = parseFloat(document.getElementById('qDomainRenewal')?.value) || 2200;
+      const mongodbRen = parseFloat(document.getElementById('qMongoDbRenewal')?.value) || 10000;
+      const backupRen = parseFloat(document.getElementById('qBackupRenewal')?.value) || 3000;
+      const waRen = parseFloat(document.getElementById('qWaRenewal')?.value) || 3500;
+      const totalRenewal = vpsRen + domainRen + mongodbRen + backupRen + waRen;
+
+      const grandTotalY1 = totalOneTime + totalOperatingY1;
+
+      if (document.getElementById('sumYear1')) document.getElementById('sumYear1').textContent = '₹' + grandTotalY1.toLocaleString('en-IN');
+      if (document.getElementById('compYear1')) document.getElementById('compYear1').textContent = `₹${totalOneTime.toLocaleString('en-IN')} Implementation + ₹${totalOperatingY1.toLocaleString('en-IN')} Running`;
+      if (document.getElementById('sumYear2')) document.getElementById('sumYear2').textContent = '₹' + totalRenewal.toLocaleString('en-IN') + ' / yr';
+
+      return {
+        totalOneTime,
+        totalOperatingY1,
+        grandTotalY1,
+        totalRenewal,
+        websiteDev,
+        waIntegration,
+        vps,
+        domain,
+        mongodb,
+        backup,
+        waMsg,
+        vpsRen,
+        domainRen,
+        mongodbRen,
+        backupRen,
+        waRen
+      };
+    }
+
+    function openQuoteModal(lead) {
+      quoteFeedback.style.display = 'none';
+      currentQuoteLeadId = lead ? lead.id : null;
+      document.getElementById('qClientName').value = lead ? (lead.name || '') : '';
+      document.getElementById('qClientCompany').value = lead ? (lead.company || '') : '';
+      document.getElementById('qClientEmail').value = lead ? (lead.email || '') : '';
+      document.getElementById('qClientMobile').value = lead ? (lead.mobile || '') : '';
+      
+      calculateQuoteTotals();
+      quoteModalBackdrop.style.display = 'flex';
+    }
+
+    function closeQuoteModal() {
+      quoteModalBackdrop.style.display = 'none';
+    }
+
+    if (openQuoteBtn) openQuoteBtn.onclick = () => openQuoteModal(null);
+    if (quoteCloseBtn) quoteCloseBtn.onclick = closeQuoteModal;
+    if (quoteCancelBtn) quoteCancelBtn.onclick = closeQuoteModal;
+
+    window.createQuoteForLead = function(id) {
+      const lead = allLeads.find(l => l.id === id);
+      openQuoteModal(lead || { id });
+    };
+
+    async function sendQuotationEmail() {
+      const clientName = document.getElementById('qClientName').value.trim();
+      const clientCompany = document.getElementById('qClientCompany').value.trim();
+      const clientEmail = document.getElementById('qClientEmail').value.trim();
+      const clientMobile = document.getElementById('qClientMobile').value.trim();
+
+      if (!clientName || !clientEmail) {
+        alert('Client Name और Email आवश्यक हैं!');
+        return;
+      }
+
+      const totals = calculateQuoteTotals();
+      const token = getToken();
+
+      sendQuoteBtn.disabled = true;
+      sendQuoteBtn.textContent = 'Sending Proposal…';
+      quoteFeedback.style.display = 'block';
+      quoteFeedback.style.background = 'rgba(232, 168, 124, 0.12)';
+      quoteFeedback.style.color = 'var(--accent)';
+      quoteFeedback.textContent = 'Compiling 10-Section Gurukulam Proposal and dispatching via Gmail SMTP…';
+
+      try {
+        const res = await fetch('/api/admin/quotation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            leadId: currentQuoteLeadId,
+            clientName,
+            clientCompany,
+            clientEmail,
+            clientMobile,
+            websiteDevFee: totals.websiteDev,
+            waIntegrationFee: totals.waIntegration,
+            vpsFee: totals.vps,
+            domainFee: totals.domain,
+            mongodbFee: totals.mongodb,
+            backupFee: totals.backup,
+            whatsappAllowance: totals.waMsg,
+            vpsRenewal: totals.vpsRen,
+            domainRenewal: totals.domainRen,
+            mongodbRenewal: totals.mongodbRen,
+            backupRenewal: totals.backupRen,
+            whatsappRenewal: totals.waRen
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          quoteFeedback.style.background = 'rgba(74, 222, 128, 0.12)';
+          quoteFeedback.style.color = 'var(--green)';
+          quoteFeedback.textContent = '✅ ' + data.message;
+          alert('✅ ' + data.message);
+          setTimeout(closeQuoteModal, 1500);
+          fetchLeads();
+        } else {
+          quoteFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+          quoteFeedback.style.color = 'var(--red)';
+          quoteFeedback.textContent = '❌ ' + (data.error || 'Failed to dispatch proposal email.');
+        }
+      } catch (err) {
+        quoteFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+        quoteFeedback.style.color = 'var(--red)';
+        quoteFeedback.textContent = '❌ Network Error: ' + err.message;
+      } finally {
+        sendQuoteBtn.disabled = false;
+        sendQuoteBtn.textContent = '✉️ Send Official Proposal Email';
+      }
+    }
+
+    if (sendQuoteBtn) sendQuoteBtn.onclick = sendQuotationEmail;
+
+    function shareQuotationWhatsApp() {
+      const clientName = document.getElementById('qClientName').value.trim() || 'Client';
+      const clientCompany = document.getElementById('qClientCompany').value.trim();
+      const clientMobile = (document.getElementById('qClientMobile').value || '').replace(/[^0-9]/g, '');
+      const totals = calculateQuoteTotals();
+
+      let msg = `*📄 Commercial Proposal & Cost Breakdown*\n`;
+      msg += `*For:* ${clientCompany || clientName}\n`;
+      msg += `*By:* Neeraj Rawat | Dhani Tech\n\n`;
+      msg += `*1. One-time Implementation:* ₹${totals.totalOneTime.toLocaleString('en-IN')}\n`;
+      msg += `   • Website + Admin CMS: ₹${totals.websiteDev.toLocaleString('en-IN')}\n`;
+      msg += `   • WhatsApp Cloud API Allowance: ₹${totals.waIntegration.toLocaleString('en-IN')}\n\n`;
+      msg += `*2. First-Year Operating Cost:* ₹${totals.totalOperatingY1.toLocaleString('en-IN')}\n`;
+      msg += `   • VPS, Domain, MongoDB Flex, Cloud Backups & Meta WhatsApp\n\n`;
+      msg += `*💰 Year 1 Total Investment:* ₹${totals.grandTotalY1.toLocaleString('en-IN')}\n`;
+      msg += `*🔄 Year 2 Onward Renewal:* ₹${totals.totalRenewal.toLocaleString('en-IN')} / year\n`;
+      msg += `_(Note: One-time dev fees are NOT charged in renewals)_\n\n`;
+      msg += `Detailed 10-section PDF proposal has been sent to your email. Let's connect to get started! 🚀`;
+
+      const targetMobile = clientMobile || '918708167959';
+      window.open(`https://wa.me/${targetMobile}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function printQuotation() {
+      window.print();
+    }
+
+    document.getElementById('searchInput').oninput = renderTable;
+    document.getElementById('statusFilter').onchange = renderTable;
+    document.getElementById('channelFilter').onchange = renderTable;
+    document.getElementById('refreshBtn').onclick = fetchLeads;
+
+    function filterByToday() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      document.getElementById('searchInput').value = '';
+      document.getElementById('statusFilter').value = 'All';
+      document.getElementById('channelFilter').value = 'All';
+      activeStepFilter = 'All';
+      document.querySelectorAll('.pipe-step').forEach(el => el.classList.remove('active'));
+
+      const filtered = allLeads.filter(l => l.followUpDate === todayStr);
+      const tbody = document.getElementById('leadsTbody');
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 40px; color: var(--fg-muted);">No follow-ups scheduled for today.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = filtered.map(l => {
+        const cleanMobile = (l.mobile || '').replace(/[^0-9]/g, '');
+        return `
+          <tr>
+            <td>
+              <div class="client-title">${escapeHtml(l.name)}</div>
+              <div class="client-sub">${escapeHtml(l.country || '🇮🇳 India (+91)')}</div>
+            </td>
+            <td><span class="channel-pill channel-${(l.channel||'').toLowerCase().includes('whatsapp')?'wa':'email'}">${escapeHtml(l.channel||'Form')}</span></td>
+            <td><div class="service-tag">${escapeHtml(l.service||'Web')}</div></td>
+            <td><span class="budget-pill">${escapeHtml(l.budget||'Flexible')}</span></td>
+            <td><a href="tel:${cleanMobile}">📞 ${escapeHtml(l.mobile)}</a></td>
+            <td><span class="status-badge status-${(l.status || 'New').replace(/\s+/g, '')}">${escapeHtml(l.status)}</span></td>
+            <td><span style="color:var(--yellow); font-weight:bold;">🔔 Due Today</span></td>
+            <td>
+              <div class="actions">
+                <a href="https://wa.me/${cleanMobile}" target="_blank" class="btn-icon wa">💬</a>
+                <button class="btn-icon" onclick="createQuoteForLead('${l.id}')" title="Generate Commercial Quotation">📄</button>
+                <button class="btn-icon" onclick="openNotesModal('${l.id}')">📝</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('exportBtn').onclick = () => {
+      if (!allLeads.length) return alert('No leads to export.');
+      const headers = ['ID', 'Date', 'Name', 'Country', 'Mobile', 'Email', 'Channel', 'Service', 'Budget', 'Status', 'FollowUpDate', 'Notes', 'Consent', 'Message'];
+      const rows = allLeads.map(l => [
+        l.id,
+        l.timestamp,
+        `"${(l.name||'').replace(/"/g, '""')}"`,
+        `"${(l.country||'').replace(/"/g, '""')}"`,
+        `"${(l.mobile||'').replace(/"/g, '""')}"`,
+        `"${(l.email||'').replace(/"/g, '""')}"`,
+        `"${(l.channel||'').replace(/"/g, '""')}"`,
+        `"${(l.service||'').replace(/"/g, '""')}"`,
+        `"${(l.budget||'').replace(/"/g, '""')}"`,
+        l.status,
+        l.followUpDate,
+        `"${(l.notes||'').replace(/"/g, '""')}"`,
+        l.consent ? 'Confirmed' : 'No',
+        `"${(l.message||'').replace(/"/g, '""')}"`
+      ]);
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `leads_export_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[tag] || tag));
+    }
+  </script>
+</body>
+</html>
