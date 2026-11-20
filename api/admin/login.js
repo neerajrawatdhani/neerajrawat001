@@ -14,8 +14,28 @@ module.exports = async (req, res) => {
   }
 
   const settings = getSettings();
-  const { password, email } = req.body || {};
+  const { password, email, username } = req.body || {};
   const pass = (password || '').trim();
+  const rawUser = (username || email || '').trim().toLowerCase();
+
+  const allowedUsernames = [
+    'admin',
+    'superadmin',
+    'neeraj',
+    (settings.adminUsername || 'admin').toLowerCase(),
+    (settings.adminEmail || 'neerajrawat001.bizz@gmail.com').toLowerCase(),
+    'neerajrawat001.bizz@gmail.com',
+    'neerajrawatdhani@gmail.com'
+  ];
+
+  const isUserValid = !rawUser || allowedUsernames.includes(rawUser);
+
+  if (!isUserValid) {
+    return res.status(401).json({
+      success: false,
+      error: 'गलत यूजरनेम! कृपया सही यूजरनेम ("admin") डालें।'
+    });
+  }
 
   // Accept current configured password OR default backup 'neeraj@123'
   const isPassValid = Boolean(pass && (pass === (settings.adminPassword || '').trim() || pass === 'neeraj@123'));

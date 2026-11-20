@@ -585,15 +585,15 @@
       
       <form class="auth-form" id="loginForm">
         <div>
-          <label class="auth-label">Admin Email</label>
-          <input type="email" id="emailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" required />
+          <label class="auth-label">Username</label>
+          <input type="text" id="emailInput" class="auth-input" placeholder="Enter username (e.g. admin)" required autofocus />
         </div>
         <div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <label class="auth-label" style="margin-bottom:0;">Password</label>
             <a href="#" id="forgotPassLink" style="font-size:12px; color:var(--accent); text-decoration:none;">Forgot Password?</a>
           </div>
-          <input type="password" id="passInput" class="auth-input" style="margin-top:4px;" placeholder="Enter password" required autofocus />
+          <input type="password" id="passInput" class="auth-input" style="margin-top:4px;" placeholder="Enter password" required />
         </div>
         <div class="auth-err" id="authErr">Invalid credentials. Please try again.</div>
         <button type="submit" class="auth-btn" id="loginBtn">
@@ -613,7 +613,7 @@
         <form class="auth-form" id="reqOtpForm" onsubmit="event.preventDefault(); sendOtpBtn.click();">
           <div>
             <label class="auth-label">Enter Registered Admin Email</label>
-            <input type="email" id="recoveryEmailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" placeholder="e.g. neerajrawat001.bizz@gmail.com" required autofocus />
+            <input type="email" id="recoveryEmailInput" class="auth-input" placeholder="e.g. neerajrawat001.bizz@gmail.com" required autofocus />
             <span style="font-size:11px; color:var(--fg-muted); display:block; margin-top:4px;">An official 6-digit OTP will be sent to your Gmail inbox.</span>
           </div>
           <div class="auth-err" id="otpErr1"></div>
@@ -1032,6 +1032,22 @@
             <label class="modal-label">Payee Name Displayed on UPI</label>
             <input type="text" id="setPgUpiName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
           </div>
+        </div>
+
+        <!-- Section: Change Password -->
+        <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border);">
+          <h3 style="font-size: 14px; margin-bottom: 12px; color: var(--accent);">🔑 Change Super Admin Password</h3>
+          <div class="quote-grid-2">
+            <div class="modal-field">
+              <label class="modal-label">New Password</label>
+              <input type="password" id="setNewAdminPassword" class="auth-input" placeholder="Enter new password (min 4 chars)" />
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Confirm New Password</label>
+              <input type="password" id="setConfirmAdminPassword" class="auth-input" placeholder="Re-enter new password" />
+            </div>
+          </div>
+          <span style="font-size: 11px; color: var(--fg-muted); display: block; margin-top: 4px;">Leave blank if you do not wish to change your current password.</span>
         </div>
       </div>
 
@@ -1877,46 +1893,69 @@
 
     saveSettingsBtn.onclick = async () => {
       const token = getToken();
+
+      const newAdminPass = document.getElementById('setNewAdminPassword')?.value.trim();
+      const confirmAdminPass = document.getElementById('setConfirmAdminPassword')?.value.trim();
+      if (newAdminPass) {
+        if (newAdminPass.length < 4) {
+          alert('नया पासवर्ड कम से कम 4 अक्षरों का होना चाहिए!');
+          return;
+        }
+        if (newAdminPass !== confirmAdminPass) {
+          alert('दोनों पासवर्ड मेल नहीं खाते! कृपया पासवर्ड पुनः जाँचें।');
+          return;
+        }
+      }
+
       saveSettingsBtn.disabled = true;
       saveSettingsBtn.textContent = 'Saving…';
 
       try {
+        const payload = {
+          smtpUser: setSmtpUser.value.trim(),
+          smtpPass: setSmtpPass.value.trim(),
+          adminEmail: setAdminEmail.value.trim(),
+          fromName: setFromName.value.trim(),
+          ...(newAdminPass ? { adminPassword: newAdminPass } : {}),
+          pricing: {
+            hostingerAnnual: parseFloat(document.getElementById('setHostingerPrice').value) || 4500,
+            vpsAnnual: parseFloat(document.getElementById('setVpsPrice').value) || 14000,
+            domainAnnual: parseFloat(document.getElementById('setDomainPrice').value) || 999,
+            mongodbAnnual: parseFloat(document.getElementById('setMongoDbPrice').value) || 7500,
+            businessEmailAnnual: parseFloat(document.getElementById('setBusinessEmailPrice').value) || 2500
+          },
+          dataTiers: {
+            growthAnnual: parseFloat(document.getElementById('setTierGrowthPrice').value) || 3500,
+            enterpriseAnnual: parseFloat(document.getElementById('setTierEnterprisePrice').value) || 9500
+          },
+          paymentGateway: {
+            mode: document.getElementById('setPgMode')?.value || 'test',
+            testKeyId: document.getElementById('setPgTestKeyId')?.value.trim() || '',
+            testKeySecret: document.getElementById('setPgTestKeySecret')?.value.trim() || '',
+            liveKeyId: document.getElementById('setPgLiveKeyId')?.value.trim() || '',
+            liveKeySecret: document.getElementById('setPgLiveKeySecret')?.value.trim() || '',
+            upiId: document.getElementById('setPgUpiId')?.value.trim() || '8708167959@paytm',
+            upiName: document.getElementById('setPgUpiName')?.value.trim() || 'Neeraj Rawat | Dhani Tech'
+          }
+        };
+
         const res = await fetch('/api/admin/settings', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           },
-          body: JSON.stringify({
-            smtpUser: setSmtpUser.value.trim(),
-            smtpPass: setSmtpPass.value.trim(),
-            adminEmail: setAdminEmail.value.trim(),
-            fromName: setFromName.value.trim(),
-            pricing: {
-              hostingerAnnual: parseFloat(document.getElementById('setHostingerPrice').value) || 4500,
-              vpsAnnual: parseFloat(document.getElementById('setVpsPrice').value) || 14000,
-              domainAnnual: parseFloat(document.getElementById('setDomainPrice').value) || 999,
-              mongodbAnnual: parseFloat(document.getElementById('setMongoDbPrice').value) || 7500,
-              businessEmailAnnual: parseFloat(document.getElementById('setBusinessEmailPrice').value) || 2500
-            },
-            dataTiers: {
-              growthAnnual: parseFloat(document.getElementById('setTierGrowthPrice').value) || 3500,
-              enterpriseAnnual: parseFloat(document.getElementById('setTierEnterprisePrice').value) || 9500
-            },
-            paymentGateway: {
-              mode: document.getElementById('setPgMode')?.value || 'test',
-              testKeyId: document.getElementById('setPgTestKeyId')?.value.trim() || '',
-              testKeySecret: document.getElementById('setPgTestKeySecret')?.value.trim() || '',
-              liveKeyId: document.getElementById('setPgLiveKeyId')?.value.trim() || '',
-              liveKeySecret: document.getElementById('setPgLiveKeySecret')?.value.trim() || '',
-              upiId: document.getElementById('setPgUpiId')?.value.trim() || '8708167959@paytm',
-              upiName: document.getElementById('setPgUpiName')?.value.trim() || 'Neeraj Rawat | Dhani Tech'
-            }
-          })
+          body: JSON.stringify(payload)
         });
         const data = await res.json();
         if (data.success) {
-          alert('Settings, Pricing & Payment Gateway saved successfully!');
+          if (newAdminPass) {
+            alert('🎉 सेटिंग्स और नया पासवर्ड सफलतापूर्वक सेव हो गए हैं!');
+            document.getElementById('setNewAdminPassword').value = '';
+            document.getElementById('setConfirmAdminPassword').value = '';
+          } else {
+            alert('Settings, Pricing & Payment Gateway saved successfully!');
+          }
           updateProviderPriceLabels();
           closeSettings();
         } else {

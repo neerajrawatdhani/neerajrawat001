@@ -2035,6 +2035,13 @@ const DEFAULT_PRODUCTS = [
   }
 ];
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[tag] || tag));
+}
+
 function renderProductsCards(products) {
   currentDigitalProducts = products || DEFAULT_PRODUCTS;
   const cardsHtml = currentDigitalProducts.map(p => {

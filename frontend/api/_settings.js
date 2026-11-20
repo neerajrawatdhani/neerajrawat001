@@ -9,6 +9,7 @@ let memorySettings = {
   smtpSecure: process.env.SMTP_SECURE !== 'false',
   smtpUser: process.env.SMTP_USER || 'neerajrawat001.bizz@gmail.com',
   smtpPass: process.env.SMTP_PASS || 'bkou vujw zshy bplp',
+  adminUsername: process.env.ADMIN_USERNAME || 'admin',
   adminEmail: process.env.ADMIN_EMAIL || 'neerajrawat001.bizz@gmail.com',
   adminPassword: process.env.ADMIN_PASSWORD || 'neeraj@123',
   adminSecret: process.env.ADMIN_SECRET || 'dhani_super_admin_secure_key_9921',
