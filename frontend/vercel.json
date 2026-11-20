@@ -2,16 +2,30 @@
   "cleanUrls": true,
   "redirects": [
     {
-      "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
-      ],
-      "source": "/",
-      "destination": "/admin",
+      "source": "/admin",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/",
       "permanent": false
     }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    {
+      "has": [
+        { "type": "host", "value": "admin.neerajrawat.dev" }
+      ],
+      "source": "/(fonts|card|vendor)/(.*)",
+      "destination": "/$1/$2"
+    },
     {
       "has": [
         { "type": "host", "value": "admin.neerajrawat.dev" }
@@ -24,10 +38,30 @@
         { "type": "host", "value": "admin.neerajrawat.dev" }
       ],
       "source": "/(.*)",
-      "destination": "/admin/$1"
+      "destination": "/admin/index.html"
     },
-    { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/admin/", "destination": "/admin/index.html" },
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/photographer", "destination": "/photographer/index.html" },
+    { "source": "/photographer/", "destination": "/photographer/index.html" },
+    { "source": "/photographer/(.*)", "destination": "/photographer/$1" },
+    { "source": "/web-developer", "destination": "/web-developer/index.html" },
+    { "source": "/web-developer/", "destination": "/web-developer/index.html" },
+    { "source": "/web-developer/(.*)", "destination": "/web-developer/$1" },
+    { "source": "/graphic-designer", "destination": "/graphic-designer/index.html" },
+    { "source": "/graphic-designer/", "destination": "/graphic-designer/index.html" },
+    { "source": "/graphic-designer/(.*)", "destination": "/graphic-designer/$1" },
+    { "source": "/ui-ux-designer", "destination": "/ui-ux-designer/index.html" },
+    { "source": "/ui-ux-designer/", "destination": "/ui-ux-designer/index.html" },
+    { "source": "/ui-ux-designer/(.*)", "destination": "/ui-ux-designer/$1" },
+    { "source": "/app-developer", "destination": "/app-developer/index.html" },
+    { "source": "/app-developer/", "destination": "/app-developer/index.html" },
+    { "source": "/app-developer/(.*)", "destination": "/app-developer/$1" },
+    { "source": "/ability-card", "destination": "/ability-card/index.html" },
+    { "source": "/ability-card/", "destination": "/ability-card/index.html" },
+    { "source": "/ability-card/(.*)", "destination": "/ability-card/$1" },
+    { "source": "/legal", "destination": "/legal/index.html" },
+    { "source": "/legal/", "destination": "/legal/index.html" },
+    { "source": "/legal/(.*)", "destination": "/legal/$1" },
     { "source": "/home", "destination": "/" },
     { "source": "/home/", "destination": "/" },
     { "source": "/work", "destination": "/" },

@@ -1,7 +1,46 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    {
+      "has": [
+        { "type": "host", "value": "admin.neerajrawat.dev" }
+      ],
+      "source": "/(card|fonts|vendor)/(.*)",
+      "destination": "/frontend/$1/$2"
+    },
+    {
+      "has": [
+        { "type": "host", "value": "admin.neerajrawat.dev" }
+      ],
+      "source": "/",
+      "destination": "/frontend/admin/index.html"
+    },
+    {
+      "has": [
+        { "type": "host", "value": "admin.neerajrawat.dev" }
+      ],
+      "source": "/(.*)",
+      "destination": "/frontend/admin/index.html"
+    },
     { "source": "/robots.txt", "destination": "/frontend/robots.txt" },
     { "source": "/photographer", "destination": "/frontend/photographer/index.html" },
     { "source": "/photographer/", "destination": "/frontend/photographer/index.html" },
@@ -34,6 +73,8 @@
     { "source": "/my-story/", "destination": "/frontend/index.html" },
     { "source": "/about", "destination": "/frontend/index.html" },
     { "source": "/about/", "destination": "/frontend/index.html" },
+    { "source": "/products", "destination": "/frontend/index.html" },
+    { "source": "/products/", "destination": "/frontend/index.html" },
     { "source": "/contact", "destination": "/frontend/index.html" },
     { "source": "/contact/", "destination": "/frontend/index.html" },
     { "source": "/", "destination": "/frontend/index.html" },
