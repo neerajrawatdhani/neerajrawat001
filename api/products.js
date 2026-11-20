@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
   // POST: Add new digital product
   if (req.method === 'POST') {
     const body = req.body || {};
-    const { title, category, price, period, badge, desc, fileFormat, downloadUrl, features = [], demoUrl } = body;
+    const { title, category, price, period, badge, desc, fileFormat, downloadUrl, features = [], demoUrl, image } = body;
 
     if (!title || !price) {
       return res.status(400).json({ success: false, error: 'Product Title और Price आवश्यक हैं।' });
@@ -59,6 +59,7 @@ module.exports = async (req, res) => {
       currency: 'INR',
       period: (period || 'Instant Download').trim(),
       badge: (badge || 'Digital File').trim(),
+      image: (image || '').trim(),
       desc: (desc || '').trim(),
       downloadUrl: (downloadUrl || '').trim(),
       features: Array.isArray(features) ? features : (features ? features.split('\n').filter(Boolean) : []),

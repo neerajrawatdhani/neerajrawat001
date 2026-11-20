@@ -1118,7 +1118,23 @@
         </div>
 
         <div class="modal-field" style="margin-top:10px;">
-          <label class="modal-label">Product Description</label>
+          <label class="modal-label">🖼️ Product Photo / Thumbnail Image URL *</label>
+          <div style="display:flex; gap:8px;">
+            <input type="url" id="adminProdImage" class="auth-input" placeholder="https://images.unsplash.com/... or direct image URL" style="flex:1;" oninput="updateAdminProdImagePreview(this.value)" />
+            <button type="button" class="btn-secondary" style="font-size:12px; white-space:nowrap; padding:6px 10px;" onclick="choosePresetImage('excel')">📊 Excel</button>
+            <button type="button" class="btn-secondary" style="font-size:12px; white-space:nowrap; padding:6px 10px;" onclick="choosePresetImage('profit')">📈 Profit</button>
+            <button type="button" class="btn-secondary" style="font-size:12px; white-space:nowrap; padding:6px 10px;" onclick="choosePresetImage('graphics')">🎨 Design</button>
+            <button type="button" class="btn-secondary" style="font-size:12px; white-space:nowrap; padding:6px 10px;" onclick="choosePresetImage('contract')">📄 Contract</button>
+            <button type="button" class="btn-secondary" style="font-size:12px; white-space:nowrap; padding:6px 10px;" onclick="choosePresetImage('code')">💻 Code</button>
+          </div>
+          <div id="adminProdImagePreviewBox" style="margin-top:8px; display:none; align-items:center; gap:12px; background:var(--surface-3); padding:8px 12px; border-radius:6px; border:1px solid var(--border);">
+            <img id="adminProdImgPreview" src="" alt="Product Preview" style="width:70px; height:48px; object-fit:cover; border-radius:4px; border:1px solid var(--border);" />
+            <span style="font-size:12px; color:var(--green);">✓ Image preview loaded successfully</span>
+          </div>
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Product Description (Short &amp; Crisp)</label>
           <textarea id="adminProdDesc" class="auth-input" rows="2" placeholder="Brief summary of the digital spreadsheet, file contents, and how it helps the customer."></textarea>
         </div>
 
@@ -2090,7 +2106,13 @@
         return `
           <tr>
             <td>
-              <div style="font-weight:700; color:#fff;">${escapeHtml(p.title || p.name)}</div>
+              <div style="display:flex; align-items:center; gap:10px;">
+        <img src="${p.image || 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=100'}" style="width:38px; height:38px; border-radius:6px; object-fit:cover; border:1px solid var(--border);" onerror="this.src='https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=100'" />
+        <div>
+          <div style="font-weight:700; color:#fff;">${escapeHtml(p.title || p.name)}</div>
+          <div style="font-size:11px; color:var(--accent);">${escapeHtml(p.badge || '')}</div>
+        </div>
+      </div>
               <div style="display:flex; gap:6px; margin-top:2px;">
                 ${p.fileFormat ? `<span style="background:rgba(255,255,255,0.08); font-size:10px; color:#bbb; padding:1px 5px; border-radius:3px;">${escapeHtml(p.fileFormat)}</span>` : ''}
                 ${p.badge ? `<span style="background:rgba(232,168,124,0.15); color:var(--accent); font-size:10px; font-weight:700; padding:1px 5px; border-radius:3px; text-transform:uppercase;">${escapeHtml(p.badge)}</span>` : ''}
@@ -2123,7 +2145,7 @@
       document.getElementById('adminProdFormat').value = 'Microsoft Excel (.xlsx)';
       document.getElementById('adminProdBadge').value = 'Best Seller';
       document.getElementById('adminProdDownloadUrl').value = '';
-      document.getElementById('adminProdDesc').value = '';
+      document.getElementById('adminProdImage').value = ''; updateAdminProdImagePreview(''); document.getElementById('adminProdDesc').value = '';
       document.getElementById('adminProdFeatures').value = '';
       document.getElementById('adminProdDemoUrl').value = '';
       document.getElementById('adminProdStatus').value = 'Active';
@@ -2142,7 +2164,7 @@
       document.getElementById('adminProdFormat').value = prod.fileFormat || 'Microsoft Excel (.xlsx)';
       document.getElementById('adminProdBadge').value = prod.badge || '';
       document.getElementById('adminProdDownloadUrl').value = prod.downloadUrl || '';
-      document.getElementById('adminProdDesc').value = prod.desc || '';
+      document.getElementById('adminProdImage').value = prod.image || ''; updateAdminProdImagePreview(prod.image || ''); document.getElementById('adminProdDesc').value = prod.desc || '';
       document.getElementById('adminProdFeatures').value = Array.isArray(prod.features) ? prod.features.join('\n') : (prod.features || '');
       document.getElementById('adminProdDemoUrl').value = prod.demoUrl || '';
       document.getElementById('adminProdStatus').value = prod.status || 'Active';
@@ -2166,7 +2188,7 @@
         const fileFormat = document.getElementById('adminProdFormat').value.trim();
         const badge = document.getElementById('adminProdBadge').value.trim();
         const downloadUrl = document.getElementById('adminProdDownloadUrl').value.trim();
-        const desc = document.getElementById('adminProdDesc').value.trim();
+        const image = (document.getElementById('adminProdImage')?.value || '').trim(); const desc = document.getElementById('adminProdDesc').value.trim();
         const featuresText = document.getElementById('adminProdFeatures').value.trim();
         const demoUrl = document.getElementById('adminProdDemoUrl').value.trim();
         const status = document.getElementById('adminProdStatus').value;
@@ -2184,8 +2206,8 @@
         try {
           const method = id ? 'PATCH' : 'POST';
           const payload = id
-            ? { id, title, category, price, period: 'Instant Download', fileFormat, badge, downloadUrl, desc, features, demoUrl, status }
-            : { title, category, price, period: 'Instant Download', fileFormat, badge, downloadUrl, desc, features, demoUrl, status };
+            ? { id, title, category, price, period: 'Instant Download', fileFormat, badge, image, downloadUrl, desc, features, demoUrl, status }
+            : { title, category, price, period: 'Instant Download', fileFormat, badge, image, downloadUrl, desc, features, demoUrl, status };
 
           const res = await fetch('/api/products', {
             method,

@@ -6,21 +6,21 @@ const PRODUCTS_FILE = '/tmp/digital_products.json';
 let memoryProducts = [
   {
     id: 'prod_gst_invoice_excel',
-    title: 'Automated GST Billing & Tax Invoicing Excel Spreadsheet',
+    title: 'Automated GST Billing & Invoicing Excel Sheet',
     category: 'Excel Sheets',
     fileFormat: 'Microsoft Excel (.xlsx)',
     price: 499,
     currency: 'INR',
     period: 'Instant Download',
-    badge: 'Best Seller Excel',
+    badge: 'Best Seller',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop&q=80',
     downloadUrl: 'https://drive.google.com/drive/folders/neerajrawat_gst_invoicing',
-    desc: 'Pre-configured automated Excel workbook with dynamic CGST, SGST & IGST calculation, automated tax invoice generator, client ledger, and one-click printable PDF layout.',
+    desc: 'Automated CGST/SGST/IGST tax calculation, client ledger & one-click printable PDF invoices.',
     features: [
-      'Automated CGST (9%), SGST (9%), and IGST (18%) auto-detection',
-      'One-click Printable & PDF Invoice generator format',
-      'Client Outstanding Balance & Payment Ledger tracker',
-      'Fully unlocked formulas — 100% customizable for any business',
-      'Instant digital file download (.xlsx) with lifetime access'
+      'Automated CGST, SGST & IGST tax calculation',
+      'One-click Printable PDF Invoice format',
+      'Client Outstanding Balance & Ledger tracker',
+      '100% unlocked formulas for any business'
     ],
     status: 'Active',
     demoUrl: 'https://neerajrawat.dev',
@@ -28,21 +28,21 @@ let memoryProducts = [
   },
   {
     id: 'prod_profit_expense_tracker',
-    title: 'Business Income, Expense & Profit-Loss Dashboard',
+    title: 'Business Income, Expense & P&L Dashboard',
     category: 'Excel Sheets',
     fileFormat: 'Excel (.xlsx) + Google Sheets',
     price: 399,
     currency: 'INR',
     period: 'Instant Download',
-    badge: 'Popular Sheet',
+    badge: 'Popular',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80',
     downloadUrl: 'https://drive.google.com/drive/folders/neerajrawat_profit_tracker',
-    desc: 'Visual financial management dashboard in Excel & Google Sheets to track daily revenue, operating expenses, vendor payments, and monthly net profit with automated charts.',
+    desc: 'Interactive financial P&L dashboard with automated monthly expense charts & cash flow tracker.',
     features: [
-      'Visual interactive dashboard with automatic monthly charts & graphs',
-      'Monthly & Annual P&L (Profit & Loss) breakdown summary',
-      'Cash flow projections & vendor payment status tracker',
-      'Compatible with MS Excel 2016, 2019, 2021, Office 365 & Google Sheets',
-      'Includes pre-filled sample data sheet for easy understanding'
+      'Interactive dashboard with automatic charts',
+      'Monthly & Annual Profit & Loss summary',
+      'Cash flow projections & vendor tracker',
+      'MS Excel & Google Sheets compatible'
     ],
     status: 'Active',
     demoUrl: 'https://neerajrawat.dev',
@@ -50,21 +50,21 @@ let memoryProducts = [
   },
   {
     id: 'prod_social_media_graphics_pack',
-    title: '1500+ Social Media Posts & Banner Graphic Design Bundle',
+    title: '1500+ Social Media Posts & Banner Graphic Bundle',
     category: 'Digital Files',
     fileFormat: 'Canva & PSD (.zip)',
     price: 699,
     currency: 'INR',
     period: 'Instant Download',
-    badge: 'Mega Bundle',
+    badge: 'Mega Pack',
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
     downloadUrl: 'https://drive.google.com/drive/folders/neerajrawat_graphic_bundle',
-    desc: 'High-converting social media marketing templates for Instagram, Facebook, LinkedIn & WhatsApp promotion. Fully customizable in Canva (Free version) and Photoshop.',
+    desc: 'Editable Canva & Photoshop templates for Instagram, Facebook, LinkedIn & WhatsApp promotion.',
     features: [
-      '1,500+ modern design templates for sales, festivals, quotes & offers',
-      'Ready-to-post square (1080x1080) and Story/Reel (1080x1920) sizes',
-      'Works seamlessly with Canva Free Account — no Pro required',
-      'High-resolution vector assets, background textures & icons included',
-      'Direct cloud storage download link with lifetime updates'
+      '1,500+ modern design templates & banners',
+      'Ready-to-post Square & Story/Reels sizes',
+      'Works with Canva Free Account',
+      'High-res vectors, textures & icons'
     ],
     status: 'Active',
     demoUrl: 'https://neerajrawat.dev',
@@ -72,20 +72,21 @@ let memoryProducts = [
   },
   {
     id: 'prod_client_agreement_pack',
-    title: 'Client Onboarding, Proposal & Legal Contract Toolkit',
+    title: 'Client Onboarding, Proposal & Contract Toolkit',
     category: 'Templates & Files',
-    fileFormat: 'Word (.docx) + PDF + Excel',
+    fileFormat: 'Word (.docx) + PDF',
     price: 599,
     currency: 'INR',
     period: 'Instant Download',
-    badge: 'Agency Toolkit',
+    badge: 'Agency Pro',
+    image: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?w=600&auto=format&fit=crop&q=80',
     downloadUrl: 'https://drive.google.com/drive/folders/neerajrawat_contract_pack',
-    desc: 'Professional service contracts, client intake questionnaires, scope of work templates, and payment terms agreements drafted for freelancers and agencies.',
+    desc: 'Ready-to-use client service agreements, NDA, payment milestone terms, and onboarding documents.',
     features: [
-      'Legally structured Client Service Agreement with milestone protection',
-      'Client Onboarding Questionnaire to capture project requirements',
-      'Payment Milestones, Delay Clauses & Intellectual Property Transfer',
-      'Editable Word (.docx), Google Docs and ready-to-use PDF formats'
+      'Client Service Agreement with milestone protection',
+      'Client intake & requirements questionnaire',
+      'Milestone payment & copyright clauses',
+      'Editable Word (.docx) & PDF formats'
     ],
     status: 'Active',
     demoUrl: 'https://neerajrawat.dev',
@@ -93,20 +94,21 @@ let memoryProducts = [
   },
   {
     id: 'prod_portfolio_source_code',
-    title: 'Modern Full-Stack Dark Theme Portfolio & Agency Web Kit',
+    title: 'Modern Full-Stack Dark Portfolio Web Kit',
     category: 'Code & Scripts',
-    fileFormat: 'Full Source Code (.zip)',
+    fileFormat: 'Source Code (.zip)',
     price: 999,
     currency: 'INR',
     period: 'Instant Download',
     badge: 'Developer Kit',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80',
     downloadUrl: 'https://drive.google.com/drive/folders/neerajrawat_source_code',
-    desc: 'Clean, performant HTML5/CSS3/JavaScript dark portfolio website template with responsive navigation, micro-interactions, contact backend, and 99+ Lighthouse score.',
+    desc: 'High-performance HTML5/CSS3 portfolio codebase with 3D interactions, contact backend & 99+ score.',
     features: [
-      'Clean handwritten HTML5/CSS3 with zero heavy dependencies',
-      'Interactive project showcase modal & lead capture contact forms',
-      'SEO friendly with schema metadata and open-graph social previews',
-      'Includes deploy guide for Vercel, Netlify, or Apache/cPanel'
+      'Clean handwritten HTML5/CSS3 codebase',
+      'Interactive showcase modal & contact system',
+      'SEO friendly with schema metadata',
+      'Vercel & Netlify deploy guide included'
     ],
     status: 'Active',
     demoUrl: 'https://neerajrawat.dev',
@@ -119,8 +121,8 @@ function loadProducts() {
     if (fs.existsSync(PRODUCTS_FILE)) {
       const data = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
       if (Array.isArray(data) && data.length) {
-        // If file contains obsolete school ERP mock data, migrate to new digital products
-        if (data.some(p => p.id === 'prod_edudhani_erp' || (p.title && p.title.includes('School ERP')))) {
+        // If file contains obsolete school ERP or products without images, refresh with new memoryProducts
+        if (data.some(p => p.id === 'prod_edudhani_erp' || !p.image)) {
           saveProducts(memoryProducts);
           return memoryProducts;
         }
