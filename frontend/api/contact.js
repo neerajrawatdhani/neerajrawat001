@@ -1,26 +1,6 @@
 const nodemailer = require('nodemailer');
 const { addLead } = require('./_leads');
-
-const SMTP_USER = process.env.SMTP_USER || 'neerajrawatdhani@gmail.com';
-const SMTP_PASS = process.env.SMTP_PASS;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || SMTP_USER;
-
-let transporter = null;
-if (SMTP_USER && SMTP_PASS) {
-  try {
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '465', 10),
-      secure: process.env.SMTP_SECURE !== 'false',
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS
-      }
-    });
-  } catch (e) {
-    console.error('[SMTP Init Error]:', e.message);
-  }
-}
+const { getSettings } = require('./_settings');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -84,14 +64,26 @@ module.exports = async (req, res) => {
   }
 
   // 2. Send email notification if SMTP is configured
-  if (transporter && SMTP_USER && SMTP_PASS) {
+  const settings = getSettings();
+  if (settings.smtpUser && settings.smtpPass) {
     try {
-      const fromAddress = `"Neeraj Rawat | Dhani Tech" <${SMTP_USER}>`;
+      const transporter = nodemailer.createTransport({
+        host: settings.smtpHost || 'smtp.gmail.com',
+        port: parseInt(settings.smtpPort || '465', 10),
+        secure: settings.smtpSecure !== false,
+        auth: {
+          user: settings.smtpUser.trim(),
+          pass: settings.smtpPass.trim()
+        }
+      });
+
+      const fromAddress = `"${settings.fromName || 'Neeraj Rawat | Dhani Tech'}" <${settings.smtpUser.trim()}>`;
+      const adminTarget = settings.adminEmail || settings.smtpUser.trim();
 
       // Admin notification
       await transporter.sendMail({
         from: fromAddress,
-        to: ADMIN_EMAIL,
+        to: adminTarget,
         replyTo: email,
         subject: `🚀 New Project Lead: ${name} (${budget})`,
         html: `

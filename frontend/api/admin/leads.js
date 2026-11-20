@@ -1,11 +1,11 @@
 const { loadLeads, updateLead, saveLeads } = require('../_leads');
-
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'dhani_super_admin_secure_key_9921';
+const { getSettings } = require('../_settings');
 
 function checkAuth(req) {
   const auth = req.headers.authorization || '';
   const token = auth.replace(/^Bearer\s+/i, '');
-  return token === ADMIN_SECRET;
+  const settings = getSettings();
+  return token === settings.adminSecret;
 }
 
 module.exports = async (req, res) => {

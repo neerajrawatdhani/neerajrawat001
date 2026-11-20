@@ -49,7 +49,7 @@
       line-height: 1.5;
     }
 
-    /* Login Screen */
+    /* Login & Auth Screen */
     .auth-wrap {
       display: flex;
       align-items: center;
@@ -60,7 +60,7 @@
     }
     .auth-card {
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 20px;
@@ -82,16 +82,17 @@
       color: var(--accent);
     }
     .auth-card h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
-    .auth-card p { font-size: 14px; color: var(--fg-muted); margin-bottom: 24px; }
+    .auth-card p { font-size: 14px; color: var(--fg-muted); margin-bottom: 22px; }
     .auth-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+    .auth-label { font-size: 12px; color: var(--fg-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; display: block; }
     .auth-input {
       width: 100%;
       background: var(--surface-2);
       border: 1px solid var(--border);
       color: var(--fg);
-      padding: 13px 16px;
+      padding: 12px 14px;
       border-radius: var(--radius-sm);
-      font-size: 15px;
+      font-size: 14px;
       outline: none;
       transition: border-color .2s;
     }
@@ -100,9 +101,9 @@
       background: var(--fg);
       color: var(--bg);
       border: none;
-      padding: 13px 18px;
+      padding: 12px 18px;
       border-radius: var(--radius-sm);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -114,6 +115,13 @@
     .auth-btn:hover { opacity: 0.92; transform: translateY(-1px); }
     .auth-err {
       color: var(--red);
+      font-size: 13px;
+      text-align: center;
+      display: none;
+      margin-top: 4px;
+    }
+    .auth-success {
+      color: var(--green);
       font-size: 13px;
       text-align: center;
       display: none;
@@ -181,7 +189,7 @@
       gap: 24px;
     }
 
-    /* Workflow Pipeline Bar (Inspired by Small Business Use Cases) */
+    /* Workflow Pipeline Bar */
     .pipeline-section {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -284,7 +292,7 @@
     .badge-yellow { color: var(--yellow); background: var(--yellow-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
     .badge-wa { color: var(--wa-color); background: var(--wa-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
 
-    /* Alert Banner (Today's Follow-up Priority) */
+    /* Alert Banner */
     .alert-banner {
       background: linear-gradient(90deg, rgba(251, 191, 36, 0.12) 0%, rgba(20, 19, 19, 0.6) 100%);
       border: 1px solid rgba(251, 191, 36, 0.35);
@@ -451,7 +459,7 @@
     .btn-icon:hover { background: var(--surface-3); border-color: var(--border-focus); }
     .btn-icon.wa:hover { color: var(--wa-color); border-color: var(--wa-color); background: var(--wa-bg); }
 
-    /* Client Dossier Modal */
+    /* Modals Backdrop */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -547,17 +555,78 @@
 
   <!-- 1. LOGIN SCREEN -->
   <div class="auth-wrap" id="authScreen">
-    <div class="auth-card">
+    <div class="auth-card" id="loginCard">
       <div class="auth-logo">🔒</div>
       <h1>Super Admin Portal</h1>
-      <p>Enter your password to access real-time leads, pipeline workflow, and client follow-ups.</p>
+      <p>Log in with your official admin email &amp; password.</p>
+      
       <form class="auth-form" id="loginForm">
-        <input type="password" id="passInput" class="auth-input" placeholder="Enter Super Admin Password" required autofocus />
-        <div class="auth-err" id="authErr">Invalid password. Please try again.</div>
-        <button type="submit" class="auth-btn">
+        <div>
+          <label class="auth-label">Admin Email</label>
+          <input type="email" id="emailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" required />
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label class="auth-label" style="margin-bottom:0;">Password</label>
+            <a href="#" id="forgotPassLink" style="font-size:12px; color:var(--accent); text-decoration:none;">Forgot Password?</a>
+          </div>
+          <input type="password" id="passInput" class="auth-input" style="margin-top:4px;" placeholder="Enter password" required autofocus />
+        </div>
+        <div class="auth-err" id="authErr">Invalid credentials. Please try again.</div>
+        <button type="submit" class="auth-btn" id="loginBtn">
           Unlock Dashboard →
         </button>
       </form>
+    </div>
+
+    <!-- FORGOT PASSWORD CARD (OTP RECOVERY) -->
+    <div class="auth-card" id="forgotCard" style="display:none;">
+      <div class="auth-logo">🔐</div>
+      <h1>Password Recovery</h1>
+      <p>Recover your Super Admin password via OTP.</p>
+
+      <!-- Step 1: Request OTP -->
+      <div id="otpStep1">
+        <div class="auth-form">
+          <div>
+            <label class="auth-label">Registered Admin Email</label>
+            <input type="email" id="recoveryEmailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" required readonly />
+          </div>
+          <div class="auth-err" id="otpErr1"></div>
+          <button type="button" class="auth-btn" id="sendOtpBtn">
+            Send 6-Digit OTP to Email →
+          </button>
+          <div style="text-align:center; margin-top:10px;">
+            <a href="#" id="backToLoginLink1" style="color:var(--fg-muted); font-size:13px; text-decoration:none;">← Back to Login</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Verify OTP & Reset -->
+      <div id="otpStep2" style="display:none;">
+        <div class="auth-form">
+          <div class="modal-consent-badge" style="margin-bottom:6px;">
+            <span>📬</span>
+            <span id="otpSentMsg">OTP sent to your email. Check inbox &amp; spam.</span>
+          </div>
+          <div>
+            <label class="auth-label">6-Digit OTP</label>
+            <input type="text" id="otpInput" class="auth-input" maxlength="6" placeholder="e.g. 482915" style="letter-spacing:4px; font-size:18px; text-align:center; font-family:monospace;" required />
+          </div>
+          <div>
+            <label class="auth-label">New Password</label>
+            <input type="password" id="newPassInput" class="auth-input" placeholder="Enter new password (min 4 chars)" required />
+          </div>
+          <div class="auth-err" id="otpErr2"></div>
+          <div class="auth-success" id="otpSuccess2"></div>
+          <button type="button" class="auth-btn" id="verifyOtpBtn">
+            Verify OTP &amp; Reset Password →
+          </button>
+          <div style="text-align:center; margin-top:10px;">
+            <a href="#" id="backToLoginLink2" style="color:var(--fg-muted); font-size:13px; text-decoration:none;">← Back to Login</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -571,6 +640,7 @@
           <span class="brand-title">Neeraj Rawat · Dhani Tech</span>
         </a>
         <div class="header-actions">
+          <button class="btn-secondary" id="settingsBtn">⚙️ Settings</button>
           <a href="https://neerajrawat.dev" target="_blank" class="btn-secondary">Website ↗</a>
           <button class="btn-secondary" id="logoutBtn">Logout</button>
         </div>
@@ -579,7 +649,7 @@
 
     <main class="container">
 
-      <!-- Pipeline Workflow Steps (Inspired by Business Automation Agent Pipeline) -->
+      <!-- Pipeline Workflow Steps -->
       <section class="pipeline-section">
         <div class="pipeline-header">
           <div>
@@ -807,6 +877,59 @@
     </div>
   </div>
 
+  <!-- 4. SETTINGS & SMTP CONFIGURATION MODAL -->
+  <div class="modal-backdrop" id="settingsBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">⚙️ Settings &amp; Gmail SMTP Configuration</h2>
+        <button class="btn-close" id="settingsCloseBtn">✕</button>
+      </div>
+
+      <div class="modal-consent-badge">
+        <span>🔒</span>
+        <span>All emails to clients and admin alerts are sent through this verified Gmail SMTP account.</span>
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Gmail Address (SMTP User)</label>
+        <input type="email" id="setSmtpUser" class="auth-input" value="neerajrawat001.bizz@gmail.com" />
+      </div>
+
+      <div class="modal-field">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <label class="modal-label" style="margin-bottom:0;">Google App Password (16 Characters)</label>
+          <a href="https://myaccount.google.com/apppasswords" target="_blank" style="font-size:11px; color:var(--accent); text-decoration:none;">Generate App Password ↗</a>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:4px;">
+          <input type="password" id="setSmtpPass" class="auth-input" value="bkou vujw zshy bplp" placeholder="xxxx xxxx xxxx xxxx" />
+          <button type="button" class="btn-secondary" id="togglePassVisibility" title="Show/Hide">👁️</button>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Admin Notification Email (New Lead Alerts)</label>
+        <input type="email" id="setAdminEmail" class="auth-input" value="neerajrawat001.bizz@gmail.com" />
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Sender Display Name</label>
+        <input type="text" id="setFromName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
+      </div>
+
+      <div id="settingsFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm);"></div>
+
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button type="button" class="btn-secondary" id="testSmtpBtn">
+          ✉️ Send Test Email
+        </button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-secondary" id="settingsCancelBtn">Cancel</button>
+          <button class="auth-btn" style="padding: 9px 20px;" id="saveSettingsBtn">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     let allLeads = [];
     let currentEditLead = null;
@@ -814,10 +937,123 @@
 
     const authScreen = document.getElementById('authScreen');
     const app = document.getElementById('app');
+    const loginCard = document.getElementById('loginCard');
+    const forgotCard = document.getElementById('forgotCard');
     const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('emailInput');
     const passInput = document.getElementById('passInput');
     const authErr = document.getElementById('authErr');
     const logoutBtn = document.getElementById('logoutBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+
+    // Forgot Password Flow
+    const forgotPassLink = document.getElementById('forgotPassLink');
+    const backToLoginLink1 = document.getElementById('backToLoginLink1');
+    const backToLoginLink2 = document.getElementById('backToLoginLink2');
+    const otpStep1 = document.getElementById('otpStep1');
+    const otpStep2 = document.getElementById('otpStep2');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const recoveryEmailInput = document.getElementById('recoveryEmailInput');
+    const otpInput = document.getElementById('otpInput');
+    const newPassInput = document.getElementById('newPassInput');
+    const otpErr1 = document.getElementById('otpErr1');
+    const otpErr2 = document.getElementById('otpErr2');
+    const otpSuccess2 = document.getElementById('otpSuccess2');
+
+    forgotPassLink.onclick = (e) => {
+      e.preventDefault();
+      loginCard.style.display = 'none';
+      forgotCard.style.display = 'block';
+      otpStep1.style.display = 'block';
+      otpStep2.style.display = 'none';
+      otpErr1.style.display = 'none';
+    };
+
+    const showLogin = (e) => {
+      if (e) e.preventDefault();
+      forgotCard.style.display = 'none';
+      loginCard.style.display = 'block';
+      authErr.style.display = 'none';
+    };
+    backToLoginLink1.onclick = showLogin;
+    backToLoginLink2.onclick = showLogin;
+
+    sendOtpBtn.onclick = async () => {
+      otpErr1.style.display = 'none';
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.textContent = 'Sending OTP to email…';
+
+      try {
+        const res = await fetch('/api/admin/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'request-otp', email: recoveryEmailInput.value })
+        });
+        const data = await res.json();
+        if (data.success) {
+          otpStep1.style.display = 'none';
+          otpStep2.style.display = 'block';
+          document.getElementById('otpSentMsg').textContent = `OTP successfully sent to ${recoveryEmailInput.value}.`;
+        } else {
+          otpErr1.textContent = data.error || 'OTP भेजने में विफलता।';
+          otpErr1.style.display = 'block';
+        }
+      } catch (err) {
+        otpErr1.textContent = 'सर्वर कनेक्शन त्रुटि: ' + err.message;
+        otpErr1.style.display = 'block';
+      } finally {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = 'Send 6-Digit OTP to Email →';
+      }
+    };
+
+    verifyOtpBtn.onclick = async () => {
+      otpErr2.style.display = 'none';
+      otpSuccess2.style.display = 'none';
+      const otpVal = otpInput.value.trim();
+      const newPass = newPassInput.value.trim();
+
+      if (!otpVal || otpVal.length !== 6) {
+        otpErr2.textContent = 'कृपया 6-अंकीय OTP दर्ज करें।';
+        otpErr2.style.display = 'block';
+        return;
+      }
+      if (!newPass || newPass.length < 4) {
+        otpErr2.textContent = 'नया पासवर्ड कम से कम 4 अक्षरों का होना चाहिए।';
+        otpErr2.style.display = 'block';
+        return;
+      }
+
+      verifyOtpBtn.disabled = true;
+      verifyOtpBtn.textContent = 'Verifying & resetting…';
+
+      try {
+        const res = await fetch('/api/admin/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'verify-otp', otp: otpVal, newPassword: newPass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          otpSuccess2.textContent = data.message;
+          otpSuccess2.style.display = 'block';
+          setTimeout(() => {
+            showLogin();
+            passInput.value = newPass;
+          }, 1500);
+        } else {
+          otpErr2.textContent = data.error || 'OTP वेरिफिकेशन असफल।';
+          otpErr2.style.display = 'block';
+        }
+      } catch (err) {
+        otpErr2.textContent = 'त्रुटि: ' + err.message;
+        otpErr2.style.display = 'block';
+      } finally {
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.textContent = 'Verify OTP & Reset Password →';
+      }
+    };
 
     function getToken() { return localStorage.getItem('nr_admin_token'); }
     function setToken(t) { localStorage.setItem('nr_admin_token', t); }
@@ -831,11 +1067,12 @@
       e.preventDefault();
       authErr.style.display = 'none';
       const password = passInput.value;
+      const email = emailInput.value;
       try {
         const res = await fetch('/api/admin/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password })
+          body: JSON.stringify({ email, password })
         });
         const data = await res.json();
         if (data.success && data.token) {
@@ -1114,6 +1351,107 @@
         renderTable();
       } catch (err) {
         alert('Save failed: ' + err.message);
+      }
+    };
+
+    // Settings Modal Handlers
+    const settingsBackdrop = document.getElementById('settingsBackdrop');
+    const settingsCloseBtn = document.getElementById('settingsCloseBtn');
+    const settingsCancelBtn = document.getElementById('settingsCancelBtn');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const testSmtpBtn = document.getElementById('testSmtpBtn');
+    const setSmtpUser = document.getElementById('setSmtpUser');
+    const setSmtpPass = document.getElementById('setSmtpPass');
+    const setAdminEmail = document.getElementById('setAdminEmail');
+    const setFromName = document.getElementById('setFromName');
+    const settingsFeedback = document.getElementById('settingsFeedback');
+    const togglePassVisibility = document.getElementById('togglePassVisibility');
+
+    togglePassVisibility.onclick = () => {
+      setSmtpPass.type = setSmtpPass.type === 'password' ? 'text' : 'password';
+    };
+
+    settingsBtn.onclick = () => {
+      settingsFeedback.style.display = 'none';
+      settingsBackdrop.style.display = 'flex';
+    };
+
+    const closeSettings = () => { settingsBackdrop.style.display = 'none'; };
+    settingsCloseBtn.onclick = closeSettings;
+    settingsCancelBtn.onclick = closeSettings;
+
+    testSmtpBtn.onclick = async () => {
+      settingsFeedback.style.display = 'block';
+      settingsFeedback.style.background = 'rgba(251, 191, 36, 0.12)';
+      settingsFeedback.style.color = 'var(--yellow)';
+      settingsFeedback.textContent = 'Testing connection and sending test email…';
+      testSmtpBtn.disabled = true;
+
+      const token = getToken();
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            action: 'test',
+            smtpUser: setSmtpUser.value.trim(),
+            smtpPass: setSmtpPass.value.trim(),
+            adminEmail: setAdminEmail.value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          settingsFeedback.style.background = 'rgba(74, 222, 128, 0.12)';
+          settingsFeedback.style.color = 'var(--green)';
+          settingsFeedback.textContent = '✅ ' + data.message;
+        } else {
+          settingsFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+          settingsFeedback.style.color = 'var(--red)';
+          settingsFeedback.textContent = '❌ ' + (data.error || 'Connection failed.');
+        }
+      } catch (err) {
+        settingsFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+        settingsFeedback.style.color = 'var(--red)';
+        settingsFeedback.textContent = '❌ Network error: ' + err.message;
+      } finally {
+        testSmtpBtn.disabled = false;
+      }
+    };
+
+    saveSettingsBtn.onclick = async () => {
+      const token = getToken();
+      saveSettingsBtn.disabled = true;
+      saveSettingsBtn.textContent = 'Saving…';
+
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            smtpUser: setSmtpUser.value.trim(),
+            smtpPass: setSmtpPass.value.trim(),
+            adminEmail: setAdminEmail.value.trim(),
+            fromName: setFromName.value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Settings saved successfully!');
+          closeSettings();
+        } else {
+          alert('Save error: ' + data.error);
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        saveSettingsBtn.disabled = false;
+        saveSettingsBtn.textContent = 'Save Settings';
       }
     };
 
