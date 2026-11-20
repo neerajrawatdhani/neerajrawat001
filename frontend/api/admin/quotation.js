@@ -253,6 +253,49 @@ module.exports = async (req, res) => {
         </table>
       </div>
 
+      <!-- Section: Meta WhatsApp Business API Official Pricing & Direct API Advantage -->
+      <div style="background: #ffffff; border: 1px solid #e0deda; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1a1818; font-weight: 700;">
+            💬 Meta WhatsApp Business Cloud API — Official India Rates
+          </h4>
+          <span style="font-size:11px; color:#25D366; font-weight:bold; background:rgba(37,211,102,0.12); padding:3px 8px; border-radius:4px;">Direct Meta Account</span>
+        </div>
+        <p style="margin: 0 0 10px 0; font-size: 12px; color: #6b5c5c;">
+          WhatsApp API is billed directly by Meta (Facebook) to your payment method with <strong>zero middleman markup</strong>:
+        </p>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom:12px;">
+          <tr style="background: #f4f2ee; font-weight: bold;">
+            <th style="padding: 8px 10px; text-align: left;">Category</th>
+            <th style="padding: 8px 10px; text-align: left;">Use Case</th>
+            <th style="padding: 8px 10px; text-align: right;">Meta Rate (India)</th>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 8px 10px;"><strong>Utility Messages</strong></td>
+            <td style="padding: 8px 10px;">Fee receipts, admission updates, attendance &amp; marks alerts</td>
+            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #1a1818;">₹0.1150 / msg</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 8px 10px;"><strong>Authentication</strong></td>
+            <td style="padding: 8px 10px;">Login OTPs &amp; parent verification codes</td>
+            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #1a1818;">₹0.1150 / msg</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 8px 10px;"><strong>Marketing Messages</strong></td>
+            <td style="padding: 8px 10px;">Admission announcements &amp; promotional broadcasts</td>
+            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #1a1818;">₹0.8631 / msg</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px;"><strong>Service (Inbound)</strong></td>
+            <td style="padding: 8px 10px;">Replies to parent inquiries within 24-hr customer window</td>
+            <td style="padding: 8px 10px; text-align: right; font-weight: bold; color: #25D366;">₹0.1150 / msg</td>
+          </tr>
+        </table>
+        <div style="background:#f9f8f6; padding:10px 14px; border-radius:6px; font-size:11.5px; color:#555; line-height:1.5;">
+          💡 <strong>Direct Cloud API vs. Third-Party Portals:</strong> Unlike third-party SaaS vendors who charge ₹0.40–₹0.85 per message plus ₹3,000/mo platform rental, our direct integration connects directly to your Meta Developer Account. You pay Meta directly at actual wholesale cost, saving up to 70% annually.
+        </div>
+      </div>
+
       <!-- Grand Total Investment Box -->
       <div style="background: #1a1818; color: #ffffff; border-radius: 12px; padding: 22px 24px; margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: baseline;">

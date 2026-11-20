@@ -41,7 +41,16 @@ module.exports = async (req, res) => {
         providers: settings.providers,
         dataTiers: settings.dataTiers,
         digitalProducts: settings.digitalProducts,
-        devPresets: settings.devPresets
+        devPresets: settings.devPresets,
+        paymentGateway: settings.paymentGateway || {
+          mode: 'test',
+          testKeyId: 'rzp_test_51aBCD12345678',
+          testKeySecret: '',
+          liveKeyId: '',
+          liveKeySecret: '',
+          upiId: '8708167959@paytm',
+          upiName: 'Neeraj Rawat | Dhani Tech'
+        }
       }
     });
   }
@@ -125,6 +134,7 @@ module.exports = async (req, res) => {
     if (body.dataTiers) updates.dataTiers = body.dataTiers;
     if (body.digitalProducts) updates.digitalProducts = body.digitalProducts;
     if (body.devPresets) updates.devPresets = body.devPresets;
+    if (body.paymentGateway) updates.paymentGateway = body.paymentGateway;
 
     saveSettings(updates);
 

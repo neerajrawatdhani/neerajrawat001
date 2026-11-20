@@ -58,6 +58,17 @@ let memorySettings = {
     }
   },
 
+  // Payment Gateway Configuration (Test & Live API Keys + UPI)
+  paymentGateway: {
+    mode: process.env.PAYMENT_MODE || 'test', // 'test' | 'live'
+    testKeyId: process.env.RAZORPAY_TEST_KEY_ID || 'rzp_test_51aBCD12345678',
+    testKeySecret: process.env.RAZORPAY_TEST_KEY_SECRET || '',
+    liveKeyId: process.env.RAZORPAY_LIVE_KEY_ID || '',
+    liveKeySecret: process.env.RAZORPAY_LIVE_KEY_SECRET || '',
+    upiId: process.env.UPI_ID || '8708167959@paytm',
+    upiName: process.env.UPI_NAME || 'Neeraj Rawat | Dhani Tech'
+  },
+
   // Data Scaling Tiers (डेटा स्केलिंग स्लैब्स)
   dataTiers: {
     starter: {

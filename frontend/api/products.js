@@ -17,12 +17,22 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
 
-  // GET: Public list of active digital products
+  // GET: Public list of active digital products + active payment gateway config
   if (req.method === 'GET') {
     const products = loadProducts();
+    const settings = getSettings();
+    const pg = settings.paymentGateway || {};
+    const isLive = pg.mode === 'live';
+    const paymentConfig = {
+      mode: pg.mode || 'test',
+      keyId: isLive ? (pg.liveKeyId || '') : (pg.testKeyId || 'rzp_test_51aBCD12345678'),
+      upiId: pg.upiId || '8708167959@paytm',
+      upiName: pg.upiName || 'Neeraj Rawat | Dhani Tech'
+    };
     return res.status(200).json({
       success: true,
-      products
+      products,
+      paymentConfig
     });
   }
 

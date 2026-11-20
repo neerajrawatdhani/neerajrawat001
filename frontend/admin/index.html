@@ -659,6 +659,7 @@
         </a>
         <div class="header-actions">
           <button class="btn-primary" id="openQuoteBtn" style="background:var(--accent); color:#000; font-weight:700; border:none; padding:8px 15px; border-radius:var(--radius-sm); cursor:pointer;">📄 Create Quotation</button>
+          <button class="btn-secondary" id="manageProductsBtn">📦 Digital Products</button>
           <button class="btn-secondary" id="settingsBtn">⚙️ Settings</button>
           <a href="https://neerajrawat.dev" target="_blank" class="btn-secondary">Website ↗</a>
           <button class="btn-secondary" id="logoutBtn">Logout</button>
@@ -981,6 +982,59 @@
         </div>
       </div>
 
+      <!-- Payment Gateway Configuration (Test vs Live API Keys & UPI) -->
+      <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
+        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">💳 Payment Gateway Configuration (Razorpay / UPI)</h3>
+        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Configure Test and Live API keys for instant digital product checkouts on the website.</p>
+        
+        <div class="modal-field" style="margin-bottom:12px;">
+          <label class="modal-label">Payment Gateway Mode</label>
+          <select id="setPgMode" class="auth-input">
+            <option value="test">🧪 Test Mode (Sandbox / Testing)</option>
+            <option value="live">🟢 Live Production Mode (Real Customer Payments)</option>
+          </select>
+        </div>
+
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:700; color:var(--yellow); margin-bottom:8px;">🧪 Test API Keys (Razorpay Sandbox)</div>
+          <div class="quote-grid-2">
+            <div class="modal-field">
+              <label class="modal-label">Test Key ID</label>
+              <input type="text" id="setPgTestKeyId" class="auth-input" placeholder="rzp_test_xxxxxxxxxxxxxx" />
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Test Key Secret</label>
+              <input type="password" id="setPgTestKeySecret" class="auth-input" placeholder="Test Secret Key" />
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:700; color:var(--green); margin-bottom:8px;">🟢 Live API Keys (Razorpay Production)</div>
+          <div class="quote-grid-2">
+            <div class="modal-field">
+              <label class="modal-label">Live Key ID</label>
+              <input type="text" id="setPgLiveKeyId" class="auth-input" placeholder="rzp_live_xxxxxxxxxxxxxx" />
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Live Key Secret</label>
+              <input type="password" id="setPgLiveKeySecret" class="auth-input" placeholder="Live Secret Key" />
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Merchant UPI ID / VPA</label>
+            <input type="text" id="setPgUpiId" class="auth-input" value="8708167959@paytm" placeholder="e.g. 8708167959@paytm" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Payee Name Displayed on UPI</label>
+            <input type="text" id="setPgUpiName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
+          </div>
+        </div>
+      </div>
+
       <div id="settingsFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm);"></div>
 
       <div class="modal-footer" style="justify-content:space-between;">
@@ -991,6 +1045,109 @@
           <button class="btn-secondary" id="settingsCancelBtn">Cancel</button>
           <button class="auth-btn" style="padding: 9px 20px;" id="saveSettingsBtn">Save Settings</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4B. DIGITAL PRODUCTS & MARKETPLACE MANAGER MODAL -->
+  <div class="modal-backdrop" id="productsModalBackdrop" style="display:none;">
+    <div class="modal" style="max-width:860px; max-height:92vh; overflow-y:auto;">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">📦 Digital Products &amp; Software Catalog</h2>
+          <p style="font-size:12px; color:var(--fg-muted); margin:4px 0 0 0;">Manage SaaS software, licenses, and add-ons sold directly on the website with instant online payment.</p>
+        </div>
+        <button class="btn-close" id="productsCloseBtn">✕</button>
+      </div>
+
+      <!-- Add / Edit Product Form -->
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; margin: 16px 0;">
+        <h3 id="prodFormTitle" style="font-size:14px; font-weight:700; color:#fff; margin-bottom:12px;">➕ Add New Digital Product</h3>
+        <input type="hidden" id="adminProdId" value="" />
+        
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Product Title / Software Name *</label>
+            <input type="text" id="adminProdTitle" class="auth-input" placeholder="e.g. EduDhani — Complete School ERP" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Category *</label>
+            <input type="text" id="adminProdCategory" class="auth-input" placeholder="e.g. SaaS Software, Mobile Applications, API &amp; Automation" required />
+          </div>
+        </div>
+
+        <div class="quote-grid-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
+          <div class="modal-field">
+            <label class="modal-label">Price (₹ INR) *</label>
+            <input type="number" id="adminProdPrice" class="auth-input" placeholder="65000" min="0" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Pricing Period / License</label>
+            <input type="text" id="adminProdPeriod" class="auth-input" value="One-Time License" placeholder="One-Time License / Per Year" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Badge Tag</label>
+            <input type="text" id="adminProdBadge" class="auth-input" value="Popular" placeholder="Flagship ERP, Mobile App, Automation" />
+          </div>
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Product Description</label>
+          <textarea id="adminProdDesc" class="auth-input" rows="2" placeholder="Brief summary of what the software does, who it is for, and key deliverables."></textarea>
+        </div>
+
+        <div class="modal-field" style="margin-top:10px;">
+          <label class="modal-label">Features List (1 per line)</label>
+          <textarea id="adminProdFeatures" class="auth-input" rows="3" placeholder="Automated Fee Receipts via WhatsApp&#10;CBSE Marksheet Generation&#10;Android &amp; iOS Parent App&#10;Daily Cloud Database Backups"></textarea>
+        </div>
+
+        <div class="quote-grid-2" style="margin-top:10px;">
+          <div class="modal-field">
+            <label class="modal-label">Live Demo / Product URL</label>
+            <input type="url" id="adminProdDemoUrl" class="auth-input" placeholder="https://neerajrawat.dev/work" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Publish Status</label>
+            <select id="adminProdStatus" class="auth-input">
+              <option value="Active">🟢 Active (Visible in Store)</option>
+              <option value="Draft">⏸️ Draft (Hidden from Store)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+          <button type="button" class="btn-secondary" id="adminProdCancelEditBtn" style="display:none;">Cancel Edit</button>
+          <button type="button" class="auth-btn" id="adminProdSaveBtn" style="padding:8px 20px;">Save Product</button>
+        </div>
+      </div>
+
+      <!-- Existing Products Table -->
+      <div style="margin-top:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="font-size:14px; font-weight:700; color:#fff; margin:0;">Active Products in Store (<span id="adminProdCount">0</span>)</h3>
+          <button class="btn-secondary" id="refreshAdminProdsBtn" style="padding:4px 10px; font-size:12px;">🔄 Refresh</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="leads-table" style="width:100%; font-size:13px;">
+            <thead>
+              <tr>
+                <th>Product &amp; Badge</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>License</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTbody">
+              <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--fg-muted);">Loading products…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top:20px; justify-content:flex-end;">
+        <button class="btn-secondary" id="productsCloseFooterBtn">Close</button>
       </div>
     </div>
   </div>
@@ -1727,12 +1884,21 @@
             dataTiers: {
               growthAnnual: parseFloat(document.getElementById('setTierGrowthPrice').value) || 3500,
               enterpriseAnnual: parseFloat(document.getElementById('setTierEnterprisePrice').value) || 9500
+            },
+            paymentGateway: {
+              mode: document.getElementById('setPgMode')?.value || 'test',
+              testKeyId: document.getElementById('setPgTestKeyId')?.value.trim() || '',
+              testKeySecret: document.getElementById('setPgTestKeySecret')?.value.trim() || '',
+              liveKeyId: document.getElementById('setPgLiveKeyId')?.value.trim() || '',
+              liveKeySecret: document.getElementById('setPgLiveKeySecret')?.value.trim() || '',
+              upiId: document.getElementById('setPgUpiId')?.value.trim() || '8708167959@paytm',
+              upiName: document.getElementById('setPgUpiName')?.value.trim() || 'Neeraj Rawat | Dhani Tech'
             }
           })
         });
         const data = await res.json();
         if (data.success) {
-          alert('Settings & Pricing saved successfully!');
+          alert('Settings, Pricing & Payment Gateway saved successfully!');
           updateProviderPriceLabels();
           closeSettings();
         } else {
@@ -1791,9 +1957,211 @@
             if (s.dataTiers.growthAnnual && document.getElementById('setTierGrowthPrice')) document.getElementById('setTierGrowthPrice').value = s.dataTiers.growthAnnual;
             if (s.dataTiers.enterpriseAnnual && document.getElementById('setTierEnterprisePrice')) document.getElementById('setTierEnterprisePrice').value = s.dataTiers.enterpriseAnnual;
           }
+          if (s.paymentGateway) {
+            const pg = s.paymentGateway;
+            if (document.getElementById('setPgMode')) document.getElementById('setPgMode').value = pg.mode || 'test';
+            if (document.getElementById('setPgTestKeyId')) document.getElementById('setPgTestKeyId').value = pg.testKeyId || '';
+            if (document.getElementById('setPgTestKeySecret')) document.getElementById('setPgTestKeySecret').value = pg.testKeySecret || '';
+            if (document.getElementById('setPgLiveKeyId')) document.getElementById('setPgLiveKeyId').value = pg.liveKeyId || '';
+            if (document.getElementById('setPgLiveKeySecret')) document.getElementById('setPgLiveKeySecret').value = pg.liveKeySecret || '';
+            if (document.getElementById('setPgUpiId')) document.getElementById('setPgUpiId').value = pg.upiId || '8708167959@paytm';
+            if (document.getElementById('setPgUpiName')) document.getElementById('setPgUpiName').value = pg.upiName || 'Neeraj Rawat | Dhani Tech';
+          }
           updateProviderPriceLabels();
         }
       } catch(e) {}
+    }
+
+    // ============ DIGITAL PRODUCTS & STORE CATALOG MANAGER ============
+    const productsModalBackdrop = document.getElementById('productsModalBackdrop');
+    const manageProductsBtn = document.getElementById('manageProductsBtn');
+    const productsCloseBtn = document.getElementById('productsCloseBtn');
+    const productsCloseFooterBtn = document.getElementById('productsCloseFooterBtn');
+    let adminProductsList = [];
+
+    function openProductsModal() {
+      resetProductForm();
+      loadAdminProductsList();
+      if (productsModalBackdrop) productsModalBackdrop.style.display = 'flex';
+    }
+    function closeProductsModal() {
+      if (productsModalBackdrop) productsModalBackdrop.style.display = 'none';
+    }
+    if (manageProductsBtn) manageProductsBtn.onclick = openProductsModal;
+    if (productsCloseBtn) productsCloseBtn.onclick = closeProductsModal;
+    if (productsCloseFooterBtn) productsCloseFooterBtn.onclick = closeProductsModal;
+
+    async function loadAdminProductsList() {
+      const tbody = document.getElementById('adminProductsTbody');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--fg-muted);">Loading products…</td></tr>';
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.products)) {
+          adminProductsList = data.products;
+          renderAdminProductsTable();
+        }
+      } catch(e) {
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--red);">Error loading products: ${e.message}</td></tr>`;
+      }
+    }
+
+    function renderAdminProductsTable() {
+      const tbody = document.getElementById('adminProductsTbody');
+      const countEl = document.getElementById('adminProdCount');
+      if (countEl) countEl.textContent = adminProductsList.length;
+      if (!tbody) return;
+      if (!adminProductsList.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:var(--fg-muted);">No products found. Add your first digital product above!</td></tr>';
+        return;
+      }
+      tbody.innerHTML = adminProductsList.map(p => {
+        const isActive = (p.status || 'Active') === 'Active';
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:#fff;">${escapeHtml(p.title || p.name)}</div>
+              ${p.badge ? `<span style="background:rgba(232,168,124,0.15); color:var(--accent); font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; text-transform:uppercase;">${escapeHtml(p.badge)}</span>` : ''}
+            </td>
+            <td><span style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.category || 'Software')}</span></td>
+            <td style="font-weight:700; color:var(--green);">₹${(p.price || 0).toLocaleString('en-IN')}</td>
+            <td style="font-size:12px; color:var(--fg-muted);">${escapeHtml(p.period || 'One-Time License')}</td>
+            <td>
+              <span style="display:inline-block; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; ${isActive ? 'background:rgba(74,222,128,0.15); color:#4ade80;' : 'background:rgba(255,255,255,0.08); color:#aaa;'}">
+                ${isActive ? '🟢 Active' : '⏸️ Draft'}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-icon" onclick="editAdminProduct('${p.id}')" title="Edit Product">✏️</button>
+                <button class="btn-icon" onclick="deleteAdminProduct('${p.id}', '${escapeHtml(p.title || p.name).replace(/'/g, "\\'")}')" title="Delete Product" style="color:var(--red);">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function resetProductForm() {
+      document.getElementById('adminProdId').value = '';
+      document.getElementById('adminProdTitle').value = '';
+      document.getElementById('adminProdCategory').value = 'SaaS Software';
+      document.getElementById('adminProdPrice').value = '';
+      document.getElementById('adminProdPeriod').value = 'One-Time License';
+      document.getElementById('adminProdBadge').value = 'Popular';
+      document.getElementById('adminProdDesc').value = '';
+      document.getElementById('adminProdFeatures').value = '';
+      document.getElementById('adminProdDemoUrl').value = '';
+      document.getElementById('adminProdStatus').value = 'Active';
+      document.getElementById('prodFormTitle').textContent = '➕ Add New Digital Product';
+      document.getElementById('adminProdSaveBtn').textContent = 'Save Product';
+      document.getElementById('adminProdCancelEditBtn').style.display = 'none';
+    }
+
+    window.editAdminProduct = function(id) {
+      const prod = adminProductsList.find(p => p.id === id);
+      if (!prod) return;
+      document.getElementById('adminProdId').value = prod.id;
+      document.getElementById('adminProdTitle').value = prod.title || prod.name || '';
+      document.getElementById('adminProdCategory').value = prod.category || 'SaaS Software';
+      document.getElementById('adminProdPrice').value = prod.price || 0;
+      document.getElementById('adminProdPeriod').value = prod.period || 'One-Time License';
+      document.getElementById('adminProdBadge').value = prod.badge || '';
+      document.getElementById('adminProdDesc').value = prod.desc || '';
+      document.getElementById('adminProdFeatures').value = Array.isArray(prod.features) ? prod.features.join('\n') : (prod.features || '');
+      document.getElementById('adminProdDemoUrl').value = prod.demoUrl || '';
+      document.getElementById('adminProdStatus').value = prod.status || 'Active';
+      document.getElementById('prodFormTitle').textContent = '✏️ Edit Digital Product: ' + (prod.title || prod.name);
+      document.getElementById('adminProdSaveBtn').textContent = 'Update Product';
+      document.getElementById('adminProdCancelEditBtn').style.display = 'inline-block';
+      document.getElementById('adminProdTitle').focus();
+    };
+
+    if (document.getElementById('adminProdCancelEditBtn')) {
+      document.getElementById('adminProdCancelEditBtn').onclick = resetProductForm;
+    }
+
+    if (document.getElementById('adminProdSaveBtn')) {
+      document.getElementById('adminProdSaveBtn').onclick = async function() {
+        const token = getToken();
+        const id = document.getElementById('adminProdId').value;
+        const title = document.getElementById('adminProdTitle').value.trim();
+        const category = document.getElementById('adminProdCategory').value.trim();
+        const price = parseFloat(document.getElementById('adminProdPrice').value) || 0;
+        const period = document.getElementById('adminProdPeriod').value.trim();
+        const badge = document.getElementById('adminProdBadge').value.trim();
+        const desc = document.getElementById('adminProdDesc').value.trim();
+        const featuresText = document.getElementById('adminProdFeatures').value.trim();
+        const demoUrl = document.getElementById('adminProdDemoUrl').value.trim();
+        const status = document.getElementById('adminProdStatus').value;
+
+        if (!title || !price) {
+          alert('Product Title और Price आवश्यक हैं!');
+          return;
+        }
+
+        const features = featuresText ? featuresText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+        const btn = document.getElementById('adminProdSaveBtn');
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+
+        try {
+          const method = id ? 'PATCH' : 'POST';
+          const payload = id
+            ? { id, title, category, price, period, badge, desc, features, demoUrl, status }
+            : { title, category, price, period, badge, desc, features, demoUrl, status };
+
+          const res = await fetch('/api/products', {
+            method,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert(id ? 'Product अपडेट हो गया!' : 'नया डिजिटल प्रोडक्ट सफलतापूर्वक जुड़ गया!');
+            resetProductForm();
+            loadAdminProductsList();
+          } else {
+            alert('Error: ' + data.error);
+          }
+        } catch(e) {
+          alert('Network error: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = id ? 'Update Product' : 'Save Product';
+        }
+      };
+    }
+
+    window.deleteAdminProduct = async function(id, name) {
+      if (!confirm(`क्या आप सच में "${name}" प्रोडक्ट को डिलीट करना चाहते हैं?`)) return;
+      const token = getToken();
+      try {
+        const res = await fetch('/api/products', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Product डिलीट हो गया!');
+          loadAdminProductsList();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch(e) {
+        alert('Network error: ' + e.message);
+      }
+    };
+
+    if (document.getElementById('refreshAdminProdsBtn')) {
+      document.getElementById('refreshAdminProdsBtn').onclick = loadAdminProductsList;
     }
 
     // ============ QUOTATION BUILDER & COMMERCIAL ENGINE ============

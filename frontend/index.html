@@ -1109,6 +1109,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
 <meta name="twitter:description" content="Neeraj Rawat — Founder and CEO of EduDhani (www.edudhani.com), the complete cloud School ERP solution. Deep expertise in graphic design, UI/UX architecture, and modern digital software." />
 <meta name="twitter:image" content="https://www.edudhani.com/og.jpg" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://edudhani.com/#neeraj","name":"Neeraj Rawat","url":"https://www.edudhani.com","jobTitle":"Founder & CEO, EduDhani | UI/UX & Graphic Designer","image":"https://www.edudhani.com/og.jpg","description":"Freelance web and iOS developer, UI/UX designer, graphic designer and photographer working remotely with clients worldwide.","knowsAbout":["Web development","iOS app development","UI/UX design","Graphic design","Brand identity","Photography"],"address":{"@type":"PostalAddress","addressCountry":"IN"},"knowsLanguage":["en"],"worksFor":{"@id":"https://edudhani.com/#org"}},{"@type":"Organization","@id":"https://edudhani.com/#org","name":"Neeraj Rawat — Dhani Tech & EduDhani","alternateName":"Dhani Tech","url":"https://www.edudhani.com","image":"https://www.edudhani.com/og.jpg","logo":{"@type":"ImageObject","url":"https://www.edudhani.com/icon-512.png","width":512,"height":512},"founder":{"@id":"https://edudhani.com/#neeraj"},"email":"neerajrawatdhani@gmail.com","contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"neerajrawatdhani@gmail.com","availableLanguage":"en","areaServed":["US","GB","CA","AU","IN"]},"description":"Founder and CEO of EduDhani (School ERP). Graphic design, UI/UX architecture, brand identity, and modern digital web platforms.","areaServed":[{"@type":"Country","name":"India"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"United Kingdom"},{"@type":"Country","name":"Canada"},{"@type":"Country","name":"Australia"},"Worldwide"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"School ERP (EduDhani)","description":"Comprehensive cloud-based school management and administration ERP software."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"UI/UX design","description":"Product and interface design: user flows, wireframes and finished UI."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Graphic design","description":"Brand identity, social media creatives, posters and logos."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Web development","description":"Websites and web applications designed and built end to end."}}]}},{"@type":"WebSite","@id":"https://edudhani.com/#site","url":"https://www.edudhani.com","name":"Neeraj Rawat — Portfolio","publisher":{"@id":"https://edudhani.com/#neeraj"},"inLanguage":"en"}]}</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <meta name="google-site-verification" content="dB3k2roAkI1S8861shwLsjVKNyl1q-TjchYYJWrG-18" /></head>
 <body>
 
@@ -1656,26 +1657,70 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
 
 <!-- ============ ProductsModal ============ -->
 <div class="modal" id="prodModal" role="dialog" aria-modal="true" aria-labelledby="prodTitle" hidden>
-  <div class="modal__panel" id="prodPanel" style="max-width: 52rem; max-height: 90vh; overflow-y: auto; padding: 2rem 1.8rem;">
+  <div class="modal__panel" id="prodPanel" style="max-width: 54rem; max-height: 90vh; overflow-y: auto; padding: 2rem 1.8rem;">
     <button class="x-btn" id="prodClose" aria-label="Close"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
     <div class="mhead" style="margin-bottom: 1.5rem; text-align: left;">
-      <p style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent,#00d26a); font-weight:700; margin-bottom:0.35rem;">Digital Products &amp; Software Solutions</p>
-      <h2 id="prodTitle" style="font-size: 1.85rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">Ready Systems &amp; Software Licenses</h2>
-      <p style="color:var(--fg-muted,#888); font-size: 0.95rem; line-height: 1.5; margin:0;">Battle-tested institutional ERPs, mobile modules, and automation engines built by Dhani Tech. Ready to customize and deploy.</p>
+      <p style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent,#00d26a); font-weight:700; margin-bottom:0.35rem;">Digital Products &amp; Software Store</p>
+      <h2 id="prodTitle" style="font-size: 1.85rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">Digital Products &amp; Software Licenses</h2>
+      <p style="color:var(--fg-muted,#888); font-size: 0.95rem; line-height: 1.5; margin:0;">Enterprise software licenses, school ERPs, and automation engines. Instant digital checkout via UPI, Cards, NetBanking.</p>
     </div>
 
     <!-- Products Grid -->
     <div id="prodCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.2rem; margin-top:1.25rem;">
-      <!-- Populated dynamically via JS from /api/products with static fallbacks -->
+      <!-- Populated dynamically via JS from /api/products -->
+    </div>
+  </div>
+</div>
+
+<!-- ============ CheckoutModal ============ -->
+<div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="coTitle" hidden>
+  <div class="modal__panel" id="coPanel" style="max-width: 32rem; padding: 2rem;">
+    <button class="x-btn" id="coClose" aria-label="Close"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
+    
+    <div class="mhead" style="margin-bottom: 1.25rem;">
+      <p style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent, #00d26a); font-weight: 700; margin-bottom: 0.25rem;">Instant Digital Checkout</p>
+      <h2 id="coTitle" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Order Summary</h2>
     </div>
 
-    <div style="margin-top: 1.75rem; padding: 1.1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-      <div>
-        <div style="font-weight: 600; font-size: 0.95rem; color: #fff;">Need a tailored custom solution?</div>
-        <div style="font-size: 0.85rem; color: var(--fg-muted, #888); margin-top: 2px;">We also architect custom software, web platforms, and mobile apps from scratch.</div>
+    <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 10px; padding: 14px 16px; margin-bottom: 1.25rem;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline;">
+        <span id="coProdName" style="font-weight: 700; font-size: 1.05rem; color: #fff;">—</span>
+        <span id="coProdPrice" style="font-weight: 800; font-size: 1.25rem; color: var(--accent, #00d26a);">₹0</span>
       </div>
-      <button class="pill pill--dark" onclick="closeProdModal(); openModal();" style="cursor: pointer;">
-        <span class="pill__in"><span>Discuss Custom Project →</span></span>
+      <p id="coProdDesc" style="font-size: 0.82rem; color: var(--fg-muted, #888); margin: 6px 0 0 0; line-height: 1.4;"></p>
+    </div>
+
+    <form id="checkoutForm" style="display:flex; flex-direction:column; gap: 12px;">
+      <div>
+        <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--fg-muted, #888); font-weight: 700; display:block; margin-bottom: 4px;">Full Name *</label>
+        <input type="text" id="coName" required placeholder="Your full name" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border, rgba(255,255,255,0.1)); border-radius: 8px; color: #fff; padding: 10px 14px; font-size: 0.95rem; outline: none;" />
+      </div>
+      <div>
+        <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--fg-muted, #888); font-weight: 700; display:block; margin-bottom: 4px;">Email ID (For License &amp; Files) *</label>
+        <input type="email" id="coEmail" required placeholder="you@company.com" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border, rgba(255,255,255,0.1)); border-radius: 8px; color: #fff; padding: 10px 14px; font-size: 0.95rem; outline: none;" />
+      </div>
+      <div>
+        <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--fg-muted, #888); font-weight: 700; display:block; margin-bottom: 4px;">WhatsApp / Mobile Number *</label>
+        <input type="tel" id="coPhone" required placeholder="+91 98765 43210" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border, rgba(255,255,255,0.1)); border-radius: 8px; color: #fff; padding: 10px 14px; font-size: 0.95rem; outline: none;" />
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 6px;">
+        <button type="submit" id="coPayBtn" class="pill pill--dark" style="cursor: pointer; width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 700; background: var(--accent, #00d26a); color: #000; justify-content: center; display: flex; border:none;">
+          <span>💳 Pay Online (UPI / Card / NetBanking)</span>
+        </button>
+        <button type="button" id="coUpiBtn" class="pill pill--dark" style="cursor: pointer; width: 100%; padding: 10px; font-size: 0.9rem; justify-content: center; display: flex; border: 1px solid rgba(255,255,255,0.15);">
+          <span>📱 Scan UPI QR Code</span>
+        </button>
+      </div>
+    </form>
+
+    <div id="coUpiQrBox" style="display:none; margin-top: 1rem; text-align: center; background: #fff; color: #000; border-radius: 12px; padding: 16px;">
+      <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; color: #000;">Scan QR to Pay via Any UPI App</h4>
+      <div id="coQrContainer" style="display:flex; justify-content:center; margin: 10px 0;"></div>
+      <p style="font-size: 0.75rem; color: #555; margin: 0;">GPay · PhonePe · Paytm · BHIM</p>
+      <div style="font-weight: 700; font-size: 0.85rem; margin-top: 6px; color: #000;">UPI ID: <span id="coUpiIdText">8708167959@paytm</span></div>
+      <button type="button" id="coUpiConfirmBtn" class="pill pill--dark" style="margin-top: 10px; width: 100%; cursor: pointer;">
+        <span class="pill__in"><span>I have completed payment →</span></span>
       </button>
     </div>
   </div>
@@ -1949,47 +1994,87 @@ const DEFAULT_PRODUCTS = [
 ];
 
 function renderProductsCards(products) {
+  currentDigitalProducts = products || DEFAULT_PRODUCTS;
   const grid = $('#prodCardsGrid');
   if (!grid) return;
-  grid.innerHTML = (products || DEFAULT_PRODUCTS).map(p => `
+  grid.innerHTML = currentDigitalProducts.map(p => {
+    const priceNum = p.price || p.priceYearly || 0;
+    const prodTitle = p.name || p.title || 'Digital Solution';
+    return `
     <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 12px; padding: 1.25rem; display:flex; flex-direction:column; justify-content:space-between; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='var(--border, rgba(255,255,255,0.08))'">
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
           <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-muted,#888); font-weight:600;">${p.category || 'Software'}</span>
           <span style="background: rgba(0, 210, 106, 0.12); color: var(--accent, #00d26a); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(0, 210, 106, 0.25);">${p.badge || 'Ready'}</span>
         </div>
-        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0 0 0.5rem 0; line-height: 1.3;">${p.name}</h3>
-        <p style="font-size: 0.85rem; color: var(--fg-muted, #999); line-height: 1.5; margin: 0 0 0.85rem 0;">${p.desc}</p>
-        ${p.features ? `<ul style="list-style:none; padding:0; margin:0 0 1rem 0; font-size:0.8rem; color:#bbb; display:flex; flex-direction:column; gap:4px;">${p.features.map(f => `<li style="display:flex; align-items:center; gap:6px;"><span style="color:var(--accent,#00d26a);">✓</span> <span>${f}</span></li>`).join('')}</ul>` : ''}
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0 0 0.5rem 0; line-height: 1.3;">${prodTitle}</h3>
+        <p style="font-size: 0.85rem; color: var(--fg-muted, #999); line-height: 1.5; margin: 0 0 0.85rem 0;">${p.desc || ''}</p>
+        ${p.features && p.features.length ? `<ul style="list-style:none; padding:0; margin:0 0 1rem 0; font-size:0.8rem; color:#bbb; display:flex; flex-direction:column; gap:4px;">${p.features.map(f => `<li style="display:flex; align-items:center; gap:6px;"><span style="color:var(--accent,#00d26a);">✓</span> <span>${f}</span></li>`).join('')}</ul>` : ''}
       </div>
       <div>
         <div style="border-top: 1px solid var(--border, rgba(255,255,255,0.06)); padding-top: 0.85rem; margin-bottom: 0.85rem; display:flex; justify-content:space-between; align-items:baseline;">
           <div>
-            <div style="font-size: 0.7rem; color: var(--fg-muted, #888); text-transform: uppercase;">Standard License</div>
-            <div style="font-size: 1.2rem; font-weight: 700; color: #fff;">₹${(p.priceYearly || 0).toLocaleString('en-IN')}<span style="font-size:0.75rem; color:var(--fg-muted,#888); font-weight:400;"> / yr</span></div>
+            <div style="font-size: 0.7rem; color: var(--fg-muted, #888); text-transform: uppercase;">Direct License</div>
+            <div style="font-size: 1.3rem; font-weight: 800; color: #fff;">₹${priceNum.toLocaleString('en-IN')}</div>
           </div>
-          ${p.priceOnetime ? `<div style="text-align:right;"><span style="font-size:0.7rem; color:var(--fg-muted,#888);">One-Time:</span> <span style="font-size:0.85rem; color:#ddd; font-weight:600;">₹${p.priceOnetime.toLocaleString('en-IN')}</span></div>` : ''}
+          <div style="font-size: 0.75rem; color: var(--accent, #00d26a); font-weight: 600;">⚡ Instant Delivery</div>
         </div>
         <div style="display:grid; grid-template-columns: 1fr auto; gap: 8px;">
-          <button type="button" class="pill pill--dark" onclick="selectProductForQuote('${p.name}')" style="cursor: pointer; width: 100%;">
-            <span class="pill__in"><span>Get Quotation →</span></span>
+          <button type="button" class="pill pill--dark" onclick="openCheckoutModal('${p.id}')" style="cursor: pointer; width: 100%; background: var(--accent, #00d26a); color: #000; font-weight: 700; border: none; padding: 10px;">
+            <span>⚡ Buy Now →</span>
           </button>
-          <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20am%20interested%20in%20${encodeURIComponent(p.name)}" target="_blank" class="btn-icon wa" style="padding: 8px 12px; border-radius: 999px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3);" title="Direct WhatsApp Inquire">
+          <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20want%20to%20purchase%20${encodeURIComponent(prodTitle)}" target="_blank" class="btn-icon wa" style="padding: 8px 12px; border-radius: 999px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3);" title="Direct WhatsApp Purchase">
             💬
           </a>
         </div>
       </div>
     </div>
-  `).join('');
+    `;
+  }).join('');
 }
+
+let currentDigitalProducts = DEFAULT_PRODUCTS;
+let currentPaymentConfig = {
+  mode: 'test',
+  keyId: 'rzp_test_51aBCD12345678',
+  upiId: '8708167959@paytm',
+  upiName: 'Neeraj Rawat | Dhani Tech'
+};
+let currentCheckoutProduct = null;
+
+const checkoutModal = $('#checkoutModal');
+let coLastFocus = null;
+
+window.openCheckoutModal = function(prodId) {
+  const p = currentDigitalProducts.find(x => x.id === prodId) || DEFAULT_PRODUCTS[0];
+  currentCheckoutProduct = p;
+  $('#coProdName').textContent = p.name || p.title;
+  $('#coProdPrice').textContent = '₹' + (p.price || p.priceYearly || 0).toLocaleString('en-IN');
+  $('#coProdDesc').textContent = p.desc || p.category || '';
+  if ($('#coUpiQrBox')) $('#coUpiQrBox').style.display = 'none';
+  if ($('#coUpiIdText')) $('#coUpiIdText').textContent = currentPaymentConfig.upiId || '8708167959@paytm';
+  closeProdModal();
+  coLastFocus = document.activeElement;
+  openLayer(checkoutModal, closeCheckoutModal);
+  setTimeout(() => $('#coName')?.focus(), 120);
+};
+
+window.closeCheckoutModal = function() {
+  closeLayer(checkoutModal, () => {
+    if (lastInput === 'key') coLastFocus?.focus?.({ preventScroll:true }); else document.activeElement?.blur?.();
+  });
+};
 
 function loadProductsGrid() {
   renderProductsCards(DEFAULT_PRODUCTS);
   fetch('/api/products')
     .then(r => r.json())
     .then(data => {
-      if (data && data.success && Array.isArray(data.products) && data.products.length > 0) {
-        renderProductsCards(data.products);
+      if (data && data.success) {
+        if (data.paymentConfig) currentPaymentConfig = data.paymentConfig;
+        if (Array.isArray(data.products) && data.products.length > 0) {
+          renderProductsCards(data.products);
+        }
       }
     })
     .catch(() => {});
@@ -2010,23 +2095,98 @@ window.closeProdModal = function() {
   });
 };
 
-window.selectProductForQuote = function(prodName) {
-  closeProdModal();
-  openModal();
-  setTimeout(() => {
-    const fProj = $('#f-project');
-    if (fProj) {
-      fProj.value = `Hello Neeraj, I would like to get a formal quotation and demo for: "${prodName}".`;
-      fProj.dispatchEvent(new Event('input', { bubbles: true }));
-      fProj.focus();
-    }
-  }, 220);
-};
+// Checkout Form Submissions
+$('#checkoutForm')?.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!currentCheckoutProduct) return;
+  const name = $('#coName').value.trim();
+  const email = $('#coEmail').value.trim();
+  const phone = $('#coPhone').value.trim();
+  const price = currentCheckoutProduct.price || currentCheckoutProduct.priceYearly || 0;
+  const title = currentCheckoutProduct.name || currentCheckoutProduct.title;
+
+  // 1. Try Razorpay if available
+  if (window.Razorpay && currentPaymentConfig.keyId && !currentPaymentConfig.keyId.includes('51aBCD')) {
+    const options = {
+      key: currentPaymentConfig.keyId,
+      amount: price * 100,
+      currency: 'INR',
+      name: 'Neeraj Rawat | Dhani Tech',
+      description: title,
+      prefill: { name, email, contact: phone },
+      theme: { color: '#00d26a' },
+      handler: function (response) {
+        handlePaymentSuccess(response.razorpay_payment_id || 'RZP_SUCCESS');
+      }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+    return;
+  }
+
+  // 2. Fallback to UPI QR / Direct Flow
+  showUpiQr(price, title);
+});
+
+function showUpiQr(price, title) {
+  const qrBox = $('#coUpiQrBox');
+  const qrContainer = $('#coQrContainer');
+  const upiId = currentPaymentConfig.upiId || '8708167959@paytm';
+  const payeeName = currentPaymentConfig.upiName || 'Neeraj Rawat';
+  const upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${price}&cu=INR&tn=${encodeURIComponent(title.slice(0, 30))}`;
+  const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}`;
+
+  qrContainer.innerHTML = `<img src="${qrImgUrl}" alt="Scan to pay ₹${price}" style="width:180px; height:180px; border-radius:8px; border:2px solid #000;" />`;
+  qrBox.style.display = 'block';
+}
+
+$('#coUpiBtn')?.addEventListener('click', () => {
+  if (!currentCheckoutProduct) return;
+  const price = currentCheckoutProduct.price || currentCheckoutProduct.priceYearly || 0;
+  const title = currentCheckoutProduct.name || currentCheckoutProduct.title;
+  showUpiQr(price, title);
+});
+
+$('#coUpiConfirmBtn')?.addEventListener('click', () => {
+  handlePaymentSuccess('UPI_DIRECT');
+});
+
+function handlePaymentSuccess(refId) {
+  const name = $('#coName')?.value || 'Client';
+  const email = $('#coEmail')?.value || '';
+  const phone = $('#coPhone')?.value || '';
+  const title = currentCheckoutProduct ? (currentCheckoutProduct.name || currentCheckoutProduct.title) : 'Digital Product';
+  const price = currentCheckoutProduct ? (currentCheckoutProduct.price || currentCheckoutProduct.priceYearly || 0) : 0;
+
+  // Post order to leads / contact API as "Won / Paid Order"
+  fetch('/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name,
+      email,
+      mobile: phone,
+      channel: 'Digital Store Payment',
+      service: 'Product: ' + title,
+      budget: '₹' + price.toLocaleString('en-IN') + ' (Paid Ref: ' + refId + ')',
+      project: `[DIGITAL STORE PURCHASE]\nProduct: ${title}\nAmount Paid: ₹${price}\nRef ID: ${refId}\nCustomer: ${name} (${phone}, ${email})`
+    })
+  }).catch(() => {});
+
+  closeCheckoutModal();
+  alert(`🎉 Thank you, ${name}! Your purchase for "${title}" has been registered.\n\nOur team has received your order and license keys/files will be sent to ${email} and WhatsApp ${phone} shortly.`);
+}
 
 if (prodModal) {
   prodModal.addEventListener('click', closeProdModal);
   $('#prodPanel')?.addEventListener('click', e => e.stopPropagation());
   $('#prodClose')?.addEventListener('click', closeProdModal);
+}
+
+if (checkoutModal) {
+  checkoutModal.addEventListener('click', closeCheckoutModal);
+  $('#coPanel')?.addEventListener('click', e => e.stopPropagation());
+  $('#coClose')?.addEventListener('click', closeCheckoutModal);
 }
 
 // WhatsApp Number & Configuration
