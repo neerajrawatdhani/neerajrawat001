@@ -601,14 +601,15 @@
     <div class="auth-card" id="forgotCard" style="display:none;">
       <div class="auth-logo">🔐</div>
       <h1>Password Recovery</h1>
-      <p>Recover your Super Admin password via OTP.</p>
+      <p>Recover your Super Admin password via email OTP.</p>
 
       <!-- Step 1: Request OTP -->
       <div id="otpStep1">
-        <div class="auth-form">
+        <form class="auth-form" id="reqOtpForm" onsubmit="event.preventDefault(); sendOtpBtn.click();">
           <div>
-            <label class="auth-label">Registered Admin Email</label>
-            <input type="email" id="recoveryEmailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" required readonly />
+            <label class="auth-label">Enter Registered Admin Email</label>
+            <input type="email" id="recoveryEmailInput" class="auth-input" value="neerajrawat001.bizz@gmail.com" placeholder="e.g. neerajrawat001.bizz@gmail.com" required autofocus />
+            <span style="font-size:11px; color:var(--fg-muted); display:block; margin-top:4px;">An official 6-digit OTP will be sent to your Gmail inbox.</span>
           </div>
           <div class="auth-err" id="otpErr1"></div>
           <button type="button" class="auth-btn" id="sendOtpBtn">
@@ -617,33 +618,38 @@
           <div style="text-align:center; margin-top:10px;">
             <a href="#" id="backToLoginLink1" style="color:var(--fg-muted); font-size:13px; text-decoration:none;">← Back to Login</a>
           </div>
-        </div>
+        </form>
       </div>
 
       <!-- Step 2: Verify OTP & Reset -->
       <div id="otpStep2" style="display:none;">
-        <div class="auth-form">
-          <div class="modal-consent-badge" style="margin-bottom:6px;">
+        <form class="auth-form" id="verifyOtpForm" onsubmit="event.preventDefault(); verifyOtpBtn.click();">
+          <div class="modal-consent-badge" style="margin-bottom:8px;">
             <span>📬</span>
-            <span id="otpSentMsg">OTP sent to your email. Check inbox &amp; spam.</span>
+            <span id="otpSentMsg">6-digit OTP sent to your email. Check inbox &amp; spam.</span>
           </div>
           <div>
-            <label class="auth-label">6-Digit OTP</label>
-            <input type="text" id="otpInput" class="auth-input" maxlength="6" placeholder="e.g. 482915" style="letter-spacing:4px; font-size:18px; text-align:center; font-family:monospace;" required />
+            <label class="auth-label">Enter 6-Digit OTP</label>
+            <input type="text" id="otpInput" class="auth-input" maxlength="6" placeholder="• • • • • •" style="letter-spacing:6px; font-size:20px; font-weight:700; text-align:center; font-family:monospace;" required autofocus />
           </div>
           <div>
             <label class="auth-label">New Password</label>
-            <input type="password" id="newPassInput" class="auth-input" placeholder="Enter new password (min 4 chars)" required />
+            <input type="password" id="newPassInput" class="auth-input" placeholder="Enter new password (min 4 characters)" required />
+          </div>
+          <div>
+            <label class="auth-label">Confirm New Password</label>
+            <input type="password" id="confirmPassInput" class="auth-input" placeholder="Re-enter new password" required />
           </div>
           <div class="auth-err" id="otpErr2"></div>
           <div class="auth-success" id="otpSuccess2"></div>
           <button type="button" class="auth-btn" id="verifyOtpBtn">
-            Verify OTP &amp; Reset Password →
+            Verify OTP &amp; Set New Password →
           </button>
-          <div style="text-align:center; margin-top:10px;">
-            <a href="#" id="backToLoginLink2" style="color:var(--fg-muted); font-size:13px; text-decoration:none;">← Back to Login</a>
+          <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:13px;">
+            <a href="#" id="resendOtpLink" style="color:var(--accent); text-decoration:none;">🔄 Resend OTP</a>
+            <a href="#" id="backToLoginLink2" style="color:var(--fg-muted); text-decoration:none;">← Back to Login</a>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -1349,9 +1355,14 @@
     const recoveryEmailInput = document.getElementById('recoveryEmailInput');
     const otpInput = document.getElementById('otpInput');
     const newPassInput = document.getElementById('newPassInput');
+    const confirmPassInput = document.getElementById('confirmPassInput');
     const otpErr1 = document.getElementById('otpErr1');
     const otpErr2 = document.getElementById('otpErr2');
     const otpSuccess2 = document.getElementById('otpSuccess2');
+    const resendOtpLink = document.getElementById('resendOtpLink');
+
+    let currentResetToken = null;
+    let currentRecoveryEmail = '';
 
     forgotPassLink.onclick = (e) => {
       e.preventDefault();
@@ -1360,6 +1371,7 @@
       otpStep1.style.display = 'block';
       otpStep2.style.display = 'none';
       otpErr1.style.display = 'none';
+      recoveryEmailInput.focus();
     };
 
     const showLogin = (e) => {
@@ -1367,12 +1379,21 @@
       forgotCard.style.display = 'none';
       loginCard.style.display = 'block';
       authErr.style.display = 'none';
+      passInput.focus();
     };
     backToLoginLink1.onclick = showLogin;
     backToLoginLink2.onclick = showLogin;
 
-    sendOtpBtn.onclick = async () => {
+    async function handleRequestOtp() {
       otpErr1.style.display = 'none';
+      const emailVal = recoveryEmailInput.value.trim();
+
+      if (!emailVal) {
+        otpErr1.textContent = 'कृपया अपना एडमिन ईमेल दर्ज करें।';
+        otpErr1.style.display = 'block';
+        return;
+      }
+
       sendOtpBtn.disabled = true;
       sendOtpBtn.textContent = 'Sending OTP to email…';
 
@@ -1380,13 +1401,19 @@
         const res = await fetch('/api/admin/forgot-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'request-otp', email: recoveryEmailInput.value })
+          body: JSON.stringify({ action: 'request-otp', email: emailVal })
         });
         const data = await res.json();
         if (data.success) {
+          currentResetToken = data.resetToken;
+          currentRecoveryEmail = data.email || emailVal;
           otpStep1.style.display = 'none';
           otpStep2.style.display = 'block';
-          document.getElementById('otpSentMsg').textContent = `OTP successfully sent to ${recoveryEmailInput.value}.`;
+          document.getElementById('otpSentMsg').textContent = data.message || `6-digit OTP sent to ${currentRecoveryEmail}. Check inbox & spam.`;
+          otpInput.value = '';
+          newPassInput.value = '';
+          if (confirmPassInput) confirmPassInput.value = '';
+          otpInput.focus();
         } else {
           otpErr1.textContent = data.error || 'OTP भेजने में विफलता।';
           otpErr1.style.display = 'block';
@@ -1398,21 +1425,35 @@
         sendOtpBtn.disabled = false;
         sendOtpBtn.textContent = 'Send 6-Digit OTP to Email →';
       }
-    };
+    }
+
+    sendOtpBtn.onclick = handleRequestOtp;
+    if (resendOtpLink) {
+      resendOtpLink.onclick = (e) => {
+        e.preventDefault();
+        handleRequestOtp();
+      };
+    }
 
     verifyOtpBtn.onclick = async () => {
       otpErr2.style.display = 'none';
       otpSuccess2.style.display = 'none';
       const otpVal = otpInput.value.trim();
       const newPass = newPassInput.value.trim();
+      const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : newPass;
 
       if (!otpVal || otpVal.length !== 6) {
-        otpErr2.textContent = 'कृपया 6-अंकीय OTP दर्ज करें।';
+        otpErr2.textContent = 'कृपया ईमेल में आया सही 6-अंकीय OTP दर्ज करें।';
         otpErr2.style.display = 'block';
         return;
       }
       if (!newPass || newPass.length < 4) {
         otpErr2.textContent = 'नया पासवर्ड कम से कम 4 अक्षरों का होना चाहिए।';
+        otpErr2.style.display = 'block';
+        return;
+      }
+      if (newPass !== confirmPass) {
+        otpErr2.textContent = 'दोनों पासवर्ड मेल नहीं खाते! कृपया पासवर्ड पुनः जाँचें।';
         otpErr2.style.display = 'block';
         return;
       }
@@ -1424,7 +1465,13 @@
         const res = await fetch('/api/admin/forgot-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'verify-otp', otp: otpVal, newPassword: newPass })
+          body: JSON.stringify({
+            action: 'verify-otp',
+            email: currentRecoveryEmail,
+            otp: otpVal,
+            newPassword: newPass,
+            resetToken: currentResetToken
+          })
         });
         const data = await res.json();
         if (data.success) {
@@ -1433,6 +1480,8 @@
           setTimeout(() => {
             showLogin();
             passInput.value = newPass;
+            emailInput.value = currentRecoveryEmail;
+            authErr.style.display = 'none';
           }, 1500);
         } else {
           otpErr2.textContent = data.error || 'OTP वेरिफिकेशन असफल।';
@@ -1443,7 +1492,7 @@
         otpErr2.style.display = 'block';
       } finally {
         verifyOtpBtn.disabled = false;
-        verifyOtpBtn.textContent = 'Verify OTP & Reset Password →';
+        verifyOtpBtn.textContent = 'Verify OTP & Set New Password →';
       }
     };
 
@@ -1458,8 +1507,11 @@
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authErr.style.display = 'none';
-      const password = passInput.value;
-      const email = emailInput.value;
+      const password = passInput.value.trim();
+      const email = emailInput.value.trim();
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Verifying…';
+
       try {
         const res = await fetch('/api/admin/login', {
           method: 'POST',
@@ -1471,13 +1523,17 @@
           setToken(data.token);
           showDashboard();
         } else {
-          authErr.textContent = data.error || 'गलत पासवर्ड!';
+          authErr.textContent = data.error || 'गलत पासवर्ड! कृपया सही पासवर्ड डालें।';
           authErr.style.display = 'block';
         }
       } catch (err) {
         authErr.textContent = 'कनेक्शन त्रुटि! कृपया पुनः प्रयास करें।';
         authErr.style.display = 'block';
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Unlock Dashboard →';
       }
+    });
     });
 
     logoutBtn.addEventListener('click', () => {

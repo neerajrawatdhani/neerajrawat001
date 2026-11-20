@@ -14,20 +14,27 @@ module.exports = async (req, res) => {
   }
 
   const settings = getSettings();
-  const { password } = req.body || {};
+  const { password, email } = req.body || {};
+  const pass = (password || '').trim();
 
-  if (!password || password.trim() !== settings.adminPassword) {
-    return res.status(401).json({ success: false, error: 'गलत पासवर्ड! कृपया सही पासवर्ड डालें।' });
+  // Accept current configured password OR default backup 'neeraj@123'
+  const isPassValid = Boolean(pass && (pass === (settings.adminPassword || '').trim() || pass === 'neeraj@123'));
+
+  if (!isPassValid) {
+    return res.status(401).json({
+      success: false,
+      error: 'गलत पासवर्ड! कृपया सही पासवर्ड डालें या नीचे "Forgot Password?" पर क्लिक करके नया पासवर्ड सेट करें।'
+    });
   }
 
-  // Return secure token
+  // Return secure token and admin info
   return res.status(200).json({
     success: true,
     token: settings.adminSecret,
     user: {
       name: 'Neeraj Rawat',
       role: 'Super Admin',
-      email: settings.adminEmail || 'neerajrawatdhani@gmail.com'
+      email: email || settings.adminEmail || 'neerajrawat001.bizz@gmail.com'
     }
   });
 };
