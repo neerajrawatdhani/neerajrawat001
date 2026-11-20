@@ -31,14 +31,14 @@
         { "type": "host", "value": "admin.neerajrawat.dev" }
       ],
       "source": "/",
-      "destination": "/admin/index.html"
+      "destination": "/admin-portal.html"
     },
     {
       "has": [
         { "type": "host", "value": "admin.neerajrawat.dev" }
       ],
       "source": "/(.*)",
-      "destination": "/admin/index.html"
+      "destination": "/admin-portal.html"
     },
     { "source": "/robots.txt", "destination": "/frontend/robots.txt" },
     { "source": "/photographer", "destination": "/frontend/photographer/index.html" },
