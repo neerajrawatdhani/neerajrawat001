@@ -581,12 +581,12 @@
     <div class="auth-card" id="loginCard">
       <div class="auth-logo">🔒</div>
       <h1>Super Admin Portal</h1>
-      <p>Log in with your official admin email &amp; password.</p>
+      <p>Enter your username &amp; password to continue.</p>
       
       <form class="auth-form" id="loginForm">
         <div>
           <label class="auth-label">Username</label>
-          <input type="text" id="emailInput" class="auth-input" placeholder="Enter username (e.g. admin)" required autofocus />
+          <input type="text" id="emailInput" class="auth-input" placeholder="Enter username" required autofocus />
         </div>
         <div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1184,29 +1184,41 @@
       <div class="modal-header">
         <div>
           <h2 class="modal-title">📄 Commercial Proposal &amp; Quotation Generator</h2>
-          <p style="font-size:12px; color:var(--fg-muted); margin:4px 0 0 0;">Configured to the exact 10-section Gurukulam School annual cost proposal structure.</p>
+          <p style="font-size:12px; color:var(--fg-muted); margin:4px 0 0 0;">Comprehensive 10-section commercial cost proposal &amp; quotation generator for all businesses, clients, and institutions.</p>
         </div>
         <button class="btn-close" id="quoteCloseBtn">✕</button>
       </div>
 
-      <!-- Client & Institution Information -->
+      <!-- Client & Business Information -->
       <div class="quote-section">
         <div class="quote-section-title">
-          <span>👤 Client &amp; Institution Profile</span>
-          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Proposal header information</span>
+          <span>👤 Client &amp; Business Profile</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Proposal header details</span>
         </div>
         <div class="quote-grid-2">
           <div class="modal-field">
-            <label class="modal-label">Client / Contact Person Name *</label>
-            <input type="text" id="qClientName" class="auth-input" placeholder="e.g. Principal / Director" required />
+            <label class="modal-label">Business / Project Category</label>
+            <select id="qBusinessType" class="auth-input" onchange="updateQuoteTemplateDefaults()">
+              <option value="corporate">Business &amp; Corporate Website</option>
+              <option value="school">School / Educational Institution</option>
+              <option value="ecommerce">E-Commerce &amp; Online Store</option>
+              <option value="software">Custom Software &amp; Web App</option>
+              <option value="agency">Agency / Portfolio &amp; CMS</option>
+              <option value="healthcare">Clinic / Healthcare System</option>
+              <option value="other">Custom Solution</option>
+            </select>
           </div>
           <div class="modal-field">
-            <label class="modal-label">School / Institution / Business Name *</label>
-            <input type="text" id="qClientCompany" class="auth-input" placeholder="e.g. Gurukulam Senior Secondary School" required />
+            <label class="modal-label">Company / Client Business Name *</label>
+            <input type="text" id="qClientCompany" class="auth-input" placeholder="e.g. Acme Enterprises / Client Business" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Contact Person Name *</label>
+            <input type="text" id="qClientName" class="auth-input" placeholder="e.g. Director / Business Owner" required />
           </div>
           <div class="modal-field">
             <label class="modal-label">Client Email Address *</label>
-            <input type="email" id="qClientEmail" class="auth-input" placeholder="contact@gurukulam.edu.in" required />
+            <input type="email" id="qClientEmail" class="auth-input" placeholder="e.g. client@business.com" required />
           </div>
           <div class="modal-field">
             <label class="modal-label">Client Mobile / WhatsApp</label>
@@ -1223,14 +1235,15 @@
         </div>
         <div class="quote-grid-2">
           <div class="modal-field">
-            <label class="modal-label">School Website + Complete Admin CMS Dashboard (₹)</label>
+            <label class="modal-label">Core Website / App Development + Admin CMS (₹)</label>
+            <input type="text" id="qDevScopeTitle" class="auth-input" value="Custom Website + Complete Admin CMS Dashboard" style="margin-bottom:6px; font-weight:600;" />
             <input type="number" id="qWebsiteDevFee" class="auth-input" value="50000" min="0" oninput="calculateQuoteTotals()" />
-            <span style="font-size:11px; color:var(--fg-muted);">Home, About, Admissions, Academics, Facilities, Gallery, News, Events, Forms, SEO, Admin login.</span>
+            <input type="text" id="qDevScopeDesc" class="auth-input" value="Custom UI/UX, Responsive Design, Complete Admin CMS, Enquiry Forms, SEO &amp; Cloud Deployment" style="font-size:11px; margin-top:4px;" />
           </div>
           <div class="modal-field">
-            <label class="modal-label">WhatsApp Cloud API Integration Allowance (₹)</label>
+            <label class="modal-label">WhatsApp Cloud API &amp; Automated Alerts (₹)</label>
             <input type="number" id="qWaIntegrationFee" class="auth-input" value="8000" min="0" oninput="calculateQuoteTotals()" />
-            <span style="font-size:11px; color:var(--fg-muted);">Meta business setup, template integration, admissions enquiry acknowledgement &amp; webhooks.</span>
+            <span style="font-size:11px; color:var(--fg-muted);">Meta business setup, approved templates, instant enquiry alerts &amp; server webhooks.</span>
           </div>
         </div>
       </div>
@@ -2237,6 +2250,48 @@
 
     let currentQuoteLeadId = null;
 
+    window.updateQuoteTemplateDefaults = function() {
+      const type = document.getElementById('qBusinessType')?.value || 'corporate';
+      const titleInput = document.getElementById('qDevScopeTitle');
+      const descInput = document.getElementById('qDevScopeDesc');
+      if (!titleInput || !descInput) return;
+
+      const templates = {
+        corporate: {
+          title: 'Custom Corporate Website + Complete Admin CMS Dashboard',
+          desc: 'Custom UI/UX, Responsive Design, Complete Admin CMS, Services, Portfolio, Enquiry Forms, SEO & Cloud Deployment'
+        },
+        school: {
+          title: 'School Website + Complete Admin CMS & Enquiry Portal',
+          desc: 'Home, About, Admissions, Academics, Facilities, Gallery, News, Events, Parent Forms, SEO, Admin login'
+        },
+        ecommerce: {
+          title: 'E-Commerce Online Store + Admin Product & Order Management',
+          desc: 'Product Catalog, Payment Gateway (Razorpay/UPI), Shopping Cart, Order Tracking, Inventory CMS & Cloud Server'
+        },
+        software: {
+          title: 'Custom Web Application / SaaS Portal + Database Backend',
+          desc: 'Custom Frontend Dashboard, REST APIs, Role-Based Access Control, Cloud Database & SLA Maintenance'
+        },
+        agency: {
+          title: 'Agency Website / Portfolio Showcase + Client Lead CRM',
+          desc: 'High-Converting Landing Pages, Interactive Case Studies, Instant Lead Notifications, Blog CMS & Analytics'
+        },
+        healthcare: {
+          title: 'Clinic / Healthcare Portal + Online Appointment System',
+          desc: 'Doctor Profiles, Services, Online Appointment Booking, WhatsApp Notifications, Patient Inquiry CMS'
+        },
+        other: {
+          title: 'Custom Web & Software Development + Admin Dashboard',
+          desc: 'Custom UI/UX Engineering, Cloud Hosting, Managed Database, Security Handover & Maintenance'
+        }
+      };
+
+      const selected = templates[type] || templates.corporate;
+      titleInput.value = selected.title;
+      descInput.value = selected.desc;
+    };
+
     function calculateQuoteTotals() {
       const websiteDev = parseFloat(document.getElementById('qWebsiteDevFee')?.value) || 50000;
       const waIntegration = parseFloat(document.getElementById('qWaIntegrationFee')?.value) || 8000;
@@ -2326,7 +2381,11 @@
       quoteFeedback.style.display = 'block';
       quoteFeedback.style.background = 'rgba(232, 168, 124, 0.12)';
       quoteFeedback.style.color = 'var(--accent)';
-      quoteFeedback.textContent = 'Compiling 10-Section Gurukulam Proposal and dispatching via Gmail SMTP…';
+      quoteFeedback.textContent = 'Compiling 10-Section Proposal and dispatching via Gmail SMTP…';
+
+      const devTitle = document.getElementById('qDevScopeTitle')?.value.trim() || 'Custom Website + Admin CMS';
+      const devDesc = document.getElementById('qDevScopeDesc')?.value.trim() || 'Custom UI/UX & Cloud Deployment';
+      const businessType = document.getElementById('qBusinessType')?.value || 'corporate';
 
       try {
         const res = await fetch('/api/admin/quotation', {
@@ -2341,6 +2400,9 @@
             clientCompany,
             clientEmail,
             clientMobile,
+            devTitle,
+            devDesc,
+            businessType,
             websiteDevFee: totals.websiteDev,
             waIntegrationFee: totals.waIntegration,
             vpsFee: totals.vps,
@@ -2384,13 +2446,15 @@
       const clientName = document.getElementById('qClientName').value.trim() || 'Client';
       const clientCompany = document.getElementById('qClientCompany').value.trim();
       const clientMobile = (document.getElementById('qClientMobile').value || '').replace(/[^0-9]/g, '');
+      const devTitle = document.getElementById('qDevScopeTitle')?.value.trim() || 'Custom Website + Admin CMS';
       const totals = calculateQuoteTotals();
 
       let msg = `*📄 Commercial Proposal & Cost Breakdown*\n`;
       msg += `*For:* ${clientCompany || clientName}\n`;
+      msg += `*Project:* ${devTitle}\n`;
       msg += `*By:* Neeraj Rawat | Dhani Tech\n\n`;
       msg += `*1. One-time Implementation:* ₹${totals.totalOneTime.toLocaleString('en-IN')}\n`;
-      msg += `   • Website + Admin CMS: ₹${totals.websiteDev.toLocaleString('en-IN')}\n`;
+      msg += `   • ${devTitle}: ₹${totals.websiteDev.toLocaleString('en-IN')}\n`;
       msg += `   • WhatsApp Cloud API Allowance: ₹${totals.waIntegration.toLocaleString('en-IN')}\n\n`;
       msg += `*2. First-Year Operating Cost:* ₹${totals.totalOperatingY1.toLocaleString('en-IN')}\n`;
       msg += `   • VPS, Domain, MongoDB Flex, Cloud Backups & Meta WhatsApp\n\n`;

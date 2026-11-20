@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
     if (!inputEmail || !isAuthorized) {
       return res.status(400).json({
         success: false,
-        error: `अमान्य ईमेल! पासवर्ड केवल अधिकृत एडमिन ईमेल (${configuredAdminEmail} या neerajrawatdhani@gmail.com) पर भेजा जा सकता है।`
+        error: 'अमान्य ईमेल! कृपया अपना सही रजिस्टर्ड एडमिन ईमेल दर्ज करें।'
       });
     }
 

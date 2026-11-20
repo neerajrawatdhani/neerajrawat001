@@ -36,6 +36,9 @@ module.exports = async (req, res) => {
     quoteNumber,
     quoteDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
     currency = 'INR',
+    devTitle = 'Custom Website + Complete Admin CMS Dashboard',
+    devDesc = 'Custom UI/UX, Responsive Design, Complete Admin CMS, Enquiry Forms, SEO & Cloud Deployment',
+    businessType = 'Corporate / Business',
     // Section 1: One-time implementation
     websiteDevFee = 50000,
     waIntegrationFee = 8000,
@@ -123,11 +126,11 @@ module.exports = async (req, res) => {
           </thead>
           <tbody>
             <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
-              <td style="padding: 10px 14px;">School website + complete admin content-management dashboard</td>
+              <td style="padding: 10px 14px;">${devTitle}</td>
               <td style="padding: 10px 14px; text-align: right; font-weight: bold;">${sym}${Number(websiteDevFee).toLocaleString('en-IN')}</td>
             </tr>
             <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-              <td style="padding: 10px 14px;">WhatsApp Cloud API integration allowance (additional)</td>
+              <td style="padding: 10px 14px;">WhatsApp Cloud API &amp; Automated Webhook Integration Allowance</td>
               <td style="padding: 10px 14px; text-align: right; font-weight: bold;">${sym}${Number(waIntegrationFee).toLocaleString('en-IN')}</td>
             </tr>
             <tr style="background: #ffffff; font-weight: bold; border-top: 2px solid #0f172a;">
@@ -137,7 +140,7 @@ module.exports = async (req, res) => {
           </tbody>
         </table>
         <p style="font-size: 11.5px; color: #475569; margin: 4px 0 6px 0; line-height: 1.5;">
-          <strong>Included website scope:</strong> Home, About, Admissions, Academics, Facilities, Gallery, News/Notices, Events, Contact, responsive UI, enquiry forms, SEO basics, admin login, content and gallery management, notices/events, admission enquiries, basic roles and deployment. The website quotation does not include a complete school ERP such as fees, attendance, payroll or transport.
+          <strong>Included deliverable scope:</strong> ${devDesc}
         </p>
         <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.5;">
           <strong>WhatsApp integration scope:</strong> Meta business setup assistance, approved-template integration, opt-in aware admissions enquiry acknowledgement and selected school notices, secure server-side API calls, delivery-status webhook handling, error logging and basic admin send/history view. Business verification, template approval and third-party service fees are subject to Meta/provider policies.
