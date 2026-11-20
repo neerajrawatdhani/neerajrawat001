@@ -1342,6 +1342,29 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
     </div>
   </section>
 
+  <!-- ============ Digital Products & Downloads Section ============ -->
+  <section id="products" class="products-section" aria-labelledby="productsTitle" style="padding: 6rem 0 5rem; position: relative; z-index: 5; background: radial-gradient(circle at 50% 0%, rgba(232, 168, 124, 0.06), transparent 75%); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);">
+    <div class="shell" style="max-width: 1240px; margin: 0 auto; padding: 0 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem;">
+        <div>
+          <p style="font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent, #e8a87c); font-weight: 700; margin-bottom: 0.4rem;">Digital Store &amp; Instant Downloads</p>
+          <h2 id="productsTitle" style="font-size: 2.2rem; font-weight: 800; line-height: 1.2; color: #fff; margin: 0;">Digital Products &amp; Excel Files</h2>
+          <p style="color: var(--fg-muted, #999); font-size: 0.95rem; margin-top: 0.5rem; max-width: 620px; line-height: 1.5;">Direct instant downloads: Automated GST Invoicing Excel spreadsheets, business profit/loss financial dashboards, legal service agreements, and graphic design bundles.</p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20want%20to%20inquire%20about%20your%20digital%20products" target="_blank" class="pill pill--outline" style="text-decoration: none; padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(232, 168, 124, 0.3); color: #fff;">
+            <span>💬 Request Custom Sheet / File</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- In-Page Live Products Grid -->
+      <div id="homeProdGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <!-- Populated automatically on load -->
+      </div>
+    </div>
+  </section>
+
   <section id="about" class="story" aria-labelledby="storyTitle" style="--n:5">
     <div class="story__amb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="story__track">
@@ -2014,26 +2037,24 @@ const DEFAULT_PRODUCTS = [
 
 function renderProductsCards(products) {
   currentDigitalProducts = products || DEFAULT_PRODUCTS;
-  const grid = $('#prodCardsGrid');
-  if (!grid) return;
-  grid.innerHTML = currentDigitalProducts.map(p => {
+  const cardsHtml = currentDigitalProducts.map(p => {
     const priceNum = p.price || p.priceYearly || 0;
     const prodTitle = p.name || p.title || 'Digital File';
     const fmt = p.fileFormat || (p.category === 'Excel Sheets' ? 'Excel (.xlsx)' : 'Digital File');
     return `
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 12px; padding: 1.25rem; display:flex; flex-direction:column; justify-content:space-between; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='var(--border, rgba(255,255,255,0.08))'">
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 12px; padding: 1.25rem; display:flex; flex-direction:column; justify-content:space-between; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='rgba(232,168,124,0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border, rgba(255,255,255,0.08))'; this.style.transform='none'">
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
           <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-muted,#888); font-weight:600;">📁 ${escapeHtml(p.category || 'Digital File')}</span>
-          <span style="background: rgba(0, 210, 106, 0.12); color: var(--accent, #00d26a); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(0, 210, 106, 0.25);">${escapeHtml(p.badge || 'Instant Download')}</span>
+          <span style="background: rgba(232, 168, 124, 0.12); color: var(--accent, #e8a87c); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(232, 168, 124, 0.25);">${escapeHtml(p.badge || 'Instant Download')}</span>
         </div>
         <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0 0 0.4rem 0; line-height: 1.3;">${escapeHtml(prodTitle)}</h3>
         <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 0.65rem; display:flex; align-items:center; gap:6px;">
           <span style="background:rgba(255,255,255,0.08); padding:1px 6px; border-radius:4px;">Format: ${escapeHtml(fmt)}</span>
-          <span style="color:var(--accent,#00d26a);">⚡ Instant Download</span>
+          <span style="color:var(--accent,#e8a87c);">⚡ Instant Download</span>
         </div>
         <p style="font-size: 0.85rem; color: var(--fg-muted, #999); line-height: 1.5; margin: 0 0 0.85rem 0;">${escapeHtml(p.desc || '')}</p>
-        ${p.features && p.features.length ? `<ul style="list-style:none; padding:0; margin:0 0 1rem 0; font-size:0.8rem; color:#bbb; display:flex; flex-direction:column; gap:4px;">${p.features.map(f => `<li style="display:flex; align-items:center; gap:6px;"><span style="color:var(--accent,#00d26a);">✓</span> <span>${escapeHtml(f)}</span></li>`).join('')}</ul>` : ''}
+        ${p.features && p.features.length ? `<ul style="list-style:none; padding:0; margin:0 0 1rem 0; font-size:0.8rem; color:#bbb; display:flex; flex-direction:column; gap:4px;">${p.features.map(f => `<li style="display:flex; align-items:center; gap:6px;"><span style="color:var(--accent,#e8a87c);">✓</span> <span>${escapeHtml(f)}</span></li>`).join('')}</ul>` : ''}
       </div>
       <div>
         <div style="border-top: 1px solid var(--border, rgba(255,255,255,0.06)); padding-top: 0.85rem; margin-bottom: 0.85rem; display:flex; justify-content:space-between; align-items:baseline;">
@@ -2041,10 +2062,10 @@ function renderProductsCards(products) {
             <div style="font-size: 0.7rem; color: var(--fg-muted, #888); text-transform: uppercase;">Direct File Download</div>
             <div style="font-size: 1.3rem; font-weight: 800; color: #fff;">₹${priceNum.toLocaleString('en-IN')}</div>
           </div>
-          <div style="font-size: 0.75rem; color: var(--accent, #00d26a); font-weight: 600;">⚡ Instant Access</div>
+          <div style="font-size: 0.75rem; color: var(--accent, #e8a87c); font-weight: 600;">⚡ Instant Access</div>
         </div>
         <div style="display:grid; grid-template-columns: 1fr auto; gap: 8px;">
-          <button type="button" class="pill pill--dark" onclick="openCheckoutModal('${p.id}')" style="cursor: pointer; width: 100%; background: var(--accent, #00d26a); color: #000; font-weight: 700; border: none; padding: 10px;">
+          <button type="button" class="pill pill--dark" onclick="openCheckoutModal('${p.id}')" style="cursor: pointer; width: 100%; background: var(--accent, #e8a87c); color: #000; font-weight: 700; border: none; padding: 10px; border-radius: 8px;">
             <span>⚡ Buy &amp; Download →</span>
           </button>
           <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20want%20to%20buy%20${encodeURIComponent(prodTitle)}" target="_blank" class="btn-icon wa" style="padding: 8px 12px; border-radius: 999px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3);" title="Direct WhatsApp Purchase">
@@ -2055,6 +2076,12 @@ function renderProductsCards(products) {
     </div>
     `;
   }).join('');
+
+  const modalGrid = $('#prodCardsGrid');
+  if (modalGrid) modalGrid.innerHTML = cardsHtml;
+  const homeGrid = $('#homeProdGrid');
+  if (homeGrid) homeGrid.innerHTML = cardsHtml;
+}
 }
 
 let currentDigitalProducts = DEFAULT_PRODUCTS;
@@ -2103,6 +2130,7 @@ function loadProductsGrid() {
     })
     .catch(() => {});
 }
+loadProductsGrid();
 
 window.openProdModal = function() {
   prodLastFocus = document.activeElement;
@@ -2510,7 +2538,7 @@ form.addEventListener('submit', e => {
 function navigateSpa(route, push = true) {
   const clean = (route || '').replace(/\/+$/, '') || '/';
   if (clean === '/products') {
-    openProdModal();
+    scrollToId('products');
     if (push && window.location.pathname !== '/products') {
       try { history.pushState({ route: '/products' }, '', '/products'); } catch(e) {}
     }
