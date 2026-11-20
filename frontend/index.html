@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script>
 (function(){
+  if (window.location.hostname === 'admin.neerajrawat.dev') {
+    window.location.replace('/admin-portal.html');
+    return;
+  }
   try {
     var p = window.location.pathname;
     var subroutes = ['home', 'work', 'works', 'my-story', 'about', 'contact', 'legal'];
