@@ -37,7 +37,11 @@ module.exports = async (req, res) => {
         smtpPassMasked: maskedPass,
         isConfigured: Boolean(settings.smtpUser && settings.smtpPass),
         adminEmail: settings.adminEmail,
-        fromName: settings.fromName
+        fromName: settings.fromName,
+        providers: settings.providers,
+        dataTiers: settings.dataTiers,
+        digitalProducts: settings.digitalProducts,
+        devPresets: settings.devPresets
       }
     });
   }
@@ -117,18 +121,17 @@ module.exports = async (req, res) => {
     if (body.adminEmail) updates.adminEmail = body.adminEmail.trim();
     if (body.fromName) updates.fromName = body.fromName.trim();
     if (body.adminPassword) updates.adminPassword = body.adminPassword.trim();
+    if (body.providers) updates.providers = body.providers;
+    if (body.dataTiers) updates.dataTiers = body.dataTiers;
+    if (body.digitalProducts) updates.digitalProducts = body.digitalProducts;
+    if (body.devPresets) updates.devPresets = body.devPresets;
 
     saveSettings(updates);
 
     return res.status(200).json({
       success: true,
       message: 'सेटिंग्स सफलतापूर्वक सेव हो गईं!',
-      settings: {
-        smtpUser: updates.smtpUser || settings.smtpUser,
-        adminEmail: updates.adminEmail || settings.adminEmail,
-        fromName: updates.fromName || settings.fromName,
-        isConfigured: true
-      }
+      settings: updates
     });
   }
 

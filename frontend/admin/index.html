@@ -549,6 +549,24 @@
       gap: 8px;
     }
     .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 14px; }
+
+    /* Quotation Builder Styles */
+    .quote-modal { max-width: 880px; width: 100%; }
+    .quote-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .quote-section { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 4px; }
+    .quote-section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--fg); letter-spacing: 0.04em; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .quote-check-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+    .quote-check-row:last-child { border-bottom: none; }
+    .quote-tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+    .quote-tier-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; cursor: pointer; transition: all 0.2s; text-align: left; }
+    .quote-tier-card.selected { border-color: var(--accent); background: rgba(0, 210, 106, 0.05); }
+    .quote-breakdown-box { background: linear-gradient(135deg, rgba(0, 210, 106, 0.08), rgba(59, 130, 246, 0.08)); border: 1px solid rgba(0, 210, 106, 0.3); border-radius: var(--radius-sm); padding: 16px; margin-top: 10px; }
+    .quote-years-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+    .quote-year-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+    .quote-year-card.highlight { border-color: var(--accent); }
+    @media (max-width: 768px) {
+      .quote-grid-2, .quote-tier-grid, .quote-years-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -640,6 +658,7 @@
           <span class="brand-title">Neeraj Rawat · Dhani Tech</span>
         </a>
         <div class="header-actions">
+          <button class="btn-primary" id="openQuoteBtn" style="background:var(--accent); color:#000; font-weight:700; border:none; padding:8px 15px; border-radius:var(--radius-sm); cursor:pointer;">📄 Create Quotation</button>
           <button class="btn-secondary" id="settingsBtn">⚙️ Settings</button>
           <a href="https://neerajrawat.dev" target="_blank" class="btn-secondary">Website ↗</a>
           <button class="btn-secondary" id="logoutBtn">Logout</button>
@@ -916,6 +935,52 @@
         <input type="text" id="setFromName" class="auth-input" value="Neeraj Rawat | Dhani Tech" />
       </div>
 
+      <!-- Cloud Provider & Infrastructure Pricing -->
+      <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
+        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">🌐 Cloud Infrastructure &amp; Service Provider Pricing (Annual ₹)</h3>
+        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Standard rates used to calculate client quotations and multi-year renewals automatically.</p>
+        
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Hostinger Web / Cloud Hosting (₹ / yr)</label>
+            <input type="number" id="setHostingerPrice" class="auth-input" value="4500" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Dedicated VPS Cloud Server (₹ / yr)</label>
+            <input type="number" id="setVpsPrice" class="auth-input" value="14000" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Custom Domain (.com / .in / .dev) (₹ / yr)</label>
+            <input type="number" id="setDomainPrice" class="auth-input" value="999" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">MongoDB Atlas Cloud Database (₹ / yr)</label>
+            <input type="number" id="setMongoDbPrice" class="auth-input" value="7500" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Business Email / Google Workspace (₹ / yr)</label>
+            <input type="number" id="setBusinessEmailPrice" class="auth-input" value="2500" min="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Scaling Slabs (डेटा स्केलिंग स्लैब्स) -->
+      <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:6px;">
+        <h3 style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">📊 Data &amp; Storage Scaling Slabs (डेटा स्केलिंग स्लैब्स)</h3>
+        <p style="font-size:12px; color:var(--fg-muted); margin-bottom:12px;">Incremental costs when student or user database scales over Year 1, Year 2, and Year 3.</p>
+        
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Growth Tier (+₹ / yr) [1GB–10GB / 2500 Students]</label>
+            <input type="number" id="setTierGrowthPrice" class="auth-input" value="3500" min="0" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Enterprise Tier (+₹ / yr) [10GB–50GB+ / 10000+ Students]</label>
+            <input type="number" id="setTierEnterprisePrice" class="auth-input" value="9500" min="0" />
+          </div>
+        </div>
+      </div>
+
       <div id="settingsFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm);"></div>
 
       <div class="modal-footer" style="justify-content:space-between;">
@@ -925,6 +990,218 @@
         <div style="display:flex; gap:10px;">
           <button class="btn-secondary" id="settingsCancelBtn">Cancel</button>
           <button class="auth-btn" style="padding: 9px 20px;" id="saveSettingsBtn">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. COMMERCIAL QUOTATION & PROPOSAL GENERATOR MODAL -->
+  <div class="modal-backdrop" id="quoteModalBackdrop" style="display:none;">
+    <div class="modal quote-modal">
+      <div class="modal-header">
+        <h2 class="modal-title">📄 Commercial Proposal &amp; Quotation Generator</h2>
+        <button class="btn-close" id="quoteCloseBtn">✕</button>
+      </div>
+
+      <div class="modal-consent-badge">
+        <span>⚡</span>
+        <span>Auto-computes Developer Fee, Hostinger / VPS / Domain / MongoDB infrastructure costs, Multi-Year Renewals, and Data Scaling tiers.</span>
+      </div>
+
+      <!-- Client & Business Profile -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>👤 Client &amp; Business Information</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Appears on official quotation header</span>
+        </div>
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Client / Contact Person Name *</label>
+            <input type="text" id="qClientName" class="auth-input" placeholder="e.g., Rajesh Sharma" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Business / School / Organization Name</label>
+            <input type="text" id="qClientCompany" class="auth-input" placeholder="e.g., Saint Paul Senior Secondary School" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Client Email Address *</label>
+            <input type="email" id="qClientEmail" class="auth-input" placeholder="client@institution.com" required />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Client Mobile / WhatsApp</label>
+            <input type="tel" id="qClientMobile" class="auth-input" placeholder="+91 98765 43210" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Scope Duration & Base Engineering Fee -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>🛠️ Project Scope, Term &amp; Developer Fee</span>
+          <span style="font-size:11px; color:var(--accent); text-transform:none;">Developer fee is charged ONLY once (Year 1)</span>
+        </div>
+        <div class="quote-grid-2">
+          <div class="modal-field">
+            <label class="modal-label">Deployment Term / Duration</label>
+            <select id="qDuration" class="auth-input" onchange="calculateQuoteTotals()">
+              <option value="1 Year" selected>1 Year Deployment (Annual Contract)</option>
+              <option value="2 Years">2 Years Deployment (Multi-Year Contract)</option>
+              <option value="3 Years">3 Years Enterprise Deployment (Long-Term SLA)</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Currency</label>
+            <select id="qCurrency" class="auth-input" onchange="calculateQuoteTotals()">
+              <option value="INR" selected>₹ INR (Indian Rupee)</option>
+              <option value="USD">$ USD (US Dollar)</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Custom Development &amp; Setup Fee *</label>
+            <input type="number" id="qDevFee" class="auth-input" value="25000" min="0" oninput="calculateQuoteTotals()" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Development Scope Title</label>
+            <input type="text" id="qDevTitle" class="auth-input" value="Full-Stack Web Application / ERP Engineering" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Cloud Infrastructure & Services -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>🌐 Cloud Infrastructure &amp; Service Providers</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Select services required for client</span>
+        </div>
+        <div>
+          <div class="quote-check-row">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkHostinger" checked onchange="calculateQuoteTotals()" />
+              <span>Hostinger Web / Cloud Hosting (Standard Managed Cloud Server)</span>
+            </label>
+            <div style="font-weight:700;"><span id="priceHostinger">₹4,500</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          </div>
+          <div class="quote-check-row">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkVps" onchange="calculateQuoteTotals()" />
+              <span>Dedicated VPS High-Performance Cloud Server</span>
+            </label>
+            <div style="font-weight:700;"><span id="priceVps">₹14,000</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          </div>
+          <div class="quote-check-row">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkDomain" checked onchange="calculateQuoteTotals()" />
+              <span>Custom Domain Name (.com / .in / .dev registration &amp; DNS)</span>
+            </label>
+            <div style="font-weight:700;"><span id="priceDomain">₹999</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          </div>
+          <div class="quote-check-row">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkMongoDb" checked onchange="calculateQuoteTotals()" />
+              <span>MongoDB Atlas Cloud Database (Managed Replica Set &amp; Backups)</span>
+            </label>
+            <div style="font-weight:700;"><span id="priceMongoDb">₹7,500</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          </div>
+          <div class="quote-check-row">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkBusinessEmail" checked onchange="calculateQuoteTotals()" />
+              <span>Business Email / Google Workspace Suite</span>
+            </label>
+            <div style="font-weight:700;"><span id="priceBusinessEmail">₹2,500</span> <span style="font-size:11px; color:var(--fg-muted);">/ yr</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Scaling Slabs (डेटा स्केलिंग स्लैब्स) -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>📊 Data &amp; Storage Scaling Slabs (डेटा स्केलिंग स्लैब्स)</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Multi-year storage &amp; capacity forecast</span>
+        </div>
+        <div class="quote-tier-grid" id="dataTierGrid">
+          <div class="quote-tier-card selected" id="tierCard-starter" onclick="selectDataTier('starter')">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-weight:700; font-size:13px; color:#fff;">Starter Slab</span>
+              <span style="font-size:11px; color:var(--accent); font-weight:700;">Included</span>
+            </div>
+            <div style="font-size:11px; color:var(--fg-muted); line-height:1.4;">Up to 1 GB Storage<br>~500 Students / Records</div>
+            <div style="font-size:12px; font-weight:700; color:#fff; margin-top:6px;">₹0 / yr extra</div>
+          </div>
+
+          <div class="quote-tier-card" id="tierCard-growth" onclick="selectDataTier('growth')">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-weight:700; font-size:13px; color:#fff;">Growth Slab</span>
+              <span style="font-size:11px; color:var(--yellow); font-weight:700;">Popular</span>
+            </div>
+            <div style="font-size:11px; color:var(--fg-muted); line-height:1.4;">1 GB – 10 GB Storage<br>~2,500 Students / Records</div>
+            <div style="font-size:12px; font-weight:700; color:#fff; margin-top:6px;">+<span id="labelTierGrowth">₹3,500</span> / yr</div>
+          </div>
+
+          <div class="quote-tier-card" id="tierCard-enterprise" onclick="selectDataTier('enterprise')">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-weight:700; font-size:13px; color:#fff;">Enterprise Slab</span>
+              <span style="font-size:11px; color:var(--blue); font-weight:700;">High Volume</span>
+            </div>
+            <div style="font-size:11px; color:var(--fg-muted); line-height:1.4;">10 GB – 50 GB+ Storage<br>10,000+ Students / Records</div>
+            <div style="font-size:12px; font-weight:700; color:#fff; margin-top:6px;">+<span id="labelTierEnterprise">₹9,500</span> / yr</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Products & Software Addons -->
+      <div class="quote-section">
+        <div class="quote-section-title">
+          <span>📦 Digital Products &amp; Software Licenses</span>
+          <span style="font-size:11px; color:var(--fg-muted); text-transform:none;">Add turnkey modules to proposal</span>
+        </div>
+        <div id="qProductsList">
+          <!-- Populated from products catalog -->
+        </div>
+      </div>
+
+      <!-- Real-Time Commercial Breakdown (Year 1 vs Year 2 vs Year 3) -->
+      <div class="quote-breakdown-box">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin:0; font-size:15px; font-weight:700; color:#fff;">📈 Commercial Investment Breakdown</h3>
+          <span style="background:rgba(0,210,106,0.15); color:var(--accent); font-size:12px; font-weight:700; padding:3px 10px; border-radius:999px;">Transparent Multi-Year Pricing</span>
+        </div>
+
+        <div class="quote-years-grid">
+          <div class="quote-year-card highlight">
+            <div style="font-size:11px; color:var(--accent); font-weight:700; text-transform:uppercase;">Year 1 Initial Investment</div>
+            <div style="font-size:22px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear1">₹0</div>
+            <div style="font-size:11px; color:var(--fg-muted);">Dev Fee + 1st Year Cloud Infra + Product Licenses</div>
+          </div>
+
+          <div class="quote-year-card">
+            <div style="font-size:11px; color:var(--yellow); font-weight:700; text-transform:uppercase;">Year 2 Renewal (Cloud Only)</div>
+            <div style="font-size:20px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear2">₹0</div>
+            <div style="font-size:11px; color:var(--green); font-weight:600;">✅ ₹0 Dev Fee charged</div>
+          </div>
+
+          <div class="quote-year-card">
+            <div style="font-size:11px; color:var(--blue); font-weight:700; text-transform:uppercase;">Year 3 Renewal (Cloud Only)</div>
+            <div style="font-size:20px; font-weight:800; color:#fff; margin:6px 0;" id="sumYear3">₹0</div>
+            <div style="font-size:11px; color:var(--fg-muted);">Domain + Cloud + SLA Maintenance</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="quoteFeedback" style="display:none; font-size:13px; padding:10px 14px; border-radius:var(--radius-sm); margin-top:8px;"></div>
+
+      <!-- Action Buttons -->
+      <div class="modal-footer" style="justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <button type="button" class="btn-secondary" onclick="printQuotation()" title="Print or save PDF proposal">
+          🖨️ Print / Save PDF
+        </button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-secondary" onclick="shareQuotationWhatsApp()" style="color:#25d366; border-color:rgba(37,211,102,0.3);">
+            💬 Share WhatsApp
+          </button>
+          <button type="button" class="btn-secondary" id="quoteCancelBtn">Cancel</button>
+          <button type="button" class="auth-btn" id="sendQuoteBtn" style="padding:9px 22px; background:var(--accent); color:#000; font-weight:700;">
+            ✉️ Send Email to Client
+          </button>
         </div>
       </div>
     </div>
@@ -1099,6 +1376,7 @@
       authScreen.style.display = 'none';
       app.style.display = 'flex';
       fetchLeads();
+      loadAdminSettings();
     }
 
     async function fetchLeads() {
@@ -1251,6 +1529,7 @@
             <td>
               <div class="actions">
                 <a href="https://wa.me/${cleanMobile}" target="_blank" class="btn-icon wa" title="Open WhatsApp Chat">💬</a>
+                <button class="btn-icon" onclick="createQuoteForLead('${l.id}')" title="Generate Commercial Quotation">📄</button>
                 <button class="btn-icon" onclick="openNotesModal('${l.id}')" title="View Full Dossier & Notes">📝</button>
                 <button class="btn-icon" onclick="deleteLead('${l.id}')" title="Delete Inquiry">🗑️</button>
               </div>
@@ -1437,12 +1716,24 @@
             smtpUser: setSmtpUser.value.trim(),
             smtpPass: setSmtpPass.value.trim(),
             adminEmail: setAdminEmail.value.trim(),
-            fromName: setFromName.value.trim()
+            fromName: setFromName.value.trim(),
+            pricing: {
+              hostingerAnnual: parseFloat(document.getElementById('setHostingerPrice').value) || 4500,
+              vpsAnnual: parseFloat(document.getElementById('setVpsPrice').value) || 14000,
+              domainAnnual: parseFloat(document.getElementById('setDomainPrice').value) || 999,
+              mongodbAnnual: parseFloat(document.getElementById('setMongoDbPrice').value) || 7500,
+              businessEmailAnnual: parseFloat(document.getElementById('setBusinessEmailPrice').value) || 2500
+            },
+            dataTiers: {
+              growthAnnual: parseFloat(document.getElementById('setTierGrowthPrice').value) || 3500,
+              enterpriseAnnual: parseFloat(document.getElementById('setTierEnterprisePrice').value) || 9500
+            }
           })
         });
         const data = await res.json();
         if (data.success) {
-          alert('Settings saved successfully!');
+          alert('Settings & Pricing saved successfully!');
+          updateProviderPriceLabels();
           closeSettings();
         } else {
           alert('Save error: ' + data.error);
@@ -1454,6 +1745,343 @@
         saveSettingsBtn.textContent = 'Save Settings';
       }
     };
+
+    function updateProviderPriceLabels() {
+      const sym = (document.getElementById('qCurrency')?.value === 'USD') ? '$' : '₹';
+      const h = parseFloat(document.getElementById('setHostingerPrice')?.value) || 4500;
+      const v = parseFloat(document.getElementById('setVpsPrice')?.value) || 14000;
+      const d = parseFloat(document.getElementById('setDomainPrice')?.value) || 999;
+      const m = parseFloat(document.getElementById('setMongoDbPrice')?.value) || 7500;
+      const e = parseFloat(document.getElementById('setBusinessEmailPrice')?.value) || 2500;
+      const tg = parseFloat(document.getElementById('setTierGrowthPrice')?.value) || 3500;
+      const te = parseFloat(document.getElementById('setTierEnterprisePrice')?.value) || 9500;
+
+      if (document.getElementById('priceHostinger')) document.getElementById('priceHostinger').textContent = sym + h.toLocaleString();
+      if (document.getElementById('priceVps')) document.getElementById('priceVps').textContent = sym + v.toLocaleString();
+      if (document.getElementById('priceDomain')) document.getElementById('priceDomain').textContent = sym + d.toLocaleString();
+      if (document.getElementById('priceMongoDb')) document.getElementById('priceMongoDb').textContent = sym + m.toLocaleString();
+      if (document.getElementById('priceBusinessEmail')) document.getElementById('priceBusinessEmail').textContent = sym + e.toLocaleString();
+      if (document.getElementById('labelTierGrowth')) document.getElementById('labelTierGrowth').textContent = sym + tg.toLocaleString();
+      if (document.getElementById('labelTierEnterprise')) document.getElementById('labelTierEnterprise').textContent = sym + te.toLocaleString();
+      calculateQuoteTotals();
+    }
+
+    async function loadAdminSettings() {
+      const token = getToken();
+      if (!token) return;
+      try {
+        const res = await fetch('/api/admin/settings', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (data.success && data.settings) {
+          const s = data.settings;
+          if (s.smtpUser && setSmtpUser) setSmtpUser.value = s.smtpUser;
+          if (s.smtpPass && setSmtpPass) setSmtpPass.value = s.smtpPass;
+          if (s.adminEmail && setAdminEmail) setAdminEmail.value = s.adminEmail;
+          if (s.fromName && setFromName) setFromName.value = s.fromName;
+          if (s.pricing) {
+            if (s.pricing.hostingerAnnual && document.getElementById('setHostingerPrice')) document.getElementById('setHostingerPrice').value = s.pricing.hostingerAnnual;
+            if (s.pricing.vpsAnnual && document.getElementById('setVpsPrice')) document.getElementById('setVpsPrice').value = s.pricing.vpsAnnual;
+            if (s.pricing.domainAnnual && document.getElementById('setDomainPrice')) document.getElementById('setDomainPrice').value = s.pricing.domainAnnual;
+            if (s.pricing.mongodbAnnual && document.getElementById('setMongoDbPrice')) document.getElementById('setMongoDbPrice').value = s.pricing.mongodbAnnual;
+            if (s.pricing.businessEmailAnnual && document.getElementById('setBusinessEmailPrice')) document.getElementById('setBusinessEmailPrice').value = s.pricing.businessEmailAnnual;
+          }
+          if (s.dataTiers) {
+            if (s.dataTiers.growthAnnual && document.getElementById('setTierGrowthPrice')) document.getElementById('setTierGrowthPrice').value = s.dataTiers.growthAnnual;
+            if (s.dataTiers.enterpriseAnnual && document.getElementById('setTierEnterprisePrice')) document.getElementById('setTierEnterprisePrice').value = s.dataTiers.enterpriseAnnual;
+          }
+          updateProviderPriceLabels();
+        }
+      } catch(e) {}
+    }
+
+    // ============ QUOTATION BUILDER & COMMERCIAL ENGINE ============
+    const quoteModalBackdrop = document.getElementById('quoteModalBackdrop');
+    const openQuoteBtn = document.getElementById('openQuoteBtn');
+    const quoteCloseBtn = document.getElementById('quoteCloseBtn');
+    const quoteCancelBtn = document.getElementById('quoteCancelBtn');
+    const sendQuoteBtn = document.getElementById('sendQuoteBtn');
+    const quoteFeedback = document.getElementById('quoteFeedback');
+
+    let currentQuoteLeadId = null;
+    let selectedDataTier = 'starter';
+    let availableProducts = [
+      { id: 'prod_school_erp', name: 'EduDhani School ERP & Institution Portal', priceYearly: 48000, desc: 'Admissions, Fee Collection, Attendance & WhatsApp Engine' },
+      { id: 'prod_mobile_app', name: 'Dedicated Mobile App Suite (Android & iOS)', priceYearly: 24000, desc: 'Push Alerts, Fee Pay, Homework & Live Tracking' },
+      { id: 'prod_wa_engine', name: 'Automated WhatsApp Notification Bot', priceYearly: 12000, desc: 'Official Cloud API automated alerts & 2-way bot' },
+      { id: 'prod_pg_module', name: 'Smart Payment Gateway & Reconciliation Kit', priceYearly: 8000, desc: 'Razorpay / Cashfree instant settlement & auto GST' },
+      { id: 'prod_amc_support', name: 'Annual Cloud Maintenance & Priority AMC Support', priceYearly: 18000, desc: 'Weekly cloud DB backups, SSL & 2-hour emergency SLA' }
+    ];
+
+    function selectDataTier(tier) {
+      selectedDataTier = tier;
+      document.querySelectorAll('.quote-tier-card').forEach(el => el.classList.remove('selected'));
+      const activeCard = document.getElementById('tierCard-' + tier);
+      if (activeCard) activeCard.classList.add('selected');
+      calculateQuoteTotals();
+    }
+
+    function renderProductsForQuote() {
+      const wrap = document.getElementById('qProductsList');
+      if (!wrap) return;
+      const sym = (document.getElementById('qCurrency')?.value === 'USD') ? '$' : '₹';
+      wrap.innerHTML = availableProducts.map(p => `
+        <div class="quote-check-row">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" class="chk-quote-prod" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-price="${p.priceYearly}" onchange="calculateQuoteTotals()" />
+            <div>
+              <div style="font-weight:600; color:#fff;">${escapeHtml(p.name)}</div>
+              <div style="font-size:11px; color:var(--fg-muted);">${escapeHtml(p.desc || '')}</div>
+            </div>
+          </label>
+          <div style="font-weight:700; white-space:nowrap;">
+            ${sym}${(p.priceYearly || 0).toLocaleString()} <span style="font-size:11px; color:var(--fg-muted);">/ yr</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function loadProductsCatalogForQuote() {
+      renderProductsForQuote();
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data && data.success && Array.isArray(data.products) && data.products.length > 0) {
+          availableProducts = data.products;
+          renderProductsForQuote();
+        }
+      } catch(e) {}
+    }
+
+    function calculateQuoteTotals() {
+      const sym = (document.getElementById('qCurrency')?.value === 'USD') ? '$' : '₹';
+      const devFee = parseFloat(document.getElementById('qDevFee')?.value) || 0;
+      
+      const hostingerPrice = parseFloat(document.getElementById('setHostingerPrice')?.value) || 4500;
+      const vpsPrice = parseFloat(document.getElementById('setVpsPrice')?.value) || 14000;
+      const domainPrice = parseFloat(document.getElementById('setDomainPrice')?.value) || 999;
+      const mongodbPrice = parseFloat(document.getElementById('setMongoDbPrice')?.value) || 7500;
+      const emailPrice = parseFloat(document.getElementById('setBusinessEmailPrice')?.value) || 2500;
+
+      let totalInfra = 0;
+      if (document.getElementById('chkHostinger')?.checked) totalInfra += hostingerPrice;
+      if (document.getElementById('chkVps')?.checked) totalInfra += vpsPrice;
+      if (document.getElementById('chkDomain')?.checked) totalInfra += domainPrice;
+      if (document.getElementById('chkMongoDb')?.checked) totalInfra += mongodbPrice;
+      if (document.getElementById('chkBusinessEmail')?.checked) totalInfra += emailPrice;
+
+      let dataTierCost = 0;
+      if (selectedDataTier === 'growth') {
+        dataTierCost = parseFloat(document.getElementById('setTierGrowthPrice')?.value) || 3500;
+      } else if (selectedDataTier === 'enterprise') {
+        dataTierCost = parseFloat(document.getElementById('setTierEnterprisePrice')?.value) || 9500;
+      }
+
+      let totalProducts = 0;
+      document.querySelectorAll('.chk-quote-prod:checked').forEach(cb => {
+        totalProducts += parseFloat(cb.dataset.price) || 0;
+      });
+
+      const year1Total = devFee + totalInfra + dataTierCost + totalProducts;
+      const year2Renewal = totalInfra + dataTierCost;
+      const year3Renewal = totalInfra + dataTierCost;
+
+      if (document.getElementById('sumYear1')) document.getElementById('sumYear1').textContent = sym + year1Total.toLocaleString('en-IN');
+      if (document.getElementById('sumYear2')) document.getElementById('sumYear2').textContent = sym + year2Renewal.toLocaleString('en-IN');
+      if (document.getElementById('sumYear3')) document.getElementById('sumYear3').textContent = sym + year3Renewal.toLocaleString('en-IN');
+
+      return {
+        devFee,
+        totalInfra,
+        dataTierCost,
+        totalProducts,
+        year1Total,
+        year2Renewal,
+        year3Renewal,
+        currencySym: sym
+      };
+    }
+
+    function openQuoteModal(lead) {
+      quoteFeedback.style.display = 'none';
+      currentQuoteLeadId = lead ? lead.id : null;
+      document.getElementById('qClientName').value = lead ? (lead.name || '') : '';
+      document.getElementById('qClientCompany').value = lead ? (lead.company || '') : '';
+      document.getElementById('qClientEmail').value = lead ? (lead.email || '') : '';
+      document.getElementById('qClientMobile').value = lead ? (lead.mobile || '') : '';
+      
+      loadAdminSettings();
+      loadProductsCatalogForQuote();
+      calculateQuoteTotals();
+      quoteModalBackdrop.style.display = 'flex';
+    }
+
+    function closeQuoteModal() {
+      quoteModalBackdrop.style.display = 'none';
+    }
+
+    if (openQuoteBtn) openQuoteBtn.onclick = () => openQuoteModal(null);
+    if (quoteCloseBtn) quoteCloseBtn.onclick = closeQuoteModal;
+    if (quoteCancelBtn) quoteCancelBtn.onclick = closeQuoteModal;
+
+    window.createQuoteForLead = function(id) {
+      const lead = allLeads.find(l => l.id === id);
+      openQuoteModal(lead || { id });
+    };
+
+    async function sendQuotationEmail() {
+      const clientName = document.getElementById('qClientName').value.trim();
+      const clientCompany = document.getElementById('qClientCompany').value.trim();
+      const clientEmail = document.getElementById('qClientEmail').value.trim();
+      const clientMobile = document.getElementById('qClientMobile').value.trim();
+      const duration = document.getElementById('qDuration').value;
+      const currency = document.getElementById('qCurrency').value;
+      const devTitle = document.getElementById('qDevTitle').value.trim() || 'Custom Software Engineering';
+
+      if (!clientName || !clientEmail) {
+        alert('कृपया Client Name और Client Email भरें।');
+        return;
+      }
+
+      const totals = calculateQuoteTotals();
+
+      const devItems = [{
+        name: devTitle,
+        desc: 'Custom UI/UX, Backend APIs, Cloud Deployment & SLA Handover',
+        cost: totals.devFee
+      }];
+
+      const infraItems = [];
+      const hostingerPrice = parseFloat(document.getElementById('setHostingerPrice')?.value) || 4500;
+      const vpsPrice = parseFloat(document.getElementById('setVpsPrice')?.value) || 14000;
+      const domainPrice = parseFloat(document.getElementById('setDomainPrice')?.value) || 999;
+      const mongodbPrice = parseFloat(document.getElementById('setMongoDbPrice')?.value) || 7500;
+      const emailPrice = parseFloat(document.getElementById('setBusinessEmailPrice')?.value) || 2500;
+
+      if (document.getElementById('chkHostinger')?.checked) {
+        infraItems.push({ name: 'Hostinger Web / Cloud Hosting', cost: hostingerPrice, period: 'Annual' });
+      }
+      if (document.getElementById('chkVps')?.checked) {
+        infraItems.push({ name: 'Dedicated VPS High-Performance Cloud Server', cost: vpsPrice, period: 'Annual' });
+      }
+      if (document.getElementById('chkDomain')?.checked) {
+        infraItems.push({ name: 'Custom Domain Name Registration & DNS (.com/.in/.dev)', cost: domainPrice, period: 'Annual' });
+      }
+      if (document.getElementById('chkMongoDb')?.checked) {
+        infraItems.push({ name: 'MongoDB Atlas Cloud Database (Managed)', cost: mongodbPrice, period: 'Annual' });
+      }
+      if (document.getElementById('chkBusinessEmail')?.checked) {
+        infraItems.push({ name: 'Business Email / Google Workspace Suite', cost: emailPrice, period: 'Annual' });
+      }
+
+      const digitalProducts = [];
+      document.querySelectorAll('.chk-quote-prod:checked').forEach(cb => {
+        digitalProducts.push({
+          name: cb.dataset.name,
+          cost: parseFloat(cb.dataset.price) || 0,
+          period: 'Annual License'
+        });
+      });
+
+      const tierNames = {
+        starter: 'Starter Slab (Up to 1 GB / ~500 Students)',
+        growth: 'Growth Slab (1 GB – 10 GB / ~2,500 Students)',
+        enterprise: 'Enterprise Slab (10 GB – 50 GB+ / ~10,000+ Students)'
+      };
+
+      const quoteNum = 'QT-' + Math.floor(100000 + Math.random() * 900000);
+
+      const payload = {
+        leadId: currentQuoteLeadId,
+        clientName,
+        clientCompany,
+        clientEmail,
+        clientMobile,
+        quoteNumber: quoteNum,
+        duration,
+        currency,
+        devItems,
+        infraItems,
+        digitalProducts,
+        dataTier: tierNames[selectedDataTier] || tierNames.starter,
+        dataTierCost: totals.dataTierCost,
+        totalDev: totals.devFee,
+        totalInfra: totals.totalInfra,
+        totalProducts: totals.totalProducts,
+        grandTotal: totals.year1Total,
+        year2Renewal: totals.year2Renewal,
+        year3Renewal: totals.year3Renewal,
+        validUntil: new Date(Date.now() + 15 * 86400000).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+      };
+
+      quoteFeedback.style.display = 'block';
+      quoteFeedback.style.background = 'rgba(251, 191, 36, 0.12)';
+      quoteFeedback.style.color = 'var(--yellow)';
+      quoteFeedback.textContent = 'Generating branded PDF quotation & sending via Gmail SMTP to ' + clientEmail + '…';
+      sendQuoteBtn.disabled = true;
+
+      const token = getToken();
+
+      try {
+        const res = await fetch('/api/admin/quotation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          quoteFeedback.style.background = 'rgba(74, 222, 128, 0.12)';
+          quoteFeedback.style.color = 'var(--green)';
+          quoteFeedback.textContent = '✅ ' + data.message;
+          alert('✅ ' + data.message);
+          setTimeout(closeQuoteModal, 1500);
+          fetchLeads();
+        } else {
+          quoteFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+          quoteFeedback.style.color = 'var(--red)';
+          quoteFeedback.textContent = '❌ ' + (data.error || 'Failed to dispatch quotation email.');
+        }
+      } catch (err) {
+        quoteFeedback.style.background = 'rgba(248, 113, 113, 0.12)';
+        quoteFeedback.style.color = 'var(--red)';
+        quoteFeedback.textContent = '❌ Network Error: ' + err.message;
+      } finally {
+        sendQuoteBtn.disabled = false;
+      }
+    }
+
+    if (sendQuoteBtn) sendQuoteBtn.onclick = sendQuotationEmail;
+
+    function shareQuotationWhatsApp() {
+      const clientName = document.getElementById('qClientName').value.trim() || 'Client';
+      const clientCompany = document.getElementById('qClientCompany').value.trim();
+      const clientMobile = (document.getElementById('qClientMobile').value || '').replace(/[^0-9]/g, '');
+      const totals = calculateQuoteTotals();
+      const sym = totals.currencySym;
+
+      let msg = `*📄 Project Quotation & Commercial Proposal*\n`;
+      msg += `*For:* ${clientName}${clientCompany ? ' (' + clientCompany + ')' : ''}\n`;
+      msg += `*By:* Neeraj Rawat | Dhani Tech\n\n`;
+      msg += `*💰 Investment Summary:*\n`;
+      msg += `• *Year 1 Initial Investment:* ${sym}${totals.year1Total.toLocaleString('en-IN')}\n`;
+      msg += `  _(Includes Full Development, 1st Year Cloud Infra & Product Licenses)_\n`;
+      msg += `• *Year 2 Renewal:* ${sym}${totals.year2Renewal.toLocaleString('en-IN')}\n`;
+      msg += `  _(Cloud Hosting, Database & Maintenance only — ₹0 Development Fee charged again)_\n\n`;
+      msg += `*Data Capacity Slab:* ${selectedDataTier.toUpperCase()}\n`;
+      msg += `Detailed itemized proposal has been compiled. Let's connect to finalize the deployment roadmap! 🚀`;
+
+      const targetMobile = clientMobile || '918708167959';
+      window.open(`https://wa.me/${targetMobile}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function printQuotation() {
+      window.print();
+    }
+
 
     document.getElementById('searchInput').oninput = renderTable;
     document.getElementById('statusFilter').onchange = renderTable;
@@ -1491,6 +2119,7 @@
             <td>
               <div class="actions">
                 <a href="https://wa.me/${cleanMobile}" target="_blank" class="btn-icon wa">💬</a>
+                <button class="btn-icon" onclick="createQuoteForLead('${l.id}')" title="Generate Commercial Quotation">📄</button>
                 <button class="btn-icon" onclick="openNotesModal('${l.id}')">📝</button>
               </div>
             </td>

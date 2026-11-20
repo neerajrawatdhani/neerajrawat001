@@ -1145,6 +1145,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
         <li><button data-door="2"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">UI/UX Design</span></button></li>
         <li><button data-door="3"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Graphic Design</span></button></li>
         <li><button data-go="about"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">My story</span></button></li>
+        <li><button data-go="products"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Products</span></button></li>
         <li><button data-contact><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Contact</span></button></li>
       </ul>
     </nav>
@@ -1653,6 +1654,33 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
   </div>
 </div>
 
+<!-- ============ ProductsModal ============ -->
+<div class="modal" id="prodModal" role="dialog" aria-modal="true" aria-labelledby="prodTitle" hidden>
+  <div class="modal__panel" id="prodPanel" style="max-width: 52rem; max-height: 90vh; overflow-y: auto; padding: 2rem 1.8rem;">
+    <button class="x-btn" id="prodClose" aria-label="Close"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
+    <div class="mhead" style="margin-bottom: 1.5rem; text-align: left;">
+      <p style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent,#00d26a); font-weight:700; margin-bottom:0.35rem;">Digital Products &amp; Software Solutions</p>
+      <h2 id="prodTitle" style="font-size: 1.85rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">Ready Systems &amp; Software Licenses</h2>
+      <p style="color:var(--fg-muted,#888); font-size: 0.95rem; line-height: 1.5; margin:0;">Battle-tested institutional ERPs, mobile modules, and automation engines built by Dhani Tech. Ready to customize and deploy.</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="prodCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.2rem; margin-top:1.25rem;">
+      <!-- Populated dynamically via JS from /api/products with static fallbacks -->
+    </div>
+
+    <div style="margin-top: 1.75rem; padding: 1.1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="font-weight: 600; font-size: 0.95rem; color: #fff;">Need a tailored custom solution?</div>
+        <div style="font-size: 0.85rem; color: var(--fg-muted, #888); margin-top: 2px;">We also architect custom software, web platforms, and mobile apps from scratch.</div>
+      </div>
+      <button class="pill pill--dark" onclick="closeProdModal(); openModal();" style="cursor: pointer;">
+        <span class="pill__in"><span>Discuss Custom Project →</span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script type="importmap">
 { "imports": { "lenis": "./vendor/lenis.min.mjs" } }
 </script>
@@ -1773,7 +1801,7 @@ function closeLayer(el, after){
   setTimeout(() => { el.hidden = true; el.classList.remove('closing'); startScroll(); after?.(); }, 460);
 }
 // nav menu
-const NAV = [['Home','home'],['Web Development',0],['App Development',1],['UI/UX Design',2],['Graphic Design',3],['My story','about'],['Contact',null]];
+const NAV = [['Home','home'],['Web Development',0],['App Development',1],['UI/UX Design',2],['Graphic Design',3],['My story','about'],['Products','products'],['Contact',null]];
 const navm = $('#navm');
 $('#navList').innerHTML = NAV.map(([l, id], i) =>
   `<li><button class="navm__item" style="--d:${i * 45 + 80}ms" data-i="${i}"><small>0${i + 1}</small><span>${l}</span></button></li>`).join('');
@@ -1789,6 +1817,8 @@ $('#navList').addEventListener('click', e => {
       window.openDoor?.(id);
     } else if (id === 'home') {
       navigateSpa('/home');
+    } else if (id === 'products') {
+      navigateSpa('/products');
     } else if (id === 'about') {
       navigateSpa('/my-story');
     } else if (id === 'works') {
@@ -1860,6 +1890,145 @@ modal.addEventListener('click', closeModal);
 $('#mPanel').addEventListener('click', e => e.stopPropagation());
 $('#mClose').addEventListener('click', closeModal);
 $('#mDone').addEventListener('click', closeModal);
+
+// ============ Digital Products Modal Logic ============
+const prodModal = $('#prodModal');
+let prodLastFocus = null;
+
+const DEFAULT_PRODUCTS = [
+  {
+    id: 'prod_school_erp',
+    name: 'EduDhani School ERP & Institution Portal',
+    category: 'Enterprise SaaS',
+    priceYearly: 48000,
+    priceOnetime: 85000,
+    badge: 'Flagship ERP',
+    desc: 'End-to-end institution management: Student Admissions, Fee Collection Engine with auto-receipts, Biometric/App Attendance, Examination & Report Cards, Parent Portal, and WhatsApp integration.',
+    features: ['Student & Staff Portal', 'Automated Fee Invoicing', 'WhatsApp Alerts', 'CBSE/State Report Cards']
+  },
+  {
+    id: 'prod_mobile_app',
+    name: 'Dedicated Mobile App Suite (Android & iOS)',
+    category: 'Mobile Application',
+    priceYearly: 24000,
+    priceOnetime: 45000,
+    badge: 'Mobile App',
+    desc: 'Cross-platform Flutter mobile app for schools & enterprises. Supports instant Push Notifications, Online Fee Payments, Daily Homework, Time Tables, and Live Bus/Transit Tracking.',
+    features: ['Instant Push Alerts', 'Fee Payment via UPI/Cards', 'Digital Homework', 'Live GPS Tracking']
+  },
+  {
+    id: 'prod_wa_engine',
+    name: 'Automated WhatsApp Notification Bot',
+    category: 'Automation Engine',
+    priceYearly: 12000,
+    priceOnetime: 22000,
+    badge: 'High ROI',
+    desc: 'Official WhatsApp Business Cloud API integration. Automatically dispatches fee receipts, absence alerts, exam results, admission updates, and 2-way AI inquiry answering.',
+    features: ['Official WhatsApp Cloud API', 'Automated PDF Receipts', 'Instant Attendance Alerts', '2-Way Chat Bot']
+  },
+  {
+    id: 'prod_pg_module',
+    name: 'Smart Payment Gateway & Reconciliation Kit',
+    category: 'FinTech Module',
+    priceYearly: 8000,
+    priceOnetime: 15000,
+    badge: 'Turnkey',
+    desc: 'Plug-and-play payment gateway engine supporting Razorpay, Cashfree & PayU with auto bank reconciliation, instant settlement webhooks, and automated GST billing receipts.',
+    features: ['UPI / Card / NetBanking', 'Zero-Drop Webhooks', 'Automated GST Invoices', 'Instant Reconciliation']
+  },
+  {
+    id: 'prod_amc_support',
+    name: 'Annual Cloud Maintenance & Priority AMC Support',
+    category: 'DevOps & SLA',
+    priceYearly: 18000,
+    priceOnetime: 18000,
+    badge: '24/7 SLA',
+    desc: 'Dedicated round-the-clock maintenance: Weekly automated MongoDB Atlas cloud snapshots, SSL certificates, speed optimization, cybersecurity audits, and guaranteed 2-hour SLA response.',
+    features: ['Weekly Cloud DB Backups', 'SSL & DNS Maintenance', 'Security Patching', '2-Hour Emergency SLA']
+  }
+];
+
+function renderProductsCards(products) {
+  const grid = $('#prodCardsGrid');
+  if (!grid) return;
+  grid.innerHTML = (products || DEFAULT_PRODUCTS).map(p => `
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 12px; padding: 1.25rem; display:flex; flex-direction:column; justify-content:space-between; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='var(--border, rgba(255,255,255,0.08))'">
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+          <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-muted,#888); font-weight:600;">${p.category || 'Software'}</span>
+          <span style="background: rgba(0, 210, 106, 0.12); color: var(--accent, #00d26a); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(0, 210, 106, 0.25);">${p.badge || 'Ready'}</span>
+        </div>
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0 0 0.5rem 0; line-height: 1.3;">${p.name}</h3>
+        <p style="font-size: 0.85rem; color: var(--fg-muted, #999); line-height: 1.5; margin: 0 0 0.85rem 0;">${p.desc}</p>
+        ${p.features ? `<ul style="list-style:none; padding:0; margin:0 0 1rem 0; font-size:0.8rem; color:#bbb; display:flex; flex-direction:column; gap:4px;">${p.features.map(f => `<li style="display:flex; align-items:center; gap:6px;"><span style="color:var(--accent,#00d26a);">✓</span> <span>${f}</span></li>`).join('')}</ul>` : ''}
+      </div>
+      <div>
+        <div style="border-top: 1px solid var(--border, rgba(255,255,255,0.06)); padding-top: 0.85rem; margin-bottom: 0.85rem; display:flex; justify-content:space-between; align-items:baseline;">
+          <div>
+            <div style="font-size: 0.7rem; color: var(--fg-muted, #888); text-transform: uppercase;">Standard License</div>
+            <div style="font-size: 1.2rem; font-weight: 700; color: #fff;">₹${(p.priceYearly || 0).toLocaleString('en-IN')}<span style="font-size:0.75rem; color:var(--fg-muted,#888); font-weight:400;"> / yr</span></div>
+          </div>
+          ${p.priceOnetime ? `<div style="text-align:right;"><span style="font-size:0.7rem; color:var(--fg-muted,#888);">One-Time:</span> <span style="font-size:0.85rem; color:#ddd; font-weight:600;">₹${p.priceOnetime.toLocaleString('en-IN')}</span></div>` : ''}
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr auto; gap: 8px;">
+          <button type="button" class="pill pill--dark" onclick="selectProductForQuote('${p.name}')" style="cursor: pointer; width: 100%;">
+            <span class="pill__in"><span>Get Quotation →</span></span>
+          </button>
+          <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20am%20interested%20in%20${encodeURIComponent(p.name)}" target="_blank" class="btn-icon wa" style="padding: 8px 12px; border-radius: 999px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3);" title="Direct WhatsApp Inquire">
+            💬
+          </a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadProductsGrid() {
+  renderProductsCards(DEFAULT_PRODUCTS);
+  fetch('/api/products')
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.success && Array.isArray(data.products) && data.products.length > 0) {
+        renderProductsCards(data.products);
+      }
+    })
+    .catch(() => {});
+}
+
+window.openProdModal = function() {
+  prodLastFocus = document.activeElement;
+  openLayer(prodModal, closeProdModal);
+  loadProductsGrid();
+};
+
+window.closeProdModal = function() {
+  closeLayer(prodModal, () => {
+    if (window.location.pathname === '/products') {
+      try { history.pushState({ route: '/home' }, '', '/home'); } catch(e) {}
+    }
+    if (lastInput === 'key') prodLastFocus?.focus?.({ preventScroll:true }); else document.activeElement?.blur?.();
+  });
+};
+
+window.selectProductForQuote = function(prodName) {
+  closeProdModal();
+  openModal();
+  setTimeout(() => {
+    const fProj = $('#f-project');
+    if (fProj) {
+      fProj.value = `Hello Neeraj, I would like to get a formal quotation and demo for: "${prodName}".`;
+      fProj.dispatchEvent(new Event('input', { bubbles: true }));
+      fProj.focus();
+    }
+  }, 220);
+};
+
+if (prodModal) {
+  prodModal.addEventListener('click', closeProdModal);
+  $('#prodPanel')?.addEventListener('click', e => e.stopPropagation());
+  $('#prodClose')?.addEventListener('click', closeProdModal);
+}
+
 // WhatsApp Number & Configuration
 const WHATSAPP_NUMBER = '918708167959';
 const SEND_LABEL = 'Send an Email';
@@ -2156,6 +2325,13 @@ form.addEventListener('submit', e => {
 // ============ SPA Router & Clean URL Navigation ============
 function navigateSpa(route, push = true) {
   const clean = (route || '').replace(/\/+$/, '') || '/';
+  if (clean === '/products') {
+    openProdModal();
+    if (push && window.location.pathname !== '/products') {
+      try { history.pushState({ route: '/products' }, '', '/products'); } catch(e) {}
+    }
+    return;
+  }
   if (clean === '/contact') {
     openModal();
     if (push && window.location.pathname !== '/contact') {
@@ -2222,6 +2398,7 @@ document.addEventListener('click', e => {
     const target = g.dataset.go;
     if (target === 'works') navigateSpa('/work');
     else if (target === 'story' || target === 'about') navigateSpa('/my-story');
+    else if (target === 'products') navigateSpa('/products');
     else if (target === 'home') navigateSpa('/home');
     else scrollToId(target);
   }

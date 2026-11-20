@@ -38,6 +38,8 @@
     { "source": "/my-story/", "destination": "/" },
     { "source": "/about", "destination": "/" },
     { "source": "/about/", "destination": "/" },
+    { "source": "/products", "destination": "/" },
+    { "source": "/products/", "destination": "/" },
     { "source": "/contact", "destination": "/" },
     { "source": "/contact/", "destination": "/" }
   ],
