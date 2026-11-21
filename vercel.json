@@ -18,73 +18,241 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    {
+      "source": "/super-admin-orbit.html",
+      "destination": "/super-admin-orbit.html"
+    },
+    {
+      "source": "/admin-sidebar.html",
+      "destination": "/frontend/admin-sidebar.html"
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/frontend/contact.html"
+    },
+    {
+      "source": "/store.html",
+      "destination": "/frontend/store.html"
+    },
+    {
+      "source": "/shop.html",
+      "destination": "/frontend/shop.html"
+    },
+    {
+      "source": "/store/",
+      "destination": "/frontend/store.html"
+    },
+    {
+      "source": "/store",
+      "destination": "/frontend/store.html"
+    },
+    {
+      "source": "/shop/",
+      "destination": "/frontend/shop.html"
+    },
+    {
+      "source": "/shop",
+      "destination": "/frontend/shop.html"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
       "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
       ],
       "source": "/(card|fonts|vendor)/(.*)",
       "destination": "/frontend/$1/$2"
     },
     {
       "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
       ],
       "source": "/",
       "destination": "/admin-portal.html"
     },
     {
       "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
       ],
       "source": "/(.*)",
       "destination": "/admin-portal.html"
     },
-    { "source": "/robots.txt", "destination": "/frontend/robots.txt" },
-    { "source": "/photographer", "destination": "/frontend/photographer/index.html" },
-    { "source": "/photographer/", "destination": "/frontend/photographer/index.html" },
-    { "source": "/photographer/(.*)", "destination": "/frontend/photographer/$1" },
-    { "source": "/web-developer", "destination": "/frontend/web-developer/index.html" },
-    { "source": "/web-developer/", "destination": "/frontend/web-developer/index.html" },
-    { "source": "/web-developer/(.*)", "destination": "/frontend/web-developer/$1" },
-    { "source": "/graphic-designer", "destination": "/frontend/graphic-designer/index.html" },
-    { "source": "/graphic-designer/", "destination": "/frontend/graphic-designer/index.html" },
-    { "source": "/graphic-designer/(.*)", "destination": "/frontend/graphic-designer/$1" },
-    { "source": "/ui-ux-designer", "destination": "/frontend/ui-ux-designer/index.html" },
-    { "source": "/ui-ux-designer/", "destination": "/frontend/ui-ux-designer/index.html" },
-    { "source": "/ui-ux-designer/(.*)", "destination": "/frontend/ui-ux-designer/$1" },
-    { "source": "/app-developer", "destination": "/frontend/app-developer/index.html" },
-    { "source": "/app-developer/", "destination": "/frontend/app-developer/index.html" },
-    { "source": "/app-developer/(.*)", "destination": "/frontend/app-developer/$1" },
-    { "source": "/ability-card", "destination": "/frontend/ability-card/index.html" },
-    { "source": "/ability-card/", "destination": "/frontend/ability-card/index.html" },
-    { "source": "/ability-card/(.*)", "destination": "/frontend/ability-card/$1" },
-    { "source": "/legal", "destination": "/frontend/legal/index.html" },
-    { "source": "/legal/", "destination": "/frontend/legal/index.html" },
-    { "source": "/legal/(.*)", "destination": "/frontend/legal/$1" },
-    { "source": "/home", "destination": "/frontend/index.html" },
-    { "source": "/home/", "destination": "/frontend/index.html" },
-    { "source": "/work", "destination": "/frontend/index.html" },
-    { "source": "/work/", "destination": "/frontend/index.html" },
-    { "source": "/works", "destination": "/frontend/index.html" },
-    { "source": "/works/", "destination": "/frontend/index.html" },
-    { "source": "/my-story", "destination": "/frontend/index.html" },
-    { "source": "/my-story/", "destination": "/frontend/index.html" },
-    { "source": "/about", "destination": "/frontend/index.html" },
-    { "source": "/about/", "destination": "/frontend/index.html" },
-    { "source": "/products", "destination": "/frontend/index.html" },
-    { "source": "/products/", "destination": "/frontend/index.html" },
-    { "source": "/contact", "destination": "/frontend/index.html" },
-    { "source": "/contact/", "destination": "/frontend/index.html" },
-    { "source": "/", "destination": "/frontend/index.html" },
-    { "source": "/(card|fonts|vendor)/(.*)", "destination": "/frontend/$1/$2" },
-    { "source": "/(.*\\.(?:webp|png|jpg|jpeg|svg|ico|woff2|mp4|mjs|js|css|json|txt))", "destination": "/frontend/$1" }
+    {
+      "source": "/robots.txt",
+      "destination": "/frontend/robots.txt"
+    },
+    {
+      "source": "/photographer",
+      "destination": "/frontend/photographer/index.html"
+    },
+    {
+      "source": "/photographer/",
+      "destination": "/frontend/photographer/index.html"
+    },
+    {
+      "source": "/photographer/(.*)",
+      "destination": "/frontend/photographer/$1"
+    },
+    {
+      "source": "/web-developer",
+      "destination": "/frontend/web-developer/index.html"
+    },
+    {
+      "source": "/web-developer/",
+      "destination": "/frontend/web-developer/index.html"
+    },
+    {
+      "source": "/web-developer/(.*)",
+      "destination": "/frontend/web-developer/$1"
+    },
+    {
+      "source": "/graphic-designer",
+      "destination": "/frontend/graphic-designer/index.html"
+    },
+    {
+      "source": "/graphic-designer/",
+      "destination": "/frontend/graphic-designer/index.html"
+    },
+    {
+      "source": "/graphic-designer/(.*)",
+      "destination": "/frontend/graphic-designer/$1"
+    },
+    {
+      "source": "/ui-ux-designer",
+      "destination": "/frontend/ui-ux-designer/index.html"
+    },
+    {
+      "source": "/ui-ux-designer/",
+      "destination": "/frontend/ui-ux-designer/index.html"
+    },
+    {
+      "source": "/ui-ux-designer/(.*)",
+      "destination": "/frontend/ui-ux-designer/$1"
+    },
+    {
+      "source": "/app-developer",
+      "destination": "/frontend/app-developer/index.html"
+    },
+    {
+      "source": "/app-developer/",
+      "destination": "/frontend/app-developer/index.html"
+    },
+    {
+      "source": "/app-developer/(.*)",
+      "destination": "/frontend/app-developer/$1"
+    },
+    {
+      "source": "/ability-card",
+      "destination": "/frontend/ability-card/index.html"
+    },
+    {
+      "source": "/ability-card/",
+      "destination": "/frontend/ability-card/index.html"
+    },
+    {
+      "source": "/ability-card/(.*)",
+      "destination": "/frontend/ability-card/$1"
+    },
+    {
+      "source": "/legal",
+      "destination": "/frontend/legal/index.html"
+    },
+    {
+      "source": "/legal/",
+      "destination": "/frontend/legal/index.html"
+    },
+    {
+      "source": "/legal/(.*)",
+      "destination": "/frontend/legal/$1"
+    },
+    {
+      "source": "/home",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/home/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/work",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/work/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/works",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/works/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/my-story",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/my-story/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/about/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/products",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/products/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/contact/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/(card|fonts|vendor)/(.*)",
+      "destination": "/frontend/$1/$2"
+    },
+    {
+      "source": "/(.*\\.(?:webp|png|jpg|jpeg|svg|ico|woff2|mp4|mjs|js|css|json|txt))",
+      "destination": "/frontend/$1"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)\\.(webp|png|jpg|jpeg|svg|ico|woff2|mp4|mjs)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000, immutable"
+        }
       ]
     }
   ]

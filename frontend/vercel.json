@@ -17,70 +17,225 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    {
+      "source": "/admin-sidebar.html",
+      "destination": "/admin-sidebar.html"
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/store.html",
+      "destination": "/store.html"
+    },
+    {
+      "source": "/shop.html",
+      "destination": "/shop.html"
+    },
+    {
+      "source": "/store/",
+      "destination": "/store.html"
+    },
+    {
+      "source": "/store",
+      "destination": "/store.html"
+    },
+    {
+      "source": "/shop/",
+      "destination": "/shop.html"
+    },
+    {
+      "source": "/shop",
+      "destination": "/shop.html"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
       "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
       ],
       "source": "/(card|fonts|vendor)/(.*)",
       "destination": "/$1/$2"
     },
     {
       "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
       ],
       "source": "/",
       "destination": "/admin-portal.html"
     },
     {
       "has": [
-        { "type": "host", "value": "admin.neerajrawat.dev" }
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
       ],
       "source": "/(.*)",
       "destination": "/admin-portal.html"
     },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/photographer", "destination": "/photographer/index.html" },
-    { "source": "/photographer/", "destination": "/photographer/index.html" },
-    { "source": "/photographer/(.*)", "destination": "/photographer/$1" },
-    { "source": "/web-developer", "destination": "/web-developer/index.html" },
-    { "source": "/web-developer/", "destination": "/web-developer/index.html" },
-    { "source": "/web-developer/(.*)", "destination": "/web-developer/$1" },
-    { "source": "/graphic-designer", "destination": "/graphic-designer/index.html" },
-    { "source": "/graphic-designer/", "destination": "/graphic-designer/index.html" },
-    { "source": "/graphic-designer/(.*)", "destination": "/graphic-designer/$1" },
-    { "source": "/ui-ux-designer", "destination": "/ui-ux-designer/index.html" },
-    { "source": "/ui-ux-designer/", "destination": "/ui-ux-designer/index.html" },
-    { "source": "/ui-ux-designer/(.*)", "destination": "/ui-ux-designer/$1" },
-    { "source": "/app-developer", "destination": "/app-developer/index.html" },
-    { "source": "/app-developer/", "destination": "/app-developer/index.html" },
-    { "source": "/app-developer/(.*)", "destination": "/app-developer/$1" },
-    { "source": "/ability-card", "destination": "/ability-card/index.html" },
-    { "source": "/ability-card/", "destination": "/ability-card/index.html" },
-    { "source": "/ability-card/(.*)", "destination": "/ability-card/$1" },
-    { "source": "/legal", "destination": "/legal/index.html" },
-    { "source": "/legal/", "destination": "/legal/index.html" },
-    { "source": "/legal/(.*)", "destination": "/legal/$1" },
-    { "source": "/home", "destination": "/" },
-    { "source": "/home/", "destination": "/" },
-    { "source": "/work", "destination": "/" },
-    { "source": "/work/", "destination": "/" },
-    { "source": "/works", "destination": "/" },
-    { "source": "/works/", "destination": "/" },
-    { "source": "/my-story", "destination": "/" },
-    { "source": "/my-story/", "destination": "/" },
-    { "source": "/about", "destination": "/" },
-    { "source": "/about/", "destination": "/" },
-    { "source": "/products", "destination": "/" },
-    { "source": "/products/", "destination": "/" },
-    { "source": "/contact", "destination": "/" },
-    { "source": "/contact/", "destination": "/" }
+    {
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/photographer",
+      "destination": "/photographer/index.html"
+    },
+    {
+      "source": "/photographer/",
+      "destination": "/photographer/index.html"
+    },
+    {
+      "source": "/photographer/(.*)",
+      "destination": "/photographer/$1"
+    },
+    {
+      "source": "/web-developer",
+      "destination": "/web-developer/index.html"
+    },
+    {
+      "source": "/web-developer/",
+      "destination": "/web-developer/index.html"
+    },
+    {
+      "source": "/web-developer/(.*)",
+      "destination": "/web-developer/$1"
+    },
+    {
+      "source": "/graphic-designer",
+      "destination": "/graphic-designer/index.html"
+    },
+    {
+      "source": "/graphic-designer/",
+      "destination": "/graphic-designer/index.html"
+    },
+    {
+      "source": "/graphic-designer/(.*)",
+      "destination": "/graphic-designer/$1"
+    },
+    {
+      "source": "/ui-ux-designer",
+      "destination": "/ui-ux-designer/index.html"
+    },
+    {
+      "source": "/ui-ux-designer/",
+      "destination": "/ui-ux-designer/index.html"
+    },
+    {
+      "source": "/ui-ux-designer/(.*)",
+      "destination": "/ui-ux-designer/$1"
+    },
+    {
+      "source": "/app-developer",
+      "destination": "/app-developer/index.html"
+    },
+    {
+      "source": "/app-developer/",
+      "destination": "/app-developer/index.html"
+    },
+    {
+      "source": "/app-developer/(.*)",
+      "destination": "/app-developer/$1"
+    },
+    {
+      "source": "/ability-card",
+      "destination": "/ability-card/index.html"
+    },
+    {
+      "source": "/ability-card/",
+      "destination": "/ability-card/index.html"
+    },
+    {
+      "source": "/ability-card/(.*)",
+      "destination": "/ability-card/$1"
+    },
+    {
+      "source": "/legal",
+      "destination": "/legal/index.html"
+    },
+    {
+      "source": "/legal/",
+      "destination": "/legal/index.html"
+    },
+    {
+      "source": "/legal/(.*)",
+      "destination": "/legal/$1"
+    },
+    {
+      "source": "/home",
+      "destination": "/"
+    },
+    {
+      "source": "/home/",
+      "destination": "/"
+    },
+    {
+      "source": "/work",
+      "destination": "/"
+    },
+    {
+      "source": "/work/",
+      "destination": "/"
+    },
+    {
+      "source": "/works",
+      "destination": "/"
+    },
+    {
+      "source": "/works/",
+      "destination": "/"
+    },
+    {
+      "source": "/my-story",
+      "destination": "/"
+    },
+    {
+      "source": "/my-story/",
+      "destination": "/"
+    },
+    {
+      "source": "/about",
+      "destination": "/"
+    },
+    {
+      "source": "/about/",
+      "destination": "/"
+    },
+    {
+      "source": "/products",
+      "destination": "/"
+    },
+    {
+      "source": "/products/",
+      "destination": "/"
+    },
+    {
+      "source": "/contact",
+      "destination": "/"
+    },
+    {
+      "source": "/contact/",
+      "destination": "/"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)\\.(webp|png|jpg|jpeg|svg|ico|woff2|mp4|mjs)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000, immutable"
+        }
       ]
     }
   ]

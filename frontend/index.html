@@ -1150,7 +1150,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
         <li><button data-door="2"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">UI/UX Design</span></button></li>
         <li><button data-door="3"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Graphic Design</span></button></li>
         <li><button data-go="about"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">My story</span></button></li>
-        <li><button data-go="products"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Products</span></button></li>
+        <li><button data-go="products"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Shop</span></button></li>
         <li><button data-contact><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Contact</span></button></li>
       </ul>
     </nav>
@@ -1721,6 +1721,9 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
         <p style="color:var(--fg-muted,#999); font-size: 0.92rem; line-height: 1.5; margin:0;">Download automated business templates, tax spreadsheets, contracts &amp; code with lifetime access.</p>
       </div>
       <div style="display:flex; align-items:center; gap:8px;">
+        <a href="/shop.html" class="pill pill--outline" style="text-decoration:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding:8px 14px; font-weight:700; font-size:0.82rem; border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:999px; transition:border-color .2s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'">
+          <span>Open Full Shop ↗</span>
+        </a>
         <button type="button" id="cartOpenBtn" onclick="openCartModal()" class="pill pill--outline" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; font-weight:700; font-size:0.85rem; border:1px solid rgba(232,168,124,0.4); background:rgba(232,168,124,0.1); color:#fff; border-radius:999px;">
           <span>🛒 Cart</span>
           <span id="cartCountBadge" style="background:var(--accent,#e8a87c); color:#000; font-size:0.75rem; font-weight:800; border-radius:999px; padding:2px 7px;">0</span>
@@ -1932,7 +1935,7 @@ function closeLayer(el, after){
   setTimeout(() => { el.hidden = true; el.classList.remove('closing'); startScroll(); after?.(); }, 460);
 }
 // nav menu
-const NAV = [['Home','home'],['Web Development',0],['App Development',1],['UI/UX Design',2],['Graphic Design',3],['My story','about'],['Products','products'],['Contact',null]];
+const NAV = [['Home','home'],['Web Development',0],['App Development',1],['UI/UX Design',2],['Graphic Design',3],['My story','about'],['Shop','products'],['Contact',null]];
 const navm = $('#navm');
 $('#navList').innerHTML = NAV.map(([l, id], i) =>
   `<li><button class="navm__item" style="--d:${i * 45 + 80}ms" data-i="${i}"><small>0${i + 1}</small><span>${l}</span></button></li>`).join('');

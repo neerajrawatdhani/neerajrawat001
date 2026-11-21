@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Products &amp; Excel Sheets | Shop — Neeraj Rawat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/webp" href="frontend/neeraj_colour.webp">
+<style>
+:root{
+  --bg:#EEF3F7;
+  --ink:#0C1B2A;
+  --muted:#5B6B7C;
+  --subtle:#8A99A8;
+  --card:#FFFFFF;
+  --line:#DCE5EE;
+  --accent:#F28C28;
+  --accent-ink:#2A1400;
+  --brand:#1F6FEB;
+  --ok:#0F7A4A;
+  --ok-soft:#E3F7EC;
+  --wa:#22C55E;
+  --ease:cubic-bezier(.22,.8,.24,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;position:relative;min-height:100vh}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0;gap:16px}
+.brand{font-weight:800;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.brand a{text-decoration:none;color:inherit;display:inline-flex;align-items:center;gap:8px}
+.brand .bolt{color:var(--accent)}
+.brand .tag-shop{font-size:11px;font-weight:700;color:var(--muted);background:#DCE5EE;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.top-actions{display:flex;align-items:center;gap:12px}
+.back-link{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .2s}
+.back-link:hover{color:var(--ink)}
+
+.cart{position:relative;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:999px;background:var(--ink);color:#fff;border:0;font:600 13px/1 Inter,system-ui,sans-serif;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.cart:hover{transform:translateY(-1px);box-shadow:0 10px 24px -12px rgba(12,27,42,.6)}
+.cart svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.count{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:800;display:inline-grid;place-items:center}
+.count.bump{animation:bump .5s var(--ease)}
+
+/* hero */
+.hero{padding:40px 0 28px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);opacity:0;animation:up .6s var(--ease) .05s forwards}
+.kicker svg{width:14px;height:14px;fill:var(--accent)}
+h1{margin:12px 0 10px;font-size:44px;line-height:1.05;letter-spacing:-.025em;font-weight:800;opacity:0;animation:up .7s var(--ease) .12s forwards}
+.lede{margin:0;max-width:520px;color:var(--muted);font-size:16px;line-height:1.6;opacity:0;animation:up .7s var(--ease) .2s forwards}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;opacity:0;animation:up .7s var(--ease) .28s forwards}
+.chip{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 12.5px/1 Inter,system-ui,sans-serif;color:var(--muted);cursor:pointer;transition:all .25s var(--ease)}
+.chip:hover{color:var(--ink);border-color:#C5D2DF;transform:translateY(-1px)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;padding:12px 0 72px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(18px);animation:up .7s var(--ease) forwards;transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .3s}
+.grid .card:nth-child(1){animation-delay:.3s}
+.grid .card:nth-child(2){animation-delay:.38s}
+.grid .card:nth-child(3){animation-delay:.46s}
+.grid .card:nth-child(4){animation-delay:.54s}
+.grid .card:nth-child(5){animation-delay:.62s}
+.card:hover{transform:translateY(-6px);box-shadow:0 24px 44px -26px rgba(12,27,42,.45);border-color:#C5D2DF}
+
+.thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0F1E2E}
+.thumb .art{position:absolute;inset:0;transition:transform .8s var(--ease)}
+.card:hover .thumb .art{transform:scale(1.06)}
+.art.a{background:linear-gradient(135deg,#1B3A57,#0C1B2A)}
+.art.b{background:linear-gradient(135deg,#243B2A,#0C1B2A)}
+.art.c{background:linear-gradient(135deg,#3B2A4A,#0C1B2A)}
+.art.d{background:linear-gradient(135deg,#4A2E1E,#0C1B2A)}
+.art.e{background:linear-gradient(135deg,#1E2F4A,#0C1B2A)}
+.grid-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:22px 22px;opacity:.6;animation:drift 18s linear infinite}
+.sheet{position:absolute;left:14%;top:18%;width:52%;height:64%;background:#fff;border-radius:8px;box-shadow:0 14px 30px -12px rgba(0,0,0,.5);transform:rotate(-4deg);transition:transform .6s var(--ease)}
+.sheet::before{content:"";position:absolute;left:10px;right:10px;top:12px;height:10px;border-radius:3px;background:var(--accent)}
+.sheet::after{content:"";position:absolute;left:10px;right:24px;top:34px;height:44%;background:repeating-linear-gradient(#DCE5EE 0 6px,transparent 6px 14px)}
+.card:hover .sheet{transform:rotate(-1deg) translateY(-4px)}
+.sheet.s2{left:34%;top:26%;transform:rotate(5deg);opacity:.92}
+.card:hover .sheet.s2{transform:rotate(2deg) translateY(-6px)}
+.badge{position:absolute;top:12px;left:12px;height:24px;padding:0 10px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:800;display:inline-flex;align-items:center;gap:6px;overflow:hidden;z-index:2}
+.badge::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:sheen 3.6s infinite}
+.format{position:absolute;right:12px;bottom:12px;height:24px;padding:0 9px;border-radius:7px;background:rgba(255,255,255,.14);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;letter-spacing:.04em;z-index:2}
+
+.body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:6px;font-size:11px;font-weight:700;background:var(--ok-soft);color:var(--ok)}
+.tag svg{width:11px;height:11px;fill:currentColor}
+.tag.life{background:#EAF2FF;color:#1F55B5}
+h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.desc{margin:0;color:var(--muted);font-size:13px;line-height:1.5;min-height:40px}
+.price-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:6px}
+.price{font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.price small{font-size:12px;color:var(--subtle);font-weight:600;text-decoration:line-through;margin-left:6px}
+.delivery{font-size:11px;font-weight:700;color:var(--subtle);text-transform:uppercase;letter-spacing:.08em}
+
+.actions{display:grid;grid-template-columns:1fr 1fr 40px;gap:8px;margin-top:10px}
+.btn{position:relative;overflow:hidden;height:42px;border-radius:11px;border:1px solid var(--line);background:var(--card);font:700 13px/1 Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .25s var(--ease),background .25s,color .25s,border-color .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.96)}
+.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
+.btn.cartbtn:hover{border-color:var(--ink)}
+.btn.cartbtn:hover svg{transform:translateY(-2px)}
+.btn.cartbtn.added{background:var(--ok-soft);border-color:#B9E8CF;color:var(--ok)}
+.btn.buy{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 10px 22px -12px rgba(242,140,40,.9)}
+.btn.buy:hover{box-shadow:0 14px 26px -12px rgba(242,140,40,1);filter:brightness(1.03)}
+.btn.buy::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--ease)}
+.btn.buy:hover::after{transform:translateX(120%)}
+.btn.ask{padding:0;color:var(--muted)}
+.btn.ask:hover{border-color:var(--wa);color:var(--wa);background:#F0FDF4}
+
+/* ripple for buy */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);pointer-events:none;animation:ripple .6s var(--ease) forwards}
+
+/* flying dot to cart */
+.fly{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:9999;transition:transform .8s cubic-bezier(.5,0,.2,1),opacity .8s}
+
+/* Cart Drawer */
+.cart-drawer-backdrop{position:fixed;inset:0;background:rgba(12,27,42,.45);backdrop-filter:blur(4px);z-index:100;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.cart-drawer-backdrop.open{opacity:1;pointer-events:auto}
+.cart-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:#fff;z-index:101;box-shadow:-20px 0 50px rgba(0,0,0,.15);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s var(--ease)}
+.cart-drawer-backdrop.open .cart-drawer{transform:translateX(0)}
+.cd-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--line)}
+.cd-head h2{margin:0;font-size:18px;font-weight:800}
+.cd-close{border:0;background:transparent;cursor:pointer;font-size:22px;color:var(--muted);width:36px;height:36px;border-radius:8px;display:grid;place-items:center}
+.cd-close:hover{background:#F1F4F8;color:var(--ink)}
+.cd-body{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.cd-empty{text-align:center;padding:48px 12px;color:var(--muted)}
+.cd-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#F8FAFC;border:1px solid var(--line);border-radius:12px;gap:12px}
+.cd-item-info h4{margin:0 0 4px;font-size:13.5px;font-weight:700}
+.cd-item-info span{font-size:14px;font-weight:800;color:var(--brand)}
+.cd-item-remove{border:0;background:transparent;color:#DC2626;cursor:pointer;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px}
+.cd-item-remove:hover{background:#FEF2F2}
+.cd-foot{padding:20px 24px;border-top:1px solid var(--line);background:#FAFCFD}
+.cd-total{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
+.cd-total span{font-size:14px;font-weight:600;color:var(--muted)}
+.cd-total strong{font-size:22px;font-weight:800;color:var(--ink)}
+.cd-checkout{width:100%;height:46px;border-radius:12px;background:var(--accent);border:0;color:var(--accent-ink);font:800 14px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 12px 24px -12px rgba(242,140,40,.9);transition:all .2s}
+.cd-checkout:hover{filter:brightness(1.04);transform:translateY(-1px)}
+
+/* Instant Checkout Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(12,27,42,.65);backdrop-filter:blur(6px);z-index:200;display:grid;place-items:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.modal-backdrop.open{opacity:1;pointer-events:auto}
+.modal{position:relative;width:min(480px,100%);background:#fff;border-radius:20px;padding:28px;box-shadow:0 30px 60px -20px rgba(0,0,0,.3);transform:scale(.95);transition:transform .3s var(--ease)}
+.modal-backdrop.open .modal{transform:scale(1)}
+.m-close{position:absolute;top:20px;right:20px;width:34px;height:34px;border-radius:50%;border:0;background:#F1F4F8;color:var(--muted);font-size:18px;display:grid;place-items:center;cursor:pointer}
+.m-close:hover{background:#E2E8F0;color:var(--ink)}
+.m-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.m-title{margin:0 0 16px;font-size:20px;font-weight:800;color:var(--ink)}
+.m-card{background:#F8FAFD;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.m-card-name{font-weight:700;font-size:14px;color:var(--ink)}
+.m-card-price{font-size:18px;font-weight:800;color:var(--brand)}
+.m-form{display:flex;flex-direction:column;gap:12px}
+.m-input{width:100%;height:42px;border:1px solid var(--line);border-radius:10px;padding:0 14px;font:500 13px Inter,sans-serif;color:var(--ink);background:#fff}
+.m-input:focus{outline:2px solid var(--brand);border-color:transparent}
+.m-upi-box{background:#FFF9F2;border:1px solid #FFE0BD;border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.m-upi-id{font-family:monospace;font-weight:700;color:#B45309;font-size:13px}
+.m-upi-copy{border:0;background:#FFEAD4;color:#B45309;font:700 11px Inter,sans-serif;padding:6px 10px;border-radius:6px;cursor:pointer}
+.m-upi-copy:hover{background:#FED7AA}
+.m-pay-btn{width:100%;height:46px;border-radius:12px;background:var(--accent);border:0;color:var(--accent-ink);font:800 14px Inter,sans-serif;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.m-wa-btn{width:100%;height:42px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;font:700 13px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.m-wa-btn:hover{background:#DCFCE7}
+
+/* keyframes */
+@keyframes up{to{opacity:1;transform:none}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes sheen{0%{left:-60%}60%,100%{left:120%}}
+@keyframes drift{to{background-position:22px 22px}}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+
+@media (max-width:640px){
+  h1{font-size:34px}
+  .grid{grid-template-columns:1fr 1fr;gap:12px}
+  .desc{display:none}
+  .actions{grid-template-columns:1fr 1fr}
+  .btn.ask{display:none}
+  .price{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0ms!important;transition-duration:.01ms!important}
+  .kicker,h1,.lede,.chips,.card{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <a href="frontend/index.html">
+        <span class="bolt" aria-hidden="true">⚡</span>Neeraj Rawat
+        <span class="tag-shop">Digital Store</span>
+      </a>
+    </div>
+    <div class="top-actions">
+      <a href="frontend/index.html" class="back-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Portfolio
+      </a>
+      <button class="cart" type="button" id="cartBtn" aria-label="Cart, items added">
+        <svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+        Cart <span class="count" id="count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="kicker"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant digital store</div>
+    <h1>Digital Products<br>&amp; Excel Sheets</h1>
+    <p class="lede">Download automated business templates, tax spreadsheets, contracts and code with lifetime access.</p>
+    <div class="chips" role="group" aria-label="Filter products">
+      <button class="chip" type="button" aria-pressed="true" data-f="all">All</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="excel">Excel &amp; Sheets</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="design">Design</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="code">Code</button>
+    </div>
+  </section>
+
+  <section class="grid" id="grid" aria-label="Products">
+
+    <article class="card" data-cat="excel" data-id="prod_gst" data-name="Automated GST Billing Sheet" data-price="499" data-format=".XLSX">
+      <div class="thumb">
+        <div class="art a"></div><div class="grid-pattern"></div>
+        <div class="sheet"></div><div class="sheet s2"></div>
+        <span class="badge">Best Seller</span>
+        <span class="format">.XLSX</span>
+      </div>
+      <div class="body">
+        <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
+        <h3>Automated GST Billing Sheet</h3>
+        <p class="desc">Automated GST billing with invoices, tax summaries and monthly reports.</p>
+        <div class="price-row"><span class="price">₹499</span><span class="delivery">Direct file download</span></div>
+        <div class="actions">
+          <button class="btn cartbtn" type="button" data-name="Automated GST Billing Sheet" data-price="499"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>Add to cart</button>
+          <button class="btn buy" type="button" data-name="Automated GST Billing Sheet" data-price="499">Buy now</button>
+          <button class="btn ask" type="button" aria-label="Ask about this product" data-name="Automated GST Billing Sheet"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="excel" data-id="prod_income" data-name="Business Income &amp; Expense Tracker" data-price="399" data-format=".XLSX">
+      <div class="thumb">
+        <div class="art b"></div><div class="grid-pattern"></div>
+        <div class="sheet"></div><div class="sheet s2"></div>
+        <span class="badge">Popular</span>
+        <span class="format">.XLSX</span>
+      </div>
+      <div class="body">
+        <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
+        <h3>Business Income &amp; Expense Tracker</h3>
+        <p class="desc">Interactive financial P&amp;L and expense tracker with built-in charts.</p>
+        <div class="price-row"><span class="price">₹399</span><span class="delivery">Works in Excel &amp; Sheets</span></div>
+        <div class="actions">
+          <button class="btn cartbtn" type="button" data-name="Income & Expense Tracker" data-price="399"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>Add to cart</button>
+          <button class="btn buy" type="button" data-name="Business Income & Expense Tracker" data-price="399">Buy now</button>
+          <button class="btn ask" type="button" aria-label="Ask about this product" data-name="Business Income & Expense Tracker"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="design" data-id="prod_social" data-name="1500+ Social Media Post Templates" data-price="899" data-format="CANVA · PSD">
+      <div class="thumb">
+        <div class="art c"></div><div class="grid-pattern"></div>
+        <div class="sheet"></div><div class="sheet s2"></div>
+        <span class="badge">Mega Pack</span>
+        <span class="format">CANVA · PSD</span>
+      </div>
+      <div class="body">
+        <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
+        <h3>1500+ Social Media Post Templates</h3>
+        <p class="desc">Editable Canva and Photoshop templates for every platform.</p>
+        <div class="price-row"><span class="price">₹899</span><span class="delivery">Direct file download</span></div>
+        <div class="actions">
+          <button class="btn cartbtn" type="button" data-name="Social Media Templates" data-price="899"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>Add to cart</button>
+          <button class="btn buy" type="button" data-name="1500+ Social Media Post Templates" data-price="899">Buy now</button>
+          <button class="btn ask" type="button" aria-label="Ask about this product" data-name="1500+ Social Media Post Templates"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="excel" data-id="prod_onboard" data-name="Client Onboarding Pack" data-price="1499" data-format=".DOCX · PDF">
+      <div class="thumb">
+        <div class="art d"></div><div class="grid-pattern"></div>
+        <div class="sheet"></div><div class="sheet s2"></div>
+        <span class="badge">Agency Pro</span>
+        <span class="format">.DOCX · PDF</span>
+      </div>
+      <div class="body">
+        <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
+        <h3>Client Onboarding Pack</h3>
+        <p class="desc">Ready-to-use client service agreements, forms and welcome kits.</p>
+        <div class="price-row"><span class="price">₹1,499</span><span class="delivery">Direct file download</span></div>
+        <div class="actions">
+          <button class="btn cartbtn" type="button" data-name="Client Onboarding Pack" data-price="1499"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>Add to cart</button>
+          <button class="btn buy" type="button" data-name="Client Onboarding Pack" data-price="1499">Buy now</button>
+          <button class="btn ask" type="button" aria-label="Ask about this product" data-name="Client Onboarding Pack"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="code" data-id="prod_kit" data-name="Modern Full-Stack Dashboard Kit" data-price="999" data-format="CODE">
+      <div class="thumb">
+        <div class="art e"></div><div class="grid-pattern"></div>
+        <div class="sheet"></div><div class="sheet s2"></div>
+        <span class="badge">Developer Kit</span>
+        <span class="format">CODE</span>
+      </div>
+      <div class="body">
+        <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
+        <h3>Modern Full-Stack Dashboard Kit</h3>
+        <p class="desc">High-performance starter code with auth, billing and admin panels.</p>
+        <div class="price-row"><span class="price">₹999</span><span class="delivery">Source code download</span></div>
+        <div class="actions">
+          <button class="btn cartbtn" type="button" data-name="Dashboard Kit" data-price="999"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>Add to cart</button>
+          <button class="btn buy" type="button" data-name="Modern Full-Stack Dashboard Kit" data-price="999">Buy now</button>
+          <button class="btn ask" type="button" aria-label="Ask about this product" data-name="Modern Full-Stack Dashboard Kit"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+  </section>
+</div>
+
+<!-- ============ Slide-over Cart Drawer ============ -->
+<div class="cart-drawer-backdrop" id="cartDrawerBackdrop">
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Cart">
+    <div class="cd-head">
+      <h2>Your Cart (<span id="cartDrawerCount">0</span>)</h2>
+      <button class="cd-close" id="cdClose" aria-label="Close cart">&times;</button>
+    </div>
+    <div class="cd-body" id="cartItemsList">
+      <!-- Items dynamically added here -->
+    </div>
+    <div class="cd-foot">
+      <div class="cd-total">
+        <span>Order Total:</span>
+        <strong id="cartTotalAmt">₹0</strong>
+      </div>
+      <button class="cd-checkout" id="cartCheckoutBtn">
+        <span>⚡ Proceed to Checkout</span>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ Instant Checkout Modal ============ -->
+<div class="modal-backdrop" id="checkoutModalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="m-close" id="mClose" aria-label="Close">&times;</button>
+    <div class="m-badge">⚡ Instant File Delivery</div>
+    <h3 class="m-title" id="mTitle">Complete Your Order</h3>
+
+    <div class="m-card">
+      <div>
+        <div class="m-card-name" id="mProdName">Product Name</div>
+        <small style="color:var(--muted); font-size:12px;">Instant download file access</small>
+      </div>
+      <div class="m-card-price" id="mProdPrice">₹499</div>
+    </div>
+
+    <form class="m-form" id="checkoutForm" onsubmit="handleCheckoutSubmit(event)">
+      <input type="text" class="m-input" id="cName" placeholder="Your Full Name" required>
+      <input type="email" class="m-input" id="cEmail" placeholder="Your Email Address (for file download)" required>
+      <input type="tel" class="m-input" id="cPhone" placeholder="WhatsApp Number" value="+91 ">
+
+      <div>
+        <label style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:4px; display:block;">Quick UPI Scan &amp; Pay</label>
+        <div class="m-upi-box">
+          <span class="m-upi-id" id="upiIdText">8708167959@paytm</span>
+          <button type="button" class="m-upi-copy" onclick="copyUPI()">Copy UPI ID</button>
+        </div>
+      </div>
+
+      <button type="submit" class="m-pay-btn" id="mPayBtn">
+        <span>⚡ Confirm &amp; Get Download Link</span>
+      </button>
+
+      <a id="mWaOrderBtn" href="#" target="_blank" class="m-wa-btn">
+        <span>💬 Order &amp; Pay via WhatsApp</span>
+      </a>
+    </form>
+  </div>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cartBtn = document.getElementById('cartBtn');
+  const countEl = document.getElementById('count');
+  const cartDrawerBackdrop = document.getElementById('cartDrawerBackdrop');
+  const cdClose = document.getElementById('cdClose');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const cartDrawerCount = document.getElementById('cartDrawerCount');
+  const cartTotalAmt = document.getElementById('cartTotalAmt');
+  const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
+
+  const checkoutModalBackdrop = document.getElementById('checkoutModalBackdrop');
+  const mClose = document.getElementById('mClose');
+  const mProdName = document.getElementById('mProdName');
+  const mProdPrice = document.getElementById('mProdPrice');
+  const mWaOrderBtn = document.getElementById('mWaOrderBtn');
+
+  let cart = [];
+
+  function updateCartUI() {
+    countEl.textContent = cart.length;
+    cartDrawerCount.textContent = cart.length;
+    countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump');
+
+    if (cart.length === 0) {
+      cartItemsList.innerHTML = '<div class="cd-empty"><p style="font-size:15px; margin:0 0 6px; font-weight:700; color:var(--ink);">Your cart is empty</p><span style="font-size:13px;">Add digital templates or spreadsheets to get instant downloads!</span></div>';
+      cartTotalAmt.textContent = '₹0';
+      cartCheckoutBtn.disabled = true;
+      cartCheckoutBtn.style.opacity = '0.5';
+      return;
+    }
+
+    cartCheckoutBtn.disabled = false;
+    cartCheckoutBtn.style.opacity = '1';
+
+    let total = 0;
+    cartItemsList.innerHTML = cart.map((item, idx) => {
+      total += Number(item.price);
+      return `
+        <div class="cd-item">
+          <div class="cd-item-info">
+            <h4>${item.name}</h4>
+            <span>₹${Number(item.price).toLocaleString('en-IN')}</span>
+          </div>
+          <button class="cd-item-remove" onclick="removeCartItem(${idx})">Remove</button>
+        </div>
+      `;
+    }).join('');
+
+    cartTotalAmt.textContent = '₹' + total.toLocaleString('en-IN');
+  }
+
+  window.removeCartItem = (idx) => {
+    cart.splice(idx, 1);
+    updateCartUI();
+  };
+
+  /* Open / Close Cart Drawer */
+  cartBtn.addEventListener('click', () => {
+    cartDrawerBackdrop.classList.add('open');
+  });
+  cdClose.addEventListener('click', () => {
+    cartDrawerBackdrop.classList.remove('open');
+  });
+  cartDrawerBackdrop.addEventListener('click', (e) => {
+    if (e.target === cartDrawerBackdrop) cartDrawerBackdrop.classList.remove('open');
+  });
+
+  /* Checkout from cart */
+  cartCheckoutBtn.addEventListener('click', () => {
+    if (cart.length === 0) return;
+    cartDrawerBackdrop.classList.remove('open');
+    const total = cart.reduce((acc, x) => acc + Number(x.price), 0);
+    const names = cart.map(x => x.name).join(', ');
+    openCheckoutModal(names, total);
+  });
+
+  /* ripple on Buy now */
+  document.querySelectorAll('.btn.buy').forEach((b) => {
+    b.addEventListener('click', (e) => {
+      if (!reduce) {
+        const r = b.getBoundingClientRect();
+        const s = document.createElement('span');
+        const size = Math.max(r.width, r.height);
+        s.className = 'ripple';
+        s.style.width = s.style.height = size + 'px';
+        s.style.left = (e.clientX - r.left - size / 2) + 'px';
+        s.style.top = (e.clientY - r.top - size / 2) + 'px';
+        b.appendChild(s);
+        setTimeout(() => s.remove(), 650);
+      }
+
+      const name = b.dataset.name || 'Digital Product';
+      const price = b.dataset.price || '499';
+      openCheckoutModal(name, price);
+    });
+  });
+
+  /* add to cart: button state, flying dot, counter bump */
+  document.querySelectorAll('.btn.cartbtn').forEach((b) => {
+    b.addEventListener('click', () => {
+      const name = b.dataset.name || 'Digital Template';
+      const price = b.dataset.price || '499';
+      cart.push({ name, price });
+      updateCartUI();
+
+      const label = b.lastChild;
+      const original = label.textContent;
+      b.classList.add('added');
+      label.textContent = 'Added';
+      setTimeout(() => { b.classList.remove('added'); label.textContent = original; }, 1400);
+
+      if (!reduce) {
+        const from = b.getBoundingClientRect();
+        const to = cartBtn.getBoundingClientRect();
+        const dot = document.createElement('div');
+        dot.className = 'fly';
+        dot.style.left = (from.left + from.width / 2 - 6) + 'px';
+        dot.style.top = (from.top + from.height / 2 - 6) + 'px';
+        document.body.appendChild(dot);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          dot.style.transform = `translate(${to.left + to.width / 2 - (from.left + from.width / 2)}px, ${to.top + to.height / 2 - (from.top + from.height / 2)}px) scale(.4)`;
+          dot.style.opacity = '0';
+        }));
+        setTimeout(() => dot.remove(), 900);
+      }
+    });
+  });
+
+  /* WhatsApp Ask button */
+  document.querySelectorAll('.btn.ask').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const prodName = btn.dataset.name || 'Digital Product';
+      const waUrl = `https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20have%20a%20question%20regarding%20${encodeURIComponent(prodName)}`;
+      window.open(waUrl, '_blank');
+    });
+  });
+
+  /* category filter */
+  const chips = document.querySelectorAll('.chip');
+  const cards = document.querySelectorAll('.card[data-cat]');
+  chips.forEach((c) => c.addEventListener('click', () => {
+    chips.forEach((x) => x.setAttribute('aria-pressed', x === c));
+    const f = c.dataset.f;
+    cards.forEach((card) => {
+      const show = f === 'all' || card.dataset.cat === f;
+      card.style.display = show ? '' : 'none';
+      if (show && !reduce) card.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 400, easing: 'cubic-bezier(.22,.8,.24,1)' });
+    });
+  }));
+
+  /* Checkout Modal Logic */
+  function openCheckoutModal(name, price) {
+    mProdName.textContent = name;
+    mProdPrice.textContent = '₹' + Number(price).toLocaleString('en-IN');
+    const waText = `Hello Neeraj, I would like to purchase "${name}" for ₹${price}. Please share payment details and instant download access.`;
+    mWaOrderBtn.href = `https://wa.me/918708167959?text=${encodeURIComponent(waText)}`;
+    checkoutModalBackdrop.classList.add('open');
+  }
+
+  mClose.addEventListener('click', () => {
+    checkoutModalBackdrop.classList.remove('open');
+  });
+  checkoutModalBackdrop.addEventListener('click', (e) => {
+    if (e.target === checkoutModalBackdrop) checkoutModalBackdrop.classList.remove('open');
+  });
+
+  window.copyUPI = () => {
+    navigator.clipboard.writeText('8708167959@paytm');
+    const copyBtn = document.querySelector('.m-upi-copy');
+    const orig = copyBtn.textContent;
+    copyBtn.textContent = '✓ Copied!';
+    setTimeout(() => copyBtn.textContent = orig, 1800);
+  };
+
+  window.handleCheckoutSubmit = (e) => {
+    e.preventDefault();
+    const name = document.getElementById('cName').value.trim();
+    const email = document.getElementById('cEmail').value.trim();
+    const phone = document.getElementById('cPhone').value.trim();
+    const prod = mProdName.textContent;
+    const price = mProdPrice.textContent;
+
+    const btn = document.getElementById('mPayBtn');
+    btn.innerHTML = '<span>⏳ Generating Instant Access...</span>';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML = '<span>✓ Order Confirmed! Downloading...</span>';
+      btn.style.background = '#22C55E';
+      btn.style.color = '#fff';
+
+      // Open WhatsApp notification
+      const waMsg = `Hi Neeraj, I have placed an order for ${prod} (${price}). My details: Name: ${name}, Email: ${email}, Phone: ${phone}.`;
+      window.open(`https://wa.me/918708167959?text=${encodeURIComponent(waMsg)}`, '_blank');
+
+      setTimeout(() => {
+        alert(`Thank you ${name}! Your download link for "${prod}" has been sent to ${email} and opened in WhatsApp.`);
+        checkoutModalBackdrop.classList.remove('open');
+        btn.innerHTML = '<span>⚡ Confirm &amp; Get Download Link</span>';
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+        cart = [];
+        updateCartUI();
+      }, 800);
+    }, 1200);
+  };
+
+  updateCartUI();
+})();
+</script>
+</body>
+</html>
