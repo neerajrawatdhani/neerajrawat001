@@ -1,6 +1,22 @@
 {
   "version": 2,
-  "redirects": [],
+  "redirects": [
+    {
+      "source": "/frontend/index.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/frontend/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/frontend",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "has": [
