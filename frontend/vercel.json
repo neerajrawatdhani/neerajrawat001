@@ -2,6 +2,46 @@
   "redirects": [],
   "rewrites": [
     {
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
+      ],
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
+      ],
+      "source": "/(card|fonts|vendor)/(.*)",
+      "destination": "/$1/$2"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
+      ],
+      "source": "/",
+      "destination": "/super-admin-orbit.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.neerajrawat.dev"
+        }
+      ],
+      "source": "/(.*)",
+      "destination": "/super-admin-orbit.html"
+    },
+    {
       "source": "/admin-portal.html",
       "destination": "/super-admin-orbit.html"
     },
@@ -56,36 +96,6 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "admin.neerajrawat.dev"
-        }
-      ],
-      "source": "/(card|fonts|vendor)/(.*)",
-      "destination": "/$1/$2"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "admin.neerajrawat.dev"
-        }
-      ],
-      "source": "/",
-      "destination": "/admin-portal.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "admin.neerajrawat.dev"
-        }
-      ],
-      "source": "/(.*)",
-      "destination": "/admin-portal.html"
     },
     {
       "source": "/robots.txt",
