@@ -1,22 +1,26 @@
 {
-  "redirects": [
+  "redirects": [],
+  "rewrites": [
     {
-      "source": "/admin",
-      "destination": "/",
-      "permanent": false
+      "source": "/admin-portal.html",
+      "destination": "/super-admin-orbit.html"
     },
     {
-      "source": "/admin/",
-      "destination": "/",
-      "permanent": false
+      "source": "/super-admin-orbit.html",
+      "destination": "/super-admin-orbit.html"
     },
     {
       "source": "/admin/(.*)",
-      "destination": "/",
-      "permanent": false
-    }
-  ],
-  "rewrites": [
+      "destination": "/super-admin-orbit.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/super-admin-orbit.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/super-admin-orbit.html"
+    },
     {
       "source": "/admin-sidebar.html",
       "destination": "/admin-sidebar.html"

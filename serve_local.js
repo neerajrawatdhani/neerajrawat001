@@ -19,7 +19,8 @@ const MIME = {
 
 const server = http.createServer((req, res) => {
   let reqPath = req.url.split('?')[0];
-  if (reqPath === '/' || reqPath === '') reqPath = '/super-admin-orbit.html';
+  if (reqPath === '/' || reqPath === '' || reqPath === '/admin' || reqPath === '/admin-portal.html') reqPath = '/super-admin-orbit.html';
+  if (reqPath === '/shop' || reqPath === '/store') reqPath = '/shop.html';
   let filePath = path.join(DIR, reqPath);
 
   if (!fs.existsSync(filePath) && fs.existsSync(filePath + '.html')) {

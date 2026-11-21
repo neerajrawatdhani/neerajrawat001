@@ -1150,7 +1150,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
         <li><button data-door="2"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">UI/UX Design</span></button></li>
         <li><button data-door="3"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Graphic Design</span></button></li>
         <li><button data-go="about"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">My story</span></button></li>
-        <li><button data-go="products"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Shop</span></button></li>
+        <li><a href="/shop"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Shop</span></a></li>
         <li><button data-contact><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Contact</span></button></li>
       </ul>
     </nav>
@@ -1952,7 +1952,7 @@ $('#navList').addEventListener('click', e => {
     } else if (id === 'home') {
       navigateSpa('/home');
     } else if (id === 'products') {
-      navigateSpa('/products');
+      window.location.href = '/shop';
     } else if (id === 'about') {
       navigateSpa('/my-story');
     } else if (id === 'works') {
@@ -2828,7 +2828,11 @@ form.addEventListener('submit', e => {
 // ============ SPA Router & Clean URL Navigation ============
 function navigateSpa(route, push = true) {
   const clean = (route || '').replace(/\/+$/, '') || '/';
-  if (clean === '/products') {
+  if (clean === '/products' || clean === '/shop') {
+    window.location.href = '/shop';
+    return;
+  }
+  if (false && clean === '/products') {
     openProdModal();
     if (push && window.location.pathname !== '/products') {
       try { history.pushState({ route: '/products' }, '', '/products'); } catch(e) {}
@@ -2901,7 +2905,7 @@ document.addEventListener('click', e => {
     const target = g.dataset.go;
     if (target === 'works') navigateSpa('/work');
     else if (target === 'story' || target === 'about') navigateSpa('/my-story');
-    else if (target === 'products') navigateSpa('/products');
+    else if (target === 'products') window.location.href = '/shop';
     else if (target === 'home') navigateSpa('/home');
     else scrollToId(target);
   }
