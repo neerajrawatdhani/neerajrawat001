@@ -40,16 +40,25 @@ body{
 
 /* overlay + modal */
 .overlay{
-  position:fixed;inset:0;background:rgba(17,18,23,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  display:grid;place-items:center;padding:20px;
+  position:fixed;inset:0;background:rgba(17,18,23,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:flex;justify-content:center;align-items:flex-start;
+  overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;
+  padding:clamp(16px, 4vh, 32px) 14px clamp(32px, 6vh, 60px);
   opacity:1;pointer-events:auto;transition:opacity .35s var(--ease);
+  scrollbar-width:thin !important;scrollbar-color:rgba(17,18,23,.25) transparent !important;
 }
+.overlay::-webkit-scrollbar{display:block !important;width:6px !important}
+.overlay::-webkit-scrollbar-track{background:transparent !important}
+.overlay::-webkit-scrollbar-thumb{background:rgba(17,18,23,.25) !important;border-radius:99px !important}
+.overlay::-webkit-scrollbar-thumb:hover{background:rgba(17,18,23,.45) !important}
 .modal{
-  position:relative;width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow:auto;
-  background:var(--panel);border-radius:22px;padding:22px 22px 18px;
+  position:relative;width:100%;max-width:440px;margin:auto 0 !important;
+  max-height:none !important;overflow:visible !important;
+  background:var(--panel);border-radius:22px;padding:22px 22px 20px;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
   transform:none;opacity:1;
   transition:transform .6s var(--spring),opacity .4s var(--ease);
+  touch-action:pan-y;overscroll-behavior:contain;
 }
 
 /* staggered entrance */

@@ -50,16 +50,43 @@
   --m-spring:cubic-bezier(.34,1.4,.64,1);
 }
 .motion-modal-wrap{
-  background:rgba(17,18,23,.45) !important;
+  background:rgba(17,18,23,.52) !important;
   backdrop-filter:blur(10px) !important;
   -webkit-backdrop-filter:blur(10px) !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  touch-action:pan-y !important;
+  padding:clamp(16px, 4vh, 32px) 14px clamp(32px, 6vh, 60px) !important;
+  scrollbar-width:thin !important;
+  scrollbar-color:rgba(255,255,255,.28) transparent !important;
+}
+.motion-modal-wrap::-webkit-scrollbar{
+  display:block !important;
+  width:6px !important;
+}
+.motion-modal-wrap::-webkit-scrollbar-track{
+  background:transparent !important;
+}
+.motion-modal-wrap::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.28) !important;
+  border-radius:99px !important;
+}
+.motion-modal-wrap::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,.48) !important;
 }
 .modal__panel.motion-dialog{
-  position:relative;width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow-y:auto;
-  background:var(--m-panel);border-radius:22px;padding:22px 22px 18px;
+  position:relative;width:100%;max-width:440px;margin:auto 0 !important;
+  max-height:none !important;overflow:visible !important;
+  background:var(--m-panel);border-radius:22px;padding:22px 22px 20px;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
   transform:translateY(28px) scale(.96);opacity:0;
   transition:transform .6s var(--m-spring),opacity .4s var(--m-ease);
+  touch-action:pan-y;overscroll-behavior:contain;
 }
 .modal.open .modal__panel.motion-dialog{transform:none;opacity:1}
 .modal.closing .modal__panel.motion-dialog{transform:translateY(20px) scale(.97);opacity:0}
@@ -2213,7 +2240,19 @@ function closeModal(){
     window.__resetMotionModal && window.__resetMotionModal();
   });
 }
-modal.addEventListener('click', closeModal);
+let modalDragDist = 0, modalDownY = 0;
+modal.addEventListener('pointerdown', e => {
+  if (e.target === modal) { modalDownY = e.clientY; modalDragDist = 0; }
+});
+modal.addEventListener('pointermove', e => {
+  if (e.target === modal) { modalDragDist = Math.max(modalDragDist, Math.abs(e.clientY - modalDownY)); }
+});
+modal.addEventListener('click', e => {
+  if (e.target === modal) {
+    if (modalDragDist < 10) closeModal();
+    modalDragDist = 0;
+  }
+});
 $('#mPanel')?.addEventListener('click', e => e.stopPropagation());
 $('#mClose')?.addEventListener('click', closeModal);
 $('#mDone')?.addEventListener('click', closeModal);
