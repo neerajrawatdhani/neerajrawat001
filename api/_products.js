@@ -2,11 +2,18 @@ const path = require('path');
 const fs = require('fs');
 
 const TMP_FILE = '/tmp/digital_products.json';
-const BACKEND_PROD_FILE = path.resolve(__dirname, '..', 'backend', 'data', 'products.json');
+const CANDIDATE_FILES = [
+  TMP_FILE,
+  path.resolve(__dirname, '..', 'backend', 'data', 'products.json'),
+  path.resolve(__dirname, '..', '..', 'backend', 'data', 'products.json'),
+  path.resolve(process.cwd(), 'backend', 'data', 'products.json'),
+  path.resolve(process.cwd(), 'frontend', 'backend', 'data', 'products.json')
+];
 
 function getStorageFile() {
-  if (fs.existsSync(TMP_FILE)) return TMP_FILE;
-  if (fs.existsSync(BACKEND_PROD_FILE)) return BACKEND_PROD_FILE;
+  for (const f of CANDIDATE_FILES) {
+    if (fs.existsSync(f)) return f;
+  }
   return null;
 }
 
@@ -28,19 +35,15 @@ function loadProducts() {
 
 function saveProducts(products) {
   memoryProducts = Array.isArray(products) ? products : [];
-  
-  try {
-    const backendDir = path.dirname(BACKEND_PROD_FILE);
-    if (!fs.existsSync(backendDir)) {
-      fs.mkdirSync(backendDir, { recursive: true });
-    }
-    fs.writeFileSync(BACKEND_PROD_FILE, JSON.stringify(memoryProducts, null, 2), 'utf8');
-  } catch (e) {}
 
-  try {
-    fs.writeFileSync(TMP_FILE, JSON.stringify(memoryProducts, null, 2), 'utf8');
-  } catch (e) {}
-  
+  for (const f of CANDIDATE_FILES) {
+    try {
+      const dir = path.dirname(f);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(f, JSON.stringify(memoryProducts, null, 2), 'utf8');
+    } catch (e) {}
+  }
+
   return memoryProducts;
 }
 
