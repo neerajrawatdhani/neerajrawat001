@@ -1414,13 +1414,16 @@
           <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#16a34a; box-shadow:0 0 0 3px rgba(34,197,94,0.25);"></span>
           <span style="color:#15803d; font-weight:700; font-size:12.5px;">System Health</span>
         </button>
+        <button class="btn-outline" onclick="clearAllDemoData()" style="border-color:#fecaca; color:#dc2626; background:#fef2f2; font-weight:700; display:inline-flex; align-items:center; gap:5px;" title="Wipe all demo sample records across the entire admin panel">
+          <span>🧹 Clear All Demo Data</span>
+        </button>
         <button class="btn-outline" onclick="openNewLeadModal()">
           <span>+ Add Lead</span>
         </button>
         <button class="btn-primary" onclick="openNewQuotationModal()">
           <span>+ Create Quotation</span>
         </button>
-        <button class="btn-icon-notify" title="3 Follow-ups due today" onclick="switchTab('quotations')">🔔</button>
+        <button class="btn-icon-notify" id="topbarBellNotify" title="Follow-ups due today" onclick="switchTab('quotations')">🔔</button>
         <div class="topbar-user-badge" onclick="switchTab('settings')" style="display:inline-flex; align-items:center; gap:8px; cursor:pointer; padding:4px 12px 4px 4px; border-radius:999px; background:#F8FAFC; border:1px solid #E2E8F0; margin-left:6px; transition:all .2s;" onmouseover="this.style.borderColor='#5B4BDB'" onmouseout="this.style.borderColor='#E2E8F0'">
           <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #5B4BDB; display:block;" onerror="this.onerror=null; this.src='frontend/neeraj_colour.webp';" />
           <div style="display:flex; flex-direction:column; text-align:left; line-height:1.2;">
@@ -1458,12 +1461,9 @@
               <div class="kpi-label">Total Leads &amp;<br>Inquiries</div>
               <div class="icon ic-brand"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.6.2 4.3 2.1 4.8 4.9"/></svg></div>
             </div>
-            <div class="kpi-value num"><span data-count="184">184</span></div>
-            <div class="kpi-foot">
-              <span><span class="delta">↑ 18.2%</span> vs last month</span>
-              <div class="spark" aria-hidden="true">
-                <span style="--h:30%;--d:.5s"></span><span style="--h:40%;--d:.56s"></span><span style="--h:35%;--d:.62s"></span><span style="--h:55%;--d:.68s"></span><span style="--h:70%;--d:.74s"></span><span class="on" style="--h:100%;--d:.8s"></span>
-              </div>
+            <div class="kpi-value num"><span id="kpiLeadsCount" data-count="0">0</span></div>
+            <div class="kpi-foot" id="kpiLeadsFoot">
+              <span>All active client inquiries</span>
             </div>
           </article>
 
@@ -1472,25 +1472,22 @@
               <div class="kpi-label">Active Quotation<br>Pipeline</div>
               <div class="icon" style="background:#F3EEFF;color:#7C3AED"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></div>
             </div>
-            <div class="kpi-value num">₹<span data-count="645000" data-format="inr">6,45,000</span></div>
-            <div class="kpi-foot">
-              <span><span class="delta">↑ 12.4%</span> 18 active proposals</span>
-              <div class="spark" aria-hidden="true">
-                <span style="--h:30%;--d:.55s"></span><span style="--h:45%;--d:.6s"></span><span style="--h:40%;--d:.65s"></span><span style="--h:60%;--d:.7s"></span><span style="--h:65%;--d:.75s"></span><span class="on" style="--h:95%;--d:.8s"></span>
-              </div>
+            <div class="kpi-value num">₹<span id="kpiQuotesPipeline" data-count="0" data-format="inr">0</span></div>
+            <div class="kpi-foot" id="kpiQuotesFoot">
+              <span><span id="kpiActiveProposalsCount">0</span> active proposals</span>
             </div>
           </article>
 
-          <article class="card alert">
-            <span class="pulse" aria-hidden="true"></span>
+          <article class="card alert" id="kpiDueCard">
+            <span class="pulse" id="kpiDuePulse" aria-hidden="true" style="display:none;"></span>
             <div class="kpi-top">
               <div class="kpi-label">Follow-ups Due<br>Today</div>
               <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></div>
             </div>
-            <div class="kpi-value num"><span data-count="5">5</span> Pending</div>
-            <div class="kpi-foot alert-foot">
+            <div class="kpi-value num"><span id="kpiDueCount" data-count="0">0</span> Pending</div>
+            <div class="kpi-foot alert-foot" id="kpiDueFoot">
               <svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>
-              Action Required · calls scheduled
+              <span id="kpiDueFootText">No urgent follow-ups pending</span>
             </div>
           </article>
 
@@ -1499,12 +1496,9 @@
               <div class="kpi-label">Digital Store<br>Sales</div>
               <div class="icon ic-green"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg></div>
             </div>
-            <div class="kpi-value num">₹<span data-count="42800" data-format="inr">42,800</span></div>
-            <div class="kpi-foot">
-              <span><span class="delta">↑ 24%</span> 28 downloads</span>
-              <div class="spark" aria-hidden="true">
-                <span style="--h:25%;--d:.6s"></span><span style="--h:35%;--d:.65s"></span><span style="--h:30%;--d:.7s"></span><span style="--h:55%;--d:.75s"></span><span style="--h:60%;--d:.8s"></span><span class="on" style="--h:90%;--d:.85s"></span>
-              </div>
+            <div class="kpi-value num">₹<span id="kpiStoreSales" data-count="0" data-format="inr">0</span></div>
+            <div class="kpi-foot" id="kpiStoreFoot">
+              <span><span id="kpiStoreDownloads">0</span> products available</span>
             </div>
           </article>
         </section>
@@ -1576,76 +1570,6 @@
                   </tr>
                 </thead>
                 <tbody id="overviewMotionTableBody">
-                  <tr data-source="whatsapp" data-due="today">
-                    <td>
-                      <div class="cl">
-                        <span class="cl-name"><span class="flag">IN</span>Ramesh Sharma</span>
-                        <span class="cl-meta">Sharma Traders · +91 98112 34567</span>
-                      </div>
-                    </td>
-                    <td><span class="src wa"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>WhatsApp</span></td>
-                    <td class="svc">E-Commerce Website + Razorpay</td>
-                    <td class="budget">₹65,000 –<br>₹85,000</td>
-                    <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                    <td><span class="status sched">Follow-up scheduled</span></td>
-                    <td><div class="act-cell"><button class="act" type="button" aria-label="Message Ramesh Sharma" onclick="openWaFromOverview('+919811234567', 'Ramesh Sharma')"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="act" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Ramesh Sharma (+91 98112 34567)')"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button></div></td>
-                  </tr>
-                  <tr data-source="website" data-due="today">
-                    <td>
-                      <div class="cl">
-                        <span class="cl-name"><span class="flag">IN</span>Dr. Alok Verma</span>
-                        <span class="cl-meta">Verma Dental Clinic · +91 98765 43210</span>
-                      </div>
-                    </td>
-                    <td><span class="src web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Website form</span></td>
-                    <td class="svc">Clinic appointment portal</td>
-                    <td class="budget">₹45,000</td>
-                    <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                    <td><span class="status disc">In discussion</span></td>
-                    <td><div class="act-cell"><button class="act" type="button" aria-label="Message Dr. Alok Verma" onclick="openWaFromOverview('+919876543210', 'Dr. Alok Verma')"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="act" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Dr. Alok Verma (+91 98765 43210)')"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button></div></td>
-                  </tr>
-                  <tr data-source="website" data-due="today">
-                    <td>
-                      <div class="cl">
-                        <span class="cl-name"><span class="flag">US</span>Michael Harrison</span>
-                        <span class="cl-meta">Apex Cloud Solutions LLC · +1 (415) 890-3321</span>
-                      </div>
-                    </td>
-                    <td><span class="src web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Website form</span></td>
-                    <td class="svc">Full-stack SaaS platform architecture</td>
-                    <td class="budget">$3,500 –<br>$5,000</td>
-                    <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                    <td><span class="status disc">In discussion</span></td>
-                    <td><div class="act-cell"><button class="act" type="button" aria-label="Message Michael Harrison" onclick="openWaFromOverview('+14158903321', 'Michael Harrison')"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="act" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Michael Harrison (+1 415 890 3321)')"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button></div></td>
-                  </tr>
-                  <tr data-source="call" data-due="today">
-                    <td>
-                      <div class="cl">
-                        <span class="cl-name"><span class="flag">IN</span>Vikram Malhotra</span>
-                        <span class="cl-meta">Gurukulam Academy · +91 94123 56789</span>
-                      </div>
-                    </td>
-                    <td><span class="src call"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>Direct call</span></td>
-                    <td class="svc">Student management &amp; fee portal</td>
-                    <td class="budget">₹1,20,000</td>
-                    <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                    <td><span class="status quote">Quotation sent</span></td>
-                    <td><div class="act-cell"><button class="act" type="button" aria-label="Message Vikram Malhotra" onclick="openWaFromOverview('+919412356789', 'Vikram Malhotra')"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="act" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Vikram Malhotra (+91 94123 56789)')"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button></div></td>
-                  </tr>
-                  <tr data-source="whatsapp" data-due="future">
-                    <td>
-                      <div class="cl">
-                        <span class="cl-name"><span class="flag">AE</span>Tariq Al-Mansoor</span>
-                        <span class="cl-meta">Al-Mansoor Trading LLC (Dubai) · +971 50 123 4567</span>
-                      </div>
-                    </td>
-                    <td><span class="src wa"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>WhatsApp</span></td>
-                    <td class="svc">Multilingual corporate B2B portal</td>
-                    <td class="budget">AED 8,500<br>(~$2,300)</td>
-                    <td><span class="due date"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>23 Nov</span></td>
-                    <td><span class="status sched">Follow-up scheduled</span></td>
-                    <td><div class="act-cell"><button class="act" type="button" aria-label="Message Tariq Al-Mansoor" onclick="openWaFromOverview('+971501234567', 'Tariq Al-Mansoor')"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="act" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Tariq Al-Mansoor (+971 50 123 4567)')"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button></div></td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -1661,35 +1585,7 @@
               <span class="live-dot">Live</span>
             </div>
 
-            <ol class="feed" style="list-style:none;margin:0;padding:0">
-              <li class="ev live">
-                <span class="av wa">WA</span>
-                <div class="ev-body">
-                  <div class="ev-text"><b>Ramesh Sharma</b> inquired via <span class="hl">WhatsApp</span> about E-Commerce Website</div>
-                  <div class="ev-time">12 min ago</div>
-                </div>
-              </li>
-              <li class="ev">
-                <span class="av me">NR</span>
-                <div class="ev-body">
-                  <div class="ev-text"><b>Neeraj Rawat</b> sent proposal <span class="hl">#DT-2026-088</span> to Gurukulam School</div>
-                  <div class="ev-time">45 min ago</div>
-                </div>
-              </li>
-              <li class="ev">
-                <span class="av call"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></span>
-                <div class="ev-body">
-                  <div class="ev-text">Follow-up call completed with <b>Dr. Verma</b>: scheduled quote revision</div>
-                  <div class="ev-time">2 hrs ago</div>
-                </div>
-              </li>
-              <li class="ev">
-                <span class="av buy"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg></span>
-                <div class="ev-body">
-                  <div class="ev-text"><b>Amit Roy</b> purchased <span class="hl">GST Invoicing Excel Sheet</span> (₹499)</div>
-                  <div class="ev-time">4 hrs ago</div>
-                </div>
-              </li>
+            <ol class="feed" id="overviewActivityFeed" style="list-style:none;margin:0;padding:0">
             </ol>
           </aside>
 
@@ -1716,13 +1612,13 @@
 
         <!-- Filter Bar by Source & Status -->
         <div class="filter-bar">
-          <button class="filter-btn active" onclick="filterLeads('all', this)">All Leads <span class="badge" id="fltrAllCount">18</span></button>
-          <button class="filter-btn" onclick="filterLeads('whatsapp', this)">💬 WhatsApp <span class="badge">8</span></button>
-          <button class="filter-btn" onclick="filterLeads('web', this)">🌐 Website Form <span class="badge">5</span></button>
-          <button class="filter-btn" onclick="filterLeads('international', this)">🌍 International <span class="badge">3</span></button>
-          <button class="filter-btn" onclick="filterLeads('call', this)">📞 Direct Call <span class="badge">3</span></button>
-          <button class="filter-btn" onclick="filterLeads('quote', this)">📄 Quotation Direct <span class="badge">2</span></button>
-          <button class="filter-btn" style="border-color:#fecaca; color:#b91c1c;" onclick="filterLeads('today', this)">⚠️ Follow-up Due Today <span class="badge" style="background:#fecaca; color:#7f1d1d;">5</span></button>
+          <button class="filter-btn active" onclick="filterLeads('all', this)">All Leads <span class="badge" id="fltrAllCount">0</span></button>
+          <button class="filter-btn" onclick="filterLeads('whatsapp', this)">💬 WhatsApp <span class="badge" id="fltrWaCount">0</span></button>
+          <button class="filter-btn" onclick="filterLeads('web', this)">🌐 Website Form <span class="badge" id="fltrWebCount">0</span></button>
+          <button class="filter-btn" onclick="filterLeads('international', this)">🌍 International <span class="badge" id="fltrIntlCount">0</span></button>
+          <button class="filter-btn" onclick="filterLeads('call', this)">📞 Direct Call <span class="badge" id="fltrCallCount">0</span></button>
+          <button class="filter-btn" onclick="filterLeads('quote', this)">📄 Quotation Direct <span class="badge" id="fltrQuoteCount">0</span></button>
+          <button class="filter-btn" style="border-color:#fecaca; color:#b91c1c;" onclick="filterLeads('today', this)">⚠️ Follow-up Due Today <span class="badge" id="fltrTodayCount" style="background:#fecaca; color:#7f1d1d;">0</span></button>
         </div>
 
         <!-- Main Leads Table -->
@@ -1775,26 +1671,26 @@
         <section class="stats" aria-label="Pipeline summary">
           <article class="stat sent">
             <div class="stat-top">Total sent <span class="stat-ic"><svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 15v4h16v-4"/></svg></span></div>
-            <div class="stat-val">₹<span data-count="1130000" data-inr>11,30,000</span></div>
-            <div class="stat-note">Across <span data-count="18">18</span> proposals</div>
+            <div class="stat-val">₹<span id="qtTotalVal" data-count="0" data-inr>0</span></div>
+            <div class="stat-note">Across <span id="qtTotalCount" data-count="0">0</span> proposals</div>
           </article>
 
           <article class="stat urgent">
             <div class="stat-top">Follow-up due today <span class="stat-ic"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></span></div>
-            <div class="stat-val"><span data-count="3">3</span> Urgent</div>
-            <div class="stat-note">₹<span data-count="245000" data-inr>2,45,000</span> deal value</div>
+            <div class="stat-val"><span id="qtDueCount" data-count="0">0</span> Urgent</div>
+            <div class="stat-note">₹<span id="qtDueVal" data-count="0" data-inr>0</span> deal value</div>
           </article>
 
           <article class="stat disc">
             <div class="stat-top">In discussion <span class="stat-ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span></div>
-            <div class="stat-val">₹<span data-count="420000" data-inr>4,20,000</span></div>
-            <div class="stat-note"><span data-count="6">6</span> active discussions</div>
+            <div class="stat-val">₹<span id="qtDiscVal" data-count="0" data-inr>0</span></div>
+            <div class="stat-note"><span id="qtDiscCount" data-count="0">0</span> active discussions</div>
           </article>
 
           <article class="stat won">
             <div class="stat-top">Won &amp; converted <span class="stat-ic"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg></span></div>
-            <div class="stat-val">₹<span data-count="585000" data-inr>5,85,000</span></div>
-            <div class="stat-note"><span data-count="68">68</span>% win rate</div>
+            <div class="stat-val">₹<span id="qtWonVal" data-count="0" data-inr>0</span></div>
+            <div class="stat-note"><span id="qtWonRate" data-count="0">0</span>% win rate</div>
           </article>
         </section>
 
@@ -1807,14 +1703,14 @@
             </div>
             <div class="tabs" role="tablist" aria-label="Filter quotations" id="qt-tabs">
               <span class="ind" id="qt-ind"></span>
-              <button class="tab" role="tab" aria-selected="true" data-f="all" type="button">All <span class="cnt">6</span></button>
+              <button class="tab" role="tab" aria-selected="true" data-f="all" type="button">All <span class="cnt" id="qtTabAllCnt">0</span></button>
               <button class="tab warn" role="tab" aria-selected="false" data-f="due" type="button">
                 <svg class="tab-ic" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>
-                Due today <span class="cnt">3</span>
+                Due today <span class="cnt" id="qtTabDueCnt">0</span>
               </button>
               <button class="tab" role="tab" aria-selected="false" data-f="won" type="button">
                 <svg class="tab-ic" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/></svg>
-                Won <span class="cnt">2</span>
+                Won <span class="cnt" id="qtTabWonCnt">0</span>
               </button>
             </div>
           </div>
@@ -1834,90 +1730,6 @@
                 </tr>
               </thead>
               <tbody id="qt-rows">
-                <tr data-s="disc due">
-                  <td><a class="qno" href="#" onclick="alert('Viewing Proposal DT-2026-088'); return false;">DT-2026-088</a></td>
-                  <td class="client">Gurukulam Academy</td>
-                  <td class="cat">Education &amp; EdTech</td>
-                  <td class="val">₹1,20,000</td>
-                  <td><span class="stage disc">In discussion</span></td>
-                  <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                  <td class="note">Proposal sent. Principal requested demo of student login.</td>
-                  <td><div class="acts">
-                    <button class="ib" type="button" aria-label="Message" onclick="openWaFromOverview('+919412356789', 'Gurukulam Academy')"><svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Print" onclick="window.print()"><svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Gurukulam Academy follow-up')"><svg class="wig" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
-                  </div></td>
-                </tr>
-                <tr data-s="sched due">
-                  <td><a class="qno" href="#" onclick="alert('Viewing Proposal DT-2026-087'); return false;">DT-2026-087</a></td>
-                  <td class="client">Verma Dental Clinic</td>
-                  <td class="cat">Healthcare &amp; Clinic</td>
-                  <td class="val">₹45,000</td>
-                  <td><span class="stage sched">Follow-up scheduled</span></td>
-                  <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                  <td class="note">Call at 5:30 PM to discuss WhatsApp booking integration.</td>
-                  <td><div class="acts">
-                    <button class="ib" type="button" aria-label="Message" onclick="openWaFromOverview('+919876543210', 'Dr. Alok Verma')"><svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Print" onclick="window.print()"><svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Verma Dental Clinic')"><svg class="wig" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
-                  </div></td>
-                </tr>
-                <tr data-s="sched due">
-                  <td><a class="qno" href="#" onclick="alert('Viewing Proposal DT-2026-086'); return false;">DT-2026-086</a></td>
-                  <td class="client">Sharma Traders</td>
-                  <td class="cat">E-Commerce &amp; Retail</td>
-                  <td class="val">₹80,000</td>
-                  <td><span class="stage sched">Follow-up scheduled</span></td>
-                  <td><span class="due today"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>Today</span></td>
-                  <td class="note">Follow-up on payment milestone split (50/50 vs 40/30/30).</td>
-                  <td><div class="acts">
-                    <button class="ib" type="button" aria-label="Message" onclick="openWaFromOverview('+919811234567', 'Sharma Traders')"><svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Print" onclick="window.print()"><svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Sharma Traders')"><svg class="wig" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
-                  </div></td>
-                </tr>
-                <tr data-s="won">
-                  <td><a class="qno" href="#" onclick="alert('Viewing Proposal DT-2026-085'); return false;">DT-2026-085</a></td>
-                  <td class="client">Aggarwal Steels</td>
-                  <td class="cat">Corporate / Enterprise</td>
-                  <td class="val">₹1,85,000</td>
-                  <td><span class="stage won">Won</span></td>
-                  <td><span class="due done">✓ Done</span></td>
-                  <td class="note">Contract signed! First advance payment credited.</td>
-                  <td><div class="acts">
-                    <button class="ib" type="button" aria-label="Message" onclick="openWaFromOverview('+919811234567', 'Aggarwal Steels')"><svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Print" onclick="window.print()"><svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Set reminder" onclick="alert('Aggarwal Steels proposal completed')"><svg class="wig" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
-                  </div></td>
-                </tr>
-                <tr data-s="sent">
-                  <td><a class="qno" href="#" onclick="alert('Viewing Proposal DT-2026-084'); return false;">DT-2026-084</a></td>
-                  <td class="client">Luxe Interiors</td>
-                  <td class="cat">Digital Agency / Marketing</td>
-                  <td class="val">₹65,000</td>
-                  <td><span class="stage sent">Sent</span></td>
-                  <td><span class="due date"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>23 Nov</span></td>
-                  <td class="note">Proposal delivered via WhatsApp. Follow-up after weekend.</td>
-                  <td><div class="acts">
-                    <button class="ib" type="button" aria-label="Message" onclick="openWaFromOverview('+919811234567', 'Luxe Interiors')"><svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Print" onclick="window.print()"><svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Set reminder" onclick="alert('Reminder set for Luxe Interiors')"><svg class="wig" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
-                  </div></td>
-                </tr>
-                <tr data-s="won">
-                  <td><a class="qno" href="#" onclick="alert('Viewing Proposal DT-2026-083'); return false;">DT-2026-083</a></td>
-                  <td class="client">Apex Fitness Gym</td>
-                  <td class="cat">Custom Software / App</td>
-                  <td class="val">₹90,000</td>
-                  <td><span class="stage won">Won</span></td>
-                  <td><span class="due done">✓ Done</span></td>
-                  <td class="note">QR code attendance system deployed and handed over.</td>
-                  <td><div class="acts">
-                    <button class="ib" type="button" aria-label="Message" onclick="openWaFromOverview('+919811234567', 'Apex Fitness Gym')"><svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Print" onclick="window.print()"><svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg></button>
-                    <button class="ib" type="button" aria-label="Set reminder" onclick="alert('Apex Fitness Gym project completed')"><svg class="wig" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
-                  </div></td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -2763,249 +2575,25 @@
     }
     window.escapeHtml = escapeHtml;
 
-    // 1. Initial State Data (with LocalStorage persistence)
+    // 1. Initial State Data (Dynamic persistence with LocalStorage)
     let leadsData = [];
     try {
       const saved = localStorage.getItem('dt_leads_store');
-      if (saved) leadsData = JSON.parse(saved);
-    } catch(e) {}
-    if (!Array.isArray(leadsData) || leadsData.length === 0) {
-      leadsData = [
-      {
-        id: 1,
-        name: 'Ramesh Sharma',
-        company: 'Sharma Traders',
-        countryCode: '+91',
-        flag: '🇮🇳',
-        phone: '+91 98112 34567',
-        email: 'ramesh@sharmatraders.in',
-        source: 'WhatsApp',
-        service: 'E-Commerce Website + Razorpay',
-        budget: '₹65,000 - ₹85,000',
-        status: 'Follow-up Scheduled',
-        followupDate: 'Today',
-        notes: 'Requested product catalog integration and demo link. Call at 4 PM.',
-        isToday: true,
-        isInternational: false
-      },
-      {
-        id: 2,
-        name: 'Dr. Alok Verma',
-        company: 'Verma Dental Clinic',
-        countryCode: '+91',
-        flag: '🇮🇳',
-        phone: '+91 98765 43210',
-        email: 'info@vermadental.com',
-        source: 'Website Form',
-        service: 'Clinic Appointment Portal',
-        budget: '₹45,000',
-        status: 'In Discussion',
-        followupDate: 'Today',
-        notes: 'Discussed calendar booking system. Needs quote before evening.',
-        isToday: true,
-        isInternational: false
-      },
-      {
-        id: 3,
-        name: 'Michael Harrison',
-        company: 'Apex Cloud Solutions LLC',
-        countryCode: '+1',
-        flag: '🇺🇸',
-        phone: '+1 (415) 890-3321',
-        email: 'michael@apexcloud.io',
-        source: 'Website Form',
-        service: 'Full-Stack SaaS Platform Architecture',
-        budget: '$3,500 - $5,000',
-        status: 'In Discussion',
-        followupDate: 'Today',
-        notes: 'USA client inquiry. Zoom discussion scheduled for 7:30 PM IST.',
-        isToday: true,
-        isInternational: true
-      },
-      {
-        id: 4,
-        name: 'Vikram Malhotra',
-        company: 'Gurukulam Academy',
-        countryCode: '+91',
-        flag: '🇮🇳',
-        phone: '+91 94123 56789',
-        email: 'vikram@gurukulam.edu.in',
-        source: 'Direct Call',
-        service: 'Student Management & Fee Portal',
-        budget: '₹1,20,000',
-        status: 'Quotation Sent',
-        followupDate: 'Today',
-        notes: 'Quotation #DT-2026-088 sent for ₹1,20,000. Follow-up on payment terms.',
-        isToday: true,
-        isInternational: false
-      },
-      {
-        id: 5,
-        name: 'Tariq Al-Mansoor',
-        company: 'Al-Mansoor Trading LLC (Dubai)',
-        countryCode: '+971',
-        flag: '🇦🇪',
-        phone: '+971 50 123 4567',
-        email: 'tariq@almansooruae.ae',
-        source: 'WhatsApp',
-        service: 'Multilingual Corporate B2B Portal',
-        budget: 'AED 8,500 (~$2,300)',
-        status: 'Follow-up Scheduled',
-        followupDate: '23 Nov',
-        notes: 'Dubai inquiry via WhatsApp. Wants English & Arabic RTL support.',
-        isToday: false,
-        isInternational: true
-      },
-      {
-        id: 6,
-        name: 'Pooja Kapoor',
-        company: 'Luxe Interiors',
-        countryCode: '+91',
-        flag: '🇮🇳',
-        phone: '+91 98234 11223',
-        email: 'pooja@luxeinteriors.com',
-        source: 'WhatsApp',
-        service: 'Interior Design Portfolio & 3D Tour',
-        budget: '₹60,000 - ₹75,000',
-        status: 'Follow-up Scheduled',
-        followupDate: '22 Nov',
-        notes: 'Loved the portfolio. Reviewing budget with partner.',
-        isToday: false,
-        isInternational: false
-      },
-      {
-        id: 7,
-        name: 'Oliver Smith',
-        company: 'Smith Media UK',
-        countryCode: '+44',
-        flag: '🇬🇧',
-        phone: '+44 7911 123456',
-        email: 'oliver@smithmedia.co.uk',
-        source: 'Quotation Request',
-        service: 'High-Performance Next.js Portfolio',
-        budget: '£1,200 (~₹1,30,000)',
-        status: 'In Discussion',
-        followupDate: 'Today',
-        notes: 'UK client. Needs Stripe checkout integration and custom CMS.',
-        isToday: true,
-        isInternational: true
-      },
-      {
-        id: 8,
-        name: 'Amit Singhal',
-        company: 'Singhal Logistics',
-        countryCode: '+91',
-        flag: '🇮🇳',
-        phone: '+91 99887 76655',
-        email: 'singhal@logistics.in',
-        source: 'Quotation Request',
-        service: 'Fleet Tracking & Dispatch System',
-        budget: '₹95,000',
-        status: 'In Discussion',
-        followupDate: 'Today',
-        notes: 'Call scheduled to finalize phase 1 deliverables.',
-        isToday: true,
-        isInternational: false
-      },
-      {
-        id: 9,
-        name: 'Sanjay Aggarwal',
-        company: 'Aggarwal Steels',
-        countryCode: '+91',
-        flag: '🇮🇳',
-        phone: '+91 98450 12345',
-        email: 'sanjay@aggarwalsteel.com',
-        source: 'Direct Call',
-        service: 'Corporate ERP & Billing Website',
-        budget: '₹1,85,000',
-        status: 'Won',
-        followupDate: 'Completed',
-        notes: 'Advance ₹40,000 received. Design kickoff meeting Monday.',
-        isToday: false,
-        isInternational: false
+      if (saved !== null) {
+        leadsData = JSON.parse(saved);
+        if (!Array.isArray(leadsData)) leadsData = [];
       }
-    ];
-
-      try { localStorage.setItem('dt_leads_store', JSON.stringify(leadsData)); } catch(e) {}
-    }
+    } catch(e) { leadsData = []; }
     window.leadsData = leadsData;
 
     let quotationsData = [];
     try {
       const savedQ = localStorage.getItem('dt_quotes_store');
-      if (savedQ) quotationsData = JSON.parse(savedQ);
-    } catch(e) {}
-    if (!Array.isArray(quotationsData) || quotationsData.length === 0) {
-      quotationsData = [
-      {
-        id: 'DT-2026-088',
-        client: 'Gurukulam Academy',
-        category: 'Education & EdTech',
-        value: '₹1,20,000',
-        valNum: 120000,
-        status: 'In Discussion',
-        followupDue: 'Today',
-        isDue: true,
-        notes: 'Proposal sent. Principal requested demo of student login.'
-      },
-      {
-        id: 'DT-2026-087',
-        client: 'Verma Dental Clinic',
-        category: 'Healthcare & Clinic',
-        value: '₹45,000',
-        valNum: 45000,
-        status: 'Follow-up Scheduled',
-        followupDue: 'Today',
-        isDue: true,
-        notes: 'Call at 5:30 PM to discuss WhatsApp booking integration.'
-      },
-      {
-        id: 'DT-2026-086',
-        client: 'Sharma Traders',
-        category: 'E-Commerce & Retail',
-        value: '₹80,000',
-        valNum: 80000,
-        status: 'Follow-up Scheduled',
-        followupDue: 'Today',
-        isDue: true,
-        notes: 'Follow-up on payment milestone split (50/50 vs 40/30/30).'
-      },
-      {
-        id: 'DT-2026-085',
-        client: 'Aggarwal Steels',
-        category: 'Corporate / Enterprise',
-        value: '₹1,85,000',
-        valNum: 185000,
-        status: 'Won',
-        followupDue: 'Completed',
-        isDue: false,
-        notes: 'Contract signed! First advance payment credited.'
-      },
-      {
-        id: 'DT-2026-084',
-        client: 'Luxe Interiors',
-        category: 'Digital Agency / Marketing',
-        value: '₹65,000',
-        valNum: 65000,
-        status: 'Sent',
-        followupDue: '23 Nov',
-        isDue: false,
-        notes: 'Proposal delivered via WhatsApp. Follow-up after weekend.'
-      },
-      {
-        id: 'DT-2026-083',
-        client: 'Apex Fitness Gym',
-        category: 'Custom Software / App',
-        value: '₹90,000',
-        valNum: 90000,
-        status: 'Won',
-        followupDue: 'Completed',
-        isDue: false,
-        notes: 'QR code attendance system deployed and handed over.'
+      if (savedQ !== null) {
+        quotationsData = JSON.parse(savedQ);
+        if (!Array.isArray(quotationsData)) quotationsData = [];
       }
-    ];
-      try { localStorage.setItem('dt_quotes_store', JSON.stringify(quotationsData)); } catch(e) {}
-    }
+    } catch(e) { quotationsData = []; }
     window.quotationsData = quotationsData;
 
     const defaultProductsList = [
@@ -3142,30 +2730,217 @@
       return `<span class="status-pill ${cls}">${status}</span>`;
     }
 
-    // 4. Populate Tables
+    // 4. Populate Tables & Dynamic Overview
     function renderOverviewRecentLeads() {
-      const tbody = document.getElementById('overviewRecentLeads');
+      const tbody = document.getElementById('overviewMotionTableBody');
       if (!tbody) return;
-      tbody.innerHTML = leadsData.slice(0, 5).map(l => `
-        <tr>
-          <td>
-            <div style="font-weight:700;"><span style="margin-right:4px;">${l.flag || '🇮🇳'}</span>${l.name}</div>
-            <div style="font-size:11.5px; color:var(--text-muted);">${l.company} • ${l.phone}</div>
-          </td>
-          <td>${getSourceTagHtml(l.source)}</td>
-          <td>${l.service}</td>
-          <td><strong style="color:var(--text); font-family:'JetBrains Mono'; font-size:12.5px;">${l.budget}</strong></td>
-          <td>${getFollowupBadgeHtml(l.followupDate, l.isToday)}</td>
-          <td>${getStatusPillHtml(l.status)}</td>
-          <td>
-            <div style="display:flex; gap:6px;">
-              <a href="https://wa.me/${l.phone.replace(/[^0-9]/g, '')}" target="_blank" class="btn-act wa" title="Chat on WhatsApp">💬</a>
-              <button class="btn-act" onclick="openFollowupModal('${l.id}', 'lead')" title="Log Follow-up">⏳</button>
-            </div>
-          </td>
-        </tr>
+      const list = Array.isArray(leadsData) ? leadsData : [];
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:48px 16px; color:var(--text-muted);">
+              <div style="font-size:32px; margin-bottom:8px;">📬</div>
+              <div style="font-weight:700; color:var(--text); font-size:14.5px;">No Recent Inquiries</div>
+              <p style="font-size:12.5px; margin:4px 0 16px; color:var(--text-muted);">All inquiry records have been cleared. New form submissions and WhatsApp chats will appear here.</p>
+              <button class="btn-motion" style="margin:0 auto;" type="button" onclick="openNewLeadModal()">+ Add New Lead</button>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      tbody.innerHTML = list.slice(0, 5).map(l => {
+        const isToday = l.isToday || (l.followupDate && l.followupDate.toLowerCase() === 'today');
+        const dueClass = isToday ? 'today' : 'future';
+        const dueIcon = isToday ? '<svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>' : '';
+        const srcLower = (l.source || '').toLowerCase();
+        const srcType = srcLower.includes('wa') ? 'wa' : (srcLower.includes('call') ? 'call' : 'web');
+        const srcLabel = l.source || 'Website form';
+        const phoneClean = (l.phone || '').replace(/[^0-9]/g, '');
+        const statLower = (l.status || '').toLowerCase();
+        const statusClass = statLower.includes('won') ? 'won' : (statLower.includes('disc') ? 'disc' : (statLower.includes('quote') ? 'quote' : 'sched'));
+        const dueAttr = isToday ? 'today' : 'future';
+        const srcAttr = srcType === 'wa' ? 'whatsapp' : (srcType === 'call' ? 'call' : 'website');
+
+        return `
+          <tr data-source="${srcAttr}" data-due="${dueAttr}">
+            <td>
+              <div class="cl">
+                <span class="cl-name"><span class="flag">${escapeHtml(l.flag || 'IN')}</span>${escapeHtml(l.name)}</span>
+                <span class="cl-meta">${escapeHtml(l.company || 'Direct Client')} • ${escapeHtml(l.phone || '')}</span>
+              </div>
+            </td>
+            <td><span class="src ${srcType}">${escapeHtml(srcLabel)}</span></td>
+            <td class="svc">${escapeHtml(l.service || 'Web Development')}</td>
+            <td class="budget">${escapeHtml(l.budget || '—')}</td>
+            <td><span class="due ${dueClass}">${dueIcon}${escapeHtml(l.followupDate || 'Pending')}</span></td>
+            <td><span class="status ${statusClass}">${escapeHtml(l.status || 'Active')}</span></td>
+            <td>
+              <div class="act-cell">
+                <button class="act" type="button" aria-label="Message ${escapeHtml(l.name)}" onclick="openWaFromOverview('${phoneClean}', '${escapeHtml(l.name)}')"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+                <button class="act" type="button" aria-label="Set reminder" onclick="openFollowupModal('${l.id}', 'lead')"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 4 5 5 5 9s-5 5-5 9M17 3c0 4-5 5-5 9s5 5 5 9"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+    window.renderOverviewRecentLeads = renderOverviewRecentLeads;
+
+    function renderOverviewActivityFeed() {
+      const feed = document.getElementById('overviewActivityFeed');
+      if (!feed) return;
+      const events = [];
+      const lList = Array.isArray(leadsData) ? leadsData : [];
+      const qList = Array.isArray(quotationsData) ? quotationsData : [];
+      const pList = Array.isArray(productsData) ? productsData : [];
+
+      lList.slice(0, 3).forEach(l => {
+        const isWa = (l.source || '').toLowerCase().includes('wa');
+        events.push({
+          badge: isWa ? 'WA' : 'WEB',
+          badgeCls: isWa ? 'wa' : 'call',
+          text: `<b>${escapeHtml(l.name)}</b> inquired via <span class="hl">${escapeHtml(l.source || 'Website')}</span> for ${escapeHtml(l.service || 'Services')}`,
+          time: l.followupDate === 'Today' ? 'Today' : (l.followupDate || 'Recently')
+        });
+      });
+
+      qList.slice(0, 2).forEach(q => {
+        events.push({
+          badge: 'NR',
+          badgeCls: 'me',
+          text: `<b>Neeraj Rawat</b> created quotation <span class="hl">#${escapeHtml(q.id)}</span> for ${escapeHtml(q.client)} (${escapeHtml(q.value)})`,
+          time: q.followupDue === 'Today' ? 'Today' : (q.followupDue || 'Recently')
+        });
+      });
+
+      pList.slice(0, 1).forEach(p => {
+        events.push({
+          badge: 'ST',
+          badgeCls: 'buy',
+          text: `<b>Digital Store:</b> <span class="hl">${escapeHtml(p.title || p.name)}</span> published (${escapeHtml(p.price)})`,
+          time: 'Active'
+        });
+      });
+
+      if (events.length === 0) {
+        feed.innerHTML = `
+          <li style="text-align:center; padding:36px 16px; color:var(--text-muted);">
+            <div style="font-size:24px; margin-bottom:8px;">⚡</div>
+            <div style="font-weight:700; color:var(--text); font-size:13.5px;">No Recent Activity</div>
+            <div style="font-size:12px; margin-top:4px; color:var(--text-muted);">New client leads, generated quotations, and store events will show up live here.</div>
+          </li>
+        `;
+        return;
+      }
+
+      feed.innerHTML = events.slice(0, 4).map((ev, idx) => `
+        <li class="ev ${idx === 0 ? 'live' : ''}">
+          <span class="av ${ev.badgeCls}">${ev.badge}</span>
+          <div class="ev-body">
+            <div class="ev-text">${ev.text}</div>
+            <div class="ev-time">${ev.time}</div>
+          </div>
+        </li>
       `).join('');
     }
+    window.renderOverviewActivityFeed = renderOverviewActivityFeed;
+
+    function updateAllDashboardCounters() {
+      const lList = Array.isArray(leadsData) ? leadsData : [];
+      const qList = Array.isArray(quotationsData) ? quotationsData : [];
+      const pList = Array.isArray(productsData) ? productsData : [];
+
+      const totalLeads = lList.length;
+      const leadsDueToday = lList.filter(l => l.isToday || (l.followupDate && l.followupDate.toLowerCase() === 'today')).length;
+      const quotesDueToday = qList.filter(q => q.isDue || (q.followupDue && q.followupDue.toLowerCase() === 'today')).length;
+      const totalDueToday = leadsDueToday + quotesDueToday;
+
+      // Pipeline values
+      const activeQuotes = qList.filter(q => (q.status || '').toLowerCase() !== 'lost');
+      let pipelineValue = 0;
+      activeQuotes.forEach(q => {
+        pipelineValue += Number(q.valNum || (typeof q.value === 'string' ? q.value.replace(/[^0-9]/g, '') : 0)) || 0;
+      });
+
+      let totalSentVal = 0;
+      qList.forEach(q => {
+        totalSentVal += Number(q.valNum || (typeof q.value === 'string' ? q.value.replace(/[^0-9]/g, '') : 0)) || 0;
+      });
+
+      const discQuotes = qList.filter(q => (q.status || '').toLowerCase().includes('disc'));
+      let discVal = 0;
+      discQuotes.forEach(q => {
+        discVal += Number(q.valNum || (typeof q.value === 'string' ? q.value.replace(/[^0-9]/g, '') : 0)) || 0;
+      });
+
+      const wonQuotes = qList.filter(q => (q.status || '').toLowerCase() === 'won');
+      let wonVal = 0;
+      wonQuotes.forEach(q => {
+        wonVal += Number(q.valNum || (typeof q.value === 'string' ? q.value.replace(/[^0-9]/g, '') : 0)) || 0;
+      });
+      const winRate = qList.length > 0 ? Math.round((wonQuotes.length / qList.length) * 100) : 0;
+
+      let quotesDueVal = 0;
+      qList.filter(q => q.isDue || (q.followupDue && q.followupDue.toLowerCase() === 'today')).forEach(q => {
+        quotesDueVal += Number(q.valNum || (typeof q.value === 'string' ? q.value.replace(/[^0-9]/g, '') : 0)) || 0;
+      });
+
+      // 1. Overview KPIs
+      const kpiLeads = document.getElementById('kpiLeadsCount');
+      if (kpiLeads) { kpiLeads.dataset.count = totalLeads; kpiLeads.textContent = totalLeads; }
+      const kpiPipeline = document.getElementById('kpiQuotesPipeline');
+      if (kpiPipeline) { kpiPipeline.dataset.count = pipelineValue; kpiPipeline.textContent = pipelineValue.toLocaleString('en-IN'); }
+      const kpiProposals = document.getElementById('kpiActiveProposalsCount');
+      if (kpiProposals) kpiProposals.textContent = activeQuotes.length;
+
+      const kpiDue = document.getElementById('kpiDueCount');
+      if (kpiDue) { kpiDue.dataset.count = totalDueToday; kpiDue.textContent = totalDueToday; }
+      const kpiPulse = document.getElementById('kpiDuePulse');
+      if (kpiPulse) kpiPulse.style.display = totalDueToday > 0 ? 'inline-block' : 'none';
+      const kpiDueFootText = document.getElementById('kpiDueFootText');
+      if (kpiDueFootText) kpiDueFootText.textContent = totalDueToday > 0 ? `${totalDueToday} follow-ups pending today` : 'No urgent follow-ups pending';
+
+      const kpiStore = document.getElementById('kpiStoreSales');
+      if (kpiStore) { kpiStore.dataset.count = 0; kpiStore.textContent = '0'; }
+      const kpiDownloads = document.getElementById('kpiStoreDownloads');
+      if (kpiDownloads) kpiDownloads.textContent = pList.length;
+
+      // 2. Sidebar Badges
+      const sbLeads = document.getElementById('sbLeadsCount');
+      if (sbLeads) sbLeads.textContent = totalLeads;
+      const sbQuotes = document.getElementById('sbQuotesAlert');
+      if (sbQuotes) sbQuotes.textContent = quotesDueToday > 0 ? `${quotesDueToday} Due` : '0 Due';
+      const sbProducts = document.getElementById('sbProductsCount');
+      if (sbProducts) sbProducts.textContent = `${pList.length} ${pList.length === 1 ? 'Item' : 'Items'}`;
+
+      // 3. Leads Filter Badges
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setEl('fltrAllCount', totalLeads);
+      setEl('fltrWaCount', lList.filter(l => (l.source || '').toLowerCase().includes('whatsapp')).length);
+      setEl('fltrWebCount', lList.filter(l => (l.source || '').toLowerCase().includes('web')).length);
+      setEl('fltrIntlCount', lList.filter(l => l.isInternational || (l.countryCode && l.countryCode !== '+91')).length);
+      setEl('fltrCallCount', lList.filter(l => (l.source || '').toLowerCase().includes('call')).length);
+      setEl('fltrQuoteCount', lList.filter(l => (l.source || '').toLowerCase().includes('quote')).length);
+      setEl('fltrTodayCount', leadsDueToday);
+
+      // 4. Quotations Stats
+      setEl('qtTotalVal', totalSentVal.toLocaleString('en-IN'));
+      setEl('qtTotalCount', qList.length);
+      setEl('qtDueCount', quotesDueToday);
+      setEl('qtDueVal', quotesDueVal.toLocaleString('en-IN'));
+      setEl('qtDiscVal', discVal.toLocaleString('en-IN'));
+      setEl('qtDiscCount', discQuotes.length);
+      setEl('qtWonVal', wonVal.toLocaleString('en-IN'));
+      setEl('qtWonRate', winRate);
+      setEl('qtTabAllCnt', qList.length);
+      setEl('qtTabDueCnt', quotesDueToday);
+      setEl('qtTabWonCnt', wonQuotes.length);
+
+      // 5. Bell Notification
+      const bell = document.getElementById('topbarBellNotify');
+      if (bell) bell.title = totalDueToday > 0 ? `${totalDueToday} follow-ups due today` : 'No urgent follow-ups today';
+    }
+    window.updateAllDashboardCounters = updateAllDashboardCounters;
 
     function renderLeadsTable(data) {
       const list = data || leadsData;
@@ -3315,6 +3090,9 @@
       productsData = productsData.filter(p => p.id !== id);
       localStorage.setItem('nr_digital_products', JSON.stringify(productsData));
       renderProductsGrid();
+      if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
       try {
         await fetch('/api/products', {
           method: 'DELETE',
@@ -3332,6 +3110,9 @@
       productsData = [];
       localStorage.setItem('nr_digital_products', JSON.stringify(productsData));
       renderProductsGrid();
+      if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
       try {
         await fetch('/api/products', {
           method: 'DELETE',
@@ -3415,6 +3196,9 @@
       }
       localStorage.setItem('nr_digital_products', JSON.stringify(productsData));
       renderProductsGrid();
+      if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
       closeModal('modalAddProduct');
 
       try {
@@ -3750,6 +3534,38 @@
     /* ======================================================== */
     /* MOTION DASHBOARD OVERVIEW ENGINE                        */
     /* ======================================================== */
+    function clearAllDemoData() {
+      if (!confirm('Are you sure you want to clear all leads, quotations, and store products? This will reset all metrics and tables to zero.')) return;
+      leadsData = [];
+      quotationsData = [];
+      productsData = [];
+      window.leadsData = leadsData;
+      window.quotationsData = quotationsData;
+      window.productsData = productsData;
+      try {
+        localStorage.setItem('dt_leads_store', JSON.stringify([]));
+        localStorage.setItem('dt_quotes_store', JSON.stringify([]));
+        localStorage.setItem('nr_digital_products', JSON.stringify([]));
+      } catch(e) {}
+      try {
+        fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'clear' })
+        }).catch(() => {});
+      } catch(e) {}
+      updateAllDashboardCounters();
+      renderOverviewRecentLeads();
+      renderOverviewActivityFeed();
+      if (typeof renderLeadsTable === 'function') renderLeadsTable();
+      if (typeof renderQuotationsTable === 'function') renderQuotationsTable();
+      if (typeof renderProductsGrid === 'function') renderProductsGrid();
+      if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+      initMotionDashboard();
+      alert('All demo data cleared successfully! All metrics are now 0.');
+    }
+    window.clearAllDemoData = clearAllDemoData;
+
     function initMotionDashboard() {
       const chartContainer = document.getElementById('chart');
       const chartSvg = document.getElementById('chartSvg');
@@ -3759,6 +3575,11 @@
       const donutTotal = document.getElementById('donutTotal');
 
       if (!chartSvg || !donutSvg) return;
+
+      // First synchronize counters
+      updateAllDashboardCounters();
+      renderOverviewRecentLeads();
+      renderOverviewActivityFeed();
 
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const NS = 'http://www.w3.org/2000/svg';
@@ -3785,171 +3606,232 @@
         requestAnimationFrame(tick);
       });
 
-      // 2. Line Chart (Catmull-Rom Spline)
+      // 2. Line Chart (Catmull-Rom Spline or Empty Baseline)
       chartSvg.innerHTML = ''; // reset previous render
       const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
-      const values = [2.3, 4.2, 5.0, 6.2, 6.8, 7.6]; // ₹ lakhs
       const W = 640, H = 280, padL = 44, padR = 16, padT = 16, padB = 32;
-      const yMin = 0, yMax = 8;
-      const xs = months.map((_, i) => padL + (i * (W - padL - padR)) / (months.length - 1));
-      const ys = values.map((v) => padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB));
 
-      // Grid + Y labels
-      [2, 4, 6, 8].forEach((v) => {
-        const y = padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB);
-        chartSvg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y, y2: y, class: 'gridline' }));
-        const t = el('text', { x: padL - 10, y: y + 4, 'text-anchor': 'end', class: 'axis' });
-        t.textContent = '₹' + v + 'L';
-        chartSvg.appendChild(t);
+      const qList = Array.isArray(quotationsData) ? quotationsData : [];
+      let totalPipelineLakhs = 0;
+      qList.forEach(q => {
+        totalPipelineLakhs += (Number(q.valNum || (typeof q.value === 'string' ? q.value.replace(/[^0-9]/g, '') : 0)) || 0) / 100000;
       });
 
-      // Smooth path calculation
-      const pts = xs.map((x, i) => [x, ys[i]]);
-      let d = `M${pts[0][0]},${pts[0][1]}`;
-      for (let i = 0; i < pts.length - 1; i++) {
-        const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-        const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
-        const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
-        d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+      if (totalPipelineLakhs === 0 && (Array.isArray(leadsData) ? leadsData.length : 0) === 0) {
+        // Clean empty state line chart
+        [2, 4, 6, 8].forEach((v) => {
+          const y = padT + (1 - v / 8) * (H - padT - padB);
+          chartSvg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y, y2: y, class: 'gridline' }));
+          const t = el('text', { x: padL - 10, y: y + 4, 'text-anchor': 'end', class: 'axis' });
+          t.textContent = '₹' + v + 'L';
+          chartSvg.appendChild(t);
+        });
+
+        // X labels
+        months.forEach((m, i) => {
+          const x = padL + (i * (W - padL - padR)) / (months.length - 1);
+          const t = el('text', { x, y: H - 8, 'text-anchor': 'middle', class: 'axis' + (i === months.length - 1 ? ' now' : '') });
+          t.textContent = m;
+          chartSvg.appendChild(t);
+        });
+
+        const yBase = H - padB;
+        chartSvg.appendChild(el('line', { x1: padL, x2: W - padR, y1: yBase, y2: yBase, stroke: '#CBD5E1', 'stroke-width': '2' }));
+
+        const emptyText = el('text', { x: W / 2, y: H / 2 - 8, 'text-anchor': 'middle', fill: '#64748B', 'font-size': '13.5px', 'font-weight': '700' });
+        emptyText.textContent = '📊 No Active Pipeline Deals';
+        chartSvg.appendChild(emptyText);
+
+        const emptySub = el('text', { x: W / 2, y: H / 2 + 14, 'text-anchor': 'middle', fill: '#94A3B8', 'font-size': '11.5px' });
+        emptySub.textContent = 'Create proposals to track monthly deal revenue & performance';
+        chartSvg.appendChild(emptySub);
+      } else {
+        const curVal = Math.max(0.5, Number(totalPipelineLakhs.toFixed(1)));
+        const values = [Math.max(0, curVal * 0.3), Math.max(0, curVal * 0.55), Math.max(0, curVal * 0.65), Math.max(0, curVal * 0.8), Math.max(0, curVal * 0.9), curVal];
+        const yMin = 0, yMax = Math.max(8, Math.ceil(curVal + 2));
+        const xs = months.map((_, i) => padL + (i * (W - padL - padR)) / (months.length - 1));
+        const ys = values.map((v) => padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB));
+
+        // Grid + Y labels
+        [Math.round(yMax * 0.25), Math.round(yMax * 0.5), Math.round(yMax * 0.75), yMax].forEach((v) => {
+          const y = padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB);
+          chartSvg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y, y2: y, class: 'gridline' }));
+          const t = el('text', { x: padL - 10, y: y + 4, 'text-anchor': 'end', class: 'axis' });
+          t.textContent = '₹' + v + 'L';
+          chartSvg.appendChild(t);
+        });
+
+        // Smooth path calculation
+        const pts = xs.map((x, i) => [x, ys[i]]);
+        let d = `M${pts[0][0]},${pts[0][1]}`;
+        for (let i = 0; i < pts.length - 1; i++) {
+          const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+          const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+          const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+          d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+        }
+        const areaD = d + ` L${xs[xs.length - 1]},${H - padB} L${xs[0]},${H - padB} Z`;
+
+        const defs = el('defs');
+        defs.innerHTML = `<linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5B4BDB" stop-opacity=".24"/>
+          <stop offset="100%" stop-color="#5B4BDB" stop-opacity="0"/></linearGradient>`;
+        chartSvg.appendChild(defs);
+
+        chartSvg.appendChild(el('path', { d: areaD, fill: 'url(#fillGrad)', class: 'area' }));
+        const line = el('path', { d, class: 'line', pathLength: '1' });
+        line.style.setProperty('--len', '1');
+        chartSvg.appendChild(line);
+
+        // X labels
+        months.forEach((m, i) => {
+          const t = el('text', { x: xs[i], y: H - 8, 'text-anchor': 'middle', class: 'axis' + (i === months.length - 1 ? ' now' : '') });
+          t.textContent = m;
+          chartSvg.appendChild(t);
+        });
+
+        // Points & Interactive tooltips
+        pts.forEach(([x, y], i) => {
+          const dot = el('circle', { cx: x, cy: y, r: i === pts.length - 1 ? 6 : 5, class: 'dot' });
+          dot.style.animationDelay = (0.8 + i * 0.1) + 's';
+          chartSvg.appendChild(dot);
+          const hit = el('circle', { cx: x, cy: y, r: 18, class: 'hit' });
+          const show = () => {
+            const rect = chartSvg.getBoundingClientRect();
+            const px = (x / W) * rect.width;
+            const py = (y / H) * rect.height;
+            if (tip) {
+              tip.innerHTML = `<b>₹${values[i].toFixed(1)}L</b>${months[i]} 2026`;
+              tip.style.left = px + 'px';
+              tip.style.top = py + 'px';
+              tip.style.opacity = 1;
+            }
+            dot.setAttribute('r', 7);
+          };
+          const hide = () => {
+            if (tip) tip.style.opacity = 0;
+            dot.setAttribute('r', i === pts.length - 1 ? 6 : 5);
+          };
+          hit.addEventListener('mouseenter', show);
+          hit.addEventListener('mouseleave', hide);
+          hit.addEventListener('focus', show);
+          hit.addEventListener('blur', hide);
+          hit.setAttribute('tabindex', '0');
+          chartSvg.appendChild(hit);
+        });
       }
-      const areaD = d + ` L${xs[xs.length - 1]},${H - padB} L${xs[0]},${H - padB} Z`;
-
-      const defs = el('defs');
-      defs.innerHTML = `<linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#5B4BDB" stop-opacity=".24"/>
-        <stop offset="100%" stop-color="#5B4BDB" stop-opacity="0"/></linearGradient>`;
-      chartSvg.appendChild(defs);
-
-      chartSvg.appendChild(el('path', { d: areaD, fill: 'url(#fillGrad)', class: 'area' }));
-      const line = el('path', { d, class: 'line', pathLength: '1' });
-      line.style.setProperty('--len', '1');
-      chartSvg.appendChild(line);
-
-      // X labels
-      months.forEach((m, i) => {
-        const t = el('text', { x: xs[i], y: H - 8, 'text-anchor': 'middle', class: 'axis' + (i === months.length - 1 ? ' now' : '') });
-        t.textContent = m;
-        chartSvg.appendChild(t);
-      });
-
-      // Points & Interactive tooltips
-      pts.forEach(([x, y], i) => {
-        const dot = el('circle', { cx: x, cy: y, r: i === pts.length - 1 ? 6 : 5, class: 'dot' });
-        dot.style.animationDelay = (0.8 + i * 0.1) + 's';
-        chartSvg.appendChild(dot);
-        const hit = el('circle', { cx: x, cy: y, r: 18, class: 'hit' });
-        const show = () => {
-          const rect = chartSvg.getBoundingClientRect();
-          const px = (x / W) * rect.width;
-          const py = (y / H) * rect.height;
-          if (tip) {
-            tip.innerHTML = `<b>₹${values[i].toFixed(1)}L</b>${months[i]} 2026`;
-            tip.style.left = px + 'px';
-            tip.style.top = py + 'px';
-            tip.style.opacity = 1;
-          }
-          dot.setAttribute('r', 7);
-        };
-        const hide = () => {
-          if (tip) tip.style.opacity = 0;
-          dot.setAttribute('r', i === pts.length - 1 ? 6 : 5);
-        };
-        hit.addEventListener('mouseenter', show);
-        hit.addEventListener('mouseleave', hide);
-        hit.addEventListener('focus', show);
-        hit.addEventListener('blur', hide);
-        hit.setAttribute('tabindex', '0');
-        chartSvg.appendChild(hit);
-      });
 
       // 3. Donut Chart with Legend Sync
       donutSvg.innerHTML = '';
       if (legend) legend.innerHTML = '';
-      const sources = [
-        { name: 'WhatsApp', pct: 46, count: 85, hex: '#22C55E' },
-        { name: 'Website Form', pct: 28, count: 52, hex: '#3B82F6' },
-        { name: 'Direct Call', pct: 16, count: 30, hex: '#F59E0B' },
-        { name: 'Quotation Request', pct: 10, count: 17, hex: '#8B5CF6' },
-      ];
-      const TOTAL = 184;
-      const R = 80, C = 2 * Math.PI * R;
-      const GAP = 3;
-      let offset = 0;
+      const lList = Array.isArray(leadsData) ? leadsData : [];
+      const TOTAL = lList.length;
 
-      const segs = sources.map((s, i) => {
-        const arc = (s.pct / 100) * C;
-        const c = el('circle', {
-          cx: 100, cy: 100, r: R, class: 'seg',
-          stroke: s.hex,
-          'stroke-dashoffset': -offset,
-        });
-        c.style.setProperty('--arc', (arc - GAP) + ' ' + C);
-        c.style.transition = 'stroke-width .25s var(--ease), opacity .25s';
-        c.dataset.i = i;
-        donutSvg.appendChild(c);
-        offset += arc;
-        return c;
-      });
-
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          segs.forEach((c, i) => {
-            c.style.transition = `stroke-dasharray 1.2s ${0.3 + i * 0.12}s var(--ease), stroke-width .25s var(--ease), opacity .25s`;
-            c.style.strokeDasharray = c.style.getPropertyValue('--arc');
-          });
-        }, 60);
-      });
-
-      if (donutTotal) {
-        if (reduce) donutTotal.textContent = TOTAL;
-        else {
-          const start = performance.now() + 300, dur = 1200;
-          const tick = (t) => {
-            const p = Math.min(Math.max((t - start) / dur, 0), 1);
-            donutTotal.textContent = Math.round(TOTAL * (1 - Math.pow(1 - p, 3)));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      }
-
-      const setHot = (i) => {
-        segs.forEach((c, j) => {
-          c.classList.toggle('dim', i !== null && j !== i);
-          c.classList.toggle('hot', i === j);
-        });
+      if (TOTAL === 0) {
+        donutSvg.innerHTML = `
+          <circle cx="100" cy="100" r="80" stroke="#E2E8F0" stroke-width="12" fill="none" stroke-dasharray="6 6" />
+        `;
+        if (donutTotal) donutTotal.textContent = '0';
         if (legend) {
-          legend.querySelectorAll('.lg').forEach((row, j) => row.classList.toggle('hot', i === j));
+          legend.innerHTML = `
+            <div style="color:var(--text-muted); font-size:12.5px; text-align:center; padding:16px; width:100%;">
+              No inquiry sources recorded yet.<br>New inquiries will auto-categorize here.
+            </div>
+          `;
         }
-      };
+      } else {
+        const waCount = lList.filter(l => (l.source || '').toLowerCase().includes('wa')).length;
+        const webCount = lList.filter(l => (l.source || '').toLowerCase().includes('web')).length;
+        const callCount = lList.filter(l => (l.source || '').toLowerCase().includes('call')).length;
+        const quoteCount = lList.filter(l => (l.source || '').toLowerCase().includes('quote')).length;
+        const otherCount = TOTAL - (waCount + webCount + callCount + quoteCount);
 
-      if (legend) {
-        sources.forEach((s, i) => {
-          const row = document.createElement('div');
-          row.className = 'lg';
-          row.tabIndex = 0;
-          row.style.animationDelay = (0.5 + i * 0.1) + 's';
-          row.innerHTML = `
-            <span class="sw" style="background:${s.hex}"></span>
-            <span class="nm">${s.name}</span>
-            <span class="vl">${s.pct}% (${s.count})</span>
-            <div class="bar"><i style="background:${s.hex}" data-w="${s.pct}%"></i></div>`;
-          row.addEventListener('mouseenter', () => setHot(i));
-          row.addEventListener('mouseleave', () => setHot(null));
-          row.addEventListener('focus', () => setHot(i));
-          row.addEventListener('blur', () => setHot(null));
-          legend.appendChild(row);
+        const sources = [];
+        if (waCount > 0) sources.push({ name: 'WhatsApp', count: waCount, pct: Math.round((waCount / TOTAL) * 100), hex: '#22C55E' });
+        if (webCount > 0) sources.push({ name: 'Website Form', count: webCount, pct: Math.round((webCount / TOTAL) * 100), hex: '#3B82F6' });
+        if (callCount > 0) sources.push({ name: 'Direct Call', count: callCount, pct: Math.round((callCount / TOTAL) * 100), hex: '#F59E0B' });
+        if (quoteCount > 0) sources.push({ name: 'Quotation Request', count: quoteCount, pct: Math.round((quoteCount / TOTAL) * 100), hex: '#8B5CF6' });
+        if (otherCount > 0) sources.push({ name: 'Other Channels', count: otherCount, pct: Math.round((otherCount / TOTAL) * 100), hex: '#64748B' });
+
+        const R = 80, C = 2 * Math.PI * R;
+        const GAP = sources.length > 1 ? 3 : 0;
+        let offset = 0;
+
+        const segs = sources.map((s, i) => {
+          const arc = (s.pct / 100) * C;
+          const c = el('circle', {
+            cx: 100, cy: 100, r: R, class: 'seg',
+            stroke: s.hex,
+            'stroke-dashoffset': -offset,
+          });
+          c.style.setProperty('--arc', Math.max(0, arc - GAP) + ' ' + C);
+          c.style.transition = 'stroke-width .25s var(--ease), opacity .25s';
+          c.dataset.i = i;
+          donutSvg.appendChild(c);
+          offset += arc;
+          return c;
         });
 
-        setTimeout(() => {
-          legend.querySelectorAll('.bar i').forEach((b) => { b.style.width = b.dataset.w; });
-        }, reduce ? 0 : 800);
-      }
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            segs.forEach((c, i) => {
+              c.style.transition = `stroke-dasharray 1.2s ${0.3 + i * 0.12}s var(--ease), stroke-width .25s var(--ease), opacity .25s`;
+              c.style.strokeDasharray = c.style.getPropertyValue('--arc');
+            });
+          }, 60);
+        });
 
-      segs.forEach((c, i) => {
-        c.addEventListener('mouseenter', () => setHot(i));
-        c.addEventListener('mouseleave', () => setHot(null));
-      });
+        if (donutTotal) {
+          if (reduce) donutTotal.textContent = TOTAL;
+          else {
+            const start = performance.now() + 300, dur = 1200;
+            const tick = (t) => {
+              const p = Math.min(Math.max((t - start) / dur, 0), 1);
+              donutTotal.textContent = Math.round(TOTAL * (1 - Math.pow(1 - p, 3)));
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }
+        }
+
+        const setHot = (i) => {
+          segs.forEach((c, j) => {
+            c.classList.toggle('dim', i !== null && j !== i);
+            c.classList.toggle('hot', i === j);
+          });
+          if (legend) {
+            legend.querySelectorAll('.lg').forEach((row, j) => row.classList.toggle('hot', i === j));
+          }
+        };
+
+        if (legend) {
+          sources.forEach((s, i) => {
+            const row = document.createElement('div');
+            row.className = 'lg';
+            row.tabIndex = 0;
+            row.style.animationDelay = (0.5 + i * 0.1) + 's';
+            row.innerHTML = `
+              <span class="sw" style="background:${s.hex}"></span>
+              <span class="nm">${s.name}</span>
+              <span class="vl">${s.pct}% (${s.count})</span>
+              <div class="bar"><i style="background:${s.hex}" data-w="${s.pct}%"></i></div>`;
+            row.addEventListener('mouseenter', () => setHot(i));
+            row.addEventListener('mouseleave', () => setHot(null));
+            row.addEventListener('focus', () => setHot(i));
+            row.addEventListener('blur', () => setHot(null));
+            legend.appendChild(row);
+          });
+
+          setTimeout(() => {
+            legend.querySelectorAll('.bar i').forEach((b) => { b.style.width = b.dataset.w; });
+          }, reduce ? 0 : 800);
+        }
+
+        segs.forEach((c, i) => {
+          c.addEventListener('mouseenter', () => setHot(i));
+          c.addEventListener('mouseleave', () => setHot(null));
+        });
+      }
     }
 
     
@@ -4313,7 +4195,9 @@
       try { localStorage.setItem('dt_leads_store', JSON.stringify(leadsData)); } catch(e) {}
       if (typeof renderLeadsTable === 'function') renderLeadsTable();
       if (typeof renderOverviewRecentLeads === 'function') renderOverviewRecentLeads();
-      if (typeof updateLeadCounters === 'function') updateLeadCounters();
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
+      if (typeof initMotionDashboard === 'function') initMotionDashboard();
       try {
         fetch('/api/admin/leads', {
           method: 'DELETE',
@@ -4327,11 +4211,9 @@
     window.deleteLead = deleteLead;
 
     function updateLeadCounters() {
-      const cnt = (typeof leadsData !== 'undefined' ? leadsData : window.leadsData || []).length;
-      const sbEl = document.getElementById('sbLeadsCount');
-      if (sbEl) sbEl.textContent = cnt;
-      const fltrEl = document.getElementById('fltrAllCount');
-      if (fltrEl) fltrEl.textContent = cnt;
+      if (typeof updateAllDashboardCounters === 'function') {
+        updateAllDashboardCounters();
+      }
     }
     window.updateLeadCounters = updateLeadCounters;
 
@@ -4341,7 +4223,9 @@
       window.quotationsData = quotationsData;
       try { localStorage.setItem('dt_quotes_store', JSON.stringify(quotationsData)); } catch(e) {}
       if (typeof renderQuotationsTable === 'function') renderQuotationsTable();
-      if (typeof updateQuotationStats === 'function') updateQuotationStats();
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
+      if (typeof initMotionDashboard === 'function') initMotionDashboard();
       try {
         fetch('/api/admin/quotation?id=' + encodeURIComponent(id), {
           method: 'DELETE',
@@ -4518,6 +4402,9 @@
 
       renderQuotationsTable();
       updateQuotationStats();
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
+      if (typeof initMotionDashboard === 'function') initMotionDashboard();
       closeModal('modalAddQuote');
 
       // Auto-open PDF preview
@@ -4602,7 +4489,9 @@
           try { localStorage.setItem('dt_leads_store', JSON.stringify(leadsData)); } catch(e) {}
           if (typeof renderLeadsTable === 'function') renderLeadsTable();
           if (typeof renderOverviewRecentLeads === 'function') renderOverviewRecentLeads();
-          if (typeof updateLeadCounters === 'function') updateLeadCounters();
+          if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+          if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
+          if (typeof initMotionDashboard === 'function') initMotionDashboard();
         }
       } catch(e) {}
     }
@@ -4610,10 +4499,15 @@
 
     // Trigger immediate render of quotations and leads on script load
     try {
+      if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+      if (typeof renderOverviewRecentLeads === 'function') renderOverviewRecentLeads();
+      if (typeof renderOverviewActivityFeed === 'function') renderOverviewActivityFeed();
       if (typeof renderQuotationsTable === 'function') renderQuotationsTable();
       if (typeof updateQuotationStats === 'function') updateQuotationStats();
       if (typeof renderLeadsTable === 'function') renderLeadsTable();
-      if (typeof updateLeadCounters === 'function') updateLeadCounters();
+      if (typeof renderProductsGrid === 'function') renderProductsGrid();
+      if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+      if (typeof initMotionDashboard === 'function') initMotionDashboard();
       syncInquiriesFromBackend();
     } catch(e) {
       console.error('Error during initial render:', e);
