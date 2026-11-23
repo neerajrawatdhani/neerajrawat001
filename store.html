@@ -270,10 +270,6 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
       <button type="submit" class="m-pay-btn" id="mPayBtn">
         <span>⚡ Pay with Razorpay</span>
       </button>
-
-      <a id="mWaOrderBtn" href="#" target="_blank" class="m-wa-btn">
-        <span>💬 Order &amp; Pay via WhatsApp</span>
-      </a>
     </form>
   </div>
 </div>
@@ -358,10 +354,10 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
             <h3>${escapeHtml(title)}</h3>
             <p class="desc">${escapeHtml(desc)}</p>
             <div class="price-row"><span class="price">₹${priceNum.toLocaleString('en-IN')}</span><span class="delivery">Direct file download</span></div>
-            <div class="actions">
-              <button class="btn cartbtn" type="button" data-id="${prodId}" data-name="${escapeHtml(title)}" data-price="${priceNum}"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>Add to cart</button>
-              <button class="btn buy" type="button" data-id="${prodId}" data-name="${escapeHtml(title)}" data-price="${priceNum}">⚡ Pay with Razorpay</button>
-              <button class="btn ask" type="button" aria-label="Ask about this product" data-name="${escapeHtml(title)}"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></button>
+            <div class="actions" style="display:flex; width:100%;">
+              <button class="btn buy" type="button" data-id="${prodId}" data-name="${escapeHtml(title)}" data-price="${priceNum}" style="width:100%; justify-content:center; padding:12px 16px; font-weight:800; font-size:14px; background:var(--accent, #f28c28); color:#000; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 4px 14px rgba(242,140,40,0.25);">
+                ⚡ Pay with Razorpay
+              </button>
             </div>
           </div>
         </article>
@@ -396,7 +392,6 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
         thumb._activeIdx = next;
       });
     }, 3000);
-  }
   }
 
   function bindCardEvents() {
@@ -469,15 +464,31 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
     fetch('/api/products')
       .then(r => r.json())
       .then(data => {
-        if (data && data.success && Array.isArray(data.products)) {
-          shopProducts = data.products;
-          renderShopGrid(data.products);
-        } else {
-          renderShopGrid([]);
+        let prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
+        if (!prods.length) {
+          try {
+            const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
+            if (Array.isArray(local) && local.length) {
+              prods = local;
+              fetch('/api/products', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ products: local })
+              }).catch(() => {});
+            }
+          } catch(e) {}
         }
+        shopProducts = prods;
+        renderShopGrid(prods);
       })
       .catch(() => {
-        renderShopGrid([]);
+        let prods = [];
+        try {
+          const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
+          if (Array.isArray(local) && local.length) prods = local;
+        } catch(e) {}
+        shopProducts = prods;
+        renderShopGrid(prods);
       });
   }
 

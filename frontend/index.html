@@ -2627,17 +2627,11 @@ function renderProductsCards(products) {
             <div style="font-size: 0.72rem; color: var(--accent, #e8a87c); font-weight: 700; background:rgba(232,168,124,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(232,168,124,0.25);">⚡ Lifetime Access</div>
           </div>
           
-          <!-- E-Commerce Buttons: Add to Cart & Buy Now -->
-          <div style="display:grid; grid-template-columns: 1fr 1fr auto; gap: 6px;">
-            <button type="button" class="pill" id="btnCart_${p.id}" onclick="addToCart('${p.id}')" style="cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: 700; font-size:0.8rem; padding: 9px 4px; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
-              <span>🛒 Add to Cart</span>
+          <!-- Single Direct Buy Button with Razorpay Modal -->
+          <div>
+            <button type="button" class="pill pill--dark" onclick="buyNowDirect('${p.id}')" style="width: 100%; cursor: pointer; background: var(--accent, #e8a87c); color: #000; font-weight: 800; font-size: 0.92rem; border: none; padding: 12px; border-radius: 9px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.15s, filter 0.15s; box-shadow: 0 4px 14px rgba(232, 168, 124, 0.25);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">
+              <span>⚡ Buy Now · Razorpay</span>
             </button>
-            <button type="button" class="pill pill--dark" onclick="buyNowDirect('${p.id}')" style="cursor: pointer; background: var(--accent, #e8a87c); color: #000; font-weight: 800; font-size:0.8rem; border: none; padding: 9px 4px; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:4px; transition: transform 0.15s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-              <span>⚡ Buy Now</span>
-            </button>
-            <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20want%20to%20inquire%20about%20${encodeURIComponent(prodTitle)}" target="_blank" class="btn-icon wa" style="padding: 8px 10px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3); color:#25d366;" title="Direct WhatsApp Inquire">
-              💬
-            </a>
           </div>
         </div>
       </div>
@@ -2673,22 +2667,36 @@ function initHomepageMotionSliders() {
     });
   }, 3000);
 }
-}
 
 function loadProductsGrid() {
   updateCartUI();
   fetch('/api/products')
     .then(r => r.json())
     .then(data => {
-      if (data && data.success && Array.isArray(data.products)) {
-        if (data.paymentConfig) currentPaymentConfig = data.paymentConfig;
-        renderProductsCards(data.products);
-      } else {
-        renderProductsCards([]);
+      let prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
+      if (!prods.length) {
+        try {
+          const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
+          if (Array.isArray(local) && local.length) {
+            prods = local;
+            fetch('/api/products', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ products: local })
+            }).catch(() => {});
+          }
+        } catch(e) {}
       }
+      if (data && data.paymentConfig) currentPaymentConfig = data.paymentConfig;
+      renderProductsCards(prods);
     })
     .catch(() => {
-      renderProductsCards([]);
+      let prods = [];
+      try {
+        const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
+        if (Array.isArray(local) && local.length) prods = local;
+      } catch(e) {}
+      renderProductsCards(prods);
     });
 }
 

@@ -2666,11 +2666,13 @@
     let productsData = storedProds !== null ? JSON.parse(storedProds) : [];
 
     function updateProductsSidebarCount() {
-      const el = document.getElementById('sbProductsCount');
-      if (el) {
-        const count = Array.isArray(productsData) ? productsData.length : 0;
-        el.textContent = `${count} ${count === 1 ? 'Item' : 'Items'}`;
-      }
+      const count = Array.isArray(productsData) ? productsData.length : 0;
+      const txt = `${count} ${count === 1 ? 'Item' : 'Items'}`;
+      document.querySelectorAll('#sbProductsCount, .sb-products-count').forEach(el => {
+        el.textContent = txt;
+      });
+      const kpiDownloads = document.getElementById('kpiStoreDownloads');
+      if (kpiDownloads) kpiDownloads.textContent = count;
     }
 
     // 2. Tab Navigation
@@ -4141,14 +4143,34 @@
           .then(res => res.json())
           .then(data => {
             if (data && Array.isArray(data.products)) {
-              productsData = data.products;
-              window.productsData = productsData;
-              try { localStorage.setItem('nr_digital_products', JSON.stringify(productsData)); } catch(e) {}
+              if (data.products.length === 0) {
+                try {
+                  const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
+                  if (Array.isArray(local) && local.length > 0) {
+                    productsData = local;
+                    window.productsData = productsData;
+                    fetch('/api/products', {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ products: local })
+                    }).catch(() => {});
+                  } else {
+                    productsData = [];
+                    window.productsData = [];
+                  }
+                } catch(e) { productsData = []; }
+              } else {
+                productsData = data.products;
+                window.productsData = productsData;
+                try { localStorage.setItem('nr_digital_products', JSON.stringify(productsData)); } catch(e) {}
+              }
               if (typeof renderProductsGrid === 'function') renderProductsGrid();
               if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
               if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
             }
-          }).catch(() => {});
+          }).catch(() => {
+            if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+          });
       } catch(e) {}
 
       // Load saved Dual SMTP settings
