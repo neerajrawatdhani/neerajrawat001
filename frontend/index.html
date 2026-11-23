@@ -2073,20 +2073,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
 
         <div style="display:grid; grid-template-columns: 1fr; gap: 8px; margin-top: 6px;">
           <button type="submit" class="pill pill--dark" id="coPayBtn" style="cursor: pointer; width: 100%; background: var(--accent, #e8a87c); color: #000; font-weight: 800; border: none; padding: 12px; font-size: 1rem; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:8px;">
-            <span>⚡ Pay Online (Cards, UPI, NetBanking)</span>
-          </button>
-          <button type="button" class="pill pill--outline" id="coUpiBtn" style="cursor: pointer; width: 100%; border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: 600; padding: 10px; font-size: 0.9rem; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:6px;">
-            <span>📱 Scan UPI QR Code Directly</span>
-          </button>
-        </div>
-
-        <!-- UPI QR Box -->
-        <div id="coUpiQrBox" style="display:none; text-align:center; background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 8px; padding: 12px; margin-top: 8px;">
-          <p style="font-size:0.75rem; color:var(--fg-muted,#888); margin-bottom:8px;">Scan with Paytm, PhonePe, GPay, or any BHIM UPI app:</p>
-          <div id="coQrContainer" style="display:inline-block; margin-bottom:8px;"></div>
-          <div style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:8px;">UPI ID: <span id="coUpiIdText" style="color:var(--accent,#e8a87c);">8708167959@paytm</span></div>
-          <button type="button" class="pill pill--dark" id="coUpiConfirmBtn" style="cursor:pointer; background:var(--accent,#e8a87c); color:#000; font-weight:700; border:none; padding:8px 16px; font-size:0.85rem; border-radius:6px;">
-            <span>✓ I have completed the payment</span>
+            <span>⚡ Proceed with Instant Delivery</span>
           </button>
         </div>
       </form>
@@ -2364,7 +2351,7 @@ const DEFAULT_PRODUCTS = [
   }
 ];
 
-let currentDigitalProducts = DEFAULT_PRODUCTS;
+let currentDigitalProducts = [];
 let currentPaymentConfig = {
   mode: 'test',
   keyId: 'rzp_test_51aBCD12345678',
@@ -2450,7 +2437,7 @@ function updateCartUI() {
 }
 
 window.addToCart = function(prodId) {
-  const p = currentDigitalProducts.find(x => x.id === prodId) || DEFAULT_PRODUCTS.find(x => x.id === prodId);
+  const p = currentDigitalProducts.find(x => x.id === prodId);
   if (!p) return;
   const cart = getCart();
   if (cart.some(x => x.id === p.id)) {
@@ -2497,16 +2484,21 @@ window.closeCartModal = function() {
 };
 
 window.buyNowDirect = function(prodId) {
-  const p = currentDigitalProducts.find(x => x.id === prodId) || DEFAULT_PRODUCTS.find(x => x.id === prodId);
+  const p = currentDigitalProducts.find(x => x.id === prodId) || (typeof DEFAULT_PRODUCTS !== 'undefined' ? DEFAULT_PRODUCTS.find(x => x.id === prodId) : null);
   if (!p) return;
+  if (p.razorpayUrl && p.razorpayUrl.trim()) {
+    window.open(p.razorpayUrl.trim(), '_blank');
+    return;
+  }
   activeCheckoutItems = [{
     id: p.id,
     title: p.title || p.name,
     category: p.category,
-    price: p.price || p.priceYearly || 0,
+    price: p.priceNum || (typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, ''))) || 0,
     fileFormat: p.fileFormat,
-    downloadUrl: p.downloadUrl,
-    image: p.image
+    downloadUrl: p.downloadUrl || p.fileUrl,
+    razorpayUrl: p.razorpayUrl,
+    image: p.image || p.img
   }];
   openCheckoutModalWithItems();
 };
@@ -2575,19 +2567,30 @@ function escapeHtml(str) {
 }
 
 function renderProductsCards(products) {
-  currentDigitalProducts = products || DEFAULT_PRODUCTS;
+  currentDigitalProducts = Array.isArray(products) ? products : [];
   const grid = $('#prodCardsGrid');
   if (!grid) return;
+  if (!currentDigitalProducts || currentDigitalProducts.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.14); border-radius: 14px;">
+        <div style="font-size: 2.8rem; margin-bottom: 0.85rem;">📦</div>
+        <h4 style="font-size: 1.2rem; color: #fff; margin: 0 0 0.5rem 0; font-weight: 700;">No Products in Digital Store</h4>
+        <p style="font-size: 0.85rem; color: var(--fg-muted, #888); margin: 0 auto; max-width: 440px; line-height: 1.5;">All sample products have been cleared. New products added via the Super Admin will appear here instantly with direct Razorpay payment &amp; download access.</p>
+      </div>
+    `;
+    return;
+  }
   grid.innerHTML = currentDigitalProducts.map(p => {
-    const priceNum = p.price || p.priceYearly || 0;
+    const priceNum = p.priceNum || (typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, ''))) || 0;
     const prodTitle = p.name || p.title || 'Digital File';
     const fmt = p.fileFormat || (p.category === 'Excel Sheets' ? 'Excel (.xlsx)' : 'Digital File');
-    const imgUrl = p.image || 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop&q=80';
+    const imgUrl = p.img || p.image || 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop&q=80';
+    const rzpLink = (p.razorpayUrl || '').trim();
     return `
     <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border, rgba(255,255,255,0.08)); border-radius: 14px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;" onmouseover="this.style.borderColor='rgba(232,168,124,0.4)'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.4)';" onmouseout="this.style.borderColor='var(--border, rgba(255,255,255,0.08))'; this.style.transform='none'; this.style.boxShadow='none';">
       <!-- Thumbnail Header -->
       <div style="position:relative; width:100%; height:155px; background:#181615; overflow:hidden;">
-        <img src="${imgUrl}" alt="${escapeHtml(prodTitle)}" style="width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" onerror="this.src='https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600'" />
+        <img src="${imgUrl}" alt="${escapeHtml(prodTitle)}" style="width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" onerror="this.src='frontend/apple-touch-icon.png'" />
         <div style="position:absolute; top:8px; left:8px; background:rgba(0,0,0,0.72); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:999px; font-size:0.68rem; font-weight:700; color:#fff;">
           📁 ${escapeHtml(p.category || 'Digital File')}
         </div>
@@ -2621,9 +2624,15 @@ function renderProductsCards(products) {
             <button type="button" class="pill" id="btnCart_${p.id}" onclick="addToCart('${p.id}')" style="cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: 700; font-size:0.8rem; padding: 9px 4px; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
               <span>🛒 Add to Cart</span>
             </button>
-            <button type="button" class="pill pill--dark" onclick="buyNowDirect('${p.id}')" style="cursor: pointer; background: var(--accent, #e8a87c); color: #000; font-weight: 800; font-size:0.8rem; border: none; padding: 9px 4px; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:4px; transition: transform 0.15s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-              <span>⚡ Buy Now</span>
-            </button>
+            ${rzpLink ? `
+              <a href="${escapeHtml(rzpLink)}" target="_blank" rel="noopener noreferrer" class="pill pill--dark" style="text-decoration:none; cursor: pointer; background: var(--accent, #e8a87c); color: #000; font-weight: 800; font-size:0.8rem; border: none; padding: 9px 4px; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:4px; transition: transform 0.15s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <span>⚡ Buy Now</span>
+              </a>
+            ` : `
+              <button type="button" class="pill pill--dark" onclick="buyNowDirect('${p.id}')" style="cursor: pointer; background: var(--accent, #e8a87c); color: #000; font-weight: 800; font-size:0.8rem; border: none; padding: 9px 4px; border-radius: 8px; display:flex; align-items:center; justify-content:center; gap:4px; transition: transform 0.15s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <span>⚡ Buy Now</span>
+              </button>
+            `}
             <a href="https://wa.me/918708167959?text=Hello%20Neeraj%2C%20I%20want%20to%20inquire%20about%20${encodeURIComponent(prodTitle)}" target="_blank" class="btn-icon wa" style="padding: 8px 10px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3); color:#25d366;" title="Direct WhatsApp Inquire">
               💬
             </a>
@@ -2636,19 +2645,20 @@ function renderProductsCards(products) {
 }
 
 function loadProductsGrid() {
-  renderProductsCards(DEFAULT_PRODUCTS);
   updateCartUI();
   fetch('/api/products')
     .then(r => r.json())
     .then(data => {
-      if (data && data.success) {
+      if (data && data.success && Array.isArray(data.products)) {
         if (data.paymentConfig) currentPaymentConfig = data.paymentConfig;
-        if (Array.isArray(data.products) && data.products.length > 0) {
-          renderProductsCards(data.products);
-        }
+        renderProductsCards(data.products);
+      } else {
+        renderProductsCards([]);
       }
     })
-    .catch(() => {});
+    .catch(() => {
+      renderProductsCards([]);
+    });
 }
 
 window.openProdModal = function() {
@@ -2676,7 +2686,14 @@ $('#checkoutForm')?.addEventListener('submit', e => {
   const total = activeCheckoutItems.reduce((s, x) => s + (x.price || 0), 0);
   const titles = activeCheckoutItems.map(x => x.title).join(', ');
 
-  // 1. Razorpay if configured
+  // 1. Direct Razorpay Page if single item has it configured
+  if (activeCheckoutItems.length === 1 && activeCheckoutItems[0].razorpayUrl && activeCheckoutItems[0].razorpayUrl.trim()) {
+    window.open(activeCheckoutItems[0].razorpayUrl.trim(), '_blank');
+    closeCheckoutModal();
+    return;
+  }
+
+  // 2. Razorpay checkout JS if configured
   if (window.Razorpay && currentPaymentConfig.keyId && !currentPaymentConfig.keyId.includes('51aBCD')) {
     const options = {
       key: currentPaymentConfig.keyId,
@@ -2695,31 +2712,8 @@ $('#checkoutForm')?.addEventListener('submit', e => {
     return;
   }
 
-  // 2. UPI QR Fallback
-  showUpiQr(total, titles);
-});
-
-function showUpiQr(total, titles) {
-  const qrBox = $('#coUpiQrBox');
-  const qrContainer = $('#coQrContainer');
-  const upiId = currentPaymentConfig.upiId || '8708167959@paytm';
-  const payeeName = currentPaymentConfig.upiName || 'Neeraj Rawat';
-  const upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${total}&cu=INR&tn=${encodeURIComponent(titles.slice(0, 30))}`;
-  const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}`;
-
-  qrContainer.innerHTML = `<img src="${qrImgUrl}" alt="Scan to pay ₹${total}" style="width:180px; height:180px; border-radius:8px; border:2px solid #000;" />`;
-  qrBox.style.display = 'block';
-}
-
-$('#coUpiBtn')?.addEventListener('click', () => {
-  if (!activeCheckoutItems.length) return;
-  const total = activeCheckoutItems.reduce((s, x) => s + (x.price || 0), 0);
-  const titles = activeCheckoutItems.map(x => x.title).join(', ');
-  showUpiQr(total, titles);
-});
-
-$('#coUpiConfirmBtn')?.addEventListener('click', () => {
-  handlePaymentSuccess('UPI_DIRECT');
+  // 3. Instant Order & Direct Download Delivery
+  handlePaymentSuccess('DIRECT_ORDER');
 });
 
 function handlePaymentSuccess(refId) {

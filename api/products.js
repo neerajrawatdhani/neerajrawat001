@@ -1,111 +1,137 @@
-const { loadProducts, addProduct, updateProduct, deleteProduct } = require('./_products');
-const { getSettings } = require('./_settings');
-
-function checkAuth(req) {
-  const auth = req.headers.authorization || '';
-  const token = auth.replace(/^Bearer\s+/i, '');
-  const settings = getSettings();
-  return token === settings.adminSecret;
-}
+const { loadProducts, saveProducts, addProduct, updateProduct, deleteProduct, clearProducts } = require('./_products');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // GET: Public list of active digital products + active payment gateway config
+  // GET: Public list of active digital products
   if (req.method === 'GET') {
     const products = loadProducts();
-    const settings = getSettings();
-    const pg = settings.paymentGateway || {};
-    const isLive = pg.mode === 'live';
-    const paymentConfig = {
-      mode: pg.mode || 'test',
-      keyId: isLive ? (pg.liveKeyId || '') : (pg.testKeyId || 'rzp_test_51aBCD12345678'),
-      upiId: pg.upiId || '8708167959@paytm',
-      upiName: pg.upiName || 'Neeraj Rawat | Dhani Tech'
-    };
     return res.status(200).json({
       success: true,
-      products,
-      paymentConfig
+      count: products.length,
+      products
     });
   }
 
-  // Admin routes require authentication
-  if (!checkAuth(req)) {
-    return res.status(401).json({ success: false, error: 'Unauthorized: कृपया लॉगिन करें।' });
+  // PUT: Replace full product list (Bulk Sync from Super Admin)
+  if (req.method === 'PUT') {
+    const body = req.body || {};
+    const prods = Array.isArray(body) ? body : (Array.isArray(body.products) ? body.products : []);
+    saveProducts(prods);
+    return res.status(200).json({
+      success: true,
+      message: 'Products synced successfully',
+      count: prods.length,
+      products: prods
+    });
   }
 
-  // POST: Add new digital product
+  // POST: Add or update digital product
   if (req.method === 'POST') {
     const body = req.body || {};
-    const { title, category, price, period, badge, desc, fileFormat, downloadUrl, features = [], demoUrl, image } = body;
+    const {
+      id,
+      title,
+      name,
+      desc,
+      price,
+      priceNum,
+      img,
+      image,
+      fileUrl,
+      downloadUrl,
+      razorpayUrl,
+      category,
+      badge,
+      sales,
+      features
+    } = body;
 
-    if (!title || !price) {
-      return res.status(400).json({ success: false, error: 'Product Title और Price आवश्यक हैं।' });
+    const prodTitle = (title || name || '').trim();
+    if (!prodTitle) {
+      return res.status(400).json({ success: false, error: 'Product Title is required.' });
     }
 
+    const numericPrice = typeof priceNum === 'number' ? priceNum : (parseInt(String(price).replace(/[^0-9]/g, '')) || 0);
+
     const newProd = {
-      id: 'prod_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-      title: title.trim(),
-      category: (category || 'Excel Sheets').trim(),
-      fileFormat: (fileFormat || 'Microsoft Excel (.xlsx)').trim(),
-      price: Number(price) || 0,
-      currency: 'INR',
-      period: (period || 'Instant Download').trim(),
-      badge: (badge || 'Digital File').trim(),
-      image: (image || '').trim(),
+      id: id || ('prod_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)),
+      title: prodTitle,
+      name: prodTitle,
       desc: (desc || '').trim(),
-      downloadUrl: (downloadUrl || '').trim(),
-      features: Array.isArray(features) ? features : (features ? features.split('\n').filter(Boolean) : []),
-      demoUrl: (demoUrl || '').trim(),
+      price: '₹' + numericPrice.toLocaleString('en-IN'),
+      priceNum: numericPrice,
+      img: (img || image || 'frontend/apple-touch-icon.png').trim(),
+      image: (img || image || 'frontend/apple-touch-icon.png').trim(),
+      fileUrl: (fileUrl || downloadUrl || '').trim(),
+      downloadUrl: (downloadUrl || fileUrl || '').trim(),
+      razorpayUrl: (razorpayUrl || '').trim(),
+      category: (category || 'Excel Sheets').trim(),
+      badge: (badge || 'Instant Download').trim(),
+      sales: sales || '0 sales',
+      features: Array.isArray(features) ? features : [],
       status: 'Active',
-      createdAt: new Date().toISOString()
+      updatedAt: new Date().toISOString()
     };
 
     addProduct(newProd);
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: 'डिजिटल प्रोडक्ट सफलतापूर्वक जोड़ दिया गया!',
+      message: 'Product saved successfully!',
       product: newProd
     });
   }
 
-  // PATCH: Update digital product
+  // PATCH: Update specific fields
   if (req.method === 'PATCH') {
     const body = req.body || {};
     const { id, ...updates } = body;
-
-    if (!id) return res.status(400).json({ success: false, error: 'Product ID आवश्यक है।' });
+    if (!id) return res.status(400).json({ success: false, error: 'Product ID is required.' });
 
     const updated = updateProduct(id, updates);
-    if (!updated) return res.status(404).json({ success: false, error: 'Product नहीं मिला।' });
+    if (!updated) return res.status(404).json({ success: false, error: 'Product not found.' });
 
     return res.status(200).json({
       success: true,
-      message: 'Product अपडेट हो गया!',
+      message: 'Product updated successfully!',
       product: updated
     });
   }
 
-  // DELETE: Remove product
+  // DELETE: Remove single product or clear all sample products
   if (req.method === 'DELETE') {
     const body = req.body || {};
-    const { id } = body;
+    const urlParams = new URL(req.url, 'http://localhost').searchParams;
+    const action = body.action || urlParams.get('action');
+    const deleteId = body.id || urlParams.get('id');
 
-    if (!id) return res.status(400).json({ success: false, error: 'Product ID आवश्यक है।' });
+    if (action === 'clear' || (!deleteId && body.clearAll)) {
+      clearProducts();
+      return res.status(200).json({
+        success: true,
+        message: 'All sample products have been cleared successfully!',
+        products: []
+      });
+    }
 
-    deleteProduct(id);
-    return res.status(200).json({
-      success: true,
-      message: 'Product डिलीट हो गया!'
-    });
+    if (deleteId) {
+      deleteProduct(deleteId);
+      return res.status(200).json({
+        success: true,
+        message: 'Product deleted successfully!',
+        id: deleteId,
+        products: loadProducts()
+      });
+    }
+
+    return res.status(400).json({ success: false, error: 'Product ID or action=clear required.' });
   }
 
   return res.status(405).json({ error: 'Method not allowed' });

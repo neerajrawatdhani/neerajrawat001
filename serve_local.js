@@ -90,6 +90,34 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ success: true, message: 'Quotation processed successfully' }));
     }
+
+    // 4. Products API
+    if (clean === '/api/products') {
+      const prodApi = require('./api/products.js');
+      let bodyData = '';
+      req.on('data', chunk => { bodyData += chunk; });
+      req.on('end', async () => {
+        if (bodyData) {
+          try { req.body = JSON.parse(bodyData); } catch(e) { req.body = {}; }
+        } else {
+          req.body = {};
+        }
+
+        // Mock express res methods
+        res.status = function(code) { res.statusCode = code; return res; };
+        res.json = function(obj) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          await prodApi(req, res);
+        } catch(err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: err.message }));
+        }
+      });
+      return;
+    }
   }
 
   // 1. Core route rewrites (matching vercel.json)
