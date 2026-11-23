@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/webp" href="frontend/neeraj_colour.webp">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 :root{
   --bg:#EEF3F7;
@@ -267,7 +268,7 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
 
 
       <button type="submit" class="m-pay-btn" id="mPayBtn">
-        <span>⚡ Confirm &amp; Get Download Link</span>
+        <span>⚡ Pay with Razorpay</span>
       </button>
 
       <a id="mWaOrderBtn" href="#" target="_blank" class="m-wa-btn">
@@ -378,11 +379,7 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
         const price = b.dataset.price || '499';
         const id = b.dataset.id;
         const p = shopProducts.find(x => x.id === id);
-        if (p && p.razorpayUrl && p.razorpayUrl.trim()) {
-          window.open(p.razorpayUrl.trim(), '_blank');
-          return;
-        }
-        openCheckoutModal(name, price);
+        openCheckoutModal(name, price, p);
       });
     });
 
@@ -515,7 +512,9 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
   }));
 
   /* Checkout Modal Logic */
-  function openCheckoutModal(name, price) {
+  let currentCheckoutProduct = null;
+  function openCheckoutModal(name, price, prodItem) {
+    currentCheckoutProduct = prodItem || { name, price: Number(price) };
     mProdName.textContent = name;
     mProdPrice.textContent = '₹' + Number(price).toLocaleString('en-IN');
     const waText = `Hello Neeraj, I would like to purchase "${name}" for ₹${price}. Please share payment details and instant download access.`;
@@ -530,38 +529,160 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
     if (e.target === checkoutModalBackdrop) checkoutModalBackdrop.classList.remove('open');
   });
 
-  window.handleCheckoutSubmit = (e) => {
+  window.handleCheckoutSubmit = async (e) => {
     e.preventDefault();
     const name = document.getElementById('cName').value.trim();
     const email = document.getElementById('cEmail').value.trim();
     const phone = document.getElementById('cPhone').value.trim();
     const prod = mProdName.textContent;
-    const price = mProdPrice.textContent;
+    const numPrice = (currentCheckoutProduct && currentCheckoutProduct.price) ? Number(currentCheckoutProduct.price) : parseInt(mProdPrice.textContent.replace(/[^0-9]/g, '')) || 499;
 
     const btn = document.getElementById('mPayBtn');
-    btn.innerHTML = '<span>⏳ Generating Instant Access...</span>';
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span>⏳ Initializing Razorpay Checkout...</span>';
     btn.disabled = true;
 
-    setTimeout(() => {
-      btn.innerHTML = '<span>✓ Order Confirmed! Downloading...</span>';
-      btn.style.background = '#22C55E';
-      btn.style.color = '#fff';
+    try {
+      const amountInPaise = Math.max(100, Math.round(numPrice * 100));
 
-      // Open WhatsApp notification
-      const waMsg = `Hi Neeraj, I have placed an order for ${prod} (${price}). My details: Name: ${name}, Email: ${email}, Phone: ${phone}.`;
-      window.open(`https://wa.me/918708167959?text=${encodeURIComponent(waMsg)}`, '_blank');
+      // 1. Backend: Create Order
+      const orderRes = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amountInPaise,
+          currency: 'INR',
+          receipt: 'rcpt_' + Date.now(),
+          notes: {
+            product: prod.slice(0, 40),
+            customer_name: name,
+            customer_email: email,
+            customer_phone: phone
+          }
+        })
+      });
 
-      setTimeout(() => {
-        alert(`Thank you ${name}! Your download link for "${prod}" has been sent to ${email} and opened in WhatsApp.`);
-        checkoutModalBackdrop.classList.remove('open');
-        btn.innerHTML = '<span>⚡ Confirm &amp; Get Download Link</span>';
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData.order_id) {
+        throw new Error(orderData.error || 'Failed to create payment order.');
+      }
+
+      // 2. Open Razorpay Standard Checkout Modal
+      const options = {
+        key: orderData.key_id || 'rzp_test_U3llbPWXVPP7tf',
+        amount: orderData.amount,
+        currency: orderData.currency || 'INR',
+        name: 'Neeraj Rawat | Dhani Tech',
+        description: prod.slice(0, 40),
+        order_id: orderData.order_id,
+        prefill: {
+          name: name,
+          email: email,
+          contact: phone
+        },
+        theme: {
+          color: '#F28C28'
+        },
+        handler: async function (response) {
+          try {
+            btn.innerHTML = '<span>⏳ Verifying Payment Signature...</span>';
+
+            // 3. Backend: Verify Signature
+            const verifyRes = await fetch('/api/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+
+            const verifyData = await verifyRes.json();
+            if (!verifyRes.ok || !verifyData.verified) {
+              throw new Error(verifyData.error || 'Payment signature verification failed.');
+            }
+
+            // Payment Confirmed
+            btn.innerHTML = '<span>✓ Payment Successful! Generating Download...</span>';
+            btn.style.background = '#22C55E';
+            btn.style.color = '#fff';
+
+            // Notify backend & register inquiry
+            try {
+              fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name,
+                  email,
+                  mobile: phone,
+                  channel: 'Razorpay Verified Payment',
+                  service: prod,
+                  budget: '₹' + numPrice + ' (Paid Ref: ' + response.razorpay_payment_id + ')',
+                  message: `Payment verified for ${prod}. Order: ${response.razorpay_order_id}`
+                })
+              }).catch(() => {});
+            } catch (err) {}
+
+            // Trigger instant file download if fileUrl is available
+            if (currentCheckoutProduct && (currentCheckoutProduct.fileUrl || currentCheckoutProduct.downloadUrl)) {
+              const dlUrl = currentCheckoutProduct.fileUrl || currentCheckoutProduct.downloadUrl;
+              const a = document.createElement('a');
+              a.href = dlUrl;
+              a.download = '';
+              a.target = '_blank';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+
+            setTimeout(() => {
+              alert(`🎉 Payment Verified Successfully!\n\nThank you, ${name}!\nPayment ID: ${response.razorpay_payment_id}\nOrder ID: ${response.razorpay_order_id}\n\nYour download for "${prod}" is ready!`);
+              checkoutModalBackdrop.classList.remove('open');
+              btn.innerHTML = originalText;
+              btn.style.background = '';
+              btn.style.color = '';
+              btn.disabled = false;
+              cart = [];
+              updateCartUI();
+            }, 600);
+          } catch (verifyErr) {
+            alert('Payment verification failed: ' + verifyErr.message);
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+            btn.style.color = '';
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+            btn.style.color = '';
+            console.log('Payment checkout closed by user');
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (resp) {
+        const errorDesc = resp.error ? (resp.error.description || resp.error.reason) : 'Payment failed';
+        alert('Payment Failed: ' + errorDesc);
+        btn.disabled = false;
+        btn.innerHTML = originalText;
         btn.style.background = '';
         btn.style.color = '';
-        btn.disabled = false;
-        cart = [];
-        updateCartUI();
-      }, 800);
-    }, 1200);
+      });
+      rzp.open();
+    } catch (err) {
+      alert('Checkout error: ' + err.message);
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      btn.style.background = '';
+      btn.style.color = '';
+    }
   };
 
   updateCartUI();

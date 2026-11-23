@@ -81,9 +81,9 @@
   background:rgba(255,255,255,.48) !important;
 }
 .modal__panel.motion-dialog{
-  position:relative;width:100%;max-width:760px !important;margin:auto !important;
-  max-height:calc(100vh - 16px) !important;max-height:calc(100dvh - 16px) !important;overflow-y:auto !important;overflow-x:hidden !important;
-  background:var(--m-panel);border-radius:20px;padding:12px 18px 10px !important;
+  position:relative;width:100%;max-width:740px !important;margin:auto !important;
+  max-height:calc(100vh - 12px) !important;max-height:calc(100dvh - 12px) !important;overflow-y:auto !important;overflow-x:hidden !important;
+  background:var(--m-panel);border-radius:18px;padding:10px 16px 8px !important;
   box-shadow:0 30px 70px -25px rgba(0,0,0,.45);
   transform:translateY(20px) scale(.97);opacity:0;
   transition:transform .5s var(--m-spring),opacity .35s var(--m-ease);
@@ -96,10 +96,10 @@
 .modal.open .modal__panel.motion-dialog{transform:none;opacity:1}
 .modal.closing .modal__panel.motion-dialog{transform:translateY(16px) scale(.97);opacity:0}
 
-.m-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-top:2px}
+.m-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;margin-top:2px}
 .m-col{display:flex;flex-direction:column;min-width:0}
-.m-col-r .textarea{height:62px !important;resize:none !important}
-.m-col .field{margin-top:4px !important}
+.m-col-r .textarea{height:54px !important;resize:none !important}
+.m-col .field{margin-top:3px !important}
 .m-section-h{display:none !important}
 
 .motion-dialog .reveal{opacity:0;transform:translateY(6px);transition:opacity .4s var(--m-ease),transform .4s var(--m-ease)}
@@ -113,69 +113,69 @@
 .modal.open .motion-dialog .reveal:nth-child(7){transition-delay:.32s}
 .modal.open .motion-dialog .reveal:nth-child(8){transition-delay:.36s}
 
-.motion-dialog .kicker{font-size:10.5px;color:var(--m-muted);display:flex;align-items:center;gap:6px;margin:0 0 2px}
+.motion-dialog .kicker{font-size:10px;color:var(--m-muted);display:flex;align-items:center;gap:5px;margin:0 0 1px}
 .motion-dialog .kicker i{width:5px;height:5px;border-radius:50%;background:var(--m-ink);display:inline-block}
-.motion-dialog .title{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em;padding-right:36px;color:var(--m-ink);line-height:1.2}
+.motion-dialog .title{margin:0;font-size:16px;font-weight:700;letter-spacing:-.02em;padding-right:32px;color:var(--m-ink);line-height:1.15}
 .motion-dialog .close{
-  position:absolute;top:10px;right:12px;width:28px;height:28px;border-radius:50%;border:0;background:var(--m-field);
+  position:absolute;top:8px;right:10px;width:26px;height:26px;border-radius:50%;border:0;background:var(--m-field);
   display:grid;place-items:center;cursor:pointer;color:var(--m-ink);
   transition:transform .4s var(--m-spring),background .25s;
 }
 .motion-dialog .close:hover{transform:rotate(90deg);background:#E3E5EC}
-.motion-dialog .close svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
+.motion-dialog .close svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
 
-.motion-dialog .progress{margin:3px 0 2px;height:3px;border-radius:3px;background:var(--m-field);overflow:hidden}
+.motion-dialog .progress{margin:2px 0 1px;height:3px;border-radius:3px;background:var(--m-field);overflow:hidden}
 .motion-dialog .progress i{display:block;height:100%;width:0;background:var(--m-ink);border-radius:3px;transition:width .5s var(--m-ease)}
-.motion-dialog .progress-txt{font-size:10px;color:var(--m-muted);margin:0 0 2px}
+.motion-dialog .progress-txt{font-size:9.5px;color:var(--m-muted);margin:0 0 2px}
 
-.motion-dialog .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.motion-dialog .field{display:flex;flex-direction:column;gap:2px;margin-top:4px}
-.motion-dialog .label{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--m-muted)}
+.motion-dialog .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.motion-dialog .field{display:flex;flex-direction:column;gap:1.5px;margin-top:3px}
+.motion-dialog .label{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--m-muted)}
 .motion-dialog .req{color:var(--m-err);margin-left:2px}
 .motion-dialog .input{
-  width:100%;height:31px;border-radius:7px;border:1px solid transparent;background:var(--m-field);
-  padding:0 9px;font:500 12px/1 Inter,system-ui,sans-serif;color:var(--m-ink);outline:none;
+  width:100%;height:29px;border-radius:6px;border:1px solid transparent;background:var(--m-field);
+  padding:0 8px;font:500 11.5px/1 Inter,system-ui,sans-serif;color:var(--m-ink);outline:none;
   transition:border-color .25s,background .25s,box-shadow .25s;
 }
-.motion-dialog .input::placeholder{color:#9EA3AF;font-weight:400;font-size:11.5px}
+.motion-dialog .input::placeholder{color:#9EA3AF;font-weight:400;font-size:11px}
 .motion-dialog .input:hover:not(:disabled){background:#E9EAF0}
 .motion-dialog .input:focus{background:#fff;border-color:var(--m-ink);box-shadow:0 0 0 3px rgba(17,18,23,.08)}
 .motion-dialog .input:disabled{opacity:.5;cursor:not-allowed}
 .motion-dialog .input.invalid{border-color:var(--m-err);background:#FFF5F5}
 .motion-dialog .input.valid{border-color:#B7E4C7}
-.motion-dialog select.input{appearance:none;-webkit-appearance:none;padding-right:26px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
-.motion-dialog .textarea{height:60px;padding:6px 9px;resize:none;line-height:1.35;font-size:11.5px}
-.motion-dialog .row-2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.motion-dialog select.input{appearance:none;-webkit-appearance:none;padding-right:24px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.motion-dialog .textarea{height:54px;padding:5px 8px;resize:none;line-height:1.3;font-size:11px}
+.motion-dialog .row-2{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .motion-dialog .phone{position:relative;display:flex;align-items:center}
 .motion-dialog .dial{
-  position:absolute;left:8px;font-weight:600;font-size:12px;color:var(--m-ink);pointer-events:none;
+  position:absolute;left:7px;font-weight:600;font-size:11.5px;color:var(--m-ink);pointer-events:none;
   transition:opacity .25s;
 }
-.motion-dialog .phone .input{padding-left:52px}
-.motion-dialog .hint{font-size:9.5px;color:var(--m-muted);margin:0;min-height:11px;transition:color .25s}
+.motion-dialog .phone .input{padding-left:48px}
+.motion-dialog .hint{font-size:9px;color:var(--m-muted);margin:0;min-height:10px;transition:color .25s}
 .motion-dialog .hint.err{color:var(--m-err)}
 
 .motion-dialog .consent{
-  display:flex;gap:7px;align-items:center;margin-top:5px;padding:4px 7px;border-radius:6px;background:var(--m-field);
+  display:flex;gap:6px;align-items:center;margin-top:4px;padding:3px 6px;border-radius:6px;background:var(--m-field);
   cursor:pointer;transition:background .25s;user-select:none;position:relative;
 }
 .motion-dialog .consent:hover{background:#E9EAF0}
 .motion-dialog .consent input{position:absolute;opacity:0;pointer-events:none}
 .motion-dialog .box{
-  flex:none;width:15px;height:15px;border-radius:4px;border:1.2px solid #B8BCC8;background:#fff;
+  flex:none;width:14px;height:14px;border-radius:4px;border:1.2px solid #B8BCC8;background:#fff;
   display:grid;place-items:center;transition:background .3s var(--m-ease),border-color .3s,transform .3s var(--m-spring);
 }
-.motion-dialog .box svg{width:9px;height:9px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--m-ease) .05s}
+.motion-dialog .box svg{width:8px;height:8px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--m-ease) .05s}
 .motion-dialog .consent input:checked + .box{background:var(--m-ink);border-color:var(--m-ink);transform:scale(1.04)}
 .motion-dialog .consent input:checked + .box svg{stroke-dashoffset:0}
 .motion-dialog .consent input:focus-visible + .box{outline:2px solid var(--m-ink);outline-offset:2px}
-.motion-dialog .consent-text{font-size:10px;color:#4B5060;line-height:1.25}
+.motion-dialog .consent-text{font-size:9.5px;color:#4B5060;line-height:1.22}
 
-.motion-dialog .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.motion-dialog .actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}
 .motion-dialog .btn{
-  position:relative;overflow:hidden;height:34px;border-radius:8px;border:0;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 10px;
-  font:600 11.5px/1.2 Inter,system-ui,sans-serif;text-align:left;
+  position:relative;overflow:hidden;height:32px;border-radius:7px;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 9px;
+  font:600 11px/1.2 Inter,system-ui,sans-serif;text-align:left;
   transition:transform .3s var(--m-ease),box-shadow .3s var(--m-ease),opacity .3s,filter .3s;
 }
 .motion-dialog .btn::before{
@@ -191,34 +191,34 @@
 .motion-dialog .btn-wa:not(:disabled):hover{box-shadow:0 14px 24px -10px rgba(34,197,94,1)}
 .motion-dialog .btn-mail{background:var(--m-dark);color:#fff;box-shadow:0 10px 20px -12px rgba(17,18,23,.9)}
 .motion-dialog .btn-mail:not(:disabled):hover{box-shadow:0 14px 24px -10px rgba(17,18,23,.9)}
-.motion-dialog .round{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--m-spring)}
+.motion-dialog .round{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--m-spring)}
 .motion-dialog .btn:not(:disabled):hover .round{transform:rotate(-12deg) scale(1.08)}
 .motion-dialog .btn-wa .round{background:rgba(6,33,15,.12)}
 .motion-dialog .btn-mail .round{background:rgba(255,255,255,.14)}
-.motion-dialog .round svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.motion-dialog .round svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .motion-dialog .btn-wa:not(:disabled):hover .round svg{transform:translate(1px,-1px) scale(1.1);transition:transform .5s var(--m-ease)}
 .motion-dialog .btn-mail:not(:disabled):hover .round svg{transform:translate(2px,-2px);transition:transform .4s var(--m-ease)}
 .motion-dialog .btn.loading{pointer-events:none}
 .motion-dialog .btn.loading .label-txt{opacity:0}
 .motion-dialog .spinner{
-  position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;
+  position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;
   border:2px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
 }
 .motion-dialog .btn.loading .spinner{opacity:1}
 
-.motion-dialog .foot{margin:3px 0 0;text-align:center;font-size:9.5px;color:var(--m-muted);line-height:1.2}
-.motion-dialog .live{display:inline-flex;align-items:center;gap:5px}
+.motion-dialog .foot{margin:3px 0 0;text-align:center;font-size:9px;color:var(--m-muted);line-height:1.2}
+.motion-dialog .live{display:inline-flex;align-items:center;gap:4px}
 .motion-dialog .live::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--m-wa);animation:ping 1.8s infinite}
 
-@media (max-width:580px){
+@media (max-width:480px){
   .m-body-grid{grid-template-columns:1fr;gap:0}
-  .modal__panel.motion-dialog{max-width:440px !important;padding:12px 14px 10px !important}
+  .modal__panel.motion-dialog{max-width:420px !important;padding:12px 14px 10px !important}
   .m-col-r .textarea{height:54px !important}
   .motion-dialog .actions{grid-template-columns:1fr 1fr !important}
 }
-@media (max-width:380px){
+@media (max-width:360px){
   .motion-dialog .grid2,.motion-dialog .actions,.motion-dialog .row-2{grid-template-columns:1fr}
-  .motion-dialog .title{font-size:16px}
+  .motion-dialog .title{font-size:15px}
   .modal__panel.motion-dialog{padding:10px 10px 8px}
 }
 </style>
@@ -2354,7 +2354,7 @@ const DEFAULT_PRODUCTS = [
 let currentDigitalProducts = [];
 let currentPaymentConfig = {
   mode: 'test',
-  keyId: 'rzp_test_51aBCD12345678',
+  keyId: 'rzp_test_U3llbPWXVPP7tf',
   upiId: '8708167959@paytm',
   upiName: 'Neeraj Rawat | Dhani Tech'
 };
@@ -2692,27 +2692,110 @@ $('#checkoutForm')?.addEventListener('submit', e => {
     return;
   }
 
-  // 2. Razorpay checkout JS if configured
-  if (window.Razorpay && currentPaymentConfig.keyId && !currentPaymentConfig.keyId.includes('51aBCD')) {
-    const options = {
-      key: currentPaymentConfig.keyId,
-      amount: total * 100,
-      currency: 'INR',
-      name: 'Neeraj Rawat | Dhani Tech',
-      description: titles.slice(0, 40),
-      prefill: { name, email, contact: phone },
-      theme: { color: '#e8a87c' },
-      handler: function (response) {
-        handlePaymentSuccess(response.razorpay_payment_id || 'RZP_SUCCESS');
-      }
-    };
-    const rzp = new Razorpay(options);
-    rzp.open();
-    return;
+  // 2. Standard Razorpay Web Checkout Modal with Backend Create-Order & Verify-Signature
+  const payBtn = $('#coPayBtn');
+  const origBtnHtml = payBtn ? payBtn.innerHTML : '';
+  if (payBtn) {
+    payBtn.innerHTML = '<span>⏳ Preparing Razorpay Checkout...</span>';
+    payBtn.disabled = true;
   }
 
-  // 3. Instant Order & Direct Download Delivery
-  handlePaymentSuccess('DIRECT_ORDER');
+  try {
+    const amountInPaise = Math.max(100, Math.round(total * 100));
+    const orderRes = await fetch('/api/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: amountInPaise,
+        currency: 'INR',
+        receipt: 'rcpt_' + Date.now(),
+        notes: {
+          products: titles.slice(0, 40),
+          customer_name: name,
+          customer_email: email,
+          customer_phone: phone
+        }
+      })
+    });
+
+    const orderData = await orderRes.json();
+    if (!orderRes.ok || !orderData.order_id) {
+      throw new Error(orderData.error || 'Failed to create payment order');
+    }
+
+    const options = {
+      key: orderData.key_id || currentPaymentConfig.keyId || 'rzp_test_U3llbPWXVPP7tf',
+      amount: orderData.amount,
+      currency: orderData.currency || 'INR',
+      name: 'Neeraj Rawat | Dhani Tech',
+      description: titles.slice(0, 40),
+      order_id: orderData.order_id,
+      prefill: { name, email, contact: phone },
+      theme: { color: '#e8a87c' },
+      modal: {
+        ondismiss: function () {
+          if (payBtn) {
+            payBtn.innerHTML = origBtnHtml;
+            payBtn.disabled = false;
+          }
+        }
+      },
+      handler: async function (response) {
+        try {
+          if (payBtn) payBtn.innerHTML = '<span>⏳ Verifying Payment Signature...</span>';
+
+          const verifyRes = await fetch('/api/verify-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          });
+
+          const verifyData = await verifyRes.json();
+          if (!verifyRes.ok || !verifyData.verified) {
+            throw new Error(verifyData.error || 'Payment signature verification failed');
+          }
+
+          if (payBtn) {
+            payBtn.innerHTML = '<span>✓ Payment Verified! Delivering...</span>';
+            payBtn.style.background = '#22C55E';
+            payBtn.style.color = '#fff';
+          }
+
+          handlePaymentSuccess(response.razorpay_payment_id || 'RZP_VERIFIED');
+        } catch (vErr) {
+          alert('Payment verification failed: ' + vErr.message);
+          if (payBtn) {
+            payBtn.innerHTML = origBtnHtml;
+            payBtn.disabled = false;
+          }
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (resp) {
+      alert('Payment failed: ' + (resp.error ? resp.error.description : 'Transaction was declined'));
+      if (payBtn) {
+        payBtn.innerHTML = origBtnHtml;
+        payBtn.disabled = false;
+      }
+    });
+    rzp.open();
+    return;
+  } catch (err) {
+    console.warn('Standard order creation fell back:', err);
+    if (payBtn) {
+      payBtn.innerHTML = origBtnHtml;
+      payBtn.disabled = false;
+    }
+    // Direct download delivery fallback if server unreachable
+    handlePaymentSuccess('DIRECT_ORDER');
+    return;
+  }
 });
 
 function handlePaymentSuccess(refId) {

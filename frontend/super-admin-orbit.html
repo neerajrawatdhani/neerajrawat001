@@ -1867,7 +1867,7 @@
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Razorpay Key ID *</label>
-                  <input type="text" id="rzpKeyId" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="rzp_test_xxxxxxxxxxxx" value="rzp_test_51aBCD12345678" />
+                  <input type="text" id="rzpKeyId" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="rzp_test_xxxxxxxxxxxx" value="rzp_test_U3llbPWXVPP7tf" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Gateway Environment Mode</label>
@@ -1882,7 +1882,7 @@
                 <div class="form-group">
                   <label class="form-label">Razorpay Key Secret *</label>
                   <div style="display:flex; gap:8px;">
-                    <input type="password" id="rzpKeySecret" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="Enter Razorpay Secret" value="xY9zW8vU7tS6rQ5p" />
+                    <input type="password" id="rzpKeySecret" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="Enter Razorpay Secret" value="2xgESwi0lC2dleQyqKyD6Zq3" />
                     <button type="button" class="btn-outline" style="padding:0 12px;" onclick="togglePasswordVisibility('rzpKeySecret')">👁️</button>
                   </div>
                 </div>
@@ -3986,17 +3986,51 @@
         document.title = savedTitle + ' — Portfolio Super Admin';
       }
 
-      // Load saved Razorpay settings if any
+      // Load saved Razorpay settings if any (default to active credentials)
       const savedRzp = localStorage.getItem('nr_rzp_settings');
+      let loadedKeyId = 'rzp_test_U3llbPWXVPP7tf';
+      let loadedKeySec = '2xgESwi0lC2dleQyqKyD6Zq3';
       if (savedRzp) {
         try {
           const r = JSON.parse(savedRzp);
-          if (r.keyId) document.getElementById('rzpKeyId').value = r.keyId;
-          if (r.keySec) document.getElementById('rzpKeySecret').value = r.keySec;
+          if (r.keyId && !r.keyId.includes('51aBCD') && !r.keyId.includes('xxxx')) loadedKeyId = r.keyId;
+          if (r.keySec && !r.keySec.includes('xxxx') && !r.keySec.includes('test_sec')) loadedKeySec = r.keySec;
           if (r.mode) document.getElementById('rzpEnvMode').value = r.mode;
           if (r.whSec) document.getElementById('rzpWebhookSecret').value = r.whSec;
         } catch(e) {}
       }
+      document.getElementById('rzpKeyId').value = loadedKeyId;
+      document.getElementById('rzpKeySecret').value = loadedKeySec;
+
+      // Sync active public key from backend if needed
+      try {
+        fetch('/api/create-order')
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.key_id) {
+              const el = document.getElementById('rzpKeyId');
+              if (el && (!el.value || el.value.includes('51aBCD') || el.value.includes('xxxx'))) {
+                el.value = data.key_id;
+              }
+            }
+          }).catch(() => {});
+      } catch(e) {}
+
+      // Auto-sync products from backend to ensure 100% store & counter sync
+      try {
+        fetch('/api/products')
+          .then(res => res.json())
+          .then(data => {
+            if (data && Array.isArray(data.products)) {
+              productsData = data.products;
+              window.productsData = productsData;
+              try { localStorage.setItem('nr_digital_products', JSON.stringify(productsData)); } catch(e) {}
+              if (typeof renderProductsGrid === 'function') renderProductsGrid();
+              if (typeof updateProductsSidebarCount === 'function') updateProductsSidebarCount();
+              if (typeof updateAllDashboardCounters === 'function') updateAllDashboardCounters();
+            }
+          }).catch(() => {});
+      } catch(e) {}
 
       // Load saved Dual SMTP settings
       const savedClientSmtp = localStorage.getItem('nr_client_smtp');

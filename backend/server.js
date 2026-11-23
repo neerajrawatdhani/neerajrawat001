@@ -523,6 +523,31 @@ app.get('/api/stats', (req, res) => {
   res.json(stats);
 });
 
+// Razorpay Standard Web Checkout Endpoints
+app.all(['/api/create-order', '/api/create-order/'], (req, res) => {
+  try {
+    require('../api/create-order.js')(req, res);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.all(['/api/verify-payment', '/api/verify-payment/'], (req, res) => {
+  try {
+    require('../api/verify-payment.js')(req, res);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.all(['/api/products', '/api/products/'], (req, res) => {
+  try {
+    require('../api/products.js')(req, res);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ----------------------------------------------------
 // 2. FULL-STACK UNIFIED FRONTEND SERVING
 // ----------------------------------------------------

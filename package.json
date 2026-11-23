@@ -19,5 +19,8 @@
     "animations"
   ],
   "author": "Neeraj Rawat",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "razorpay": "^2.9.8"
+  }
 }

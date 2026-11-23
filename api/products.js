@@ -12,10 +12,15 @@ module.exports = async (req, res) => {
   // GET: Public list of active digital products
   if (req.method === 'GET') {
     const products = loadProducts();
+    const keyId = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID || 'rzp_test_U3llbPWXVPP7tf';
     return res.status(200).json({
       success: true,
       count: products.length,
-      products
+      products,
+      paymentConfig: {
+        mode: 'test',
+        keyId: keyId
+      }
     });
   }
 

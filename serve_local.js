@@ -118,6 +118,58 @@ const server = http.createServer((req, res) => {
       });
       return;
     }
+
+    // 5. Razorpay Create Order API
+    if (clean === '/api/create-order') {
+      const createOrderApi = require('./api/create-order.js');
+      let bodyData = '';
+      req.on('data', chunk => { bodyData += chunk; });
+      req.on('end', async () => {
+        if (bodyData) {
+          try { req.body = JSON.parse(bodyData); } catch(e) { req.body = {}; }
+        } else {
+          req.body = {};
+        }
+        res.status = function(code) { res.statusCode = code; return res; };
+        res.json = function(obj) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          await createOrderApi(req, res);
+        } catch(err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: err.message }));
+        }
+      });
+      return;
+    }
+
+    // 6. Razorpay Verify Payment API
+    if (clean === '/api/verify-payment') {
+      const verifyPaymentApi = require('./api/verify-payment.js');
+      let bodyData = '';
+      req.on('data', chunk => { bodyData += chunk; });
+      req.on('end', async () => {
+        if (bodyData) {
+          try { req.body = JSON.parse(bodyData); } catch(e) { req.body = {}; }
+        } else {
+          req.body = {};
+        }
+        res.status = function(code) { res.statusCode = code; return res; };
+        res.json = function(obj) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          await verifyPaymentApi(req, res);
+        } catch(err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: err.message }));
+        }
+      });
+      return;
+    }
   }
 
   // 1. Core route rewrites (matching vercel.json)
