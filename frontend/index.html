@@ -2700,9 +2700,16 @@ function loadProductsGrid() {
     .then(r => r.json())
     .then(data => {
       let prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
-      if (!prods.length) {
-        prods = getPersistedStoreProducts();
-        if (prods.length) {
+      const saved = getPersistedStoreProducts();
+      if (Array.isArray(saved) && saved.length > 0) {
+        let needsSync = false;
+        saved.forEach(sp => {
+          if (sp && sp.id && !prods.find(p => p.id === sp.id)) {
+            prods.unshift(sp);
+            needsSync = true;
+          }
+        });
+        if (needsSync) {
           fetch('/api/products', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
