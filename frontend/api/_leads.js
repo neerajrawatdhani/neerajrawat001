@@ -1,6 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 
 const TMP_FILE = '/tmp/leads.json';
+const BACKEND_INQ_FILE = path.resolve(__dirname, '..', 'backend', 'data', 'inquiries.json');
 
 let memoryLeads = [
   {
@@ -77,10 +79,17 @@ let memoryLeads = [
   }
 ];
 
+function getStorageFile() {
+  if (fs.existsSync(BACKEND_INQ_FILE)) return BACKEND_INQ_FILE;
+  if (fs.existsSync(TMP_FILE)) return TMP_FILE;
+  return null;
+}
+
 function loadLeads() {
   try {
-    if (fs.existsSync(TMP_FILE)) {
-      const data = JSON.parse(fs.readFileSync(TMP_FILE, 'utf8'));
+    const file = getStorageFile();
+    if (file) {
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
       if (Array.isArray(data) && data.length) return data;
     }
   } catch (e) {}
@@ -90,7 +99,8 @@ function loadLeads() {
 function saveLeads(leads) {
   memoryLeads = leads;
   try {
-    fs.writeFileSync(TMP_FILE, JSON.stringify(leads, null, 2), 'utf8');
+    const file = getStorageFile() || TMP_FILE;
+    fs.writeFileSync(file, JSON.stringify(leads, null, 2), 'utf8');
   } catch (e) {}
 }
 
@@ -103,7 +113,7 @@ function addLead(lead) {
 
 function updateLead(id, updates) {
   const leads = loadLeads();
-  const idx = leads.findIndex(l => l.id === id);
+  const idx = leads.findIndex(l => String(l.id) === String(id));
   if (idx !== -1) {
     leads[idx] = { ...leads[idx], ...updates, updatedAt: new Date().toISOString() };
     saveLeads(leads);

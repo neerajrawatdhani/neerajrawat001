@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Start a Project | Contact — Neeraj Rawat</title>
+<title>Contact Neeraj Rawat | Start a Project</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/webp" href="/neeraj_colour.webp">
 <style>
 :root{
   --bg:#EDEEF2;
@@ -23,18 +22,19 @@
 }
 *{box-sizing:border-box}
 body{
-  margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;
+  margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;
   background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;
   -webkit-font-smoothing:antialiased;font-size:14px;
 }
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-/* back button for standalone view */
+/* back home link */
 .back-home{
-  position:fixed;top:20px;left:20px;display:inline-flex;align-items:center;gap:8px;
-  padding:10px 16px;border-radius:10px;background:rgba(255,255,255,.9);color:var(--ink);
-  text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.08);
-  backdrop-filter:blur(8px);transition:transform .2s,background .2s;z-index:10;
+  position:fixed;top:16px;left:16px;z-index:99;
+  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
+  background:rgba(255,255,255,.9);border-radius:10px;border:1px solid #E3E5EC;
+  color:var(--ink);font-weight:600;font-size:13px;text-decoration:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.06);transition:transform .2s,background .2s;
 }
 .back-home:hover{transform:translateY(-1px);background:#fff}
 
@@ -43,7 +43,7 @@ body{
   position:fixed;inset:0;background:rgba(17,18,23,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   display:flex;justify-content:center;align-items:flex-start;
   overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;
-  padding:clamp(16px, 4vh, 32px) 14px clamp(32px, 6vh, 60px);
+  padding:clamp(12px, 3vh, 24px) 14px clamp(20px, 4vh, 36px);
   opacity:1;pointer-events:auto;transition:opacity .35s var(--ease);
   scrollbar-width:thin !important;scrollbar-color:rgba(17,18,23,.25) transparent !important;
 }
@@ -51,23 +51,29 @@ body{
 .overlay::-webkit-scrollbar-track{background:transparent !important}
 .overlay::-webkit-scrollbar-thumb{background:rgba(17,18,23,.25) !important;border-radius:99px !important}
 .overlay::-webkit-scrollbar-thumb:hover{background:rgba(17,18,23,.45) !important}
+
 .modal{
-  position:relative;width:100%;max-width:440px;margin:auto 0 !important;
-  max-height:none !important;overflow:visible !important;
-  background:var(--panel);border-radius:22px;padding:22px 22px 20px;
+  position:relative;width:100%;max-width:880px;margin:auto 0 !important;
+  max-height:calc(100dvh - 24px);overflow-y:auto;
+  background:var(--panel);border-radius:24px;padding:22px 28px 18px;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
   transform:none;opacity:1;
   transition:transform .6s var(--spring),opacity .4s var(--ease);
   touch-action:pan-y;overscroll-behavior:contain;
+  scrollbar-width:thin !important;scrollbar-color:rgba(17,18,23,.2) transparent !important;
 }
+.modal::-webkit-scrollbar{display:block !important;width:5px !important}
+.modal::-webkit-scrollbar-track{background:transparent !important}
+.modal::-webkit-scrollbar-thumb{background:rgba(17,18,23,.2) !important;border-radius:99px !important}
 
-/* staggered entrance */
+/* entrance */
 .reveal{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
 
 /* header */
-.kicker{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.kicker{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:8px;margin:0 0 4px}
 .kicker i{width:6px;height:6px;border-radius:50%;background:var(--ink);display:inline-block}
 .title{margin:0;font-size:22px;font-weight:700;letter-spacing:-.02em;padding-right:40px}
+.sub{margin:4px 0 0;font-size:13px;color:var(--muted);line-height:1.45;padding-right:40px}
 .close{
   position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;border:0;background:var(--field);
   display:grid;place-items:center;cursor:pointer;color:var(--ink);
@@ -77,61 +83,67 @@ body{
 .close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
 
 /* progress */
-.progress{margin:14px 0 4px;height:4px;border-radius:4px;background:var(--field);overflow:hidden}
+.progress{margin:10px 0 4px;height:4px;border-radius:4px;background:var(--field);overflow:hidden}
 .progress i{display:block;height:100%;width:0;background:var(--ink);border-radius:4px;transition:width .5s var(--ease)}
-.progress-txt{font-size:12px;color:var(--muted);margin:0 0 2px}
+.progress-txt{font-size:11.5px;color:var(--muted);margin:0 0 2px}
+.divider{height:1px;background:#E3E5EC;margin:12px 0 4px}
+.section-h{display:flex;align-items:center;gap:10px;margin:10px 0 4px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.section-h::after{content:"";flex:1;height:1px;background:#E3E5EC}
 
-/* fields */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{display:flex;flex-direction:column;gap:6px;margin-top:14px}
-.label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+/* 2-column horizontal grid */
+.body-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:4px}
+.col{display:flex;flex-direction:column;min-width:0}
+.col-r .textarea{height:108px}
+.field{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .req{color:var(--err);margin-left:2px}
 .input{
-  width:100%;height:44px;border-radius:12px;border:1px solid transparent;background:var(--field);
-  padding:0 14px;font:500 14px/1 Inter,system-ui,sans-serif;color:var(--ink);outline:none;
+  width:100%;height:40px;border-radius:11px;border:1px solid transparent;background:var(--field);
+  padding:0 12px;font:500 13.5px/1 Inter,system-ui,sans-serif;color:var(--ink);outline:none;
   transition:border-color .25s,background .25s,box-shadow .25s;
 }
 .input::placeholder{color:#9EA3AF;font-weight:400}
 .input:hover:not(:disabled){background:#E9EAF0}
-.input:focus{background:#fff;border-color:var(--ink);box-shadow:0 0 0 4px rgba(17,18,23,.08)}
+.input:focus{background:#fff;border-color:var(--ink);box-shadow:0 0 0 3px rgba(17,18,23,.08)}
 .input:disabled{opacity:.5;cursor:not-allowed}
 .input.invalid{border-color:var(--err);background:#FFF5F5}
 .input.valid{border-color:#B7E4C7}
-select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-.textarea{height:96px;padding:12px 14px;resize:none;line-height:1.45}
+select.input{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.textarea{height:88px;padding:10px 12px;resize:none;line-height:1.4}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .phone{position:relative;display:flex;align-items:center}
 .dial{
-  position:absolute;left:12px;font-weight:600;font-size:14px;color:var(--ink);pointer-events:none;
+  position:absolute;left:10px;font-weight:600;font-size:13.5px;color:var(--ink);pointer-events:none;
   transition:opacity .25s;
 }
-.phone .input{padding-left:62px}
-.hint{font-size:12px;color:var(--muted);margin:0;min-height:16px;transition:color .25s}
+.phone .input{padding-left:58px}
+.hint{font-size:11px;color:var(--muted);margin:0;min-height:14px;transition:color .25s}
 .hint.err{color:var(--err)}
 
 /* consent */
 .consent{
-  display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--field);
+  display:flex;gap:10px;align-items:flex-start;margin-top:8px;padding:9px 12px;border-radius:11px;background:var(--field);
   cursor:pointer;transition:background .25s;user-select:none;position:relative;
 }
 .consent:hover{background:#E9EAF0}
 .consent input{position:absolute;opacity:0;pointer-events:none}
 .box{
-  flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid #B8BCC8;background:#fff;margin-top:1px;
+  flex:none;width:18px;height:18px;border-radius:5px;border:1.5px solid #B8BCC8;background:#fff;margin-top:1px;
   display:grid;place-items:center;transition:background .3s var(--ease),border-color .3s,transform .3s var(--spring);
 }
-.box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--ease) .05s}
+.box svg{width:11px;height:11px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--ease) .05s}
 .consent input:checked + .box{background:var(--ink);border-color:var(--ink);transform:scale(1.04)}
 .consent input:checked + .box svg{stroke-dashoffset:0}
 .consent input:focus-visible + .box{outline:2px solid var(--ink);outline-offset:2px}
-.consent-text{font-size:12.5px;color:#4B5060;line-height:1.45}
+.consent-text{font-size:11.5px;color:#4B5060;line-height:1.4}
 
 /* buttons */
-.actions{display:grid;grid-template-columns:1.1fr 1fr;gap:10px;margin-top:16px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .btn{
-  position:relative;overflow:hidden;height:56px;border-radius:16px;border:0;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 18px;
-  font:600 14px/1.2 Inter,system-ui,sans-serif;text-align:left;
+  position:relative;overflow:hidden;height:46px;border-radius:13px;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 14px;
+  font:600 13px/1.2 Inter,system-ui,sans-serif;text-align:left;
   transition:transform .3s var(--ease),box-shadow .3s var(--ease),opacity .3s,filter .3s;
 }
 .btn::before{
@@ -140,40 +152,45 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
   transition:left .7s var(--ease);
 }
 .btn:not(:disabled):hover::before{left:120%}
-.btn:not(:disabled):hover{transform:translateY(-2px)}
+.btn:not(:disabled):hover{transform:translateY(-1px)}
 .btn:not(:disabled):active{transform:translateY(0) scale(.98)}
 .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;filter:grayscale(.4)}
-.btn-wa{background:var(--wa);color:var(--wa-ink);box-shadow:0 14px 26px -16px rgba(34,197,94,.9)}
-.btn-wa:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(34,197,94,1)}
-.btn-mail{background:var(--dark);color:#fff;box-shadow:0 14px 26px -16px rgba(17,18,23,.9)}
-.btn-mail:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(17,18,23,.9)}
-.round{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--spring)}
+.btn-wa{background:var(--wa);color:var(--wa-ink);box-shadow:0 10px 20px -12px rgba(34,197,94,.9)}
+.btn-wa:not(:disabled):hover{box-shadow:0 14px 24px -10px rgba(34,197,94,1)}
+.btn-mail{background:var(--dark);color:#fff;box-shadow:0 10px 20px -12px rgba(17,18,23,.9)}
+.btn-mail:not(:disabled):hover{box-shadow:0 14px 24px -10px rgba(17,18,23,.9)}
+.round{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--spring)}
 .btn:not(:disabled):hover .round{transform:rotate(-12deg) scale(1.08)}
 .btn-wa .round{background:rgba(6,33,15,.12)}
 .btn-mail .round{background:rgba(255,255,255,.14)}
-.round svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.round svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .btn-wa:not(:disabled):hover .round svg{transform:translate(1px,-1px) scale(1.1);transition:transform .5s var(--ease)}
-.btn-mail:not(:disabled):hover .round svg{transform:translate(3px,-3px);transition:transform .4s var(--ease)}
+.btn-mail:not(:disabled):hover .round svg{transform:translate(2px,-2px);transition:transform .4s var(--ease)}
 .btn.loading{pointer-events:none}
 .btn.loading .label-txt{opacity:0}
 .spinner{
-  position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
+  position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
   border:2.5px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
 }
 .btn.loading .spinner{opacity:1}
 
 /* footer */
-.foot{margin:14px 0 0;text-align:center;font-size:12px;color:var(--muted);line-height:1.5}
+.foot{margin:10px 0 0;text-align:center;font-size:11.5px;color:var(--muted);line-height:1.5}
 .live{display:inline-flex;align-items:center;gap:6px}
 .live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--wa);animation:ping 1.8s infinite}
 
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
 
+@media (max-width:768px){
+  .body-grid{grid-template-columns:1fr;gap:0}
+  .modal{max-width:480px;padding:20px 18px 16px}
+  .col-r .textarea{height:88px}
+  .actions{grid-template-columns:1fr}
+}
 @media (max-width:480px){
-  .grid2,.actions,.row-2{grid-template-columns:1fr}
+  .grid2,.row-2{grid-template-columns:1fr}
   .title{font-size:20px}
-  .modal{padding:20px 18px 16px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}
@@ -197,6 +214,8 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
 
     <p class="kicker reveal"><i></i>Start a project</p>
     <h2 class="title reveal" id="dlg-title">Tell me what you're building.</h2>
+    <p class="sub reveal">Share a few details about your project. We reply within 5 hours.</p>
+    <div class="divider reveal"></div>
 
     <div class="reveal">
       <div class="progress" aria-hidden="true"><i id="bar"></i></div>
@@ -204,69 +223,78 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
     </div>
 
     <form id="form" novalidate>
-      <div class="grid2 reveal">
-        <div class="field" style="margin-top:14px">
-          <label class="label" for="name">Name<span class="req">*</span></label>
-          <input class="input" id="name" type="text" placeholder="Your name" autocomplete="name">
-        </div>
-        <div class="field" style="margin-top:14px">
-          <label class="label" for="org">Organisation<span class="req">*</span></label>
-          <input class="input" id="org" type="text" placeholder="Company or school name" autocomplete="organization">
-        </div>
-      </div>
+      <div class="body-grid">
+        <div class="col">
+          <h3 class="section-h reveal">Your details</h3>
+          <div class="grid2 reveal">
+            <div class="field" style="margin-top:0">
+              <label class="label" for="name">Name<span class="req">*</span></label>
+              <input class="input" id="name" type="text" placeholder="Your name" autocomplete="name">
+            </div>
+            <div class="field" style="margin-top:0">
+              <label class="label" for="org">Organisation<span class="req">*</span></label>
+              <input class="input" id="org" type="text" placeholder="Company or school name" autocomplete="organization">
+            </div>
+          </div>
 
-      <div class="field reveal">
-        <label class="label" for="email">Email ID<span class="req">*</span></label>
-        <input class="input" id="email" type="email" placeholder="you@company.com" autocomplete="email">
-      </div>
+          <div class="field reveal">
+            <label class="label" for="email">Email ID<span class="req">*</span></label>
+            <input class="input" id="email" type="email" placeholder="you@company.com" autocomplete="email">
+          </div>
 
-      <div class="field reveal">
-        <span class="label">Country &amp; mobile number<span class="req">*</span></span>
-        <div class="row-2">
-          <select class="input" id="country" aria-label="Country">
-            <option value="">Select country</option>
-          </select>
-          <div class="phone">
-            <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
-            <input class="input" id="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
+          <div class="field reveal">
+            <span class="label">Country &amp; mobile number<span class="req">*</span></span>
+            <div class="row-2">
+              <select class="input" id="country" aria-label="Country">
+                <option value="">Select country</option>
+              </select>
+              <div class="phone">
+                <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
+                <input class="input" id="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
+              </div>
+            </div>
+            <p class="hint" id="phoneHint">Select country first</p>
+          </div>
+
+          <div class="field reveal">
+            <label class="label" for="budget">Budget<span class="req">*</span></label>
+            <select class="input" id="budget" disabled>
+              <option value="">Select country first</option>
+            </select>
           </div>
         </div>
-        <p class="hint" id="phoneHint">Select country first</p>
-      </div>
 
-      <div class="field reveal">
-        <label class="label" for="budget">Budget<span class="req">*</span></label>
-        <select class="input" id="budget" disabled>
-          <option value="">Select country first</option>
-        </select>
-      </div>
+        <div class="col col-r">
+          <h3 class="section-h reveal">Project details</h3>
+          <div class="field reveal" style="margin-top:0">
+            <label class="label" for="brief">Project description<span class="req">*</span></label>
+            <textarea class="input textarea" id="brief" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
+          </div>
 
-      <div class="field reveal">
-        <label class="label" for="brief">Project details<span class="req">*</span></label>
-        <textarea class="input textarea" id="brief" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
-      </div>
+          <h3 class="section-h reveal">Confirm &amp; send</h3>
+          <label class="consent reveal" for="agree">
+            <input type="checkbox" id="agree">
+            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
+          </label>
 
-      <label class="consent reveal" for="agree">
-        <input type="checkbox" id="agree">
-        <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-        <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
-      </label>
-
-      <div class="actions reveal">
-        <button class="btn btn-wa" type="button" id="waBtn" disabled>
-          <span class="label-txt">Send a WhatsApp Message</span>
-          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
-          <span class="spinner" aria-hidden="true"></span>
-        </button>
-        <button class="btn btn-mail" type="button" id="mailBtn" disabled>
-          <span class="label-txt">Send an Email</span>
-          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-          <span class="spinner" aria-hidden="true"></span>
-        </button>
+          <div class="actions reveal">
+            <button class="btn btn-wa" type="button" id="waBtn" disabled>
+              <span class="label-txt">Send WhatsApp</span>
+              <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-mail" type="button" id="mailBtn" disabled>
+              <span class="label-txt">Send Email</span>
+              <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
 
-    <p class="foot reveal"><span class="live">Replies within 5 hours</span> · Direct WhatsApp: <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer" style="color:inherit;font-weight:600">+91 87081 67959</a></p>
+    <p class="foot reveal"><span class="live">Replies within 5 hours</span></p>
   </div>
 </div>
 
@@ -347,6 +375,7 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
     COUNTRIES[code] = { name, dial, len, cur, rate };
   });
 
+  /* ---- currency formatting for budget bands ---- */
   const SYM = { USD: '$', INR: '₹', GBP: '£', EUR: '€', JPY: '¥', CNY: '¥', KRW: '₩', PHP: '₱' };
   const nice = (x) => {
     const r = Math.pow(10, Math.max(0, Math.floor(Math.log10(x)) - 1));
@@ -369,7 +398,9 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
     return bands;
   };
 
+  /* ---- DOM bindings ---- */
   const $ = (id) => document.getElementById(id);
+  const overlay = $('overlay'), dlg = $('dlg');
   const name = $('name'), org = $('org'), email = $('email');
   const country = $('country'), phone = $('phone'), dial = $('dial'), phoneHint = $('phoneHint');
   const budget = $('budget'), brief = $('brief'), agree = $('agree');
@@ -380,6 +411,7 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
     .sort((a, b) => a[1].name.localeCompare(b[1].name))
     .forEach(([code, c]) => country.add(new Option(c.name, code)));
 
+  /* ---- pop helper ---- */
   const pop = (el) => el.animate(
     [{ transform: 'scale(.98)' }, { transform: 'scale(1)' }],
     { duration: 300, easing: 'cubic-bezier(.34,1.4,.64,1)' }
@@ -387,6 +419,7 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
   const phoneDigits = () => phone.value.replace(/\D/g, '');
   const emailOk = () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
 
+  /* ---- validation checks ---- */
   const checks = () => {
     const c = COUNTRIES[country.value];
     return {
@@ -541,14 +574,14 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:p
       const txt = btn.querySelector('.label-txt');
       txt.textContent = 'Sent ✓';
       txt.style.opacity = 1;
-      setTimeout(() => { txt.textContent = 'Send an Email'; }, 2000);
+      setTimeout(() => { txt.textContent = 'Send Email'; }, 2000);
       const subject = encodeURIComponent(`Project Inquiry: ${p.org || p.name}`);
       const body = encodeURIComponent(`Name: ${p.name}\nOrganisation: ${p.org}\nEmail: ${p.email}\nPhone: ${p.phone}\nBudget: ${p.budget}\n\nProject Details:\n${p.project}`);
       window.location.href = `mailto:neerajrawatdhani@gmail.com?subject=${subject}&body=${body}`;
     }, 800);
   };
 
-  waBtn.addEventListener('click', () => sendWa());
+  waBtn.addEventListener('click', sendWa);
   mailBtn.addEventListener('click', () => sendMail(mailBtn));
   $('form').addEventListener('submit', (e) => e.preventDefault());
 

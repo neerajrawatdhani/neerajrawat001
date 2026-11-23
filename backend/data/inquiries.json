@@ -134,29 +134,5 @@
     "consentStatement": "Confirmed: Details will not be shared with any third party and will solely be used for project communication.",
     "ip": "::1",
     "userAgent": "Unknown"
-  },
-  {
-    "id": "inq_1793627903723_u6qgo",
-    "timestamp": "2026-11-02T13:58:23.723Z",
-    "name": "Morgan Client",
-    "email": "morgan@client.com",
-    "services": [],
-    "budget": "",
-    "timeline": "",
-    "message": "Testing inquiry through port 4000 to backend 5000",
-    "ip": "::1",
-    "userAgent": "Unknown"
-  },
-  {
-    "id": "inq_1793627903553_332wi",
-    "timestamp": "2026-11-02T13:58:23.553Z",
-    "name": "Alex Designer",
-    "email": "alex@example.com",
-    "services": [],
-    "budget": "",
-    "timeline": "",
-    "message": "Looking for an exact replica website design.",
-    "ip": "::1",
-    "userAgent": "Unknown"
   }
 ]

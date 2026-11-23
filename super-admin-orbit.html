@@ -2742,8 +2742,26 @@
   <!-- JAVASCRIPT: DATA & INTERACTIVITY           -->
   <!-- ========================================== -->
   <script>
-    // 1. Initial State Data
-    const leadsData = [
+    // Universal HTML escape helper
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+    window.escapeHtml = escapeHtml;
+
+    // 1. Initial State Data (with LocalStorage persistence)
+    let leadsData = [];
+    try {
+      const saved = localStorage.getItem('dt_leads_store');
+      if (saved) leadsData = JSON.parse(saved);
+    } catch(e) {}
+    if (!Array.isArray(leadsData) || leadsData.length === 0) {
+      leadsData = [
       {
         id: 1,
         name: 'Ramesh Sharma',
@@ -2899,7 +2917,17 @@
       }
     ];
 
-    const quotationsData = [
+      try { localStorage.setItem('dt_leads_store', JSON.stringify(leadsData)); } catch(e) {}
+    }
+    window.leadsData = leadsData;
+
+    let quotationsData = [];
+    try {
+      const savedQ = localStorage.getItem('dt_quotes_store');
+      if (savedQ) quotationsData = JSON.parse(savedQ);
+    } catch(e) {}
+    if (!Array.isArray(quotationsData) || quotationsData.length === 0) {
+      quotationsData = [
       {
         id: 'DT-2026-088',
         client: 'Gurukulam Academy',
@@ -2967,6 +2995,9 @@
         notes: 'QR code attendance system deployed and handed over.'
       }
     ];
+      try { localStorage.setItem('dt_quotes_store', JSON.stringify(quotationsData)); } catch(e) {}
+    }
+    window.quotationsData = quotationsData;
 
     const defaultProductsList = [
       {
@@ -3112,7 +3143,7 @@
           <td>
             <div style="display:flex; gap:6px;">
               <a href="https://wa.me/${l.phone.replace(/[^0-9]/g, '')}" target="_blank" class="btn-act wa" title="Chat on WhatsApp">💬</a>
-              <button class="btn-act" onclick="openFollowupModal(${l.id}, 'lead')" title="Log Follow-up">⏳</button>
+              <button class="btn-act" onclick="openFollowupModal('${l.id}', 'lead')" title="Log Follow-up">⏳</button>
             </div>
           </td>
         </tr>
@@ -3137,7 +3168,7 @@
           <td><strong style="font-size:12.5px; color:var(--primary-text); font-family:'JetBrains Mono'; background:var(--primary-subtle); padding:3px 8px; border-radius:6px; white-space:nowrap;">${l.budget}</strong></td>
           <td>${getFollowupBadgeHtml(l.followupDate, l.isToday)}</td>
           <td>
-            <select class="form-select" style="padding:4px 8px; font-size:12px; width:auto;" onchange="updateLeadStatus(${l.id}, this.value)">
+            <select class="form-select" style="padding:4px 8px; font-size:12px; width:auto;" onchange="updateLeadStatus('${l.id}', this.value)">
               <option value="New" ${l.status==='New'?'selected':''}>New</option>
               <option value="Follow-up Scheduled" ${l.status==='Follow-up Scheduled'?'selected':''}>Follow-up</option>
               <option value="In Discussion" ${l.status==='In Discussion'?'selected':''}>In Discussion</option>
@@ -3151,36 +3182,70 @@
             <div style="display:flex; gap:6px;">
               <a href="https://wa.me/${l.phone.replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(l.name)},%20Neeraj%20Rawat%20from%20Dhani%20Tech%20here." target="_blank" class="btn-act wa" title="WhatsApp">💬</a>
               <a href="tel:${l.phone}" class="btn-act" title="Call">📞</a>
-              <button class="btn-act" onclick="openFollowupModal(${l.id}, 'lead')" title="Update Follow-up">⏳</button>
+              <button class="btn-act" onclick="openFollowupModal('${l.id}', 'lead')" title="Update Follow-up">⏳</button>
+              <button class="btn-act" onclick="deleteLead('${l.id}')" title="Delete Lead" style="color:#DC2626; border-color:#FECACA;">🗑️</button>
             </div>
           </td>
         </tr>
       `).join('');
     }
+    window.renderLeadsTable = renderLeadsTable;
 
-    function renderQuotationsTable(data) {
-      const list = data || quotationsData;
-      const tbody = document.getElementById('quotationsTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = list.map(q => `
-        <tr>
-          <td><strong style="color:var(--primary); font-family:'JetBrains Mono';">${q.id}</strong></td>
-          <td><div style="font-weight:700;">${q.client}</div></td>
-          <td><span style="font-size:12px; color:var(--text-muted);">${q.category}</span></td>
-          <td><strong style="font-size:14px;">${q.value}</strong></td>
-          <td>${getStatusPillHtml(q.status)}</td>
-          <td>${getFollowupBadgeHtml(q.followupDue, q.isDue)}</td>
-          <td style="max-width:240px; font-size:12px; color:var(--text-muted); line-height:1.3;">${q.notes}</td>
-          <td>
-            <div style="display:flex; gap:6px;">
-              <a href="https://wa.me/919779094101?text=Quotation%20${q.id}%20Follow-up%20for%20${encodeURIComponent(q.client)}" target="_blank" class="btn-act wa" title="WhatsApp Proposal">💬</a>
-              <button class="btn-act" onclick="window.print()" title="Print / PDF">🖨️</button>
-              <button class="btn-act" onclick="openFollowupModal('${q.id}', 'quote')" title="Update Follow-up">⏳</button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+    function renderQuotationsTable(filter = 'all') {
+      const rowsContainer = document.getElementById('qt-rows');
+      if (!rowsContainer) return;
+
+      let list = quotationsData;
+      if (Array.isArray(filter)) {
+        list = filter;
+      } else if (filter === 'due') {
+        list = quotationsData.filter(q => q.isDue || q.followupDue === 'Today');
+      } else if (filter === 'won') {
+        list = quotationsData.filter(q => (q.status || '').toLowerCase() === 'won');
+      }
+
+      if (list.length === 0) {
+        rowsContainer.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:36px; color:#6B7085; font-size:14px;">No quotations found in this category.</td></tr>';
+        return;
+      }
+
+      rowsContainer.innerHTML = list.map(q => {
+        const isWon = (q.status || '').toLowerCase() === 'won';
+        const isDisc = (q.status || '').toLowerCase().includes('disc');
+        const stageCls = isWon ? 'won' : (isDisc ? 'disc' : 'sched');
+        const dueCls = (q.isDue || q.followupDue === 'Today') ? 'today' : '';
+        const dueIcon = dueCls ? '<svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>' : '';
+        const phoneClean = (q.phone || '918708167959').replace(/[^0-9]/g, '');
+
+        return `
+          <tr data-s="${stageCls} ${dueCls}">
+            <td>
+              <a class="qno" href="#" onclick="viewQuotationPreview('${q.id}'); return false;" title="Click to view &amp; print PDF proposal">${q.id}</a>
+            </td>
+            <td class="client"><strong>${escapeHtml(q.client)}</strong></td>
+            <td class="cat">${escapeHtml(q.category || 'General')}</td>
+            <td class="val"><strong>${q.value}</strong></td>
+            <td><span class="stage ${stageCls}">${escapeHtml(q.status)}</span></td>
+            <td><span class="due ${dueCls}">${dueIcon}${escapeHtml(q.followupDue)}</span></td>
+            <td class="note" style="max-width:220px;">${escapeHtml(q.notes || '')}</td>
+            <td>
+              <div class="acts" style="display:flex; align-items:center; gap:5px;">
+                <a href="https://wa.me/${phoneClean}?text=Hello%20${encodeURIComponent(q.client)}%2C%20regarding%20Quotation%20${q.id}%20(${encodeURIComponent(q.value)})..." target="_blank" class="ib" title="Send WhatsApp Message" style="text-decoration:none;">
+                  <svg class="wig" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>
+                </a>
+                <button class="ib" type="button" aria-label="Print PDF" onclick="viewQuotationPreview('${q.id}')" title="Print Official PDF Quotation">
+                  <svg class="pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M6 14h12v7H6z"/></svg>
+                </button>
+                <button class="ib" type="button" aria-label="Delete" onclick="deleteQuotation('${q.id}')" title="Delete Quotation" style="color:#DC2626; border-color:#FECACA;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
+    window.renderQuotationsTable = renderQuotationsTable;
 
     function renderProductsGrid() {
       const grid = document.getElementById('productsGrid');
@@ -3382,7 +3447,7 @@
       document.getElementById('fuNextDate').value = today;
 
       if (type === 'lead') {
-        const item = leadsData.find(l => l.id == id);
+        const item = leadsData.find(l => String(l.id) === String(id));
         if (item) {
           document.getElementById('fuClientDisplay').value = item.name + ' (' + item.company + ')';
           document.getElementById('fuStatusSelect').value = item.status;
@@ -3467,7 +3532,7 @@
       const notes = document.getElementById('fuActionNotes').value;
 
       if (type === 'lead') {
-        const lead = leadsData.find(l => l.id == id);
+        const lead = leadsData.find(l => String(l.id) === String(id));
         if (lead) {
           lead.status = status;
           lead.followupDate = nextDate;
@@ -3491,7 +3556,7 @@
     }
 
     function updateLeadStatus(id, newStatus) {
-      const lead = leadsData.find(l => l.id == id);
+      const lead = leadsData.find(l => String(l.id) === String(id));
       if (lead) {
         lead.status = newStatus;
         renderOverviewRecentLeads();
@@ -4181,164 +4246,112 @@
     // =========================================================
     // PERSISTENCE & FULL QUOTATIONS & LEADS MANAGEMENT
     // =========================================================
-    let leadsData = [];
-    try {
-      const savedLeads = localStorage.getItem('dt_leads_store');
-      if (savedLeads) leadsData = JSON.parse(savedLeads);
-    } catch(e) {}
-    if (!leadsData || leadsData.length === 0) {
-      leadsData = [
-        { id: 1, name: "Dr. Alok Verma", company: "Verma Dental Clinic", phone: "+91 98765 43210", email: "alok@vermadental.com", source: "WhatsApp", service: "Full-Stack Web App", budget: "₹45,000", followupDate: "2026-11-21", isToday: true, status: "Follow-up Scheduled", notes: "Clinic requested patient appointment booking & WhatsApp notification workflow." },
-        { id: 2, name: "Sarah Jenkins", company: "Aura Creative Studio", phone: "+1 (555) 349-2041", email: "sarah@auracreative.io", source: "Website Form", service: "UI/UX & Web Design", budget: "$1,800 (~₹1.5L)", followupDate: "2026-11-21", isToday: true, isInternational: true, flag: "🇺🇸", status: "In Discussion", notes: "Figma redesign & interactive motion landing page for branding studio." },
-        { id: 3, name: "Gurukulam Academy", company: "Gurukulam Trust", phone: "+91 94123 56789", email: "admin@gurukulam.edu", source: "Direct Call", service: "Custom ERP & Portal", budget: "₹1,20,000", followupDate: "2026-11-21", isToday: true, status: "Quotation Sent", notes: "Principal requested demo of student login & report card generation." },
-        { id: 4, name: "Vikram Singhania", company: "Singhania Logistics", phone: "+91 99887 76655", email: "vikram@singhanialogistics.in", source: "WhatsApp", service: "Fleet Management App", budget: "₹2,50,000", followupDate: "2026-11-23", isToday: false, status: "New", notes: "GPS tracking and daily trip accounting mobile-responsive web dashboard." },
-        { id: 5, name: "Tariq Al-Mansoor", company: "Gulf Tech Solutions", phone: "+971 50 123 4567", email: "tariq@gulftech.ae", source: "Website Form", service: "E-Commerce Web Portal", budget: "AED 6,500 (~₹1.48L)", followupDate: "2026-11-22", isToday: false, isInternational: true, flag: "🇦🇪", status: "Follow-up Scheduled", notes: "Bilingual (Arabic/English) multi-vendor product showcase." }
-      ];
-      localStorage.setItem('dt_leads_store', JSON.stringify(leadsData));
-    }
-
-    let quotationsData = [];
-    try {
-      const savedQuotes = localStorage.getItem('dt_quotes_store');
-      if (savedQuotes) quotationsData = JSON.parse(savedQuotes);
-    } catch(e) {}
-    if (!quotationsData || quotationsData.length === 0) {
-      quotationsData = [
-        {
-          id: 'DT-2026-088',
-          client: 'Gurukulam Academy',
-          phone: '+91 94123 56789',
-          category: 'Education & EdTech',
-          value: '₹1,20,000',
-          valNum: 120000,
-          status: 'In Discussion',
-          followupDue: 'Today',
-          isDue: true,
-          scope: 'Custom School ERP Portal with Fee Collection & Student Login',
-          notes: 'Proposal sent. Principal requested demo of student login.'
-        },
-        {
-          id: 'DT-2026-087',
-          client: 'Verma Dental Clinic',
-          phone: '+91 98765 43210',
-          category: 'Healthcare & Clinic',
-          value: '₹45,000',
-          valNum: 45000,
-          status: 'Follow-up Scheduled',
-          followupDue: 'Today',
-          isDue: true,
-          scope: 'Clinic Landing Page with WhatsApp Appointment System',
-          notes: 'Call at 5:30 PM to discuss WhatsApp booking integration.'
-        },
-        {
-          id: 'DT-2026-086',
-          client: 'Sharma Traders',
-          phone: '+91 98112 23344',
-          category: 'E-Commerce & Retail',
-          value: '₹80,000',
-          valNum: 80000,
-          status: 'In Discussion',
-          followupDue: 'Today',
-          isDue: true,
-          scope: 'Wholesale B2B Catalog & GST Billing Automation',
-          notes: 'Need client-specific price lists and GST invoice print format.'
-        },
-        {
-          id: 'DT-2026-085',
-          client: 'BlueWave Digital',
-          phone: '+1 (555) 789-0123',
-          category: 'Digital Agency / Marketing',
-          value: '₹1,50,000',
-          valNum: 150000,
-          status: 'In Discussion',
-          followupDue: '23 Nov',
-          isDue: false,
-          scope: 'Interactive Motion Agency Website with 3D Canvas',
-          notes: 'Pitching motion components and performance optimization.'
-        },
-        {
-          id: 'DT-2026-084',
-          client: 'Apex Realty Developers',
-          phone: '+91 98990 01122',
-          category: 'Real Estate & Builder',
-          value: '₹3,50,000',
-          valNum: 350000,
-          status: 'Won',
-          followupDue: 'Completed',
-          isDue: false,
-          scope: 'Luxury Villa Virtual Tour, 3D Master Plan & Lead Funnel',
-          notes: 'Signed contract. 50% advance received. Project underway.'
-        },
-        {
-          id: 'DT-2026-083',
-          client: 'Urban Brew Cafes',
-          phone: '+91 97110 09988',
-          category: 'Corporate / Enterprise',
-          value: '₹2,35,000',
-          valNum: 235000,
-          status: 'Won',
-          followupDue: 'Completed',
-          isDue: false,
-          scope: 'Multi-outlet QR Menu, Loyalty Club & Delivery Web App',
-          notes: 'Completed delivery. Maintenance retainer active.'
-        }
-      ];
-      localStorage.setItem('dt_quotes_store', JSON.stringify(quotationsData));
-    }
-
-    // Lead Deletion
-    window.deleteLead = function(id) {
+    function deleteLead(id) {
       if (!confirm('Are you sure you want to delete this lead?')) return;
-      leadsData = leadsData.filter(l => l.id != id);
-      localStorage.setItem('dt_leads_store', JSON.stringify(leadsData));
-      renderLeadsTable();
-      renderOverviewRecentLeads();
-      updateLeadCounters();
+      leadsData = leadsData.filter(l => String(l.id) !== String(id));
+      window.leadsData = leadsData;
+      try { localStorage.setItem('dt_leads_store', JSON.stringify(leadsData)); } catch(e) {}
+      if (typeof renderLeadsTable === 'function') renderLeadsTable();
+      if (typeof renderOverviewRecentLeads === 'function') renderOverviewRecentLeads();
+      if (typeof updateLeadCounters === 'function') updateLeadCounters();
+      try {
+        fetch('/api/admin/leads', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        }).catch(() => {});
+        fetch('/api/inquiries/' + encodeURIComponent(id), { method: 'DELETE' }).catch(() => {});
+      } catch(e) {}
       alert('Lead deleted successfully.');
-    };
+    }
+    window.deleteLead = deleteLead;
 
     function updateLeadCounters() {
-      const cnt = leadsData.length;
+      const cnt = (typeof leadsData !== 'undefined' ? leadsData : window.leadsData || []).length;
       const sbEl = document.getElementById('sbLeadsCount');
       if (sbEl) sbEl.textContent = cnt;
       const fltrEl = document.getElementById('fltrAllCount');
       if (fltrEl) fltrEl.textContent = cnt;
     }
+    window.updateLeadCounters = updateLeadCounters;
 
-    // Quotation Deletion
-    window.deleteQuotation = function(id) {
+    function deleteQuotation(id) {
       if (!confirm('Are you sure you want to delete quotation ' + id + '?')) return;
-      quotationsData = quotationsData.filter(q => q.id !== id);
-      localStorage.setItem('dt_quotes_store', JSON.stringify(quotationsData));
-      renderQuotationsTable();
-      updateQuotationStats();
+      quotationsData = quotationsData.filter(q => String(q.id) !== String(id));
+      window.quotationsData = quotationsData;
+      try { localStorage.setItem('dt_quotes_store', JSON.stringify(quotationsData)); } catch(e) {}
+      if (typeof renderQuotationsTable === 'function') renderQuotationsTable();
+      if (typeof updateQuotationStats === 'function') updateQuotationStats();
+      try {
+        fetch('/api/admin/quotation?id=' + encodeURIComponent(id), {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        }).catch(() => {});
+      } catch(e) {}
       alert('Quotation ' + id + ' deleted successfully.');
-    };
+    }
+    window.deleteQuotation = deleteQuotation;
 
     function updateQuotationStats() {
-      const totalSent = quotationsData.reduce((acc, q) => acc + (q.valNum || 0), 0);
-      const dueToday = quotationsData.filter(q => q.isDue || q.followupDue === 'Today');
+      const qList = (typeof quotationsData !== 'undefined' ? quotationsData : window.quotationsData || []);
+      const totalSent = qList.reduce((acc, q) => acc + (q.valNum || 0), 0);
+      const dueToday = qList.filter(q => q.isDue || q.followupDue === 'Today');
       const dueVal = dueToday.reduce((acc, q) => acc + (q.valNum || 0), 0);
-      const inDisc = quotationsData.filter(q => (q.status || '').toLowerCase().includes('disc'));
+      const inDisc = qList.filter(q => (q.status || '').toLowerCase().includes('disc'));
       const inDiscVal = inDisc.reduce((acc, q) => acc + (q.valNum || 0), 0);
-      const won = quotationsData.filter(q => (q.status || '').toLowerCase() === 'won');
+      const won = qList.filter(q => (q.status || '').toLowerCase() === 'won');
       const wonVal = won.reduce((acc, q) => acc + (q.valNum || 0), 0);
 
       // Update sidebar alert
       const sbQuotesAlert = document.getElementById('sbQuotesAlert');
       if (sbQuotesAlert) sbQuotesAlert.textContent = dueToday.length + ' Due';
+
+      // Update tab count badges in view-quotations
+      const tabs = document.getElementById('qt-tabs');
+      if (tabs) {
+        const tabAllCnt = tabs.querySelector('.tab[data-f="all"] .cnt');
+        if (tabAllCnt) tabAllCnt.textContent = qList.length;
+        const tabDueCnt = tabs.querySelector('.tab[data-f="due"] .cnt');
+        if (tabDueCnt) tabDueCnt.textContent = dueToday.length;
+        const tabWonCnt = tabs.querySelector('.tab[data-f="won"] .cnt');
+        if (tabWonCnt) tabWonCnt.textContent = won.length;
+      }
+
+      // Update stat cards
+      const totalSentVal = document.querySelector('#view-quotations .stat.sent .stat-val span');
+      if (totalSentVal) totalSentVal.textContent = totalSent.toLocaleString('en-IN');
+      const totalSentCnt = document.querySelector('#view-quotations .stat.sent .stat-note span');
+      if (totalSentCnt) totalSentCnt.textContent = qList.length;
+
+      const urgentCnt = document.querySelector('#view-quotations .stat.urgent .stat-val span');
+      if (urgentCnt) urgentCnt.textContent = dueToday.length;
+      const urgentVal = document.querySelector('#view-quotations .stat.urgent .stat-note span');
+      if (urgentVal) urgentVal.textContent = dueVal.toLocaleString('en-IN');
+
+      const discVal = document.querySelector('#view-quotations .stat.disc .stat-val span');
+      if (discVal) discVal.textContent = inDiscVal.toLocaleString('en-IN');
+      const discCnt = document.querySelector('#view-quotations .stat.disc .stat-note span');
+      if (discCnt) discCnt.textContent = inDisc.length;
+
+      const wonValEl = document.querySelector('#view-quotations .stat.won .stat-val span');
+      if (wonValEl) wonValEl.textContent = wonVal.toLocaleString('en-IN');
     }
+    window.updateQuotationStats = updateQuotationStats;
 
     // Dynamic Render of Quotations Table (Motion Design)
     window.renderQuotationsTable = function(filter = 'all') {
       const rowsContainer = document.getElementById('qt-rows');
       if (!rowsContainer) return;
 
-      let list = quotationsData;
-      if (filter === 'due') {
-        list = quotationsData.filter(q => q.isDue || q.followupDue === 'Today');
+      const qList = (typeof quotationsData !== 'undefined' ? quotationsData : window.quotationsData || []);
+      let list = qList;
+      if (Array.isArray(filter)) {
+        list = filter;
+      } else if (filter === 'due') {
+        list = qList.filter(q => q.isDue || q.followupDue === 'Today');
       } else if (filter === 'won') {
-        list = quotationsData.filter(q => (q.status || '').toLowerCase() === 'won');
+        list = qList.filter(q => (q.status || '').toLowerCase() === 'won');
       }
 
       if (list.length === 0) {
@@ -4471,7 +4484,7 @@
           <td><strong style="font-size:12.5px; color:var(--primary-text); font-family:'JetBrains Mono'; background:var(--primary-subtle); padding:3px 8px; border-radius:6px; white-space:nowrap;">${l.budget}</strong></td>
           <td>${getFollowupBadgeHtml(l.followupDate, l.isToday)}</td>
           <td>
-            <select class="form-select" style="padding:4px 8px; font-size:12px; width:auto;" onchange="updateLeadStatus(${l.id}, this.value)">
+            <select class="form-select" style="padding:4px 8px; font-size:12px; width:auto;" onchange="updateLeadStatus('${l.id}', this.value)">
               <option value="New" ${l.status==='New'?'selected':''}>New</option>
               <option value="Follow-up Scheduled" ${l.status==='Follow-up Scheduled'?'selected':''}>Follow-up</option>
               <option value="In Discussion" ${l.status==='In Discussion'?'selected':''}>In Discussion</option>
@@ -4485,13 +4498,66 @@
             <div style="display:flex; gap:6px;">
               <a href="https://wa.me/${(l.phone || '').replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(l.name)},%20Neeraj%20Rawat%20from%20Dhani%20Tech%20here." target="_blank" class="btn-act wa" title="WhatsApp">💬</a>
               <a href="tel:${l.phone}" class="btn-act" title="Call">📞</a>
-              <button class="btn-act" onclick="openFollowupModal(${l.id}, 'lead')" title="Update Follow-up">⏳</button>
-              <button class="btn-act" onclick="deleteLead(${l.id})" title="Delete Lead" style="color:#DC2626; border-color:#FECACA;">🗑️</button>
+              <button class="btn-act" onclick="openFollowupModal('${l.id}', 'lead')" title="Update Follow-up">⏳</button>
+              <button class="btn-act" onclick="deleteLead('${l.id}')" title="Delete Lead" style="color:#DC2626; border-color:#FECACA;">🗑️</button>
             </div>
           </td>
         </tr>
       `).join('');
     };
+
+    // Auto-sync inquiries from backend API if available
+    async function syncInquiriesFromBackend() {
+      try {
+        const res = await fetch('/api/inquiries');
+        if (!res.ok) return;
+        const data = await res.json();
+        const inquiries = data.inquiries || data.leads || [];
+        if (!Array.isArray(inquiries) || !inquiries.length) return;
+
+        let changed = false;
+        inquiries.forEach(inq => {
+          const exists = leadsData.some(l => String(l.id) === String(inq.id));
+          if (!exists) {
+            leadsData.unshift({
+              id: inq.id,
+              name: inq.name || 'Website Inquirer',
+              company: inq.company || inq.organization || 'Direct Lead',
+              countryCode: '+91',
+              flag: '🇮🇳',
+              phone: inq.mobile || inq.phone || '—',
+              email: inq.email || '—',
+              source: (inq.channel || 'Website Form'),
+              service: inq.service || 'Web & App Development',
+              budget: inq.budget || 'To be discussed',
+              status: inq.status || 'New',
+              followupDate: inq.followUpDate || 'Today',
+              isToday: true,
+              notes: inq.message || inq.notes || 'Inquiry received via website form.'
+            });
+            changed = true;
+          }
+        });
+        if (changed) {
+          try { localStorage.setItem('dt_leads_store', JSON.stringify(leadsData)); } catch(e) {}
+          if (typeof renderLeadsTable === 'function') renderLeadsTable();
+          if (typeof renderOverviewRecentLeads === 'function') renderOverviewRecentLeads();
+          if (typeof updateLeadCounters === 'function') updateLeadCounters();
+        }
+      } catch(e) {}
+    }
+    window.syncInquiriesFromBackend = syncInquiriesFromBackend;
+
+    // Trigger immediate render of quotations and leads on script load
+    try {
+      if (typeof renderQuotationsTable === 'function') renderQuotationsTable();
+      if (typeof updateQuotationStats === 'function') updateQuotationStats();
+      if (typeof renderLeadsTable === 'function') renderLeadsTable();
+      if (typeof updateLeadCounters === 'function') updateLeadCounters();
+      syncInquiriesFromBackend();
+    } catch(e) {
+      console.error('Error during initial render:', e);
+    }
 </script>
 </body>
 </html>

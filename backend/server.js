@@ -481,12 +481,30 @@ app.get('/api/inquiries', (req, res) => {
 app.delete('/api/inquiries/:id', (req, res) => {
   const id = req.params.id;
   const inquiries = readJson(INQUIRIES_FILE) || [];
-  const filtered = inquiries.filter(i => i.id !== id);
+  const filtered = inquiries.filter(i => String(i.id) !== String(id));
   if (filtered.length === inquiries.length) {
     return res.status(404).json({ success: false, error: "Inquiry not found" });
   }
   writeJson(INQUIRIES_FILE, filtered);
   res.json({ success: true, message: `Inquiry ${id} deleted` });
+});
+
+app.delete('/api/admin/leads', (req, res) => {
+  const id = req.body?.id || req.query?.id;
+  if (!id) return res.status(400).json({ success: false, error: 'Lead ID required' });
+  const inquiries = readJson(INQUIRIES_FILE) || [];
+  const filtered = inquiries.filter(i => String(i.id) !== String(id));
+  writeJson(INQUIRIES_FILE, filtered);
+  res.json({ success: true, message: `Lead ${id} deleted` });
+});
+
+app.get('/api/admin/leads', (req, res) => {
+  const inquiries = readJson(INQUIRIES_FILE) || [];
+  res.json({ success: true, count: inquiries.length, leads: inquiries, inquiries });
+});
+
+app.all('/api/admin/quotation', (req, res) => {
+  res.json({ success: true, message: 'Quotation processed' });
 });
 
 // Stats: supports GET, POST, and HEAD without throwing 404

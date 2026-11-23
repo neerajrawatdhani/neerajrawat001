@@ -80,14 +80,18 @@
   background:rgba(255,255,255,.48) !important;
 }
 .modal__panel.motion-dialog{
-  position:relative;width:100%;max-width:440px;margin:auto 0 !important;
-  max-height:none !important;overflow:visible !important;
-  background:var(--m-panel);border-radius:22px;padding:22px 22px 20px;
+  position:relative;width:100%;max-width:880px !important;margin:auto 0 !important;
+  max-height:calc(100dvh - 24px);overflow-y:auto;
+  background:var(--m-panel);border-radius:24px;padding:22px 28px 18px;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
   transform:translateY(28px) scale(.96);opacity:0;
   transition:transform .6s var(--m-spring),opacity .4s var(--m-ease);
   touch-action:pan-y;overscroll-behavior:contain;
+  scrollbar-width:thin !important;scrollbar-color:rgba(17,18,23,.2) transparent !important;
 }
+.modal__panel.motion-dialog::-webkit-scrollbar{display:block !important;width:5px !important}
+.modal__panel.motion-dialog::-webkit-scrollbar-track{background:transparent !important}
+.modal__panel.motion-dialog::-webkit-scrollbar-thumb{background:rgba(17,18,23,.2) !important;border-radius:99px !important}
 .modal.open .modal__panel.motion-dialog{transform:none;opacity:1}
 .modal.closing .modal__panel.motion-dialog{transform:translateY(20px) scale(.97);opacity:0}
 
@@ -1356,7 +1360,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
     <div class="ld__pill" style="--k:2;--c:#4a3540;--t:#E8E4E0;--dir:1"><span>App development</span></div>
     <div class="ld__pill" style="--k:3;--c:#7a8670;--t:#F3EEEC;--dir:-1"><span>UI/UX design</span></div>
     <div class="ld__pill" style="--k:4;--c:#a4552c;--t:#F3EEEC;--dir:1"><span>Graphic design</span></div>
-    <div class="ld__pill" style="--k:5;--c:#5c3e2e;--t:#F3EEEC;--dir:-1"><span>My Story</span></div>
+    <div class="ld__pill" style="--k:5;--c:#5c3e2e;--t:#F3EEEC;--dir:-1"><span>Photography</span></div>
     <div class="ld__pill" style="--k:6;--c:#1b4d3e;--t:#F3EEEC;--dir:1"><span>Shop</span></div>
     <div class="ld__pill" style="--k:7;--c:#C4B0B0;--t:#1A1818;--dir:-1"><span>Photography</span></div>
   </div>
@@ -1379,7 +1383,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
         <li><button data-door="1"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">App Development</span></button></li>
         <li><button data-door="2"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">UI/UX Design</span></button></li>
         <li><button data-door="3"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Graphic Design</span></button></li>
-        <li><button data-door="4"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">My story</span></button></li>
+        <li><button data-door="4"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Photography</span></button></li>
         <li><button data-door="5"><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Shop</span></button></li>
         <li><button data-contact><span data-h="y 0 -2|o .8 1" data-hs="320 22" data-ht="button">Contact</span></button></li>
       </ul>
@@ -1550,14 +1554,14 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
           </button>
         </li>
         <li class="unit" style="--i:4;--door:#5c3e2e;--door-dk:#473024">
-          <button class="doorway" aria-label="Open the My Story door">
+          <button class="doorway" aria-label="Open the Photography door">
             <span class="casing"></span>
             <span class="opening">
               <span class="room"></span>
               <span class="spill"></span>
               <span class="door">
                 <span class="door__flute"></span>
-                <span class="plate">My Story</span>
+                <span class="plate">Photography</span>
                 <span class="handle"><span class="handle__lever"></span><span class="handle__lock"></span></span>
                 <span class="door__shade"></span>
                 <span class="leak"></span>
@@ -1697,8 +1701,8 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
       <button class="sf__ghost" data-go="works">See my work</button>
     </div>
     <div class="sf__cols">
-      <div><h3>Work</h3><ul class="work"><li><a href="web-developer/" data-door="0">Web Development</a></li><li><a href="app-developer/" data-door="1">App Development</a></li><li><a href="ui-ux-designer/" data-door="2">UI/UX Design</a></li><li><a href="graphic-designer/" data-door="3">Graphic Design</a></li><li><a href="#about" data-door="4">My Story</a></li><li><a href="/shop" data-door="5">Shop</a></li><li><a href="photographer/" data-door="6">Photography</a></li></ul></div>
-      <div><h3>Navigate</h3><ul><li><a href="./" data-go="home">Home</a></li><li><a href="./#about" data-go="about">My story</a></li><li><button data-contact>Contact</button></li><li><a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer">WhatsApp: +91 87081 67959</a></li></ul></div>
+      <div><h3>Work</h3><ul class="work"><li><a href="web-developer/" data-door="0">Web Development</a></li><li><a href="app-developer/" data-door="1">App Development</a></li><li><a href="ui-ux-designer/" data-door="2">UI/UX Design</a></li><li><a href="graphic-designer/" data-door="3">Graphic Design</a></li><li><a href="photographer/" data-door="4">Photography</a></li><li><a href="/shop" data-door="5">Shop</a></li></ul></div>
+      <div><h3>Navigate</h3><ul><li><a href="./" data-go="home">Home</a></li><li><a href="photographer/" data-door="4">Photography</a></li><li><a href="./#about" data-go="about">My story</a></li><li><a href="/shop">Shop</a></li><li><button data-contact>Contact</button></li></ul></div>
       <div><h3>Status</h3><ul><li class="st">Available for work</li><li class="st">Remote-first, worldwide</li><li class="st">Local time <span data-ftime>—</span></li></ul></div>
     </div>
     <div class="sf__bot"><span>© <span data-fyear>2026</span> Neeraj Rawat · EduDhani. Designed and built by Neeraj.</span><span class="sf__legal"><a href="legal/" target="_top">Privacy &amp; credits</a></span><button data-go="home">Back to top ↑</button></div>
@@ -1907,7 +1911,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
       <button class="pill pill--dark" id="mDone" type="button" style="margin-top:12px;padding:10px 24px;border-radius:12px;border:0;background:var(--ink);color:#fff;cursor:pointer;font-weight:600">Close</button>
     </div>
 
-    <p class="foot reveal"><span class="live">Replies within 5 hours</span> · Direct WhatsApp: <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer" style="color:inherit;font-weight:600">+91 87081 67959</a></p>
+    <p class="foot reveal"><span class="live">Replies within 5 hours</span></p>
   </div>
 </div>
 
@@ -2187,7 +2191,7 @@ function closeLayer(el, after){
   setTimeout(() => { el.hidden = true; el.classList.remove('closing'); startScroll(); after?.(); }, 460);
 }
 // nav menu
-const NAV = [['Home','home'],['Web Development',0],['App Development',1],['UI/UX Design',2],['Graphic Design',3],['My story',4],['Shop',5],['Contact',null]];
+const NAV = [['Home','home'],['Web Development',0],['App Development',1],['UI/UX Design',2],['Graphic Design',3],['Photography',4],['Shop',5],['Contact','contact']];
 const navm = $('#navm');
 $('#navList').innerHTML = NAV.map(([l, id], i) =>
   `<li><button class="navm__item" style="--d:${i * 45 + 80}ms" data-i="${i}"><small>0${i + 1}</small><span>${l}</span></button></li>`).join('');
@@ -3401,18 +3405,8 @@ document.addEventListener('click', e => {
   const dr = e.target.closest('[data-door]');
   if (dr){
     const dIdx = +dr.dataset.door;
-    if (dIdx === 4){
-      const storyEl = document.getElementById('about');
-      if (storyEl){
-        if (window.lenis) lenis.scrollTo(storyEl, { duration: 1.2, easing: x => 1 - Math.pow(1 - x, 3) });
-        else storyEl.scrollIntoView({ behavior: 'smooth' });
-      }
-      return;
-    }
-    if (dIdx === 5){
-      window.location.href = '/shop';
-      return;
-    }
+
+
     window.openDoor?.(dIdx);
     return;
   }
@@ -3977,8 +3971,8 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
 /* ---------- Doors: hover cracks a door open; click swings it open and carries you through it ---------- */
 (function doors(){
   // each door is its own page (/photographer etc.)
-  const ROUTES = ['web-developer/', 'app-developer/', 'ui-ux-designer/', 'graphic-designer/', '#about', '/shop', 'photographer/'];
-  const SLUGS = ['web-developer', 'app-developer', 'ui-ux-designer', 'graphic-designer', 'my-story', 'shop', 'photographer'];
+  const ROUTES = ['web-developer/', 'app-developer/', 'ui-ux-designer/', 'graphic-designer/', 'photographer/', '/shop', 'photographer/'];
+  const SLUGS = ['web-developer', 'app-developer', 'ui-ux-designer', 'graphic-designer', 'photographer', 'shop', 'photographer'];
   // a link like …#photographer lands at the doors and walks straight through that one
   const HASH_DOOR = SLUGS.indexOf(decodeURIComponent(location.hash.slice(1)));
   if (HASH_DOOR >= 0){
@@ -4038,10 +4032,10 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
      Opening the door reveals that same live wall, so there is no page swap to glitch. */
   const wallv = $('#wallv');
   // every door has its own room, loaded inside this page, so stepping in and coming back never reloads anything
-  const frames = [], ready = [], TITLES = ['Web Development', 'App Development', 'UI/UX Design', 'Graphic Design', 'My Story', 'Shop', 'Photography'];
+  const frames = [], ready = [], TITLES = ['Web Development', 'App Development', 'UI/UX Design', 'Graphic Design', 'Photography', 'Shop', 'Photography'];
   let frame = null, frameReady = false, cur = 0, inWall = false, pushed = false, savedGap = null;
   function loadRoom(i){
-    if (i === 4 || i === 5) return;
+    if (i === 5){ ready[5] = true; return; }
     if (frames[i]) return;
     const f = document.createElement('iframe');
     const cleanRoute = ROUTES[i].replace(/^\/+/, '');
@@ -4085,7 +4079,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
     ['App Development', 'From the first idea to the app store', ['Product scoping & user flows', 'Interface design', 'Cross-platform development', 'Device testing & store launch', 'Analytics, monitoring & updates']],
     ['UI/UX Design', 'Research first, pixels second', ['Brand & business needs analysis', 'User & competitor research', 'Information architecture & flows', 'Wireframes & high-fidelity UI', 'Interactive prototypes & testing']],
     ['Graphic Design', 'Visual content true to the brand', ['Brand, audience & tone analysis', 'Built around brand guidelines', 'Posters & social media creatives', 'Strong type & clear hierarchy', 'Every format each platform needs']],
-    ['My Story', 'Journey, milestones & philosophy', ['Over a decade of craft', 'From freelancer to agency lead', 'Cross-discipline expertise', 'Philosophy & working values', 'Explore the interactive timeline']],
+    ['Photography', 'The eye behind every layout & frame', ['Architecture, concerts & sport', 'Nature & product photography', 'Visual stories & compositions', 'Explore the interactive 3D gallery', 'Light and composition first']],
     ['Shop', 'Instant digital products & templates', ['Automated Excel sheets & trackers', 'Tax & financial calculators', 'Freelance contract templates', 'Instant checkout & direct download', 'Lifetime updates & support']],
     ['Photography', 'The eye behind every layout', ['Architecture, concerts & sport', 'Nature & product', 'Light & composition first']],
   ];
@@ -4336,21 +4330,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
     walkRaf = requestAnimationFrame(step);
     // as the dark fills the screen, the room takes over (same black, so it's invisible) and the photos start to float in
     function handoff(){
-      if (i === 4){
-        holdScroll(false);
-        sec.classList.remove('through', 'lift');
-        sec.style.transform = '';
-        doorsState[i].s.set(0);
-        $('#cord')?.classList.remove('away');
-        $('.hdr')?.classList.remove('away');
-        busy = false;
-        const storyEl = document.getElementById('about');
-        if (storyEl){
-          if (window.lenis) lenis.scrollTo(storyEl, { duration: 1.2, easing: x => 1 - Math.pow(1 - x, 3) });
-          else storyEl.scrollIntoView({ behavior: 'smooth' });
-        }
-        return;
-      }
+
       if (i === 5){
         veil.innerHTML = '';
         veil.className = 'veil veil--glow';
@@ -4792,34 +4772,39 @@ try {
 
 
 <style>
-.ck{position:fixed;left:50%;bottom:max(1rem,env(safe-area-inset-bottom));z-index:90;transform:translateX(-50%);width:min(34rem,calc(100% - 2rem));
-  display:flex;align-items:center;gap:1rem;padding:.9rem .9rem .9rem 1.2rem;border-radius:1.25rem;background:#1A1818;color:#E8E4E0;
-  box-shadow:0 18px 40px -16px rgba(0,0,0,.55),0 0 0 1px rgba(232,228,224,.12);font:400 .875rem/1.45 'Onest',ui-sans-serif,system-ui,sans-serif}
+.ck{position:fixed;left:50%;bottom:max(1.25rem,env(safe-area-inset-bottom));z-index:99999;transform:translateX(-50%);width:min(34rem,calc(100% - 2rem));
+  display:flex;align-items:center;gap:1rem;padding:.9rem 1rem .9rem 1.25rem;border-radius:1.25rem;background:#1A1818;color:#E8E4E0;
+  box-shadow:0 20px 45px -12px rgba(0,0,0,.6),0 0 0 1px rgba(232,228,224,.15);font:400 .875rem/1.45 'Onest',ui-sans-serif,system-ui,sans-serif}
 .ck[hidden]{display:none}
-.ck p{margin:0;flex:1}.ck a{color:inherit}
+.ck p{margin:0;flex:1;color:#A9A29B;font-size:.84rem;line-height:1.4}
+.ck a{color:#E8B873;text-decoration:underline;text-underline-offset:3px}
 .ck div{display:flex;gap:.5rem;flex:none}
-.ck button{height:2.5rem;padding:0 1rem;border-radius:999px;border:1px solid rgba(232,228,224,.25);background:none;color:inherit;font:inherit;font-size:.8125rem;font-weight:600;line-height:1;cursor:pointer}
-.ck button[data-ck="yes"]{background:#E8E4E0;color:#1A1818;border-color:transparent}
+.ck button{height:2.35rem;padding:0 1rem;border-radius:999px;border:1px solid rgba(232,228,224,.25);background:none;color:#E8E4E0;font:inherit;font-size:.8125rem;font-weight:600;line-height:1;cursor:pointer;transition:all .2s ease}
+.ck button:hover{border-color:rgba(232,228,224,.45);background:rgba(255,255,255,.05)}
+.ck button[data-ck="yes"]{background:#E8B873;color:#1A1818;border-color:transparent}
+.ck button[data-ck="yes"]:hover{background:#f3ca8c}
 @media (max-width:539.98px){.ck{flex-direction:column;align-items:stretch}.ck div button{flex:1}}
 </style>
-<div class="ck" id="ck" role="region" aria-label="Analytics choice" hidden><p>May I count your visit with Google Analytics? It sets cookies. <a href="/legal/">Details</a></p><div><button type="button" data-ck="no">No thanks</button><button type="button" data-ck="yes">Allow</button></div></div>
+<div class="ck" id="ck" role="region" aria-label="Analytics choice" hidden><p>This site measures visits with Google Analytics only if you allow it. No cookies are set until you do. <a href="/legal">Read more</a>.</p><div><button type="button" data-ck="no">Daily</button><button type="button" data-ck="yes">Allow</button></div></div>
 <script>
 (() => {
-  const ID = 'G-12PNLHKGHK', K = 'rishi-analytics';
-  let v = null; try { v = localStorage.getItem(K); } catch (e) {}
+  const ID = 'G-J2LYEBN620', K = 'analytics-choice';
+  let v = null; try { v = localStorage.getItem(K) || localStorage.getItem('rishi-analytics'); } catch (e) {}
   const load = () => {
+    if (window.gtag) return;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ dataLayer.push(arguments); };
     gtag('js', new Date()); gtag('config', ID);
     const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID; document.head.appendChild(s);
   };
-  if (v === 'yes') return load();
-  if (v === 'no') return;
-  const b = document.getElementById('ck'); b.hidden = false;
-  b.addEventListener('click', e => {
+  if (v === 'allow' || v === 'yes') return load();
+  if (v === 'deny' || v === 'no') return;
+  const b = document.getElementById('ck'); if (b) b.hidden = false;
+  if (b) b.addEventListener('click', e => {
     const c = e.target.closest('[data-ck]'); if (!c) return;
-    try { localStorage.setItem(K, c.dataset.ck); } catch (e) {}
-    b.hidden = true; if (c.dataset.ck === 'yes') load();
+    const choice = c.dataset.ck === 'yes' ? 'allow' : 'deny';
+    try { localStorage.setItem(K, choice); localStorage.setItem('rishi-analytics', c.dataset.ck); } catch (e) {}
+    b.hidden = true; if (choice === 'allow') load();
   });
 })();
 </script>

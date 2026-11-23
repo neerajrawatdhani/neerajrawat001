@@ -24,6 +24,74 @@ const server = http.createServer((req, res) => {
   let reqUrl = rawUrl.replace(/\/+/g, '/') || '/';
   let clean = reqUrl.replace(/\/+$/, '') || '/';
 
+  // 0. API routes handling
+  if (reqUrl.startsWith('/api/')) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    if (req.method === 'OPTIONS') {
+      res.writeHead(200);
+      return res.end();
+    }
+
+    const inqPath = path.join(DIR, 'backend', 'data', 'inquiries.json');
+
+    // 1. Inquiries & Admin Leads: GET
+    if ((clean === '/api/inquiries' || clean === '/api/admin/leads') && req.method === 'GET') {
+      let inquiries = [];
+      try {
+        if (fs.existsSync(inqPath)) inquiries = JSON.parse(fs.readFileSync(inqPath, 'utf8'));
+      } catch(e) {}
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ success: true, count: inquiries.length, inquiries, leads: inquiries }));
+    }
+
+    // 2. Inquiries & Admin Leads: DELETE
+    if ((clean === '/api/inquiries' || clean === '/api/admin/leads' || clean.startsWith('/api/inquiries/')) && req.method === 'DELETE') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        let deleteId = null;
+        if (clean.startsWith('/api/inquiries/')) {
+          deleteId = clean.replace('/api/inquiries/', '').trim();
+        }
+        if (!deleteId && body) {
+          try {
+            const parsed = JSON.parse(body);
+            deleteId = parsed.id;
+          } catch(e) {}
+        }
+        if (!deleteId && req.url.includes('?')) {
+          const qs = new URLSearchParams(req.url.split('?')[1]);
+          deleteId = qs.get('id');
+        }
+
+        let inquiries = [];
+        try {
+          if (fs.existsSync(inqPath)) inquiries = JSON.parse(fs.readFileSync(inqPath, 'utf8'));
+        } catch(e) {}
+
+        if (deleteId) {
+          inquiries = inquiries.filter(i => String(i.id) !== String(deleteId));
+          try {
+            fs.writeFileSync(inqPath, JSON.stringify(inquiries, null, 2), 'utf8');
+          } catch(e) {}
+        }
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: true, message: 'Inquiry deleted successfully', id: deleteId }));
+      });
+      return;
+    }
+
+    // 3. Quotation DELETE or POST
+    if (clean === '/api/admin/quotation') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ success: true, message: 'Quotation processed successfully' }));
+    }
+  }
+
   // 1. Core route rewrites (matching vercel.json)
   if (clean === '/' || clean === '/home' || clean === '/work' || clean === '/works' || clean === '/my-story' || clean === '/about' || clean === '/contact') {
     return serveFile(path.join(DIR, 'frontend', 'index.html'), res);
@@ -35,6 +103,10 @@ const server = http.createServer((req, res) => {
 
   if (clean === '/admin' || clean === '/admin-portal' || clean === '/admin-portal.html' || clean === '/super-admin-orbit.html') {
     return serveFile(path.join(DIR, 'super-admin-orbit.html'), res);
+  }
+
+  if (clean === '/legal' || clean === '/privacy' || clean === '/credits' || clean === '/privacy-policy') {
+    return serveFile(path.join(DIR, 'frontend', 'legal', 'index.html'), res);
   }
 
   // Skill pages

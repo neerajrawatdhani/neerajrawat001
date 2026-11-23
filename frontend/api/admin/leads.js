@@ -68,7 +68,7 @@ module.exports = async (req, res) => {
     const { id } = req.body || req.query || {};
     if (!id) return res.status(400).json({ success: false, error: 'Lead ID आवश्यक है।' });
 
-    const leads = loadLeads().filter(l => l.id !== id);
+    const leads = loadLeads().filter(l => String(l.id) !== String(id));
     saveLeads(leads);
 
     return res.status(200).json({ success: true, message: 'Lead सफलतापूर्वक डिलीट कर दी गई।' });
