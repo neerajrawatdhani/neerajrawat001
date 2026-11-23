@@ -34,7 +34,150 @@
 </script>
 <title>Neeraj Rawat — Founder &amp; CEO, EduDhani (School ERP) | UI/UX &amp; Graphic Designer</title>
 <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
-<style>@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}</style>
+<style>@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+/* ===== MOTION DESIGN CONTACT MODAL STYLES ===== */
+:root{
+  --m-bg:#EDEEF2;
+  --m-panel:#F7F7F9;
+  --m-field:#EFF0F4;
+  --m-ink:#111217;
+  --m-muted:#7A7F8C;
+  --m-wa:#22C55E;
+  --m-wa-ink:#06210F;
+  --m-dark:#111217;
+  --m-err:#DC2626;
+  --m-ease:cubic-bezier(.22,.8,.24,1);
+  --m-spring:cubic-bezier(.34,1.4,.64,1);
+}
+.motion-modal-wrap{
+  background:rgba(17,18,23,.45) !important;
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+}
+.modal__panel.motion-dialog{
+  position:relative;width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow-y:auto;
+  background:var(--m-panel);border-radius:22px;padding:22px 22px 18px;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
+  transform:translateY(28px) scale(.96);opacity:0;
+  transition:transform .6s var(--m-spring),opacity .4s var(--m-ease);
+}
+.modal.open .modal__panel.motion-dialog{transform:none;opacity:1}
+.modal.closing .modal__panel.motion-dialog{transform:translateY(20px) scale(.97);opacity:0}
+
+.motion-dialog .reveal{opacity:0;transform:translateY(10px);transition:opacity .5s var(--m-ease),transform .5s var(--m-ease)}
+.modal.open .motion-dialog .reveal{opacity:1;transform:none}
+.modal.open .motion-dialog .reveal:nth-child(1){transition-delay:.12s}
+.modal.open .motion-dialog .reveal:nth-child(2){transition-delay:.18s}
+.modal.open .motion-dialog .reveal:nth-child(3){transition-delay:.24s}
+.modal.open .motion-dialog .reveal:nth-child(4){transition-delay:.3s}
+.modal.open .motion-dialog .reveal:nth-child(5){transition-delay:.36s}
+.modal.open .motion-dialog .reveal:nth-child(6){transition-delay:.42s}
+.modal.open .motion-dialog .reveal:nth-child(7){transition-delay:.48s}
+.modal.open .motion-dialog .reveal:nth-child(8){transition-delay:.54s}
+
+.motion-dialog .kicker{font-size:12px;color:var(--m-muted);display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.motion-dialog .kicker i{width:6px;height:6px;border-radius:50%;background:var(--m-ink);display:inline-block}
+.motion-dialog .title{margin:0;font-size:22px;font-weight:700;letter-spacing:-.02em;padding-right:40px;color:var(--m-ink)}
+.motion-dialog .close{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;border:0;background:var(--m-field);
+  display:grid;place-items:center;cursor:pointer;color:var(--m-ink);
+  transition:transform .4s var(--m-spring),background .25s;
+}
+.motion-dialog .close:hover{transform:rotate(90deg);background:#E3E5EC}
+.motion-dialog .close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+
+.motion-dialog .progress{margin:14px 0 4px;height:4px;border-radius:4px;background:var(--m-field);overflow:hidden}
+.motion-dialog .progress i{display:block;height:100%;width:0;background:var(--m-ink);border-radius:4px;transition:width .5s var(--m-ease)}
+.motion-dialog .progress-txt{font-size:12px;color:var(--m-muted);margin:0 0 2px}
+
+.motion-dialog .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.motion-dialog .field{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.motion-dialog .label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m-muted)}
+.motion-dialog .req{color:var(--m-err);margin-left:2px}
+.motion-dialog .input{
+  width:100%;height:44px;border-radius:12px;border:1px solid transparent;background:var(--m-field);
+  padding:0 14px;font:500 14px/1 Inter,system-ui,sans-serif;color:var(--m-ink);outline:none;
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.motion-dialog .input::placeholder{color:#9EA3AF;font-weight:400}
+.motion-dialog .input:hover:not(:disabled){background:#E9EAF0}
+.motion-dialog .input:focus{background:#fff;border-color:var(--m-ink);box-shadow:0 0 0 4px rgba(17,18,23,.08)}
+.motion-dialog .input:disabled{opacity:.5;cursor:not-allowed}
+.motion-dialog .input.invalid{border-color:var(--m-err);background:#FFF5F5}
+.motion-dialog .input.valid{border-color:#B7E4C7}
+.motion-dialog select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.motion-dialog .textarea{height:96px;padding:12px 14px;resize:none;line-height:1.45}
+.motion-dialog .row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.motion-dialog .phone{position:relative;display:flex;align-items:center}
+.motion-dialog .dial{
+  position:absolute;left:12px;font-weight:600;font-size:14px;color:var(--m-ink);pointer-events:none;
+  transition:opacity .25s;
+}
+.motion-dialog .phone .input{padding-left:62px}
+.motion-dialog .hint{font-size:12px;color:var(--m-muted);margin:0;min-height:16px;transition:color .25s}
+.motion-dialog .hint.err{color:var(--m-err)}
+
+.motion-dialog .consent{
+  display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--m-field);
+  cursor:pointer;transition:background .25s;user-select:none;position:relative;
+}
+.motion-dialog .consent:hover{background:#E9EAF0}
+.motion-dialog .consent input{position:absolute;opacity:0;pointer-events:none}
+.motion-dialog .box{
+  flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid #B8BCC8;background:#fff;margin-top:1px;
+  display:grid;place-items:center;transition:background .3s var(--m-ease),border-color .3s,transform .3s var(--m-spring);
+}
+.motion-dialog .box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--m-ease) .05s}
+.motion-dialog .consent input:checked + .box{background:var(--m-ink);border-color:var(--m-ink);transform:scale(1.04)}
+.motion-dialog .consent input:checked + .box svg{stroke-dashoffset:0}
+.motion-dialog .consent input:focus-visible + .box{outline:2px solid var(--m-ink);outline-offset:2px}
+.motion-dialog .consent-text{font-size:12.5px;color:#4B5060;line-height:1.45}
+
+.motion-dialog .actions{display:grid;grid-template-columns:1.1fr 1fr;gap:10px;margin-top:16px}
+.motion-dialog .btn{
+  position:relative;overflow:hidden;height:56px;border-radius:16px;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 18px;
+  font:600 14px/1.2 Inter,system-ui,sans-serif;text-align:left;
+  transition:transform .3s var(--m-ease),box-shadow .3s var(--m-ease),opacity .3s,filter .3s;
+}
+.motion-dialog .btn::before{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);
+  transition:left .7s var(--m-ease);
+}
+.motion-dialog .btn:not(:disabled):hover::before{left:120%}
+.motion-dialog .btn:not(:disabled):hover{transform:translateY(-2px)}
+.motion-dialog .btn:not(:disabled):active{transform:translateY(0) scale(.98)}
+.motion-dialog .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;filter:grayscale(.4)}
+.motion-dialog .btn-wa{background:var(--m-wa);color:var(--m-wa-ink);box-shadow:0 14px 26px -16px rgba(34,197,94,.9)}
+.motion-dialog .btn-wa:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(34,197,94,1)}
+.motion-dialog .btn-mail{background:var(--m-dark);color:#fff;box-shadow:0 14px 26px -16px rgba(17,18,23,.9)}
+.motion-dialog .btn-mail:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(17,18,23,.9)}
+.motion-dialog .round{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--m-spring)}
+.motion-dialog .btn:not(:disabled):hover .round{transform:rotate(-12deg) scale(1.08)}
+.motion-dialog .btn-wa .round{background:rgba(6,33,15,.12)}
+.motion-dialog .btn-mail .round{background:rgba(255,255,255,.14)}
+.motion-dialog .round svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.motion-dialog .btn-wa:not(:disabled):hover .round svg{transform:translate(1px,-1px) scale(1.1);transition:transform .5s var(--m-ease)}
+.motion-dialog .btn-mail:not(:disabled):hover .round svg{transform:translate(3px,-3px);transition:transform .4s var(--m-ease)}
+.motion-dialog .btn.loading{pointer-events:none}
+.motion-dialog .btn.loading .label-txt{opacity:0}
+.motion-dialog .spinner{
+  position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
+  border:2.5px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
+}
+.motion-dialog .btn.loading .spinner{opacity:1}
+
+.motion-dialog .foot{margin:14px 0 0;text-align:center;font-size:12px;color:var(--m-muted);line-height:1.5}
+.motion-dialog .live{display:inline-flex;align-items:center;gap:6px}
+.motion-dialog .live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--m-wa);animation:ping 1.8s infinite}
+
+@media (max-width:480px){
+  .motion-dialog .grid2,.motion-dialog .actions,.motion-dialog .row-2{grid-template-columns:1fr}
+  .motion-dialog .title{font-size:20px}
+  .modal__panel.motion-dialog{padding:20px 18px 16px}
+}
+</style>
 
 <meta name="description" content="Neeraj Rawat — Founder and CEO of EduDhani (www.edudhani.com), the complete cloud School ERP solution. Deep expertise in graphic design, UI/UX architecture, and modern digital software." />
 <meta name="theme-color" content="#1A1818" />
@@ -1652,108 +1795,92 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
 </div>
 
 <!-- ============ RequestModal ============ -->
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
-  <div class="modal__panel" id="mPanel">
-    <button class="x-btn" id="mClose" aria-label="Close"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
-    <div id="mForm">
-      <div class="mhead"><p>Start a project</p><h2 id="mTitle">Tell me what you're building.</h2></div>
-      <form class="mform" id="reqForm" name="contact" method="POST" action="/" data-netlify="true" netlify-honeypot="company">
-        <input type="hidden" name="form-name" value="contact">
-        <p class="mform__hp" aria-hidden="true"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
-        <div class="mform__row mform__row--2">
-          <label for="f-name"><span>Name</span><input id="f-name" name="name" type="text" required maxlength="80" placeholder="Your name" autocomplete="name"></label>
-          <label for="f-email"><span>Email ID</span><input id="f-email" name="email" type="email" required maxlength="120" placeholder="you@company.com" autocomplete="email"></label>
-        </div>
-        <div class="mform__row mform__row--2">
-          <div class="mform__phone-group">
-            <label for="f-country"><span class="mform__label-txt">Country &amp; Mobile Number</span></label>
-            <div class="mform__phone-fields">
-              <div class="mform__cc-wrap">
-                <select id="f-country" name="countryCode" required aria-label="Select Country Code">
-                  <option value="" disabled selected>🌍 Country</option>
-                  <option value="IN" data-code="+91" data-digits="10" data-format="XXXXX XXXXX" data-placeholder="98765 43210" data-currency="INR">🇮🇳 India (+91)</option>
-                  <option value="US" data-code="+1" data-digits="10" data-format="(XXX) XXX-XXXX" data-placeholder="555 123 4567" data-currency="USD">🇺🇸 United States (+1)</option>
-                  <option value="GB" data-code="+44" data-digits="10" data-format="XXXX XXXXXX" data-placeholder="7911 123456" data-currency="GBP">🇬🇧 United Kingdom (+44)</option>
-                  <option value="AE" data-code="+971" data-digits="9" data-format="XX XXX XXXX" data-placeholder="50 123 4567" data-currency="AED">🇦🇪 UAE (+971)</option>
-                  <option value="CA" data-code="+1" data-digits="10" data-format="(XXX) XXX-XXXX" data-placeholder="416 123 4567" data-currency="CAD">🇨🇦 Canada (+1)</option>
-                  <option value="AU" data-code="+61" data-digits="9" data-format="XXX XXX XXX" data-placeholder="412 345 678" data-currency="AUD">🇦🇺 Australia (+61)</option>
-                  <option value="DE" data-code="+49" data-digits="11" data-format="XXX XXXXXXX" data-placeholder="151 12345678" data-currency="EUR">🇩🇪 Germany (+49)</option>
-                  <option value="FR" data-code="+33" data-digits="9" data-format="X XX XX XX XX" data-placeholder="6 12 34 56 78" data-currency="EUR">🇫🇷 France (+33)</option>
-                  <option value="SG" data-code="+65" data-digits="8" data-format="XXXX XXXX" data-placeholder="8123 4567" data-currency="SGD">🇸🇬 Singapore (+65)</option>
-                  <option value="SA" data-code="+966" data-digits="9" data-format="XX XXX XXXX" data-placeholder="50 123 4567" data-currency="SAR">🇸🇦 Saudi Arabia (+966)</option>
-                  <option value="QA" data-code="+974" data-digits="8" data-format="XXXX XXXX" data-placeholder="3312 3456" data-currency="QAR">🇶🇦 Qatar (+974)</option>
-                  <option value="KW" data-code="+965" data-digits="8" data-format="XXXX XXXX" data-placeholder="9123 4567" data-currency="KWD">🇰🇼 Kuwait (+965)</option>
-                  <option value="OM" data-code="+968" data-digits="8" data-format="XXXX XXXX" data-placeholder="9123 4567" data-currency="OMR">🇴🇲 Oman (+968)</option>
-                  <option value="MY" data-code="+60" data-digits="10" data-format="XX-XXXX XXXX" data-placeholder="12 345 6789" data-currency="MYR">🇲🇾 Malaysia (+60)</option>
-                  <option value="NL" data-code="+31" data-digits="9" data-format="X XX XX XX XX" data-placeholder="6 12345678" data-currency="EUR">🇳🇱 Netherlands (+31)</option>
-                  <option value="CH" data-code="+41" data-digits="9" data-format="XX XXX XX XX" data-placeholder="79 123 45 67" data-currency="CHF">🇨🇭 Switzerland (+41)</option>
-                  <option value="NZ" data-code="+64" data-digits="9" data-format="XX XXX XXXX" data-placeholder="21 123 4567" data-currency="NZD">🇳🇿 New Zealand (+64)</option>
-                  <option value="IE" data-code="+353" data-digits="9" data-format="XX XXX XXXX" data-placeholder="85 123 4567" data-currency="EUR">🇮🇪 Ireland (+353)</option>
-                  <option value="ZA" data-code="+27" data-digits="9" data-format="XX XXX XXXX" data-placeholder="82 123 4567" data-currency="ZAR">🇿🇦 South Africa (+27)</option>
-                  <option value="OTHER" data-code="+" data-digits="15" data-format="XXXXXXXXXXXXXXX" data-placeholder="Phone digits" data-currency="USD">🌐 Other (+)</option>
-                </select>
-              </div>
-              <div class="mform__num-wrap" id="mNumWrap">
-                <span class="mform__code-badge" id="mCodeBadge">+91</span>
-                <input id="f-mobile" name="mobile" type="tel" required maxlength="20" placeholder="Select country code first" autocomplete="tel" disabled>
-              </div>
-            </div>
-            <small class="mform__phone-hint" id="mPhoneHint">Select country first</small>
-          </div>
-          <label for="f-budget"><span>Budget</span>
-            <select id="f-budget" name="budget" required>
-              <option value="" disabled selected>Select estimated budget</option>
-              <option value="₹25,000 – ₹50,000">₹25,000 – ₹50,000</option>
-              <option value="₹50,000 – ₹1,00,000">₹50,000 – ₹1,00,000</option>
-              <option value="₹1,00,000 – ₹2,50,000">₹1,00,000 – ₹2,50,000</option>
-              <option value="₹2,50,000 – ₹5,00,000">₹2,50,000 – ₹5,00,000</option>
-              <option value="₹5,00,000+">₹5,00,000+</option>
-              <option value="Flexible / To be discussed">Flexible / To be discussed</option>
-            </select>
-          </label>
-        </div>
-        <label for="f-project"><span>Brief Description of the Project</span><textarea id="f-project" name="project" rows="2" required maxlength="1500" placeholder="A brief description of your project, school ERP requirements, or design vision."></textarea></label>
-        <div class="mform__consent" id="mConsentBox">
-          <input type="checkbox" id="f-consent" name="consent" required style="position:absolute;opacity:0;pointer-events:none;width:0;height:0">
-          <label class="consent-label" for="f-consent" id="mConsentToggle">
-            <span class="consent-box" aria-hidden="true">
-              <svg viewBox="0 0 16 16" fill="none" class="consent-check" width="12" height="12">
-                <path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
-          </label>
-          <div class="mform__consent-err" id="mConsentErr">⚠️ You must confirm your consent before sending a message.</div>
-        </div>
-        <div class="mform__choice">
-          <div class="mform__actions">
-            <button type="button" class="pill pill--wa pill--arrow" id="mSendWa" title="Send details directly on WhatsApp">
-              <span class="pill__in">
-                <span>Send a WhatsApp Message</span>
-                <span class="pill__badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 00-3.48-8.413z"/></svg>
-                </span>
-              </span>
-            </button>
-            <button type="submit" class="pill pill--dark pill--arrow" id="mSend" title="Send details directly via Email">
-              <span class="pill__in" data-h="s 1 1.04" data-hs="320 18" data-ht=".pill">
-                <span id="mSendLbl">Send an Email</span>
-                <span class="pill__badge"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-h="x 0 2|y 0 -2" data-hs="320 18" data-ht=".pill"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-              </span>
-            </button>
-          </div>
-          <small class="mform__subnote">Replies within 5 hours · Direct WhatsApp: <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer">+91 87081 67959</a></small>
-        </div>
-      </form>
+<!-- ===== CONTACT MODAL (MOTION DESIGN) ===== -->
+<div class="modal motion-modal-wrap" id="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title" hidden>
+  <div class="modal__panel motion-dialog" id="mPanel">
+    <button class="close reveal" type="button" id="mClose" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <p class="kicker reveal"><i></i>Start a project</p>
+    <h2 class="title reveal" id="dlg-title">Tell me what you're building.</h2>
+
+    <div class="reveal">
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <p class="progress-txt" id="progTxt" aria-live="polite">0 of 8 done</p>
     </div>
+
+    <form id="reqForm" novalidate>
+      <div class="grid2 reveal">
+        <div class="field" style="margin-top:14px">
+          <label class="label" for="f-name">Name<span class="req">*</span></label>
+          <input class="input" id="f-name" name="name" type="text" placeholder="Your name" autocomplete="name">
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label class="label" for="f-org">Organisation<span class="req">*</span></label>
+          <input class="input" id="f-org" name="org" type="text" placeholder="Company or school name" autocomplete="organization">
+        </div>
+      </div>
+
+      <div class="field reveal">
+        <label class="label" for="f-email">Email ID<span class="req">*</span></label>
+        <input class="input" id="f-email" name="email" type="email" placeholder="you@company.com" autocomplete="email">
+      </div>
+
+      <div class="field reveal">
+        <span class="label">Country &amp; mobile number<span class="req">*</span></span>
+        <div class="row-2">
+          <select class="input" id="f-country" name="country" aria-label="Country">
+            <option value="">Select country</option>
+          </select>
+          <div class="phone">
+            <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
+            <input class="input" id="f-phone" name="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
+          </div>
+        </div>
+        <p class="hint" id="phoneHint">Select country first</p>
+      </div>
+
+      <div class="field reveal">
+        <label class="label" for="f-budget">Budget<span class="req">*</span></label>
+        <select class="input" id="f-budget" name="budget" disabled>
+          <option value="">Select country first</option>
+        </select>
+      </div>
+
+      <div class="field reveal">
+        <label class="label" for="f-brief">Project details<span class="req">*</span></label>
+        <textarea class="input textarea" id="f-brief" name="project" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
+      </div>
+
+      <label class="consent reveal" for="f-agree">
+        <input type="checkbox" id="f-agree" name="consent">
+        <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
+        <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
+      </label>
+
+      <div class="actions reveal">
+        <button class="btn btn-wa" type="button" id="mSendWa" disabled>
+          <span class="label-txt">Send a WhatsApp Message</span>
+          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-mail" type="button" id="mSend" disabled>
+          <span class="label-txt" id="mSendLbl">Send an Email</span>
+          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+
     <div class="msuccess" id="mSuccess" role="status" aria-live="polite" hidden>
-      <div class="msuccess__badge"><svg aria-hidden="true" focusable="false" viewBox="0 0 48 48" fill="currentColor"><path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/></svg></div>
-      <h2 id="mOkT">Almost there</h2>
-      <p id="mOkP">Your email app has opened with your message ready to go. Press send there and I'll reply within one business day.</p>
-      <p class="msuccess__alt">Email app didn't open? Write to <a data-mail href="#contact">my email</a>.</p>
-      <a class="pill pill--wa" id="mOkWaBtn" href="#" target="_blank" rel="noopener noreferrer" style="margin-top:.25rem" hidden><span class="pill__in"><span>Open WhatsApp (+91 87081 67959)</span></span></a>
-      <button class="pill pill--dark" id="mDone"><span class="pill__in" data-h="s 1 1.04" data-hs="320 18" data-ht=".pill">Close</span></button>
+      <div class="msuccess__badge"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2 id="mOkT">Thank you!</h2>
+      <p id="mOkP">Your inquiry has been submitted. Neeraj will connect with you shortly.</p>
+      <button class="pill pill--dark" id="mDone" type="button" style="margin-top:12px;padding:10px 24px;border-radius:12px;border:0;background:var(--ink);color:#fff;cursor:pointer;font-weight:600">Close</button>
     </div>
+
+    <p class="foot reveal"><span class="live">Replies within 5 hours</span> · Direct WhatsApp: <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer" style="color:inherit;font-weight:600">+91 87081 67959</a></p>
   </div>
 </div>
 
@@ -2066,46 +2193,15 @@ const CONTACT_EMAIL = ['neerajrawatdhani', 'gmail.com'].join('@');   // where pr
 document.querySelectorAll('[data-mail]').forEach(a => { a.href = 'mailto:' + CONTACT_EMAIL; a.textContent = CONTACT_EMAIL; });
 const modal = $('#modal'), form = $('#reqForm');
 let lastFocus = null;
-function openModal(){ lastFocus = document.activeElement; openLayer(modal, closeModal); setTimeout(() => $('#f-name')?.focus({ preventScroll:true }), 120); }
 let lastInput = 'mouse';
 addEventListener('pointerdown', () => { lastInput = 'mouse'; }, true);
 addEventListener('keydown', e => { if (e.key === 'Tab' || e.key === 'Enter' || e.key === ' ') lastInput = 'key'; }, true);
-function resetModalForm(){
-  form.reset();
-  const fCountry = $('#f-country');
-  const fMobile = $('#f-mobile');
-  const mNumWrap = $('#mNumWrap');
-  const mCodeBadge = $('#mCodeBadge');
-  const mPhoneHint = $('#mPhoneHint');
-  const mConsentBox = $('#mConsentBox');
-  const fConsent = $('#f-consent');
-  const fBudget = $('#f-budget');
 
-  if (fCountry) fCountry.selectedIndex = 0;
-  if (fMobile) {
-    fMobile.value = '';
-    fMobile.disabled = true;
-    fMobile.placeholder = 'Select country code first';
-    fMobile.style.paddingLeft = '';
-  }
-  if (mNumWrap) mNumWrap.classList.remove('has-code');
-  if (mCodeBadge) mCodeBadge.textContent = '+91';
-  if (mPhoneHint) {
-    mPhoneHint.textContent = 'Please select a country code first before entering your mobile number.';
-    mPhoneHint.classList.remove('err');
-  }
-  if (mConsentBox) {
-    mConsentBox.classList.remove('err');
-    mConsentBox.classList.remove('is-checked');
-  }
-  if (fConsent) fConsent.checked = false;
-  if (fBudget) {
-    fBudget.innerHTML = '<option value="" disabled selected>Select estimated budget</option>' +
-      CURRENCY_BUDGETS.INR.map(b => `<option value="${b}">${b}</option>`).join('');
-  }
-  $('#mForm').hidden = false;
-  $('#mSuccess').hidden = true;
-  $('#mSendLbl').textContent = SEND_LABEL;
+function openModal(){
+  lastFocus = document.activeElement;
+  openLayer(modal, closeModal);
+  window.__initMotionModal && window.__initMotionModal();
+  setTimeout(() => $('#f-name')?.focus({ preventScroll:true }), 180);
 }
 
 function closeModal(){
@@ -2113,15 +2209,14 @@ function closeModal(){
     if (window.location.pathname === '/contact') {
       try { history.pushState({ route: '/home' }, '', '/home'); } catch(e) {}
     }
-    // give focus back only to keyboard users, so a mouse click doesn't leave the nav item looking hovered
     if (lastInput === 'key') lastFocus?.focus?.({ preventScroll:true }); else document.activeElement?.blur?.();
-    setTimeout(resetModalForm, 300);
+    window.__resetMotionModal && window.__resetMotionModal();
   });
 }
 modal.addEventListener('click', closeModal);
-$('#mPanel').addEventListener('click', e => e.stopPropagation());
-$('#mClose').addEventListener('click', closeModal);
-$('#mDone').addEventListener('click', closeModal);
+$('#mPanel')?.addEventListener('click', e => e.stopPropagation());
+$('#mClose')?.addEventListener('click', closeModal);
+$('#mDone')?.addEventListener('click', closeModal);
 
 // ============ Digital Products & Cart Logic ============
 const prodModal = $('#prodModal');
@@ -2845,84 +2940,355 @@ function formatWhatsAppText(name, mobile, mail, budget, proj) {
   return `Hi Neeraj,\n\nI would like to start a project with you:\n\n• Name: ${name}\n• Mobile: ${mobile}\n• Email: ${mail}\n• Budget: ${budget}\n\n• Project Details:\n${proj}\n\n[Consent confirmed: Details shared solely for this inquiry]`;
 }
 
-// 1. WhatsApp Action
-const btnWa = $('#mSendWa');
-if (btnWa) {
-  btnWa.addEventListener('click', () => {
-    const data = validateAndGetFormData();
-    if (!data) return;
+// ===== MOTION DESIGN CONTACT MODAL CONTROLLER =====
+(() => {
+  const RAW = [
+    ["AF","Afghanistan","+93",9,"AFN",70],["AL","Albania","+355",9,"ALL",95],["DZ","Algeria","+213",9,"DZD",135],
+    ["AD","Andorra","+376",6,"EUR",0.92],["AO","Angola","+244",9,"AOA",900],["AG","Antigua and Barbuda","+1268",7,"XCD",2.7],
+    ["AR","Argentina","+54",10,"ARS",1000],["AM","Armenia","+374",8,"AMD",390],["AU","Australia","+61",9,"AUD",1.55],
+    ["AT","Austria","+43",10,"EUR",0.92],["AZ","Azerbaijan","+994",9,"AZN",1.7],["BS","Bahamas","+1242",7,"BSD",1],
+    ["BH","Bahrain","+973",8,"BHD",0.376],["BD","Bangladesh","+880",10,"BDT",120],["BB","Barbados","+1246",7,"BBD",2],
+    ["BY","Belarus","+375",9,"BYN",3.2],["BE","Belgium","+32",9,"EUR",0.92],["BZ","Belize","+501",7,"BZD",2],
+    ["BJ","Benin","+229",8,"XOF",600],["BT","Bhutan","+975",8,"BTN",88],["BO","Bolivia","+591",8,"BOB",6.9],
+    ["BA","Bosnia and Herzegovina","+387",8,"BAM",1.8],["BW","Botswana","+267",8,"BWP",13.5],["BR","Brazil","+55",11,"BRL",5.2],
+    ["BN","Brunei","+673",7,"BND",1.35],["BG","Bulgaria","+359",9,"BGN",1.8],["BF","Burkina Faso","+226",8,"XOF",600],
+    ["BI","Burundi","+257",8,"BIF",2900],["CV","Cabo Verde","+238",7,"CVE",100],["KH","Cambodia","+855",9,"KHR",4100],
+    ["CM","Cameroon","+237",9,"XAF",600],["CA","Canada","+1",10,"CAD",1.37],["CF","Central African Republic","+236",8,"XAF",600],
+    ["TD","Chad","+235",8,"XAF",600],["CL","Chile","+56",9,"CLP",950],["CN","China","+86",11,"CNY",7.2],
+    ["CO","Colombia","+57",10,"COP",4000],["KM","Comoros","+269",7,"KMF",460],["CG","Congo","+242",9,"XAF",600],
+    ["CD","DR Congo","+243",9,"CDF",2800],["CR","Costa Rica","+506",8,"CRC",510],["CI","Côte d'Ivoire","+225",10,"XOF",600],
+    ["HR","Croatia","+385",9,"EUR",0.92],["CU","Cuba","+53",8,"CUP",24],["CY","Cyprus","+357",8,"EUR",0.92],
+    ["CZ","Czechia","+420",9,"CZK",23],["DK","Denmark","+45",8,"DKK",6.9],["DJ","Djibouti","+253",8,"DJF",178],
+    ["DM","Dominica","+1767",7,"XCD",2.7],["DO","Dominican Republic","+1809",10,"DOP",60],["EC","Ecuador","+593",9,"USD",1],
+    ["EG","Egypt","+20",10,"EGP",48],["SV","El Salvador","+503",8,"USD",1],["GQ","Equatorial Guinea","+240",9,"XAF",600],
+    ["ER","Eritrea","+291",7,"ERN",15],["EE","Estonia","+372",8,"EUR",0.92],["SZ","Eswatini","+268",8,"SZL",18],
+    ["ET","Ethiopia","+251",9,"ETB",130],["FJ","Fiji","+679",7,"FJD",2.25],["FI","Finland","+358",9,"EUR",0.92],
+    ["FR","France","+33",9,"EUR",0.92],["GA","Gabon","+241",7,"XAF",600],["GM","Gambia","+220",7,"GMD",70],
+    ["GE","Georgia","+995",9,"GEL",2.7],["DE","Germany","+49",10,"EUR",0.92],["GH","Ghana","+233",9,"GHS",15],
+    ["GR","Greece","+30",10,"EUR",0.92],["GD","Grenada","+1473",7,"XCD",2.7],["GT","Guatemala","+502",8,"GTQ",7.8],
+    ["GN","Guinea","+224",9,"GNF",8600],["GW","Guinea-Bissau","+245",7,"XOF",600],["GY","Guyana","+592",7,"GYD",209],
+    ["HT","Haiti","+509",8,"HTG",132],["HN","Honduras","+504",8,"HNL",25],["HU","Hungary","+36",9,"HUF",360],
+    ["IS","Iceland","+354",7,"ISK",140],["IN","India","+91",10,"INR",88],["ID","Indonesia","+62",10,"IDR",16000],
+    ["IR","Iran","+98",10,"IRR",42000],["IQ","Iraq","+964",10,"IQD",1310],["IE","Ireland","+353",9,"EUR",0.92],
+    ["IL","Israel","+972",9,"ILS",3.7],["IT","Italy","+39",10,"EUR",0.92],["JM","Jamaica","+1876",7,"JMD",157],
+    ["JP","Japan","+81",10,"JPY",150],["JO","Jordan","+962",9,"JOD",0.71],["KZ","Kazakhstan","+7",10,"KZT",480],
+    ["KE","Kenya","+254",9,"KES",129],["KI","Kiribati","+686",8,"AUD",1.55],["KP","North Korea","+850",10,"KPW",900],
+    ["KR","South Korea","+82",10,"KRW",1350],["KW","Kuwait","+965",8,"KWD",0.307],["KG","Kyrgyzstan","+996",9,"KGS",87],
+    ["LA","Laos","+856",10,"LAK",21500],["LV","Latvia","+371",8,"EUR",0.92],["LB","Lebanon","+961",8,"LBP",89500],
+    ["LS","Lesotho","+266",8,"LSL",18],["LR","Liberia","+231",7,"LRD",190],["LY","Libya","+218",9,"LYD",4.9],
+    ["LI","Liechtenstein","+423",7,"CHF",0.8],["LT","Lithuania","+370",8,"EUR",0.92],["LU","Luxembourg","+352",9,"EUR",0.92],
+    ["MG","Madagascar","+261",9,"MGA",4500],["MW","Malawi","+265",9,"MWK",1700],["MY","Malaysia","+60",9,"MYR",4.7],
+    ["MV","Maldives","+960",7,"MVR",15.4],["ML","Mali","+223",8,"XOF",600],["MT","Malta","+356",8,"EUR",0.92],
+    ["MH","Marshall Islands","+692",7,"USD",1],["MR","Mauritania","+222",8,"MRU",40],["MU","Mauritius","+230",8,"MUR",46],
+    ["MX","Mexico","+52",10,"MXN",18],["FM","Micronesia","+691",7,"USD",1],["MD","Moldova","+373",8,"MDL",17.8],
+    ["MC","Monaco","+377",8,"EUR",0.92],["MN","Mongolia","+976",8,"MNT",3400],["ME","Montenegro","+382",8,"EUR",0.92],
+    ["MA","Morocco","+212",9,"MAD",10],["MZ","Mozambique","+258",9,"MZN",64],["MM","Myanmar","+95",9,"MMK",2100],
+    ["NA","Namibia","+264",9,"NAD",18],["NR","Nauru","+674",7,"AUD",1.55],["NP","Nepal","+977",10,"NPR",140],
+    ["NL","Netherlands","+31",9,"EUR",0.92],["NZ","New Zealand","+64",9,"NZD",1.7],["NI","Nicaragua","+505",8,"NIO",36.5],
+    ["NE","Niger","+227",8,"XOF",600],["NG","Nigeria","+234",10,"NGN",1500],["MK","North Macedonia","+389",8,"MKD",56],
+    ["NO","Norway","+47",8,"NOK",10.5],["OM","Oman","+968",8,"OMR",0.385],["PK","Pakistan","+92",10,"PKR",280],
+    ["PW","Palau","+680",7,"USD",1],["PS","Palestine","+970",9,"ILS",3.7],["PA","Panama","+507",8,"PAB",1],
+    ["PG","Papua New Guinea","+675",8,"PGK",4],["PY","Paraguay","+595",9,"PYG",7600],["PE","Peru","+51",9,"PEN",3.7],
+    ["PH","Philippines","+63",10,"PHP",57],["PL","Poland","+48",9,"PLN",3.9],["PT","Portugal","+351",9,"EUR",0.92],
+    ["QA","Qatar","+974",8,"QAR",3.64],["RO","Romania","+40",9,"RON",4.6],["RU","Russia","+7",10,"RUB",90],
+    ["RW","Rwanda","+250",9,"RWF",1380],["KN","Saint Kitts and Nevis","+1869",7,"XCD",2.7],["LC","Saint Lucia","+1758",7,"XCD",2.7],
+    ["VC","Saint Vincent and the Grenadines","+1784",7,"XCD",2.7],["WS","Samoa","+685",7,"WST",2.7],["SM","San Marino","+378",10,"EUR",0.92],
+    ["ST","São Tomé and Príncipe","+239",7,"STN",22.5],["SA","Saudi Arabia","+966",9,"SAR",3.75],["SN","Senegal","+221",9,"XOF",600],
+    ["RS","Serbia","+381",9,"RSD",108],["SC","Seychelles","+248",7,"SCR",14],["SL","Sierra Leone","+232",8,"SLE",22.7],
+    ["SG","Singapore","+65",8,"SGD",1.35],["SK","Slovakia","+421",9,"EUR",0.92],["SI","Slovenia","+386",8,"EUR",0.92],
+    ["SB","Solomon Islands","+677",7,"SBD",8.5],["SO","Somalia","+252",8,"SOS",570],["ZA","South Africa","+27",9,"ZAR",18],
+    ["SS","South Sudan","+211",9,"SSP",1500],["ES","Spain","+34",9,"EUR",0.92],["LK","Sri Lanka","+94",9,"LKR",300],
+    ["SD","Sudan","+249",9,"SDG",600],["SR","Suriname","+597",7,"SRD",36],["SE","Sweden","+46",9,"SEK",10.5],
+    ["CH","Switzerland","+41",9,"CHF",0.8],["SY","Syria","+963",9,"SYP",13000],["TJ","Tajikistan","+992",9,"TJS",10.9],
+    ["TZ","Tanzania","+255",9,"TZS",2600],["TH","Thailand","+66",9,"THB",35],["TL","Timor-Leste","+670",8,"USD",1],
+    ["TG","Togo","+228",8,"XOF",600],["TO","Tonga","+676",7,"TOP",2.4],["TT","Trinidad and Tobago","+1868",7,"TTD",6.8],
+    ["TN","Tunisia","+216",8,"TND",3.1],["TR","Turkey","+90",10,"TRY",34],["TM","Turkmenistan","+993",8,"TMT",3.5],
+    ["TV","Tuvalu","+688",6,"AUD",1.55],["UG","Uganda","+256",9,"UGX",3700],["UA","Ukraine","+380",9,"UAH",41],
+    ["AE","United Arab Emirates","+971",9,"AED",3.67],["GB","United Kingdom","+44",10,"GBP",0.78],["US","United States","+1",10,"USD",1],
+    ["UY","Uruguay","+598",8,"UYU",40],["UZ","Uzbekistan","+998",9,"UZS",12600],["VU","Vanuatu","+678",7,"VUV",120],
+    ["VA","Vatican City","+39",10,"EUR",0.92],["VE","Venezuela","+58",10,"VES",36],["VN","Vietnam","+84",9,"VND",25400],
+    ["YE","Yemen","+967",9,"YER",250],["ZM","Zambia","+260",9,"ZMW",27],["ZW","Zimbabwe","+263",9,"ZWG",26]
+  ];
 
-    const { name, country, countryCode, mobile, email, service, budget, project } = data;
-    const waText = formatWhatsAppText(name, mobile, email, budget, project);
-    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+  const COUNTRIES = {};
+  RAW.forEach(([code, name, dial, len, cur, rate]) => {
+    COUNTRIES[code] = { name, dial, len, cur, rate };
+  });
 
-    // Open WhatsApp in new window/tab
-    window.open(waUrl, '_blank', 'noopener,noreferrer');
+  const SYM = { USD: '$', INR: '₹', GBP: '£', EUR: '€', JPY: '¥', CNY: '¥', KRW: '₩', PHP: '₱' };
+  const nice = (x) => {
+    const r = Math.pow(10, Math.max(0, Math.floor(Math.log10(x)) - 1));
+    return Math.round(x / r) * r;
+  };
+  const BASE_RATE = COUNTRIES.IN.rate;
+  const money = (inrAmount, c) => {
+    const v = nice(inrAmount / BASE_RATE * c.rate);
+    const loc = c.cur === 'INR' ? 'en-IN' : 'en-US';
+    const prefix = SYM[c.cur] ?? (c.cur + ' ');
+    return prefix + v.toLocaleString(loc);
+  };
+  const BUDGET_INR = [25000, 50000, 100000, 250000, 500000];
+  const bandsFor = (c) => {
+    const pts = BUDGET_INR.map((x) => money(x, c));
+    const bands = [];
+    for (let i = 0; i < pts.length - 1; i++) bands.push(`${pts[i]} – ${pts[i + 1]}`);
+    bands.push(`${pts[pts.length - 1]}+`);
+    bands.push('Flexible / To be discussed');
+    return bands;
+  };
 
-    // Also record submission on backend with channel: 'WhatsApp'
+  const name = $('#f-name'), org = $('#f-org'), email = $('#f-email');
+  const country = $('#f-country'), phone = $('#f-phone'), dial = $('#dial'), phoneHint = $('#phoneHint');
+  const budget = $('#f-budget'), brief = $('#f-brief'), agree = $('#f-agree');
+  const waBtn = $('#mSendWa'), mailBtn = $('#mSend');
+  const bar = $('#bar'), progTxt = $('#progTxt');
+
+  if (country && country.options.length <= 1) {
+    Object.entries(COUNTRIES)
+      .sort((a, b) => a[1].name.localeCompare(b[1].name))
+      .forEach(([code, c]) => country.add(new Option(c.name, code)));
+  }
+
+  const pop = (el) => el?.animate(
+    [{ transform: 'scale(.98)' }, { transform: 'scale(1)' }],
+    { duration: 300, easing: 'cubic-bezier(.34,1.4,.64,1)' }
+  );
+  const phoneDigits = () => (phone?.value || '').replace(/\D/g, '');
+  const emailOk = () => /^[^s@]+@[^s@]+\.[^s@]+$/.test((email?.value || '').trim());
+
+  const checks = () => {
+    const c = COUNTRIES[country?.value];
+    return {
+      name: (name?.value || '').trim().length > 0,
+      org: (org?.value || '').trim().length > 0,
+      email: emailOk(),
+      country: !!c,
+      phone: !!c && phoneDigits().length === c.len,
+      budget: !!budget?.value,
+      brief: (brief?.value || '').trim().length >= 10,
+      agree: !!agree?.checked,
+    };
+  };
+
+  const touched = new Set();
+  const touch = (el) => { if (el) touched.add(el.id); };
+  const mark = (el, ok) => {
+    if (!el) return;
+    el.classList.toggle('invalid', touched.has(el.id) && !ok);
+    el.classList.toggle('valid', touched.has(el.id) && ok);
+  };
+
+  const update = () => {
+    const c = checks();
+    const keys = Object.keys(c);
+    const done = keys.filter((k) => c[k]).length;
+    if (bar) bar.style.width = (done / keys.length * 100) + '%';
+    const ready = done === keys.length;
+    if (progTxt) progTxt.textContent = ready ? 'All set. Choose how to send.' : `${done} of ${keys.length} done`;
+    if (waBtn) waBtn.disabled = !ready;
+    if (mailBtn) mailBtn.disabled = !ready;
+
+    mark(name, c.name);
+    mark(org, c.org);
+    mark(email, c.email);
+    mark(brief, c.brief);
+    mark(country, c.country);
+    mark(phone, c.phone);
+    mark(budget, c.budget);
+  };
+
+  [name, org, email, brief].forEach((el) => {
+    if (!el) return;
+    el.addEventListener('input', () => { touch(el); update(); });
+    el.addEventListener('blur', () => { touch(el); update(); });
+  });
+  agree?.addEventListener('change', update);
+
+  country?.addEventListener('change', () => {
+    touch(country);
+    const c = COUNTRIES[country.value];
+    touched.delete('f-phone');
+    touched.delete('f-budget');
+    if (phone) phone.value = '';
+    if (budget) budget.innerHTML = '';
+
+    if (!c) {
+      if (phone) {
+        phone.disabled = true;
+        phone.placeholder = 'Select country first';
+      }
+      if (phoneHint) {
+        phoneHint.textContent = 'Select country first';
+        phoneHint.classList.remove('err');
+      }
+      if (dial) {
+        dial.textContent = '+';
+        dial.style.opacity = '.4';
+      }
+      if (budget) {
+        budget.disabled = true;
+        budget.add(new Option('Select country first', ''));
+      }
+    } else {
+      if (phone) {
+        phone.disabled = false;
+        phone.placeholder = `${c.len} digits`;
+      }
+      if (phoneHint) {
+        phoneHint.textContent = `Enter your ${c.len}-digit mobile number`;
+        phoneHint.classList.remove('err');
+      }
+      if (dial) {
+        dial.textContent = c.dial;
+        dial.style.opacity = '1';
+      }
+      if (budget) {
+        budget.disabled = false;
+        budget.add(new Option('Select estimated budget', ''));
+        bandsFor(c).forEach((label) => budget.add(new Option(label, label)));
+        pop(budget);
+      }
+      pop(phone);
+      phone?.focus();
+    }
+    update();
+  });
+
+  phone?.addEventListener('input', () => {
+    const c = COUNTRIES[country?.value];
+    if (!c) return;
+    const d = phoneDigits().slice(0, c.len);
+    phone.value = d;
+    touch(phone);
+    const left = c.len - d.length;
+    if (phoneHint) {
+      phoneHint.textContent = left > 0 ? `${left} more digit${left > 1 ? 's' : ''} needed` : 'Looks good';
+      phoneHint.classList.remove('err');
+    }
+    update();
+  });
+  phone?.addEventListener('blur', () => {
+    const c = COUNTRIES[country?.value];
+    touch(phone);
+    if (c && phoneDigits().length !== c.len) {
+      if (phoneHint) {
+        phoneHint.textContent = `Enter a valid ${c.len}-digit number`;
+        phoneHint.classList.add('err');
+      }
+    }
+    update();
+  });
+
+  budget?.addEventListener('change', () => { touch(budget); update(); });
+  budget?.addEventListener('blur', () => { touch(budget); update(); });
+
+  const getPayload = () => {
+    const c = COUNTRIES[country?.value];
+    const fullPhone = c ? `${c.dial} ${(phone?.value || '').trim()}` : (phone?.value || '').trim();
+    return {
+      name: (name?.value || '').trim(),
+      org: (org?.value || '').trim(),
+      email: (email?.value || '').trim(),
+      country: c ? c.name : (country?.value || ''),
+      phone: fullPhone,
+      budget: budget?.value || '',
+      project: (brief?.value || '').trim()
+    };
+  };
+
+  const sendWa = () => {
+    const p = getPayload();
+    const msg = `*New Project Inquiry - Neeraj Rawat Portfolio*\n\n` +
+      `*Name:* ${p.name}\n` +
+      `*Organisation:* ${p.org}\n` +
+      `*Email:* ${p.email}\n` +
+      `*Country & Mobile:* ${p.phone} (${p.country})\n` +
+      `*Budget:* ${p.budget}\n` +
+      `*Project Details:*\n${p.project}`;
+    const url = `https://wa.me/918708167959?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+
     fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, country, countryCode, mobile, email, service, budget, message: project, channel: 'WhatsApp', consent: true })
+      body: JSON.stringify({
+        name: p.name,
+        email: p.email,
+        mobile: p.phone,
+        channel: 'WhatsApp / Motion Modal',
+        service: p.org ? `Org: ${p.org}` : 'Project Inquiry',
+        budget: p.budget,
+        project: p.project,
+        consent: true
+      })
     }).catch(err => console.warn('Backend sync:', err));
 
-    // Display confirmation
     $('#mOkT').textContent = 'Connecting on WhatsApp';
-    $('#mOkP').textContent = `Thanks, ${name || 'there'}! WhatsApp has opened with your project details. Simply press send in WhatsApp to connect with Neeraj directly.`;
-    const waOkBtn = $('#mOkWaBtn');
-    if (waOkBtn) {
-      waOkBtn.href = waUrl;
-      waOkBtn.hidden = false;
-    }
-    $('.msuccess__alt').hidden = true;
-    $('#mForm').hidden = true;
+    $('#mOkP').textContent = `Thanks, ${p.name || 'there'}! WhatsApp has opened with your project details. Simply press send in WhatsApp to connect with Neeraj directly.`;
+    $('#reqForm').hidden = true;
     $('#mSuccess').hidden = false;
-    $('#mDone').focus();
-  });
-}
-
-// 2. Email Action
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const data = validateAndGetFormData();
-  if (!data) return;
-
-  const { name, country, countryCode, mobile, email, service, budget, project } = data;
-
-  const subject = `New project enquiry from ${name} (${budget})`;
-  const body = `Hi Neeraj,\n\nMobile: ${mobile}\nEmail: ${email}\nBudget: ${budget}\n\nProject details:\n${project}\n\n— ${name}\n\n[Consent confirmed: Details will not be shared with any third party]`;
-  const viaMail = () => {
-    location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    $('#mOkT').textContent = 'Almost there';
-    $('#mOkP').textContent = "Your email app has opened with your message ready to go. Press send there and I'll reply within 5 hours.";
-    $('.msuccess__alt').hidden = false;
-    if ($('#mOkWaBtn')) $('#mOkWaBtn').hidden = true;
-    $('#mForm').hidden = true; $('#mSuccess').hidden = false; $('#mDone').focus();
   };
-  const btn = $('#mSend'); btn.disabled = true; $('#mSendLbl').textContent = 'Sending…';
 
-  fetch('/api/contact', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, country, countryCode, mobile, email, service, budget, message: project, channel: 'Email', consent: true })
-  })
-    .then(r => {
-      if (!r.ok) return r.json().then(j => { throw new Error(j.error || r.status); });
-      return r.json();
-    })
-    .then(res => {
-      $('#mOkT').textContent = 'Message sent';
-      $('#mOkP').textContent = `Thanks, ${name || 'there'}! Your inquiry has been received. I'll reply to ${email} within 5 hours.`;
-      $('.msuccess__alt').hidden = true;
-      if ($('#mOkWaBtn')) $('#mOkWaBtn').hidden = true;
-      $('#mForm').hidden = true; $('#mSuccess').hidden = false; $('#mDone').focus();
-    })
-    .catch((err) => {
-      console.warn('API submission error:', err);
-      viaMail();
-    })
-    .finally(() => { btn.disabled = false; $('#mSendLbl').textContent = SEND_LABEL; });
-});
+  const sendMail = async () => {
+    if (mailBtn) mailBtn.classList.add('loading');
+    const p = getPayload();
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: p.name,
+          email: p.email,
+          mobile: p.phone,
+          channel: 'Email / Motion Modal',
+          service: p.org ? `Org: ${p.org}` : 'Project Inquiry',
+          budget: p.budget,
+          project: p.project,
+          consent: true
+        })
+      });
+    } catch(e){}
+
+    setTimeout(() => {
+      if (mailBtn) mailBtn.classList.remove('loading');
+      $('#mOkT').textContent = 'Message Sent';
+      $('#mOkP').textContent = `Thanks, ${p.name || 'there'}! Your project inquiry has been received. Neeraj will review your brief and reply within 5 hours.`;
+      $('#reqForm').hidden = true;
+      $('#mSuccess').hidden = false;
+
+      const subject = encodeURIComponent(`Project Inquiry: ${p.org || p.name}`);
+      const body = encodeURIComponent(`Name: ${p.name}\nOrganisation: ${p.org}\nEmail: ${p.email}\nPhone: ${p.phone}\nBudget: ${p.budget}\n\nProject Details:\n${p.project}`);
+      location.href = `mailto:neerajrawatdhani@gmail.com?subject=${subject}&body=${body}`;
+    }, 800);
+  };
+
+  waBtn?.addEventListener('click', sendWa);
+  mailBtn?.addEventListener('click', sendMail);
+  form?.addEventListener('submit', (e) => { e.preventDefault(); sendMail(); });
+
+  window.__initMotionModal = () => {
+    update();
+  };
+
+  window.__resetMotionModal = () => {
+    touched.clear();
+    form?.reset();
+    if (country) country.selectedIndex = 0;
+    if (phone) { phone.value = ''; phone.disabled = true; phone.placeholder = 'Select country first'; }
+    if (dial) { dial.textContent = '+'; dial.style.opacity = '.4'; }
+    if (phoneHint) { phoneHint.textContent = 'Select country first'; phoneHint.classList.remove('err'); }
+    if (budget) { budget.innerHTML = ''; budget.disabled = true; budget.add(new Option('Select country first', '')); }
+    if (agree) agree.checked = false;
+    [name, org, email, brief, country, phone, budget].forEach(el => {
+      if (el) { el.classList.remove('valid', 'invalid'); }
+    });
+    $('#reqForm').hidden = false;
+    $('#mSuccess').hidden = true;
+    update();
+  };
+
+  update();
+})();
 // ============ SPA Router & Clean URL Navigation ============
 function navigateSpa(route, push = true) {
   const clean = (route || '').replace(/\/+$/, '') || '/';

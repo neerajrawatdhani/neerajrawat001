@@ -5,656 +5,543 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Start a Project | Contact — Neeraj Rawat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" type="image/webp" href="frontend/neeraj_colour.webp">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/webp" href="/neeraj_colour.webp">
 <style>
 :root{
-  --bg:#EEF0F5;
-  --card:#FFFFFF;
-  --ink:#0E1020;
-  --muted:#6B7085;
-  --subtle:#9AA0B4;
-  --field:#F6F7FA;
-  --line-strong:#C9CEDB;
+  --bg:#EDEEF2;
+  --panel:#F7F7F9;
+  --field:#EFF0F4;
+  --ink:#111217;
+  --muted:#7A7F8C;
   --wa:#22C55E;
-  --wa-ink:#06381A;
+  --wa-ink:#06210F;
+  --dark:#111217;
   --err:#DC2626;
-  --brand:#5B4BDB;
   --ease:cubic-bezier(.22,.8,.24,1);
+  --spring:cubic-bezier(.34,1.4,.64,1);
 }
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;display:grid;place-items:center;padding:32px 16px}
-:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+body{
+  margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;
+  background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;font-size:14px;
+}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-.dialog{position:relative;width:min(560px,100%);background:var(--card);border-radius:20px;padding:28px 28px 24px;box-shadow:0 30px 70px -34px rgba(14,16,32,.45);animation:enter .7s var(--ease) both}
+/* back button for standalone view */
+.back-home{
+  position:fixed;top:20px;left:20px;display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;border-radius:10px;background:rgba(255,255,255,.9);color:var(--ink);
+  text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.08);
+  backdrop-filter:blur(8px);transition:transform .2s,background .2s;z-index:10;
+}
+.back-home:hover{transform:translateY(-1px);background:#fff}
 
-.eyebrow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:6px}
-.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--wa);animation:ping 1.8s infinite}
-h1{margin:0 0 22px;font-size:22px;font-weight:700;letter-spacing:-.02em}
+/* overlay + modal */
+.overlay{
+  position:fixed;inset:0;background:rgba(17,18,23,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:grid;place-items:center;padding:20px;
+  opacity:1;pointer-events:auto;transition:opacity .35s var(--ease);
+}
+.modal{
+  position:relative;width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow:auto;
+  background:var(--panel);border-radius:22px;padding:22px 22px 18px;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
+  transform:none;opacity:1;
+  transition:transform .6s var(--spring),opacity .4s var(--ease);
+}
 
-.reveal{opacity:0;transform:translateY(10px);animation:up .5s var(--ease) forwards}
-.reveal:nth-child(1){animation-delay:.10s}
-.reveal:nth-child(2){animation-delay:.16s}
-.reveal:nth-child(3){animation-delay:.22s}
-.reveal:nth-child(4){animation-delay:.28s}
-.reveal:nth-child(5){animation-delay:.34s}
-.reveal:nth-child(6){animation-delay:.40s}
-.reveal:nth-child(7){animation-delay:.46s}
-.reveal:nth-child(8){animation-delay:.52s}
+/* staggered entrance */
+.reveal{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
 
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.full{grid-column:1 / -1}
-.field{display:flex;flex-direction:column;gap:6px;min-width:0}
-.lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+/* header */
+.kicker{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.kicker i{width:6px;height:6px;border-radius:50%;background:var(--ink);display:inline-block}
+.title{margin:0;font-size:22px;font-weight:700;letter-spacing:-.02em;padding-right:40px}
+.close{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;border:0;background:var(--field);
+  display:grid;place-items:center;cursor:pointer;color:var(--ink);
+  transition:transform .4s var(--spring),background .25s;text-decoration:none;
+}
+.close:hover{transform:rotate(90deg);background:#E3E5EC}
+.close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+
+/* progress */
+.progress{margin:14px 0 4px;height:4px;border-radius:4px;background:var(--field);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--ink);border-radius:4px;transition:width .5s var(--ease)}
+.progress-txt{font-size:12px;color:var(--muted);margin:0 0 2px}
+
+/* fields */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .req{color:var(--err);margin-left:2px}
-
-.input,.select,.textarea{width:100%;min-width:0;font:500 14px/1.4 Inter,system-ui,sans-serif;color:var(--ink);background:var(--field);border:1px solid transparent;border-radius:12px;padding:12px 14px;outline:none;transition:border-color .25s,background .25s,box-shadow .25s}
-.input::placeholder,.textarea::placeholder{color:var(--subtle)}
-.input:hover,.select:hover,.textarea:hover{background:#F1F3F8}
-.input:focus,.select:focus,.textarea:focus{background:#fff;border-color:var(--brand);box-shadow:0 0 0 4px rgba(91,75,219,.12)}
-.textarea{min-height:96px;resize:vertical}
-.select{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;text-overflow:ellipsis;white-space:nowrap}
-.input.err,.select.err,.textarea.err{border-color:var(--err);background:#FFF7F7}
-.input.err:focus,.select.err:focus,.textarea.err:focus{box-shadow:0 0 0 4px rgba(220,38,38,.12)}
-.shake{animation:shake .4s var(--ease)}
-
-.err-msg{font-size:12px;color:var(--err);max-height:0;opacity:0;overflow:hidden;transition:max-height .3s var(--ease),opacity .3s}
-.err-msg.show{max-height:40px;opacity:1}
-
-/* country + number row */
-.phone{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:8px}
-.phone .select{padding-left:12px}
-.phone .input{font-variant-numeric:tabular-nums;letter-spacing:.02em}
-.phone-hint{font-size:12px;color:var(--subtle)}
+.input{
+  width:100%;height:44px;border-radius:12px;border:1px solid transparent;background:var(--field);
+  padding:0 14px;font:500 14px/1 Inter,system-ui,sans-serif;color:var(--ink);outline:none;
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.input::placeholder{color:#9EA3AF;font-weight:400}
+.input:hover:not(:disabled){background:#E9EAF0}
+.input:focus{background:#fff;border-color:var(--ink);box-shadow:0 0 0 4px rgba(17,18,23,.08)}
+.input:disabled{opacity:.5;cursor:not-allowed}
+.input.invalid{border-color:var(--err);background:#FFF5F5}
+.input.valid{border-color:#B7E4C7}
+select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.textarea{height:96px;padding:12px 14px;resize:none;line-height:1.45}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phone{position:relative;display:flex;align-items:center}
+.dial{
+  position:absolute;left:12px;font-weight:600;font-size:14px;color:var(--ink);pointer-events:none;
+  transition:opacity .25s;
+}
+.phone .input{padding-left:62px}
+.hint{font-size:12px;color:var(--muted);margin:0;min-height:16px;transition:color .25s}
+.hint.err{color:var(--err)}
 
 /* consent */
-.consent{position:relative;display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:12px;background:var(--field);cursor:pointer;transition:background .25s;margin-top:16px}
-.consent:hover{background:#F1F3F8}
-.consent input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.box{flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--line-strong);background:#fff;display:grid;place-items:center;margin-top:1px;transition:background .25s,border-color .25s,transform .25s var(--ease)}
-.box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .35s var(--ease) .05s}
+.consent{
+  display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--field);
+  cursor:pointer;transition:background .25s;user-select:none;position:relative;
+}
+.consent:hover{background:#E9EAF0}
+.consent input{position:absolute;opacity:0;pointer-events:none}
+.box{
+  flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid #B8BCC8;background:#fff;margin-top:1px;
+  display:grid;place-items:center;transition:background .3s var(--ease),border-color .3s,transform .3s var(--spring);
+}
+.box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--ease) .05s}
 .consent input:checked + .box{background:var(--ink);border-color:var(--ink);transform:scale(1.04)}
 .consent input:checked + .box svg{stroke-dashoffset:0}
-.consent input:focus-visible + .box{outline:3px solid var(--brand);outline-offset:2px}
-.consent .txt{font-size:12.5px;color:var(--muted);line-height:1.5}
-.consent.err{background:#FFF1F1}
-.consent.err .box{border-color:var(--err)}
-.consent.err .txt{color:#B42318}
+.consent input:focus-visible + .box{outline:2px solid var(--ink);outline-offset:2px}
+.consent-text{font-size:12.5px;color:#4B5060;line-height:1.45}
 
-.gate{font-size:12px;color:var(--subtle);text-align:center;margin:12px 0 0;min-height:18px;transition:opacity .3s}
+/* buttons */
+.actions{display:grid;grid-template-columns:1.1fr 1fr;gap:10px;margin-top:16px}
+.btn{
+  position:relative;overflow:hidden;height:56px;border-radius:16px;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 18px;
+  font:600 14px/1.2 Inter,system-ui,sans-serif;text-align:left;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),opacity .3s,filter .3s;
+}
+.btn::before{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);
+  transition:left .7s var(--ease);
+}
+.btn:not(:disabled):hover::before{left:120%}
+.btn:not(:disabled):hover{transform:translateY(-2px)}
+.btn:not(:disabled):active{transform:translateY(0) scale(.98)}
+.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;filter:grayscale(.4)}
+.btn-wa{background:var(--wa);color:var(--wa-ink);box-shadow:0 14px 26px -16px rgba(34,197,94,.9)}
+.btn-wa:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(34,197,94,1)}
+.btn-mail{background:var(--dark);color:#fff;box-shadow:0 14px 26px -16px rgba(17,18,23,.9)}
+.btn-mail:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(17,18,23,.9)}
+.round{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--spring)}
+.btn:not(:disabled):hover .round{transform:rotate(-12deg) scale(1.08)}
+.btn-wa .round{background:rgba(6,33,15,.12)}
+.btn-mail .round{background:rgba(255,255,255,.14)}
+.round svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-wa:not(:disabled):hover .round svg{transform:translate(1px,-1px) scale(1.1);transition:transform .5s var(--ease)}
+.btn-mail:not(:disabled):hover .round svg{transform:translate(3px,-3px);transition:transform .4s var(--ease)}
+.btn.loading{pointer-events:none}
+.btn.loading .label-txt{opacity:0}
+.spinner{
+  position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
+  border:2.5px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
+}
+.btn.loading .spinner{opacity:1}
 
-.ctas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
-.cta{position:relative;overflow:hidden;height:56px;border-radius:14px;border:0;font:600 14px/1 Inter,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),opacity .3s,filter .3s}
-.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--ease)}
-.cta:not(:disabled):hover::after{transform:translateX(120%)}
-.cta:not(:disabled):hover{transform:translateY(-2px)}
-.cta:not(:disabled):active{transform:scale(.97)}
-.cta:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.35)}
-.cta-wa{background:var(--wa);color:var(--wa-ink);box-shadow:0 12px 24px -14px rgba(34,197,94,.9)}
-.cta-mail{background:var(--ink);color:#fff;box-shadow:0 12px 24px -14px rgba(14,16,32,.8)}
-.cta .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .35s var(--ease)}
-.cta-wa .ic{background:rgba(255,255,255,.35)}
-.cta-mail .ic{background:rgba(255,255,255,.12)}
-.cta:not(:disabled):hover .ic{transform:translateX(3px) rotate(-8deg)}
-.cta .ic svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.cta .spinner{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin .7s linear infinite;display:none}
-.cta.loading .spinner{display:block}
-.cta.loading .ic{display:none}
-.cta:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+/* footer */
+.foot{margin:14px 0 0;text-align:center;font-size:12px;color:var(--muted);line-height:1.5}
+.live{display:inline-flex;align-items:center;gap:6px}
+.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--wa);animation:ping 1.8s infinite}
 
-.foot{margin:16px 0 0;text-align:center;font-size:12px;color:var(--subtle);line-height:1.6}
-.foot a{color:var(--ink);font-weight:600;text-decoration:none}
-.foot a:hover{text-decoration:underline}
-
-.done{position:absolute;inset:0;background:#fff;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:32px;opacity:0;pointer-events:none;transition:opacity .4s var(--ease);z-index:10}
-.done.show{opacity:1;pointer-events:auto}
-.check{width:64px;height:64px;border-radius:50%;background:#E8FBEF;display:grid;place-items:center}
-.check svg{width:30px;height:30px;stroke:var(--wa);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40}
-.done.show .check svg{animation:draw .6s .15s var(--ease) forwards}
-.done h2{margin:0;font-size:20px;font-weight:700}
-.done p{margin:0;color:var(--muted);max-width:340px}
-
-@keyframes enter{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
-@keyframes up{to{opacity:1;transform:none}}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
 
-@media (max-width:560px){
-  .dialog{padding:22px 18px 18px}
-  .grid2,.ctas{grid-template-columns:1fr}
-  .phone{grid-template-columns:minmax(0,1fr)}
+@media (max-width:480px){
+  .grid2,.actions,.row-2{grid-template-columns:1fr}
+  .title{font-size:20px}
+  .modal{padding:20px 18px 16px}
 }
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;animation-delay:0ms!important}
-  .reveal,.dialog{opacity:1;transform:none}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}
+  .reveal{opacity:1;transform:none}
+  .modal{transform:none}
 }
 </style>
 </head>
 <body>
 
-<main class="dialog" aria-labelledby="ttl">
-  <form id="form" novalidate>
-    <div class="eyebrow reveal"><i></i>Start a project</div>
-    <h1 id="ttl" class="reveal">Tell me what you're building.</h1>
+<a href="/" class="back-home" title="Back to Portfolio">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  <span>Back to Portfolio</span>
+</a>
 
-    <div class="grid2">
-      <div class="field reveal">
-        <label class="lbl" for="name">Name<span class="req">*</span></label>
-        <input class="input" id="name" name="name" type="text" placeholder="Your name" autocomplete="name">
-        <div class="err-msg" id="name-err">Please enter your name.</div>
-      </div>
-      <div class="field reveal">
-        <label class="lbl" for="email">Email ID<span class="req">*</span></label>
-        <input class="input" id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email">
-        <div class="err-msg" id="email-err">Enter a valid email address.</div>
-      </div>
+<div class="overlay" id="overlay">
+  <div class="modal" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <a class="close reveal" href="/" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </a>
 
-      <div class="field full reveal">
-        <label class="lbl" for="org">Organisation name<span class="req">*</span></label>
-        <input class="input" id="org" name="organisation" type="text" placeholder="Company, school or organisation you are building for" autocomplete="organization">
-        <div class="err-msg" id="org-err">Please enter your organisation name.</div>
-      </div>
+    <p class="kicker reveal"><i></i>Start a project</p>
+    <h2 class="title reveal" id="dlg-title">Tell me what you're building.</h2>
 
-      <div class="field full reveal">
-        <span class="lbl" id="phone-lbl">Country &amp; mobile number<span class="req">*</span></span>
-        <div class="phone" role="group" aria-labelledby="phone-lbl">
-          <select class="select" id="country" name="country" aria-label="Country"></select>
-          <input class="input" id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" aria-label="Mobile number">
+    <div class="reveal">
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <p class="progress-txt" id="progTxt" aria-live="polite">0 of 8 done</p>
+    </div>
+
+    <form id="form" novalidate>
+      <div class="grid2 reveal">
+        <div class="field" style="margin-top:14px">
+          <label class="label" for="name">Name<span class="req">*</span></label>
+          <input class="input" id="name" type="text" placeholder="Your name" autocomplete="name">
         </div>
-        <span class="phone-hint" id="phone-hint"></span>
-        <div class="err-msg" id="phone-err">Enter a valid mobile number.</div>
+        <div class="field" style="margin-top:14px">
+          <label class="label" for="org">Organisation<span class="req">*</span></label>
+          <input class="input" id="org" type="text" placeholder="Company or school name" autocomplete="organization">
+        </div>
       </div>
 
-      <div class="field full reveal">
-        <label class="lbl" for="budget">Budget</label>
-        <select class="select" id="budget" name="budget">
-          <option value="">Select estimated budget</option>
+      <div class="field reveal">
+        <label class="label" for="email">Email ID<span class="req">*</span></label>
+        <input class="input" id="email" type="email" placeholder="you@company.com" autocomplete="email">
+      </div>
+
+      <div class="field reveal">
+        <span class="label">Country &amp; mobile number<span class="req">*</span></span>
+        <div class="row-2">
+          <select class="input" id="country" aria-label="Country">
+            <option value="">Select country</option>
+          </select>
+          <div class="phone">
+            <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
+            <input class="input" id="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
+          </div>
+        </div>
+        <p class="hint" id="phoneHint">Select country first</p>
+      </div>
+
+      <div class="field reveal">
+        <label class="label" for="budget">Budget<span class="req">*</span></label>
+        <select class="input" id="budget" disabled>
+          <option value="">Select country first</option>
         </select>
       </div>
 
-      <div class="field full reveal">
-        <label class="lbl" for="brief">Brief description of the project<span class="req">*</span></label>
-        <textarea class="textarea" id="brief" name="brief" placeholder="A brief description of your project, school ERP requirements, or design vision."></textarea>
-        <div class="err-msg" id="brief-err">Please describe your project in at least 15 characters.</div>
+      <div class="field reveal">
+        <label class="label" for="brief">Project details<span class="req">*</span></label>
+        <textarea class="input textarea" id="brief" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
       </div>
-    </div>
 
-    <label class="consent reveal" id="consentWrap" for="consent">
-      <input type="checkbox" id="consent" name="consent">
-      <span class="box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>
-      <span class="txt">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
-    </label>
+      <label class="consent reveal" for="agree">
+        <input type="checkbox" id="agree">
+        <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
+        <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
+      </label>
 
-    <p class="gate" id="gate">Tick the consent box above to enable sending.</p>
+      <div class="actions reveal">
+        <button class="btn btn-wa" type="button" id="waBtn" disabled>
+          <span class="label-txt">Send a WhatsApp Message</span>
+          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-mail" type="button" id="mailBtn" disabled>
+          <span class="label-txt">Send an Email</span>
+          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
 
-    <div class="ctas reveal">
-      <button class="cta cta-wa" type="submit" data-channel="whatsapp" disabled>
-        <span class="spinner" aria-hidden="true"></span>
-        <span>Send a WhatsApp Message</span>
-        <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
-      </button>
-      <button class="cta cta-mail" type="submit" data-channel="email" disabled>
-        <span class="spinner" aria-hidden="true"></span>
-        <span>Send an Email</span>
-        <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      </button>
-    </div>
-
-    <p class="foot reveal">Replies within 5 hours · Direct WhatsApp: <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer">+91 87081 67959</a></p>
-  </form>
-
-  <div class="done" id="done" role="status" aria-live="polite">
-    <div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-    <h2 tabindex="-1">Thanks, we've got it.</h2>
-    <p>Your details are in. Expect a reply within 5 hours.</p>
-    <button type="button" class="cta cta-mail" style="margin-top:16px; height:44px; padding:0 24px;" onclick="location.reload()">Send another message</button>
+    <p class="foot reveal"><span class="live">Replies within 5 hours</span> · Direct WhatsApp: <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer" style="color:inherit;font-weight:600">+91 87081 67959</a></p>
   </div>
-</main>
+</div>
 
 <script>
 (() => {
+  const RAW = [
+    ["AF","Afghanistan","+93",9,"AFN",70],["AL","Albania","+355",9,"ALL",95],["DZ","Algeria","+213",9,"DZD",135],
+    ["AD","Andorra","+376",6,"EUR",0.92],["AO","Angola","+244",9,"AOA",900],["AG","Antigua and Barbuda","+1268",7,"XCD",2.7],
+    ["AR","Argentina","+54",10,"ARS",1000],["AM","Armenia","+374",8,"AMD",390],["AU","Australia","+61",9,"AUD",1.55],
+    ["AT","Austria","+43",10,"EUR",0.92],["AZ","Azerbaijan","+994",9,"AZN",1.7],["BS","Bahamas","+1242",7,"BSD",1],
+    ["BH","Bahrain","+973",8,"BHD",0.376],["BD","Bangladesh","+880",10,"BDT",120],["BB","Barbados","+1246",7,"BBD",2],
+    ["BY","Belarus","+375",9,"BYN",3.2],["BE","Belgium","+32",9,"EUR",0.92],["BZ","Belize","+501",7,"BZD",2],
+    ["BJ","Benin","+229",8,"XOF",600],["BT","Bhutan","+975",8,"BTN",88],["BO","Bolivia","+591",8,"BOB",6.9],
+    ["BA","Bosnia and Herzegovina","+387",8,"BAM",1.8],["BW","Botswana","+267",8,"BWP",13.5],["BR","Brazil","+55",11,"BRL",5.2],
+    ["BN","Brunei","+673",7,"BND",1.35],["BG","Bulgaria","+359",9,"BGN",1.8],["BF","Burkina Faso","+226",8,"XOF",600],
+    ["BI","Burundi","+257",8,"BIF",2900],["CV","Cabo Verde","+238",7,"CVE",100],["KH","Cambodia","+855",9,"KHR",4100],
+    ["CM","Cameroon","+237",9,"XAF",600],["CA","Canada","+1",10,"CAD",1.37],["CF","Central African Republic","+236",8,"XAF",600],
+    ["TD","Chad","+235",8,"XAF",600],["CL","Chile","+56",9,"CLP",950],["CN","China","+86",11,"CNY",7.2],
+    ["CO","Colombia","+57",10,"COP",4000],["KM","Comoros","+269",7,"KMF",460],["CG","Congo","+242",9,"XAF",600],
+    ["CD","DR Congo","+243",9,"CDF",2800],["CR","Costa Rica","+506",8,"CRC",510],["CI","Côte d'Ivoire","+225",10,"XOF",600],
+    ["HR","Croatia","+385",9,"EUR",0.92],["CU","Cuba","+53",8,"CUP",24],["CY","Cyprus","+357",8,"EUR",0.92],
+    ["CZ","Czechia","+420",9,"CZK",23],["DK","Denmark","+45",8,"DKK",6.9],["DJ","Djibouti","+253",8,"DJF",178],
+    ["DM","Dominica","+1767",7,"XCD",2.7],["DO","Dominican Republic","+1809",10,"DOP",60],["EC","Ecuador","+593",9,"USD",1],
+    ["EG","Egypt","+20",10,"EGP",48],["SV","El Salvador","+503",8,"USD",1],["GQ","Equatorial Guinea","+240",9,"XAF",600],
+    ["ER","Eritrea","+291",7,"ERN",15],["EE","Estonia","+372",8,"EUR",0.92],["SZ","Eswatini","+268",8,"SZL",18],
+    ["ET","Ethiopia","+251",9,"ETB",130],["FJ","Fiji","+679",7,"FJD",2.25],["FI","Finland","+358",9,"EUR",0.92],
+    ["FR","France","+33",9,"EUR",0.92],["GA","Gabon","+241",7,"XAF",600],["GM","Gambia","+220",7,"GMD",70],
+    ["GE","Georgia","+995",9,"GEL",2.7],["DE","Germany","+49",10,"EUR",0.92],["GH","Ghana","+233",9,"GHS",15],
+    ["GR","Greece","+30",10,"EUR",0.92],["GD","Grenada","+1473",7,"XCD",2.7],["GT","Guatemala","+502",8,"GTQ",7.8],
+    ["GN","Guinea","+224",9,"GNF",8600],["GW","Guinea-Bissau","+245",7,"XOF",600],["GY","Guyana","+592",7,"GYD",209],
+    ["HT","Haiti","+509",8,"HTG",132],["HN","Honduras","+504",8,"HNL",25],["HU","Hungary","+36",9,"HUF",360],
+    ["IS","Iceland","+354",7,"ISK",140],["IN","India","+91",10,"INR",88],["ID","Indonesia","+62",10,"IDR",16000],
+    ["IR","Iran","+98",10,"IRR",42000],["IQ","Iraq","+964",10,"IQD",1310],["IE","Ireland","+353",9,"EUR",0.92],
+    ["IL","Israel","+972",9,"ILS",3.7],["IT","Italy","+39",10,"EUR",0.92],["JM","Jamaica","+1876",7,"JMD",157],
+    ["JP","Japan","+81",10,"JPY",150],["JO","Jordan","+962",9,"JOD",0.71],["KZ","Kazakhstan","+7",10,"KZT",480],
+    ["KE","Kenya","+254",9,"KES",129],["KI","Kiribati","+686",8,"AUD",1.55],["KP","North Korea","+850",10,"KPW",900],
+    ["KR","South Korea","+82",10,"KRW",1350],["KW","Kuwait","+965",8,"KWD",0.307],["KG","Kyrgyzstan","+996",9,"KGS",87],
+    ["LA","Laos","+856",10,"LAK",21500],["LV","Latvia","+371",8,"EUR",0.92],["LB","Lebanon","+961",8,"LBP",89500],
+    ["LS","Lesotho","+266",8,"LSL",18],["LR","Liberia","+231",7,"LRD",190],["LY","Libya","+218",9,"LYD",4.9],
+    ["LI","Liechtenstein","+423",7,"CHF",0.8],["LT","Lithuania","+370",8,"EUR",0.92],["LU","Luxembourg","+352",9,"EUR",0.92],
+    ["MG","Madagascar","+261",9,"MGA",4500],["MW","Malawi","+265",9,"MWK",1700],["MY","Malaysia","+60",9,"MYR",4.7],
+    ["MV","Maldives","+960",7,"MVR",15.4],["ML","Mali","+223",8,"XOF",600],["MT","Malta","+356",8,"EUR",0.92],
+    ["MH","Marshall Islands","+692",7,"USD",1],["MR","Mauritania","+222",8,"MRU",40],["MU","Mauritius","+230",8,"MUR",46],
+    ["MX","Mexico","+52",10,"MXN",18],["FM","Micronesia","+691",7,"USD",1],["MD","Moldova","+373",8,"MDL",17.8],
+    ["MC","Monaco","+377",8,"EUR",0.92],["MN","Mongolia","+976",8,"MNT",3400],["ME","Montenegro","+382",8,"EUR",0.92],
+    ["MA","Morocco","+212",9,"MAD",10],["MZ","Mozambique","+258",9,"MZN",64],["MM","Myanmar","+95",9,"MMK",2100],
+    ["NA","Namibia","+264",9,"NAD",18],["NR","Nauru","+674",7,"AUD",1.55],["NP","Nepal","+977",10,"NPR",140],
+    ["NL","Netherlands","+31",9,"EUR",0.92],["NZ","New Zealand","+64",9,"NZD",1.7],["NI","Nicaragua","+505",8,"NIO",36.5],
+    ["NE","Niger","+227",8,"XOF",600],["NG","Nigeria","+234",10,"NGN",1500],["MK","North Macedonia","+389",8,"MKD",56],
+    ["NO","Norway","+47",8,"NOK",10.5],["OM","Oman","+968",8,"OMR",0.385],["PK","Pakistan","+92",10,"PKR",280],
+    ["PW","Palau","+680",7,"USD",1],["PS","Palestine","+970",9,"ILS",3.7],["PA","Panama","+507",8,"PAB",1],
+    ["PG","Papua New Guinea","+675",8,"PGK",4],["PY","Paraguay","+595",9,"PYG",7600],["PE","Peru","+51",9,"PEN",3.7],
+    ["PH","Philippines","+63",10,"PHP",57],["PL","Poland","+48",9,"PLN",3.9],["PT","Portugal","+351",9,"EUR",0.92],
+    ["QA","Qatar","+974",8,"QAR",3.64],["RO","Romania","+40",9,"RON",4.6],["RU","Russia","+7",10,"RUB",90],
+    ["RW","Rwanda","+250",9,"RWF",1380],["KN","Saint Kitts and Nevis","+1869",7,"XCD",2.7],["LC","Saint Lucia","+1758",7,"XCD",2.7],
+    ["VC","Saint Vincent and the Grenadines","+1784",7,"XCD",2.7],["WS","Samoa","+685",7,"WST",2.7],["SM","San Marino","+378",10,"EUR",0.92],
+    ["ST","São Tomé and Príncipe","+239",7,"STN",22.5],["SA","Saudi Arabia","+966",9,"SAR",3.75],["SN","Senegal","+221",9,"XOF",600],
+    ["RS","Serbia","+381",9,"RSD",108],["SC","Seychelles","+248",7,"SCR",14],["SL","Sierra Leone","+232",8,"SLE",22.7],
+    ["SG","Singapore","+65",8,"SGD",1.35],["SK","Slovakia","+421",9,"EUR",0.92],["SI","Slovenia","+386",8,"EUR",0.92],
+    ["SB","Solomon Islands","+677",7,"SBD",8.5],["SO","Somalia","+252",8,"SOS",570],["ZA","South Africa","+27",9,"ZAR",18],
+    ["SS","South Sudan","+211",9,"SSP",1500],["ES","Spain","+34",9,"EUR",0.92],["LK","Sri Lanka","+94",9,"LKR",300],
+    ["SD","Sudan","+249",9,"SDG",600],["SR","Suriname","+597",7,"SRD",36],["SE","Sweden","+46",9,"SEK",10.5],
+    ["CH","Switzerland","+41",9,"CHF",0.8],["SY","Syria","+963",9,"SYP",13000],["TJ","Tajikistan","+992",9,"TJS",10.9],
+    ["TZ","Tanzania","+255",9,"TZS",2600],["TH","Thailand","+66",9,"THB",35],["TL","Timor-Leste","+670",8,"USD",1],
+    ["TG","Togo","+228",8,"XOF",600],["TO","Tonga","+676",7,"TOP",2.4],["TT","Trinidad and Tobago","+1868",7,"TTD",6.8],
+    ["TN","Tunisia","+216",8,"TND",3.1],["TR","Turkey","+90",10,"TRY",34],["TM","Turkmenistan","+993",8,"TMT",3.5],
+    ["TV","Tuvalu","+688",6,"AUD",1.55],["UG","Uganda","+256",9,"UGX",3700],["UA","Ukraine","+380",9,"UAH",41],
+    ["AE","United Arab Emirates","+971",9,"AED",3.67],["GB","United Kingdom","+44",10,"GBP",0.78],["US","United States","+1",10,"USD",1],
+    ["UY","Uruguay","+598",8,"UYU",40],["UZ","Uzbekistan","+998",9,"UZS",12600],["VU","Vanuatu","+678",7,"VUV",120],
+    ["VA","Vatican City","+39",10,"EUR",0.92],["VE","Venezuela","+58",10,"VES",36],["VN","Vietnam","+84",9,"VND",25400],
+    ["YE","Yemen","+967",9,"YER",250],["ZM","Zambia","+260",9,"ZMW",27],["ZW","Zimbabwe","+263",9,"ZWG",26]
+  ];
+
+  const COUNTRIES = {};
+  RAW.forEach(([code, name, dial, len, cur, rate]) => {
+    COUNTRIES[code] = { name, dial, len, cur, rate };
+  });
+
+  const SYM = { USD: '$', INR: '₹', GBP: '£', EUR: '€', JPY: '¥', CNY: '¥', KRW: '₩', PHP: '₱' };
+  const nice = (x) => {
+    const r = Math.pow(10, Math.max(0, Math.floor(Math.log10(x)) - 1));
+    return Math.round(x / r) * r;
+  };
+  const BASE_RATE = COUNTRIES.IN.rate;
+  const money = (inrAmount, c) => {
+    const v = nice(inrAmount / BASE_RATE * c.rate);
+    const loc = c.cur === 'INR' ? 'en-IN' : 'en-US';
+    const prefix = SYM[c.cur] ?? (c.cur + ' ');
+    return prefix + v.toLocaleString(loc);
+  };
+  const BUDGET_INR = [25000, 50000, 100000, 250000, 500000];
+  const bandsFor = (c) => {
+    const pts = BUDGET_INR.map((x) => money(x, c));
+    const bands = [];
+    for (let i = 0; i < pts.length - 1; i++) bands.push(`${pts[i]} – ${pts[i + 1]}`);
+    bands.push(`${pts[pts.length - 1]}+`);
+    bands.push('Flexible / To be discussed');
+    return bands;
+  };
+
   const $ = (id) => document.getElementById(id);
-  const form = $('form'), done = $('done');
-  const consent = $('consent'), consentWrap = $('consentWrap'), gate = $('gate');
-  const submits = form.querySelectorAll('button[type="submit"]');
-  const country = $('country'), phone = $('phone'), hint = $('phone-hint'), phoneErr = $('phone-err');
+  const name = $('name'), org = $('org'), email = $('email');
+  const country = $('country'), phone = $('phone'), dial = $('dial'), phoneHint = $('phoneHint');
+  const budget = $('budget'), brief = $('brief'), agree = $('agree');
+  const waBtn = $('waBtn'), mailBtn = $('mailBtn');
+  const bar = $('bar'), progTxt = $('progTxt');
 
-  /* ISO | Country | Dial code | National mobile digit length (min or min-max, without trunk 0) */
-  const DATA = `AF|Afghanistan|93|9
-AL|Albania|355|9
-DZ|Algeria|213|9
-AD|Andorra|376|6-9
-AO|Angola|244|9
-AG|Antigua and Barbuda|1268|10
-AR|Argentina|54|10
-AM|Armenia|374|8
-AU|Australia|61|9
-AT|Austria|43|10-11
-AZ|Azerbaijan|994|9
-BS|Bahamas|1242|10
-BH|Bahrain|973|8
-BD|Bangladesh|880|10
-BB|Barbados|1246|10
-BY|Belarus|375|9
-BE|Belgium|32|9
-BZ|Belize|501|7
-BJ|Benin|229|8
-BT|Bhutan|975|8
-BO|Bolivia|591|8
-BA|Bosnia and Herzegovina|387|8-9
-BW|Botswana|267|7-8
-BR|Brazil|55|11
-BN|Brunei|673|7
-BG|Bulgaria|359|9
-BF|Burkina Faso|226|8
-BI|Burundi|257|8
-CV|Cabo Verde|238|7
-KH|Cambodia|855|8-9
-CM|Cameroon|237|9
-CA|Canada|1|10
-CF|Central African Republic|236|8
-TD|Chad|235|8
-CL|Chile|56|9
-CN|China|86|11
-CO|Colombia|57|10
-KM|Comoros|269|7
-CG|Congo|242|9
-CD|Congo (DRC)|243|9
-CR|Costa Rica|506|8
-CI|Côte d'Ivoire|225|10
-HR|Croatia|385|8-9
-CU|Cuba|53|8
-CY|Cyprus|357|8
-CZ|Czech Republic|420|9
-DK|Denmark|45|8
-DJ|Djibouti|253|8
-DM|Dominica|1767|10
-DO|Dominican Republic|1809|10
-EC|Ecuador|593|9
-EG|Egypt|20|10
-SV|El Salvador|503|8
-GQ|Equatorial Guinea|240|9
-ER|Eritrea|291|7
-EE|Estonia|372|7-8
-SZ|Eswatini|268|8
-ET|Ethiopia|251|9
-FJ|Fiji|679|7
-FI|Finland|358|9-10
-FR|France|33|9
-GA|Gabon|241|7
-GM|Gambia|220|7
-GE|Georgia|995|9
-DE|Germany|49|10-11
-GH|Ghana|233|9
-GR|Greece|30|10
-GD|Grenada|1473|10
-GT|Guatemala|502|8
-GN|Guinea|224|9
-GW|Guinea-Bissau|245|7
-GY|Guyana|592|7
-HT|Haiti|509|8
-HN|Honduras|504|8
-HK|Hong Kong|852|8
-HU|Hungary|36|9
-IS|Iceland|354|7
-IN|India|91|10
-ID|Indonesia|62|9-11
-IR|Iran|98|10
-IQ|Iraq|964|10
-IE|Ireland|353|9
-IL|Israel|972|9
-IT|Italy|39|9-10
-JM|Jamaica|1876|10
-JP|Japan|81|10
-JO|Jordan|962|9
-KZ|Kazakhstan|7|10
-KE|Kenya|254|9
-KI|Kiribati|686|5
-KP|North Korea|850|10
-KR|South Korea|82|9-10
-KW|Kuwait|965|8
-KG|Kyrgyzstan|996|9
-LA|Laos|856|8-9
-LV|Latvia|371|8
-LB|Lebanon|961|7-8
-LS|Lesotho|266|8
-LR|Liberia|231|7-8
-LY|Libya|218|9
-LI|Liechtenstein|423|7-9
-LT|Lithuania|370|8
-LU|Luxembourg|352|9
-MO|Macau|853|8
-MG|Madagascar|261|9
-MW|Malawi|265|9
-MY|Malaysia|60|9-10
-MV|Maldives|960|7
-ML|Mali|223|8
-MT|Malta|356|8
-MH|Marshall Islands|692|7
-MR|Mauritania|222|8
-MU|Mauritius|230|8
-MX|Mexico|52|10
-FM|Micronesia|691|7
-MD|Moldova|373|8
-MC|Monaco|377|8-9
-MN|Mongolia|976|8
-ME|Montenegro|382|8
-MA|Morocco|212|9
-MZ|Mozambique|258|9
-MM|Myanmar|95|8-10
-NA|Namibia|264|9
-NR|Nauru|674|7
-NP|Nepal|977|10
-NL|Netherlands|31|9
-NZ|New Zealand|64|8-9
-NI|Nicaragua|505|8
-NE|Niger|227|8
-NG|Nigeria|234|10
-MK|North Macedonia|389|8
-NO|Norway|47|8
-OM|Oman|968|8
-PK|Pakistan|92|10
-PW|Palau|680|7
-PS|Palestine|970|9
-PA|Panama|507|8
-PG|Papua New Guinea|675|8
-PY|Paraguay|595|9
-PE|Peru|51|9
-PH|Philippines|63|10
-PL|Poland|48|9
-PT|Portugal|351|9
-PR|Puerto Rico|1787|10
-QA|Qatar|974|8
-RO|Romania|40|9
-RU|Russia|7|10
-RW|Rwanda|250|9
-KN|Saint Kitts and Nevis|1869|10
-LC|Saint Lucia|1758|10
-VC|Saint Vincent and the Grenadines|1784|10
-WS|Samoa|685|7
-SM|San Marino|378|6-10
-ST|Sao Tome and Principe|239|7
-SA|Saudi Arabia|966|9
-SN|Senegal|221|9
-RS|Serbia|381|8-9
-SC|Seychelles|248|7
-SL|Sierra Leone|232|8
-SG|Singapore|65|8
-SK|Slovakia|421|9
-SI|Slovenia|386|8
-SB|Solomon Islands|677|5-7
-SO|Somalia|252|7-9
-ZA|South Africa|27|9
-SS|South Sudan|211|9
-ES|Spain|34|9
-LK|Sri Lanka|94|9
-SD|Sudan|249|9
-SR|Suriname|597|6-7
-SE|Sweden|46|7-9
-CH|Switzerland|41|9
-SY|Syria|963|9
-TW|Taiwan|886|9
-TJ|Tajikistan|992|9
-TZ|Tanzania|255|9
-TH|Thailand|66|9
-TL|Timor-Leste|670|7-8
-TG|Togo|228|8
-TO|Tonga|676|5-7
-TT|Trinidad and Tobago|1868|10
-TN|Tunisia|216|8
-TR|Turkey|90|10
-TM|Turkmenistan|993|8
-TV|Tuvalu|688|5-6
-UG|Uganda|256|9
-UA|Ukraine|380|9
-AE|United Arab Emirates|971|9
-GB|United Kingdom|44|10
-US|United States|1|10
-UY|Uruguay|598|8
-UZ|Uzbekistan|998|9
-VU|Vanuatu|678|5-7
-VA|Vatican City|39|10
-VE|Venezuela|58|10
-VN|Vietnam|84|9
-YE|Yemen|967|9
-ZM|Zambia|260|9
-ZW|Zimbabwe|263|9`;
+  Object.entries(COUNTRIES)
+    .sort((a, b) => a[1].name.localeCompare(b[1].name))
+    .forEach(([code, c]) => country.add(new Option(c.name, code)));
 
-  /* Country -> currency. Anything not listed uses USD. */
-  const EUR_ISO = ['AT','BE','CY','DE','EE','ES','FI','FR','GR','HR','IE','IT','LT','LU','LV','MT','NL','PT','SI','SK','SM','VA','MC','ME','AD'];
-  const CUR = { IN:'INR', US:'USD', CA:'CAD', GB:'GBP', AE:'AED', SA:'SAR', QA:'QAR', KW:'KWD', BH:'BHD', OM:'OMR', JO:'JOD',
-    AU:'AUD', NZ:'NZD', SG:'SGD', MY:'MYR', JP:'JPY', CN:'CNY', HK:'HKD', KR:'KRW', TW:'TWD', TH:'THB', ID:'IDR', VN:'VND',
-    PH:'PHP', PK:'PKR', BD:'BDT', LK:'LKR', NP:'NPR', ZA:'ZAR', NG:'NGN', KES:'KES', EG:'EGP', BR:'BRL', MX:'MXN', CH:'CHF',
-    SE:'SEK', NO:'NOK', DK:'DKK', PL:'PLN', CZ:'CZK', HU:'HUF', RO:'RON', RU:'RUB', TR:'TRY', IL:'ILS', CL:'CLP', COP:'COP',
-    PE:'PEN', AR:'ARS' };
-  EUR_ISO.forEach((i) => { CUR[i] = 'EUR'; });
+  const pop = (el) => el.animate(
+    [{ transform: 'scale(.98)' }, { transform: 'scale(1)' }],
+    { duration: 300, easing: 'cubic-bezier(.34,1.4,.64,1)' }
+  );
+  const phoneDigits = () => phone.value.replace(/\D/g, '');
+  const emailOk = () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
 
-  /* Approximate rates: units of currency per 1 USD. */
-  const RATE = { USD:1, INR:85, GBP:0.79, EUR:0.92, AED:3.67, SAR:3.75, QAR:3.64, KWD:0.31, BHD:0.377, OMR:0.385, JOD:0.71,
-    AUD:1.52, NZD:1.65, CAD:1.37, SGD:1.34, MYR:4.7, JPY:150, CNY:7.2, HKD:7.8, KRW:1350, TWD:32, THB:35, IDR:16000, VND:25000,
-    PHP:57, PKR:280, BDT:110, LKR:300, NPR:133, ZAR:18, NGN:1500, KES:130, EGP:48, BRL:5.2, MXN:18, CHF:0.9, SEK:10.5, NOK:10.7,
-    DKK:6.9, PLN:4, CZK:23, HUF:360, RON:4.6, RUB:92, TRY:32, ILS:3.7, CLP:950, COP:4000, PEN:3.8, ARS:1000 };
-
-  const BANDS_USD = [600, 2000, 6000];
-  const niceRound = (v) => {
-    const e = Math.pow(10, Math.floor(Math.log10(v)));
-    const steps = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 7.5, 8, 10];
-    const m = v / e;
-    let best = steps[0];
-    steps.forEach((s) => { if (Math.abs(s - m) < Math.abs(best - m)) best = s; });
-    return best * e;
+  const checks = () => {
+    const c = COUNTRIES[country.value];
+    return {
+      name: name.value.trim().length > 0,
+      org: org.value.trim().length > 0,
+      email: emailOk(),
+      country: !!c,
+      phone: !!c && phoneDigits().length === c.len,
+      budget: !!budget.value,
+      brief: brief.value.trim().length >= 10,
+      agree: agree.checked,
+    };
   };
 
-  function renderBudget() {
-    const iso = country.options[country.selectedIndex].dataset.iso;
-    const code = CUR[iso] || 'USD';
-    const loc = code === 'INR' ? 'en-IN' : 'en-US';
-    const fmt = new Intl.NumberFormat(loc, { style: 'currency', currency: code, maximumFractionDigits: 0 });
-    const amt = BANDS_USD.map((usd) => niceRound(usd * RATE[code]));
-    const sel = $('budget');
-    sel.innerHTML = '';
-    const add = (text, value) => { const o = document.createElement('option'); o.textContent = text; if (value !== undefined) o.value = value; sel.appendChild(o); };
-    add(`Select estimated budget (${code})`, '');
-    add(`Under ${fmt.format(amt[0])}`, `under-${amt[0]}`);
-    add(`${fmt.format(amt[0])} – ${fmt.format(amt[1])}`, `${amt[0]}-${amt[1]}`);
-    add(`${fmt.format(amt[1])} – ${fmt.format(amt[2])}`, `${amt[1]}-${amt[2]}`);
-    add(`Above ${fmt.format(amt[2])}`, `above-${amt[2]}`);
-  }
-
-  const flag = (iso) => String.fromCodePoint(...iso.split('').map((c) => 127397 + c.charCodeAt(0)));
-  const countries = DATA.split('\n').map((line) => {
-    const [iso, name, dial, len] = line.split('|');
-    const [min, max] = len.split('-').map(Number);
-    return { iso, name, dial, min, max: max || min };
-  });
-  countries.forEach((c) => {
-    const o = document.createElement('option');
-    o.value = c.dial;
-    o.dataset.iso = c.iso;
-    o.dataset.min = c.min;
-    o.dataset.max = c.max;
-    o.textContent = `${flag(c.iso)} ${c.name} (+${c.dial})`;
-    if (c.iso === 'IN') o.selected = true;
-    country.appendChild(o);
-  });
-
-  const current = () => {
-    const o = country.options[country.selectedIndex];
-    return { dial: o.value, min: +o.dataset.min, max: +o.dataset.max, name: o.textContent.replace(/^\S+\s/, '').replace(/\s\(\+\d+\)$/, '') };
-  };
-  const lenText = (r) => (r.min === r.max ? `${r.min} digits` : `${r.min} to ${r.max} digits`);
-
-  const prefix = () => `+${current().dial} `;
-  const setPrefix = () => { phone.value = prefix(); };
-  const syncPhoneUI = () => {
-    const r = current();
-    hint.textContent = `${r.name}: mobile number needs ${lenText(r)} after +${r.dial}`;
-    phoneErr.textContent = `Enter a valid ${r.min === r.max ? r.min + '-digit' : r.min + ' to ' + r.max + '-digit'} mobile number for ${r.name}.`;
+  const touched = new Set();
+  const touch = (el) => touched.add(el.id);
+  const mark = (el, ok) => {
+    el.classList.toggle('invalid', touched.has(el.id) && !ok);
+    el.classList.toggle('valid', touched.has(el.id) && ok);
   };
 
-  const nationalDigits = () => {
-    const r = current();
-    let v = phone.value;
-    const pre = `+${r.dial}`;
-    if (v.startsWith(pre)) v = v.slice(pre.length);
-    return v.replace(/\D/g, '');
+  const update = () => {
+    const c = checks();
+    const keys = Object.keys(c);
+    const done = keys.filter((k) => c[k]).length;
+    bar.style.width = (done / keys.length * 100) + '%';
+    const ready = done === keys.length;
+    progTxt.textContent = ready ? 'All set. Choose how to send.' : `${done} of ${keys.length} done`;
+    waBtn.disabled = !ready;
+    mailBtn.disabled = !ready;
+
+    mark(name, c.name);
+    mark(org, c.org);
+    mark(email, c.email);
+    mark(brief, c.brief);
+    mark(country, c.country);
+    mark(phone, c.phone);
+    mark(budget, c.budget);
   };
 
-  phone.addEventListener('input', () => {
-    const r = current();
-    const pre = `+${r.dial} `;
-    let digits = nationalDigits().slice(0, r.max);
-    phone.value = pre + digits;
-    if (phone.classList.contains('err') && digits.length >= r.min && digits.length <= r.max) setErr(phone, 'phone-err', false);
+  [name, org, email, brief].forEach((el) => {
+    el.addEventListener('input', () => { touch(el); update(); });
+    el.addEventListener('blur', () => { touch(el); update(); });
   });
-  phone.addEventListener('keydown', (e) => {
-    const pre = prefix();
-    if ((e.key === 'Backspace' || e.key === 'Delete') && (phone.selectionStart <= pre.length) && (phone.selectionEnd <= pre.length)) {
-      e.preventDefault();
-    }
-  });
-  phone.addEventListener('focus', () => {
-    if (!phone.value.startsWith(prefix())) setPrefix();
-    requestAnimationFrame(() => phone.setSelectionRange(phone.value.length, phone.value.length));
-  });
-  phone.addEventListener('blur', () => {
-    if (nationalDigits().length === 0) setPrefix();
-    if (nationalDigits().length) setErr(phone, 'phone-err', !phoneOk());
-  });
+  agree.addEventListener('change', update);
 
   country.addEventListener('change', () => {
-    setPrefix();
-    syncPhoneUI();
-    setErr(phone, 'phone-err', false);
-    renderBudget();
-  });
-  setPrefix();
-  syncPhoneUI();
-  renderBudget();
+    touch(country);
+    const c = COUNTRIES[country.value];
+    touched.delete('phone');
+    touched.delete('budget');
+    phone.value = '';
+    budget.innerHTML = '';
 
-  const setErr = (input, msgId, on) => {
-    input.classList.toggle('err', on);
-    $(msgId).classList.toggle('show', on);
-    if (on) {
-      input.classList.remove('shake'); void input.offsetWidth; input.classList.add('shake');
-      input.setAttribute('aria-invalid', 'true');
-    } else input.removeAttribute('aria-invalid');
-  };
-  const phoneOk = () => {
-    const r = current();
-    const n = nationalDigits().length;
-    return n >= r.min && n <= r.max;
-  };
-
-  const rules = {
-    name:  { el: $('name'),  id: 'name-err',  ok: (v) => v.trim().length >= 2 },
-    email: { el: $('email'), id: 'email-err', ok: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) },
-    org:   { el: $('org'),   id: 'org-err',   ok: (v) => v.trim().length >= 2 },
-    brief: { el: $('brief'), id: 'brief-err', ok: (v) => v.trim().length >= 15 },
-  };
-  Object.values(rules).forEach(({ el, id, ok }) => {
-    el.addEventListener('input', () => { if (el.classList.contains('err') && ok(el.value)) setErr(el, id, false); });
-    el.addEventListener('blur', () => { if (el.value) setErr(el, id, !ok(el.value)); });
-  });
-
-  const syncGate = () => {
-    const on = consent.checked;
-    submits.forEach((b) => { b.disabled = !on; });
-    gate.style.opacity = on ? 0 : 1;
-    consentWrap.classList.remove('err');
-  };
-  consent.addEventListener('change', syncGate);
-  syncGate();
-
-  const validateAll = () => {
-    let ok = true, first = null;
-    Object.values(rules).forEach(({ el, id, ok: check }) => {
-      const bad = !check(el.value);
-      setErr(el, id, bad);
-      if (bad) { ok = false; first = first || el; }
-    });
-    const pBad = !phoneOk();
-    setErr(phone, 'phone-err', pBad);
-    if (pBad) { ok = false; first = first || phone; }
-    if (first) first.focus();
-    return ok;
-  };
-
-  let submitter = null;
-  submits.forEach((b) => b.addEventListener('click', () => { submitter = b; }));
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!consent.checked) {
-      consentWrap.classList.add('err');
-      consentWrap.classList.remove('shake'); void consentWrap.offsetWidth; consentWrap.classList.add('shake');
-      gate.style.opacity = 1;
-      return;
+    if (!c) {
+      phone.disabled = true;
+      phone.placeholder = 'Select country first';
+      phoneHint.textContent = 'Select country first';
+      phoneHint.classList.remove('err');
+      dial.textContent = '+';
+      dial.style.opacity = '.4';
+      budget.disabled = true;
+      budget.add(new Option('Select country first', ''));
+    } else {
+      phone.disabled = false;
+      phone.placeholder = `${c.len} digits`;
+      phoneHint.textContent = `Enter your ${c.len}-digit mobile number`;
+      phoneHint.classList.remove('err');
+      dial.textContent = c.dial;
+      dial.style.opacity = '1';
+      budget.disabled = false;
+      budget.add(new Option('Select estimated budget', ''));
+      bandsFor(c).forEach((label) => budget.add(new Option(label, label)));
+      pop(budget);
+      pop(phone);
+      phone.focus();
     }
-    if (!validateAll()) return;
-    const btn = submitter || submits[0];
-    const channel = btn.dataset.channel; // 'whatsapp' or 'email'
-    btn.classList.add('loading');
-    submits.forEach((b) => { b.disabled = true; });
+    update();
+  });
 
-    const payload = {
-      name: $('name').value.trim(),
-      email: $('email').value.trim(),
-      organisation: $('org').value.trim(),
-      country: current().name,
-      countryDial: current().dial,
-      phone: phone.value.trim(),
-      budget: $('budget').value,
-      brief: $('brief').value.trim(),
-      channel: channel === 'whatsapp' ? 'WhatsApp' : 'Website Form',
-      consent: true,
-      timestamp: new Date().toISOString()
+  phone.addEventListener('input', () => {
+    const c = COUNTRIES[country.value];
+    if (!c) return;
+    const d = phoneDigits().slice(0, c.len);
+    phone.value = d;
+    touch(phone);
+    const left = c.len - d.length;
+    phoneHint.textContent = left > 0 ? `${left} more digit${left > 1 ? 's' : ''} needed` : 'Looks good';
+    phoneHint.classList.remove('err');
+    update();
+  });
+  phone.addEventListener('blur', () => {
+    const c = COUNTRIES[country.value];
+    touch(phone);
+    if (c && phoneDigits().length !== c.len) {
+      phoneHint.textContent = `Enter a valid ${c.len}-digit number`;
+      phoneHint.classList.add('err');
+    }
+    update();
+  });
+
+  budget.addEventListener('change', () => { touch(budget); update(); });
+  budget.addEventListener('blur', () => { touch(budget); update(); });
+
+  const getPayload = () => {
+    const c = COUNTRIES[country.value];
+    const fullPhone = c ? `${c.dial} ${phone.value.trim()}` : phone.value.trim();
+    return {
+      name: name.value.trim(),
+      org: org.value.trim(),
+      email: email.value.trim(),
+      country: c ? c.name : country.value,
+      phone: fullPhone,
+      budget: budget.value,
+      project: brief.value.trim()
     };
+  };
 
-    // Store in localStorage for Super Admin Orbit Dashboard syncing
+  const sendWa = () => {
+    const p = getPayload();
+    const msg = `*New Project Inquiry - Neeraj Rawat Portfolio*\n\n` +
+      `*Name:* ${p.name}\n` +
+      `*Organisation:* ${p.org}\n` +
+      `*Email:* ${p.email}\n` +
+      `*Country & Mobile:* ${p.phone} (${p.country})\n` +
+      `*Budget:* ${p.budget}\n` +
+      `*Project Details:*\n${p.project}`;
+    const url = `https://wa.me/918708167959?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  };
+
+  const sendMail = async (btn) => {
+    btn.classList.add('loading');
+    const p = getPayload();
     try {
-      const existing = JSON.parse(localStorage.getItem('nr_client_inquiries') || '[]');
-      existing.unshift({
-        id: Date.now(),
-        name: payload.name,
-        company: payload.organisation,
-        phone: payload.phone,
-        email: payload.email,
-        source: payload.channel,
-        service: payload.brief.slice(0, 40) + '...',
-        budget: payload.budget || 'To be discussed',
-        status: 'In Discussion',
-        followupDate: 'Today',
-        notes: payload.brief,
-        isToday: true,
-        isInternational: current().dial !== '91'
-      });
-      localStorage.setItem('nr_client_inquiries', JSON.stringify(existing));
-    } catch(err) {}
-
-    // Handle channel action
-    if (channel === 'whatsapp') {
-      const waMsg = `Namaste Neeraj!%0A%0A*New Project Inquiry via neerajrawat.dev:*%0A• *Name:* ${encodeURIComponent(payload.name)}%0A• *Organisation:* ${encodeURIComponent(payload.organisation)}%0A• *Email:* ${encodeURIComponent(payload.email)}%0A• *Phone:* ${encodeURIComponent(payload.phone)}%0A• *Budget:* ${encodeURIComponent(payload.budget || 'Flexible')}%0A• *Project Brief:* ${encodeURIComponent(payload.brief)}`;
-      window.open(`https://wa.me/918708167959?text=${waMsg}`, '_blank');
-    }
-
-    // Try posting to backend API if available
-    try {
-      fetch('/api/contact', {
+      await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).catch(() => {});
-    } catch(err) {}
-
+        body: JSON.stringify({
+          name: p.name,
+          email: p.email,
+          mobile: p.phone,
+          channel: 'Email / Portfolio Inquiry',
+          service: p.org ? `Org: ${p.org}` : 'Project Inquiry',
+          budget: p.budget,
+          project: p.project
+        })
+      });
+    } catch(e){}
     setTimeout(() => {
       btn.classList.remove('loading');
-      done.classList.add('show');
-      done.querySelector('h2').focus();
-    }, 1100);
-  });
+      const txt = btn.querySelector('.label-txt');
+      txt.textContent = 'Sent ✓';
+      txt.style.opacity = 1;
+      setTimeout(() => { txt.textContent = 'Send an Email'; }, 2000);
+      const subject = encodeURIComponent(`Project Inquiry: ${p.org || p.name}`);
+      const body = encodeURIComponent(`Name: ${p.name}\nOrganisation: ${p.org}\nEmail: ${p.email}\nPhone: ${p.phone}\nBudget: ${p.budget}\n\nProject Details:\n${p.project}`);
+      window.location.href = `mailto:neerajrawatdhani@gmail.com?subject=${subject}&body=${body}`;
+    }, 800);
+  };
+
+  waBtn.addEventListener('click', () => sendWa());
+  mailBtn.addEventListener('click', () => sendMail(mailBtn));
+  $('form').addEventListener('submit', (e) => e.preventDefault());
+
+  update();
 })();
 </script>
 </body>
