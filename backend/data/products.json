@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "prod_1795476295642_aeds",
+    "title": "GST Automated Sheet Pro",
+    "name": "GST Automated Sheet Pro",
+    "desc": "Automated GST Calculation Sheet with Invoice generator",
+    "price": "₹499",
+    "priceNum": 499,
+    "originalPrice": "₹999",
+    "originalPriceNum": 999,
+    "discountPercent": 50,
+    "img": "frontend/apple-touch-icon.png",
+    "image": "frontend/apple-touch-icon.png",
+    "images": [
+      "frontend/web-developer/2-tax-pnl.webp"
+    ],
+    "fileUrl": "https://neerajrawat.dev/downloads/gst-pro.xlsx",
+    "downloadUrl": "https://neerajrawat.dev/downloads/gst-pro.xlsx",
+    "category": "Excel Sheets",
+    "badge": "50% OFF",
+    "sales": "0 sales",
+    "features": [],
+    "status": "Active",
+    "updatedAt": "2026-11-23T23:24:55.700Z"
+  }
+]

@@ -2576,6 +2576,8 @@ function renderProductsCards(products) {
   }
   grid.innerHTML = currentDigitalProducts.map(p => {
     const priceNum = p.priceNum || (typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, ''))) || 0;
+    const origPriceNum = p.originalPriceNum || (p.originalPrice ? parseInt(String(p.originalPrice).replace(/[^0-9]/g, '')) : 0) || 0;
+    const discountPct = (origPriceNum > priceNum && origPriceNum > 0) ? Math.round(((origPriceNum - priceNum) / origPriceNum) * 100) : (p.discountPercent || 0);
     const prodTitle = p.name || p.title || 'Digital File';
     const fmt = p.fileFormat || (p.category === 'Excel Sheets' ? 'Excel (.xlsx)' : 'Digital File');
     const prodImages = Array.isArray(p.images) && p.images.length ? p.images : (p.img || p.image ? [p.img || p.image] : ['https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop&q=80']);
@@ -2602,8 +2604,8 @@ function renderProductsCards(products) {
         <div style="position:absolute; top:8px; left:8px; background:rgba(0,0,0,0.72); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:999px; font-size:0.68rem; font-weight:700; color:#fff; z-index:4;">
           📁 ${escapeHtml(p.category || 'Digital File')}
         </div>
-        <div style="position:absolute; top:8px; right:8px; background:rgba(232,168,124,0.92); color:#000; padding:2px 8px; border-radius:999px; font-size:0.68rem; font-weight:800; letter-spacing:0.04em; z-index:4;">
-          ${escapeHtml(p.badge || 'Instant Download')}
+        <div style="position:absolute; top:8px; right:8px; background:${discountPct > 0 ? '#16a34a' : 'rgba(232,168,124,0.92)'}; color:${discountPct > 0 ? '#fff' : '#000'}; padding:2px 8px; border-radius:999px; font-size:0.68rem; font-weight:800; letter-spacing:0.04em; z-index:4;">
+          ${discountPct > 0 ? `${discountPct}% OFF` : escapeHtml(p.badge || 'Instant Download')}
         </div>
       </div>
 
@@ -2622,7 +2624,13 @@ function renderProductsCards(products) {
           <div style="border-top: 1px solid var(--border, rgba(255,255,255,0.06)); padding-top: 0.75rem; margin-bottom: 0.85rem; display:flex; justify-content:space-between; align-items:baseline;">
             <div>
               <div style="font-size: 0.68rem; color: var(--fg-muted, #888); text-transform: uppercase;">Direct File Download</div>
-              <div style="font-size: 1.3rem; font-weight: 800; color: #fff;">₹${priceNum.toLocaleString('en-IN')}</div>
+              <div style="display:flex; align-items:baseline; gap:8px; margin-top:2px; flex-wrap:wrap;">
+                <div style="font-size: 1.35rem; font-weight: 800; color: #fff;">₹${priceNum.toLocaleString('en-IN')}</div>
+                ${origPriceNum && origPriceNum > priceNum ? `
+                  <div style="font-size: 0.92rem; color: #94a3b8; text-decoration: line-through; font-weight:500;">₹${origPriceNum.toLocaleString('en-IN')}</div>
+                  <div style="font-size: 0.72rem; font-weight: 800; color: #4ade80; background: rgba(74,222,128,0.14); padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(74,222,128,0.3);">${discountPct}% OFF</div>
+                ` : ''}
+              </div>
             </div>
             <div style="font-size: 0.72rem; color: var(--accent, #e8a87c); font-weight: 700; background:rgba(232,168,124,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(232,168,124,0.25);">⚡ Lifetime Access</div>
           </div>
@@ -2640,6 +2648,24 @@ function renderProductsCards(products) {
   }).join('');
 
   initHomepageMotionSliders();
+}
+
+function getPersistedStoreProducts() {
+  try {
+    const match = document.cookie.match(/(?:^|;\s*)nr_store_prods=([^;]*)/);
+    if (match && match[1]) {
+      const parsed = JSON.parse(decodeURIComponent(match[1]));
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch(e) {}
+  try {
+    const local = localStorage.getItem('nr_digital_products');
+    if (local) {
+      const parsed = JSON.parse(local);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch(e) {}
+  return [];
 }
 
 let hpMotionInterval = null;
@@ -2675,27 +2701,20 @@ function loadProductsGrid() {
     .then(data => {
       let prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
       if (!prods.length) {
-        try {
-          const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
-          if (Array.isArray(local) && local.length) {
-            prods = local;
-            fetch('/api/products', {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ products: local })
-            }).catch(() => {});
-          }
-        } catch(e) {}
+        prods = getPersistedStoreProducts();
+        if (prods.length) {
+          fetch('/api/products', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ products: prods })
+          }).catch(() => {});
+        }
       }
       if (data && data.paymentConfig) currentPaymentConfig = data.paymentConfig;
       renderProductsCards(prods);
     })
     .catch(() => {
-      let prods = [];
-      try {
-        const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
-        if (Array.isArray(local) && local.length) prods = local;
-      } catch(e) {}
+      const prods = getPersistedStoreProducts();
       renderProductsCards(prods);
     });
 }

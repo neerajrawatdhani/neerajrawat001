@@ -317,11 +317,13 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
     }
     grid.innerHTML = prods.map(p => {
       const priceNum = p.priceNum || (typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, ''))) || 0;
+      const origPriceNum = p.originalPriceNum || (p.originalPrice ? parseInt(String(p.originalPrice).replace(/[^0-9]/g, '')) : 0) || 0;
+      const discountPct = (origPriceNum > priceNum && origPriceNum > 0) ? Math.round(((origPriceNum - priceNum) / origPriceNum) * 100) : (p.discountPercent || 0);
       const title = p.title || p.name || 'Digital File';
       const desc = p.desc || '';
       const cat = (p.category || 'excel').toLowerCase().includes('excel') ? 'excel' : ((p.category || '').toLowerCase().includes('design') ? 'design' : 'code');
       const fmt = p.fileFormat || (cat === 'excel' ? '.XLSX' : 'DIGITAL');
-      const badge = p.badge || 'Instant Delivery';
+      const badge = discountPct > 0 ? `${discountPct}% OFF` : (p.badge || 'Instant Delivery');
       const prodId = p.id;
       const prodImages = Array.isArray(p.images) && p.images.length ? p.images : (p.img || p.image ? [p.img || p.image] : []);
       const hasMultiple = prodImages.length > 1;
@@ -353,7 +355,16 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
             <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
             <h3>${escapeHtml(title)}</h3>
             <p class="desc">${escapeHtml(desc)}</p>
-            <div class="price-row"><span class="price">₹${priceNum.toLocaleString('en-IN')}</span><span class="delivery">Direct file download</span></div>
+            <div class="price-row" style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <div style="display:flex; align-items:baseline; gap:8px;">
+                <span class="price" style="font-size:1.35rem; font-weight:800; color:var(--ink);">₹${priceNum.toLocaleString('en-IN')}</span>
+                ${origPriceNum && origPriceNum > priceNum ? `
+                  <span style="font-size:0.92rem; color:var(--muted); text-decoration:line-through; font-weight:500;">₹${origPriceNum.toLocaleString('en-IN')}</span>
+                  <span style="font-size:0.75rem; font-weight:800; color:#16a34a; background:#dcfce7; padding:2px 7px; border-radius:4px;">${discountPct}% OFF</span>
+                ` : ''}
+              </div>
+              <span class="delivery">Direct file download</span>
+            </div>
             <div class="actions" style="display:flex; width:100%;">
               <button class="btn buy" type="button" data-id="${prodId}" data-name="${escapeHtml(title)}" data-price="${priceNum}" style="width:100%; justify-content:center; padding:12px 16px; font-weight:800; font-size:14px; background:var(--accent, #f28c28); color:#000; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 4px 14px rgba(242,140,40,0.25);">
                 ⚡ Pay with Razorpay
@@ -460,33 +471,44 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
     });
   }
 
+  function getPersistedStoreProducts() {
+    try {
+      const match = document.cookie.match(/(?:^|;\s*)nr_store_prods=([^;]*)/);
+      if (match && match[1]) {
+        const parsed = JSON.parse(decodeURIComponent(match[1]));
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch(e) {}
+    try {
+      const local = localStorage.getItem('nr_digital_products');
+      if (local) {
+        const parsed = JSON.parse(local);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch(e) {}
+    return [];
+  }
+
   function loadShopProducts() {
     fetch('/api/products')
       .then(r => r.json())
       .then(data => {
         let prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
         if (!prods.length) {
-          try {
-            const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
-            if (Array.isArray(local) && local.length) {
-              prods = local;
-              fetch('/api/products', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ products: local })
-              }).catch(() => {});
-            }
-          } catch(e) {}
+          prods = getPersistedStoreProducts();
+          if (prods.length) {
+            fetch('/api/products', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ products: prods })
+            }).catch(() => {});
+          }
         }
         shopProducts = prods;
         renderShopGrid(prods);
       })
       .catch(() => {
-        let prods = [];
-        try {
-          const local = JSON.parse(localStorage.getItem('nr_digital_products') || '[]');
-          if (Array.isArray(local) && local.length) prods = local;
-        } catch(e) {}
+        const prods = getPersistedStoreProducts();
         shopProducts = prods;
         renderShopGrid(prods);
       });

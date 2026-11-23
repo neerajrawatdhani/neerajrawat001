@@ -1,9 +1,20 @@
 const { loadProducts, saveProducts, addProduct, updateProduct, deleteProduct, clearProducts } = require('./_products');
 
+function parseRequestBody(req) {
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch(e) { body = {}; }
+  } else if (Buffer.isBuffer(body)) {
+    try { body = JSON.parse(body.toString('utf8')); } catch(e) { body = {}; }
+  }
+  return body || {};
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -26,7 +37,7 @@ module.exports = async (req, res) => {
 
   // PUT: Replace full product list (Bulk Sync from Super Admin)
   if (req.method === 'PUT') {
-    const body = req.body || {};
+    const body = parseRequestBody(req);
     const prods = Array.isArray(body) ? body : (Array.isArray(body.products) ? body.products : []);
     saveProducts(prods);
     return res.status(200).json({
@@ -39,7 +50,7 @@ module.exports = async (req, res) => {
 
   // POST: Add or update digital product
   if (req.method === 'POST') {
-    const body = req.body || {};
+    const body = parseRequestBody(req);
     const {
       id,
       title,
@@ -47,11 +58,14 @@ module.exports = async (req, res) => {
       desc,
       price,
       priceNum,
+      originalPrice,
+      originalPriceNum,
+      discountPercent,
       img,
       image,
+      images,
       fileUrl,
       downloadUrl,
-      razorpayUrl,
       category,
       badge,
       sales,
@@ -64,6 +78,10 @@ module.exports = async (req, res) => {
     }
 
     const numericPrice = typeof priceNum === 'number' ? priceNum : (parseInt(String(price).replace(/[^0-9]/g, '')) || 0);
+    const numOrigPrice = typeof originalPriceNum === 'number' ? originalPriceNum : (parseInt(String(originalPrice || '').replace(/[^0-9]/g, '')) || 0);
+    const calculatedDiscount = (numOrigPrice > numericPrice && numOrigPrice > 0)
+      ? Math.round(((numOrigPrice - numericPrice) / numOrigPrice) * 100)
+      : (typeof discountPercent === 'number' ? discountPercent : 0);
 
     const newProd = {
       id: id || ('prod_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)),
@@ -72,14 +90,16 @@ module.exports = async (req, res) => {
       desc: (desc || '').trim(),
       price: '₹' + numericPrice.toLocaleString('en-IN'),
       priceNum: numericPrice,
+      originalPrice: numOrigPrice ? ('₹' + numOrigPrice.toLocaleString('en-IN')) : '',
+      originalPriceNum: numOrigPrice,
+      discountPercent: calculatedDiscount,
       img: (img || image || 'frontend/apple-touch-icon.png').trim(),
       image: (img || image || 'frontend/apple-touch-icon.png').trim(),
-      images: Array.isArray(body.images) && body.images.length ? body.images : [(img || image || 'frontend/apple-touch-icon.png').trim()],
+      images: Array.isArray(images) && images.length ? images : (Array.isArray(body.images) && body.images.length ? body.images : [(img || image || 'frontend/apple-touch-icon.png').trim()]),
       fileUrl: (fileUrl || downloadUrl || '').trim(),
       downloadUrl: (downloadUrl || fileUrl || '').trim(),
-      razorpayUrl: (razorpayUrl || '').trim(),
       category: (category || 'Excel Sheets').trim(),
-      badge: (badge || 'Instant Download').trim(),
+      badge: calculatedDiscount > 0 ? `${calculatedDiscount}% OFF` : (badge || 'Instant Download').trim(),
       sales: sales || '0 sales',
       features: Array.isArray(features) ? features : [],
       status: 'Active',
@@ -97,7 +117,7 @@ module.exports = async (req, res) => {
 
   // PATCH: Update specific fields
   if (req.method === 'PATCH') {
-    const body = req.body || {};
+    const body = parseRequestBody(req);
     const { id, ...updates } = body;
     if (!id) return res.status(400).json({ success: false, error: 'Product ID is required.' });
 
@@ -113,7 +133,7 @@ module.exports = async (req, res) => {
 
   // DELETE: Remove single product or clear all sample products
   if (req.method === 'DELETE') {
-    const body = req.body || {};
+    const body = parseRequestBody(req);
     const urlParams = new URL(req.url, 'http://localhost').searchParams;
     const action = body.action || urlParams.get('action');
     const deleteId = body.id || urlParams.get('id');
