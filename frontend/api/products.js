@@ -74,6 +74,7 @@ module.exports = async (req, res) => {
       priceNum: numericPrice,
       img: (img || image || 'frontend/apple-touch-icon.png').trim(),
       image: (img || image || 'frontend/apple-touch-icon.png').trim(),
+      images: Array.isArray(body.images) && body.images.length ? body.images : [(img || image || 'frontend/apple-touch-icon.png').trim()],
       fileUrl: (fileUrl || downloadUrl || '').trim(),
       downloadUrl: (downloadUrl || fileUrl || '').trim(),
       razorpayUrl: (razorpayUrl || '').trim(),

@@ -2531,23 +2531,36 @@
             </div>
           </div>
 
+          <!-- Multi-Image Upload Dropzone (JPG, PNG, WEBP) -->
           <div class="form-group">
-            <label class="form-label">Product Image / Thumbnail Path or URL *</label>
-            <input type="text" id="prodImg" class="form-input" required placeholder="e.g. frontend/photographer/p/10-full.webp" value="frontend/apple-touch-icon.png" />
+            <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+              <span>Product Photos &amp; Motion Slider (JPG, PNG, WEBP) *</span>
+              <span id="photoCountBadge" style="font-size:11.5px; font-weight:700; color:#2563eb; text-transform:none;">0 Photos selected</span>
+            </label>
+            
+            <div id="dropZoneArea" onclick="document.getElementById('prodFilesInput').click()" style="border:2px dashed #cbd5e1; border-radius:12px; padding:18px 14px; text-align:center; background:#f8fafc; cursor:pointer; transition:all .2s;" ondragover="event.preventDefault(); this.style.borderColor='#3b82f6'; this.style.background='#eff6ff';" ondragleave="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc';" ondrop="handleDropImages(event)">
+              <input type="file" id="prodFilesInput" multiple accept="image/png, image/jpeg, image/webp" style="display:none;" onchange="handleProdFilesSelect(event)" />
+              <div style="font-size:28px; margin-bottom:4px;">📸</div>
+              <div style="font-size:13.5px; font-weight:700; color:#1e293b;">Click to upload or Drag &amp; Drop multiple photos</div>
+              <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Supports JPG, PNG, WEBP. Upload multiple photos to automatically create a motion graphic slider on your store!</div>
+            </div>
+
+            <!-- Uploaded Image Preview Chips -->
+            <div id="prodImgPreviews" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+
+            <!-- Manual Path / URL Fallback toggle -->
+            <details style="margin-top:8px; font-size:12px; color:#64748b;">
+              <summary style="cursor:pointer; font-weight:600; color:#475569;">Or specify custom image URL/path manually</summary>
+              <div style="margin-top:6px;">
+                <input type="text" id="prodImg" class="form-input" placeholder="e.g. frontend/photographer/p/10-full.webp" value="frontend/apple-touch-icon.png" oninput="handleManualImgInput(this.value)" />
+              </div>
+            </details>
           </div>
 
           <div class="form-group">
             <label class="form-label">Automated Delivery File Link (Zip / Drive) *</label>
             <input type="text" id="prodFileUrl" class="form-input" required placeholder="e.g. https://drive.google.com/... or /downloads/template.zip" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
-              <span>Razorpay Payment Page URL *</span>
-              <span style="font-size:11px; font-weight:700; color:#4f46e5; text-transform:none;">Direct Payment &amp; Auto-Delivery</span>
-            </label>
-            <input type="url" id="prodRazorpayUrl" class="form-input" placeholder="https://pages.razorpay.com/pl_xxxxxx" />
-            <span style="font-size:11px; color:var(--text-muted); margin-top:4px; display:block;">Enter your Razorpay Payment Page link. Customers will be directed here to pay, and the download link will be delivered to their email.</span>
+            <span style="font-size:11px; color:var(--text-muted); margin-top:4px; display:block;">Instant download link provided automatically to customer after on-site Razorpay verified payment.</span>
           </div>
         </div>
         <div class="modal-footer">
@@ -3054,10 +3067,19 @@
         return;
       }
 
-      grid.innerHTML = productsData.map(p => `
+      grid.innerHTML = productsData.map(p => {
+        const prodImages = Array.isArray(p.images) && p.images.length ? p.images : [p.img || p.image || 'frontend/apple-touch-icon.png'];
+        const mainImg = prodImages[0];
+        return `
         <div class="product-card" id="prod-card-${p.id}">
-          <div class="prod-img-wrap">
-            <img src="${p.img || p.image || 'frontend/apple-touch-icon.png'}" alt="${escapeHtml(p.title || p.name)}" onerror="this.onerror=null; this.src='frontend/apple-touch-icon.png';" />
+          <div class="prod-img-wrap" style="position:relative;">
+            <img src="${mainImg}" alt="${escapeHtml(p.title || p.name)}" onerror="this.onerror=null; this.src='frontend/apple-touch-icon.png';" />
+            ${prodImages.length > 1 ? `
+              <span style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.3);">
+                <span>🎞️ ${prodImages.length} Photos</span>
+                <span style="font-size:9px; color:#4ade80;">● Motion</span>
+              </span>
+            ` : ''}
           </div>
           <div class="prod-content">
             <div class="prod-title">${escapeHtml(p.title || p.name)}</div>
@@ -3066,19 +3088,17 @@
               <div class="prod-price">${p.price || ('₹' + (p.priceNum || 0).toLocaleString('en-IN'))}</div>
               <span style="font-size:11.5px; font-weight:700; color:var(--success); background:var(--success-subtle); padding:3px 8px; border-radius:999px;">${p.sales || '0 sales'}</span>
             </div>
-            ${p.razorpayUrl ? `
-              <div style="margin-top:8px; font-size:11px; font-weight:600; color:#4f46e5; background:rgba(79,70,229,0.08); padding:5px 8px; border-radius:6px; display:flex; align-items:center; gap:5px; overflow:hidden;">
-                <span>⚡ Razorpay Link:</span>
-                <a href="${escapeHtml(p.razorpayUrl)}" target="_blank" style="color:#4f46e5; text-decoration:underline; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">${escapeHtml(p.razorpayUrl)}</a>
-              </div>
-            ` : ''}
+            <div style="margin-top:8px; font-size:11px; font-weight:600; color:#16a34a; background:rgba(22,163,74,0.08); padding:5px 8px; border-radius:6px; display:flex; align-items:center; gap:5px;">
+              <span>⚡ Razorpay On-Site Modal Checkout Active</span>
+            </div>
             <div style="display:flex; gap:8px; margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
               <button class="btn-outline" style="flex:1; justify-content:center; padding:7px 10px; font-size:12px; font-weight:600;" onclick="openEditProductModal('${p.id}')">✏️ Edit</button>
               <button class="btn-outline" style="flex:1; justify-content:center; padding:7px 10px; font-size:12px; font-weight:700; color:#dc2626; border-color:#fca5a5; background:#fff;" onclick="deleteProduct('${p.id}')">🗑️ Delete</button>
             </div>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     async function deleteProduct(id) {
@@ -3123,6 +3143,92 @@
       alert('All sample products cleared and synced with website!');
     }
 
+    // ==========================================
+    // MULTIPLE IMAGE UPLOAD & PREVIEW SYSTEM
+    // ==========================================
+    let uploadedProductImages = [];
+
+    function handleProdFilesSelect(e) {
+      const files = Array.from(e.target.files || []);
+      processSelectedImageFiles(files);
+      e.target.value = '';
+    }
+
+    function handleDropImages(e) {
+      e.preventDefault();
+      const dropZone = document.getElementById('dropZoneArea');
+      if (dropZone) {
+        dropZone.style.borderColor = '#cbd5e1';
+        dropZone.style.background = '#f8fafc';
+      }
+      if (e.dataTransfer && e.dataTransfer.files) {
+        const files = Array.from(e.dataTransfer.files);
+        processSelectedImageFiles(files);
+      }
+    }
+
+    function processSelectedImageFiles(files) {
+      if (!files || !files.length) return;
+      const validFiles = files.filter(f => f.type.match(/^image\/(png|jpeg|jpg|webp)$/i) || /\.(jpe?g|png|webp)$/i.test(f.name));
+      if (!validFiles.length) {
+        alert('Please select valid image files (JPG, PNG, or WEBP).');
+        return;
+      }
+      let readCount = 0;
+      validFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          uploadedProductImages.push(evt.target.result);
+          readCount++;
+          if (readCount === validFiles.length) {
+            renderUploadedImagesPreviews();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderUploadedImagesPreviews() {
+      const container = document.getElementById('prodImgPreviews');
+      const badge = document.getElementById('photoCountBadge');
+      const manualInput = document.getElementById('prodImg');
+      if (!container) return;
+
+      if (badge) {
+        badge.textContent = `${uploadedProductImages.length} Photo${uploadedProductImages.length === 1 ? '' : 's'} (${uploadedProductImages.length > 1 ? 'Auto Motion Slider' : 'Cover Image'})`;
+        badge.style.color = uploadedProductImages.length > 1 ? '#16a34a' : '#2563eb';
+      }
+
+      if (manualInput && uploadedProductImages.length > 0) {
+        manualInput.value = uploadedProductImages[0];
+      }
+
+      if (uploadedProductImages.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = uploadedProductImages.map((imgSrc, idx) => `
+        <div style="position:relative; width:74px; height:74px; border-radius:8px; overflow:hidden; border:2px solid ${idx === 0 ? '#3b82f6' : '#e2e8f0'}; box-shadow:0 2px 6px rgba(0,0,0,0.08); background:#fff;">
+          <img src="${imgSrc}" style="width:100%; height:100%; object-fit:cover;" />
+          ${idx === 0 ? '<span style="position:absolute; bottom:0; left:0; right:0; background:rgba(37,99,235,0.92); color:#fff; font-size:9px; font-weight:800; text-align:center; padding:1px 0;">COVER</span>' : ''}
+          <button type="button" onclick="removeUploadedImage(${idx})" style="position:absolute; top:3px; right:3px; width:19px; height:19px; border-radius:50%; background:rgba(220,38,38,0.9); color:#fff; border:none; cursor:pointer; font-size:10px; font-weight:bold; display:flex; align-items:center; justify-content:center; padding:0; box-shadow:0 1px 3px rgba(0,0,0,0.3);" title="Remove this photo">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeUploadedImage(idx) {
+      uploadedProductImages.splice(idx, 1);
+      renderUploadedImagesPreviews();
+    }
+
+    function handleManualImgInput(val) {
+      if (val && !uploadedProductImages.length) {
+        uploadedProductImages = [val.trim()];
+        renderUploadedImagesPreviews();
+      }
+    }
+
     function openAddProductModal() {
       document.getElementById('prodModalTitle').innerText = '+ Add Digital Product';
       document.getElementById('editProdId').value = '';
@@ -3132,7 +3238,8 @@
       document.getElementById('prodOriginalPrice').value = '';
       document.getElementById('prodImg').value = 'frontend/apple-touch-icon.png';
       document.getElementById('prodFileUrl').value = '';
-      document.getElementById('prodRazorpayUrl').value = '';
+      uploadedProductImages = [];
+      renderUploadedImagesPreviews();
       document.getElementById('modalAddProduct').classList.add('open');
     }
 
@@ -3145,9 +3252,17 @@
       document.getElementById('prodDesc').value = p.desc || '';
       document.getElementById('prodPrice').value = p.priceNum || parseInt(String(p.price).replace(/[^0-9]/g, '')) || '';
       document.getElementById('prodOriginalPrice').value = '';
-      document.getElementById('prodImg').value = p.img || p.image || '';
       document.getElementById('prodFileUrl').value = p.fileUrl || p.downloadUrl || '';
-      document.getElementById('prodRazorpayUrl').value = p.razorpayUrl || '';
+
+      if (Array.isArray(p.images) && p.images.length) {
+        uploadedProductImages = [...p.images];
+      } else if (p.img || p.image) {
+        uploadedProductImages = [p.img || p.image];
+      } else {
+        uploadedProductImages = ['frontend/apple-touch-icon.png'];
+      }
+      document.getElementById('prodImg').value = uploadedProductImages[0] || '';
+      renderUploadedImagesPreviews();
       document.getElementById('modalAddProduct').classList.add('open');
     }
 
@@ -3157,9 +3272,13 @@
       const title = document.getElementById('prodTitle').value.trim();
       const desc = document.getElementById('prodDesc').value.trim();
       const priceVal = parseInt(document.getElementById('prodPrice').value) || 0;
-      const img = document.getElementById('prodImg').value.trim() || 'frontend/apple-touch-icon.png';
+      const manualImg = document.getElementById('prodImg').value.trim() || 'frontend/apple-touch-icon.png';
       const fileUrl = document.getElementById('prodFileUrl').value.trim();
-      const razorpayUrl = document.getElementById('prodRazorpayUrl').value.trim();
+
+      const images = (uploadedProductImages && uploadedProductImages.length) 
+        ? uploadedProductImages 
+        : [manualImg];
+      const primaryImg = images[0] || manualImg;
 
       let savedProd = null;
       if (editId) {
@@ -3170,11 +3289,11 @@
           p.desc = desc;
           p.price = '₹' + priceVal.toLocaleString('en-IN');
           p.priceNum = priceVal;
-          p.img = img;
-          p.image = img;
+          p.img = primaryImg;
+          p.image = primaryImg;
+          p.images = images;
           p.fileUrl = fileUrl;
           p.downloadUrl = fileUrl;
-          p.razorpayUrl = razorpayUrl;
           savedProd = p;
         }
       } else {
@@ -3185,11 +3304,11 @@
           desc: desc,
           price: '₹' + priceVal.toLocaleString('en-IN'),
           priceNum: priceVal,
-          img: img,
-          image: img,
+          img: primaryImg,
+          image: primaryImg,
+          images: images,
           fileUrl: fileUrl,
           downloadUrl: fileUrl,
-          razorpayUrl: razorpayUrl,
           sales: '0 sales'
         };
         productsData.unshift(savedProd);
