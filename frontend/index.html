@@ -55,13 +55,13 @@
   -webkit-backdrop-filter:blur(10px) !important;
   display:flex !important;
   justify-content:center !important;
-  align-items:flex-start !important;
+  align-items:center !important;
   overflow-x:hidden !important;
   overflow-y:auto !important;
   -webkit-overflow-scrolling:touch !important;
   overscroll-behavior:contain !important;
   touch-action:pan-y !important;
-  padding:clamp(16px, 4vh, 32px) 14px clamp(32px, 6vh, 60px) !important;
+  padding:clamp(10px, 2vh, 18px) 12px !important;
   scrollbar-width:thin !important;
   scrollbar-color:rgba(255,255,255,.28) transparent !important;
 }
@@ -80,9 +80,9 @@
   background:rgba(255,255,255,.48) !important;
 }
 .modal__panel.motion-dialog{
-  position:relative;width:100%;max-width:880px !important;margin:auto 0 !important;
-  max-height:calc(100dvh - 24px);overflow-y:auto;
-  background:var(--m-panel);border-radius:24px;padding:22px 28px 18px;
+  position:relative;width:100%;max-width:880px !important;margin:auto !important;
+  max-height:calc(100vh - 20px) !important;max-height:calc(100dvh - 20px) !important;overflow-y:auto !important;overflow-x:hidden !important;
+  background:var(--m-panel);border-radius:24px;padding:18px 24px 14px !important;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.45);
   transform:translateY(28px) scale(.96);opacity:0;
   transition:transform .6s var(--m-spring),opacity .4s var(--m-ease);
@@ -94,6 +94,13 @@
 .modal__panel.motion-dialog::-webkit-scrollbar-thumb{background:rgba(17,18,23,.2) !important;border-radius:99px !important}
 .modal.open .modal__panel.motion-dialog{transform:none;opacity:1}
 .modal.closing .modal__panel.motion-dialog{transform:translateY(20px) scale(.97);opacity:0}
+
+.m-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:4px}
+.m-col{display:flex;flex-direction:column;min-width:0}
+.m-col-r .textarea{height:88px !important;resize:vertical}
+.m-col .field{margin-top:8px !important}
+.m-section-h{display:flex;align-items:center;gap:10px;margin:6px 0 2px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m-ink)}
+.m-section-h::after{content:"";flex:1;height:1px;background:#E3E5EC}
 
 .motion-dialog .reveal{opacity:0;transform:translateY(10px);transition:opacity .5s var(--m-ease),transform .5s var(--m-ease)}
 .modal.open .motion-dialog .reveal{opacity:1;transform:none}
@@ -126,8 +133,8 @@
 .motion-dialog .label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m-muted)}
 .motion-dialog .req{color:var(--m-err);margin-left:2px}
 .motion-dialog .input{
-  width:100%;height:44px;border-radius:12px;border:1px solid transparent;background:var(--m-field);
-  padding:0 14px;font:500 14px/1 Inter,system-ui,sans-serif;color:var(--m-ink);outline:none;
+  width:100%;height:38px;border-radius:10px;border:1px solid transparent;background:var(--m-field);
+  padding:0 12px;font:500 13px/1 Inter,system-ui,sans-serif;color:var(--m-ink);outline:none;
   transition:border-color .25s,background .25s,box-shadow .25s;
 }
 .motion-dialog .input::placeholder{color:#9EA3AF;font-weight:400}
@@ -136,39 +143,39 @@
 .motion-dialog .input:disabled{opacity:.5;cursor:not-allowed}
 .motion-dialog .input.invalid{border-color:var(--m-err);background:#FFF5F5}
 .motion-dialog .input.valid{border-color:#B7E4C7}
-.motion-dialog select.input{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-.motion-dialog .textarea{height:96px;padding:12px 14px;resize:none;line-height:1.45}
+.motion-dialog select.input{appearance:none;-webkit-appearance:none;padding-right:32px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.motion-dialog .textarea{height:88px;padding:10px 12px;resize:vertical;line-height:1.4}
 .motion-dialog .row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .motion-dialog .phone{position:relative;display:flex;align-items:center}
 .motion-dialog .dial{
-  position:absolute;left:12px;font-weight:600;font-size:14px;color:var(--m-ink);pointer-events:none;
+  position:absolute;left:10px;font-weight:600;font-size:13px;color:var(--m-ink);pointer-events:none;
   transition:opacity .25s;
 }
-.motion-dialog .phone .input{padding-left:62px}
-.motion-dialog .hint{font-size:12px;color:var(--m-muted);margin:0;min-height:16px;transition:color .25s}
+.motion-dialog .phone .input{padding-left:58px}
+.motion-dialog .hint{font-size:11px;color:var(--m-muted);margin:0;min-height:14px;transition:color .25s}
 .motion-dialog .hint.err{color:var(--m-err)}
 
 .motion-dialog .consent{
-  display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--m-field);
+  display:flex;gap:10px;align-items:flex-start;margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--m-field);
   cursor:pointer;transition:background .25s;user-select:none;position:relative;
 }
 .motion-dialog .consent:hover{background:#E9EAF0}
 .motion-dialog .consent input{position:absolute;opacity:0;pointer-events:none}
 .motion-dialog .box{
-  flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid #B8BCC8;background:#fff;margin-top:1px;
+  flex:none;width:18px;height:18px;border-radius:5px;border:1.5px solid #B8BCC8;background:#fff;margin-top:1px;
   display:grid;place-items:center;transition:background .3s var(--m-ease),border-color .3s,transform .3s var(--m-spring);
 }
-.motion-dialog .box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--m-ease) .05s}
+.motion-dialog .box svg{width:11px;height:11px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--m-ease) .05s}
 .motion-dialog .consent input:checked + .box{background:var(--m-ink);border-color:var(--m-ink);transform:scale(1.04)}
 .motion-dialog .consent input:checked + .box svg{stroke-dashoffset:0}
 .motion-dialog .consent input:focus-visible + .box{outline:2px solid var(--m-ink);outline-offset:2px}
-.motion-dialog .consent-text{font-size:12.5px;color:#4B5060;line-height:1.45}
+.motion-dialog .consent-text{font-size:11.5px;color:#4B5060;line-height:1.35}
 
-.motion-dialog .actions{display:grid;grid-template-columns:1.1fr 1fr;gap:10px;margin-top:16px}
+.motion-dialog .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .motion-dialog .btn{
-  position:relative;overflow:hidden;height:56px;border-radius:16px;border:0;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 18px;
-  font:600 14px/1.2 Inter,system-ui,sans-serif;text-align:left;
+  position:relative;overflow:hidden;height:44px;border-radius:12px;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 14px;
+  font:600 13px/1.2 Inter,system-ui,sans-serif;text-align:left;
   transition:transform .3s var(--m-ease),box-shadow .3s var(--m-ease),opacity .3s,filter .3s;
 }
 .motion-dialog .btn::before{
@@ -184,29 +191,35 @@
 .motion-dialog .btn-wa:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(34,197,94,1)}
 .motion-dialog .btn-mail{background:var(--m-dark);color:#fff;box-shadow:0 14px 26px -16px rgba(17,18,23,.9)}
 .motion-dialog .btn-mail:not(:disabled):hover{box-shadow:0 18px 30px -14px rgba(17,18,23,.9)}
-.motion-dialog .round{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--m-spring)}
+.motion-dialog .round{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--m-spring)}
 .motion-dialog .btn:not(:disabled):hover .round{transform:rotate(-12deg) scale(1.08)}
 .motion-dialog .btn-wa .round{background:rgba(6,33,15,.12)}
 .motion-dialog .btn-mail .round{background:rgba(255,255,255,.14)}
-.motion-dialog .round svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.motion-dialog .round svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .motion-dialog .btn-wa:not(:disabled):hover .round svg{transform:translate(1px,-1px) scale(1.1);transition:transform .5s var(--m-ease)}
 .motion-dialog .btn-mail:not(:disabled):hover .round svg{transform:translate(3px,-3px);transition:transform .4s var(--m-ease)}
 .motion-dialog .btn.loading{pointer-events:none}
 .motion-dialog .btn.loading .label-txt{opacity:0}
 .motion-dialog .spinner{
-  position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
-  border:2.5px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
+  position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
+  border:2px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
 }
 .motion-dialog .btn.loading .spinner{opacity:1}
 
-.motion-dialog .foot{margin:14px 0 0;text-align:center;font-size:12px;color:var(--m-muted);line-height:1.5}
+.motion-dialog .foot{margin:8px 0 0;text-align:center;font-size:11px;color:var(--m-muted);line-height:1.4}
 .motion-dialog .live{display:inline-flex;align-items:center;gap:6px}
-.motion-dialog .live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--m-wa);animation:ping 1.8s infinite}
+.motion-dialog .live::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--m-wa);animation:ping 1.8s infinite}
 
+@media (max-width:768px){
+  .m-body-grid{grid-template-columns:1fr;gap:0}
+  .modal__panel.motion-dialog{max-width:480px !important;padding:16px 14px 12px !important}
+  .m-col-r .textarea{height:76px !important}
+  .motion-dialog .actions{grid-template-columns:1fr !important}
+}
 @media (max-width:480px){
   .motion-dialog .grid2,.motion-dialog .actions,.motion-dialog .row-2{grid-template-columns:1fr}
-  .motion-dialog .title{font-size:20px}
-  .modal__panel.motion-dialog{padding:20px 18px 16px}
+  .motion-dialog .title{font-size:19px}
+  .modal__panel.motion-dialog{padding:16px 14px 12px}
 }
 </style>
 
@@ -1842,65 +1855,74 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
     </div>
 
     <form id="reqForm" novalidate>
-      <div class="grid2 reveal">
-        <div class="field" style="margin-top:14px">
-          <label class="label" for="f-name">Name<span class="req">*</span></label>
-          <input class="input" id="f-name" name="name" type="text" placeholder="Your name" autocomplete="name">
-        </div>
-        <div class="field" style="margin-top:14px">
-          <label class="label" for="f-org">Organisation<span class="req">*</span></label>
-          <input class="input" id="f-org" name="org" type="text" placeholder="Company or school name" autocomplete="organization">
-        </div>
-      </div>
+      <div class="m-body-grid">
+        <div class="m-col">
+          <h3 class="m-section-h reveal">Your details</h3>
+          <div class="grid2 reveal">
+            <div class="field" style="margin-top:0">
+              <label class="label" for="f-name">Name<span class="req">*</span></label>
+              <input class="input" id="f-name" name="name" type="text" placeholder="Your name" autocomplete="name">
+            </div>
+            <div class="field" style="margin-top:0">
+              <label class="label" for="f-org">Organisation<span class="req">*</span></label>
+              <input class="input" id="f-org" name="org" type="text" placeholder="Company or school name" autocomplete="organization">
+            </div>
+          </div>
 
-      <div class="field reveal">
-        <label class="label" for="f-email">Email ID<span class="req">*</span></label>
-        <input class="input" id="f-email" name="email" type="email" placeholder="you@company.com" autocomplete="email">
-      </div>
+          <div class="field reveal">
+            <label class="label" for="f-email">Email ID<span class="req">*</span></label>
+            <input class="input" id="f-email" name="email" type="email" placeholder="you@company.com" autocomplete="email">
+          </div>
 
-      <div class="field reveal">
-        <span class="label">Country &amp; mobile number<span class="req">*</span></span>
-        <div class="row-2">
-          <select class="input" id="f-country" name="country" aria-label="Country">
-            <option value="">Select country</option>
-          </select>
-          <div class="phone">
-            <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
-            <input class="input" id="f-phone" name="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
+          <div class="field reveal">
+            <span class="label">Country &amp; mobile number<span class="req">*</span></span>
+            <div class="row-2">
+              <select class="input" id="f-country" name="country" aria-label="Country">
+                <option value="">Select country</option>
+              </select>
+              <div class="phone">
+                <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
+                <input class="input" id="f-phone" name="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
+              </div>
+            </div>
+            <p class="hint" id="phoneHint">Select country first</p>
+          </div>
+
+          <div class="field reveal">
+            <label class="label" for="f-budget">Budget<span class="req">*</span></label>
+            <select class="input" id="f-budget" name="budget" disabled>
+              <option value="">Select country first</option>
+            </select>
           </div>
         </div>
-        <p class="hint" id="phoneHint">Select country first</p>
-      </div>
 
-      <div class="field reveal">
-        <label class="label" for="f-budget">Budget<span class="req">*</span></label>
-        <select class="input" id="f-budget" name="budget" disabled>
-          <option value="">Select country first</option>
-        </select>
-      </div>
+        <div class="m-col m-col-r">
+          <h3 class="m-section-h reveal">Project details</h3>
+          <div class="field reveal" style="margin-top:0">
+            <label class="label" for="f-brief">Project details<span class="req">*</span></label>
+            <textarea class="input textarea" id="f-brief" name="project" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
+          </div>
 
-      <div class="field reveal">
-        <label class="label" for="f-brief">Project details<span class="req">*</span></label>
-        <textarea class="input textarea" id="f-brief" name="project" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
-      </div>
+          <h3 class="m-section-h reveal">Confirm &amp; send</h3>
+          <label class="consent reveal" for="f-agree">
+            <input type="checkbox" id="f-agree" name="consent">
+            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
+          </label>
 
-      <label class="consent reveal" for="f-agree">
-        <input type="checkbox" id="f-agree" name="consent">
-        <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-        <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
-      </label>
-
-      <div class="actions reveal">
-        <button class="btn btn-wa" type="button" id="mSendWa" disabled>
-          <span class="label-txt">Send a WhatsApp Message</span>
-          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
-          <span class="spinner" aria-hidden="true"></span>
-        </button>
-        <button class="btn btn-mail" type="button" id="mSend" disabled>
-          <span class="label-txt" id="mSendLbl">Send an Email</span>
-          <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-          <span class="spinner" aria-hidden="true"></span>
-        </button>
+          <div class="actions reveal">
+            <button class="btn btn-wa" type="button" id="mSendWa" disabled>
+              <span class="label-txt">Send WhatsApp</span>
+              <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-mail" type="button" id="mSend" disabled>
+              <span class="label-txt" id="mSendLbl">Send Email</span>
+              <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
 
