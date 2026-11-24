@@ -4,15 +4,16 @@ const SETTINGS_FILE = '/tmp/admin_settings.json';
 
 let memorySettings = {
   // SMTP Configuration
-  smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
+  smtpHost: process.env.SMTP_HOST || '',
   smtpPort: parseInt(process.env.SMTP_PORT || '465', 10),
   smtpSecure: process.env.SMTP_SECURE !== 'false',
-  smtpUser: process.env.SMTP_USER || 'neerajrawat001.bizz@gmail.com',
-  smtpPass: process.env.SMTP_PASS || 'bkou vujw zshy bplp',
+  smtpUser: process.env.SMTP_USER || '',
+  smtpPass: process.env.SMTP_PASS || undefined,
   adminUsername: process.env.ADMIN_USERNAME || 'admin',
-  adminEmail: process.env.ADMIN_EMAIL || 'neerajrawat001.bizz@gmail.com',
-  adminPassword: process.env.ADMIN_PASSWORD || 'neeraj@123',
-  adminSecret: process.env.ADMIN_SECRET || 'dhani_super_admin_secure_key_9921',
+  adminEmail: process.env.ADMIN_EMAIL || '',
+  adminPassword: process.env.ADMIN_PASSWORD || '',
+  adminSecret: process.env.ADMIN_SECRET || '',
+  fromEmail: process.env.FROM_EMAIL || process.env.SMTP_USER || '',
   fromName: process.env.FROM_NAME || 'Neeraj Rawat | Dhani Tech',
 
   // Annual Operating Costs (As per Official Gurukulam Proposal PDF)
@@ -81,8 +82,8 @@ let memorySettings = {
   // Payment Gateway Configuration (Test & Live API Keys + UPI)
   paymentGateway: {
     mode: process.env.PAYMENT_MODE || 'test',
-    testKeyId: process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID || 'rzp_test_U3llbPWXVPP7tf',
-    testKeySecret: process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_TEST_KEY_SECRET || '2xgESwi0lC2dleQyqKyD6Zq3',
+    testKeyId: process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID || '',
+    testKeySecret: process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_TEST_KEY_SECRET || '',
     liveKeyId: process.env.RAZORPAY_LIVE_KEY_ID || '',
     liveKeySecret: process.env.RAZORPAY_LIVE_KEY_SECRET || '',
     upiId: process.env.UPI_ID || '8708167959@paytm',

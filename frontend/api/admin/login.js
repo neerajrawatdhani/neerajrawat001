@@ -23,10 +23,9 @@ module.exports = async (req, res) => {
     'superadmin',
     'neeraj',
     (settings.adminUsername || 'admin').toLowerCase(),
-    (settings.adminEmail || 'neerajrawat001.bizz@gmail.com').toLowerCase(),
-    'neerajrawat001.bizz@gmail.com',
-    'neerajrawatdhani@gmail.com'
-  ];
+    (settings.adminEmail || '').toLowerCase(),
+    (process.env.ADMIN_EMAIL || '').toLowerCase()
+  ].filter(Boolean);
 
   const isUserValid = !rawUser || allowedUsernames.includes(rawUser);
 
@@ -54,7 +53,7 @@ module.exports = async (req, res) => {
     user: {
       name: 'Neeraj Rawat',
       role: 'Super Admin',
-      email: email || settings.adminEmail || 'neerajrawat001.bizz@gmail.com'
+      email: email || settings.adminEmail || process.env.ADMIN_EMAIL || 'admin@dhani.tech'
     }
   });
 };

@@ -1873,7 +1873,7 @@
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Razorpay Key ID *</label>
-                  <input type="text" id="rzpKeyId" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="rzp_test_xxxxxxxxxxxx" value="rzp_test_U3llbPWXVPP7tf" />
+                  <input type="text" id="rzpKeyId" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="Enter Razorpay Key ID" value="" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Gateway Environment Mode</label>
@@ -1888,7 +1888,7 @@
                 <div class="form-group">
                   <label class="form-label">Razorpay Key Secret *</label>
                   <div style="display:flex; gap:8px;">
-                    <input type="password" id="rzpKeySecret" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="Enter Razorpay Secret" value="2xgESwi0lC2dleQyqKyD6Zq3" />
+                    <input type="password" id="rzpKeySecret" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="Enter Razorpay Secret" value="" />
                     <button type="button" class="btn-outline" style="padding:0 12px;" onclick="togglePasswordVisibility('rzpKeySecret')">👁️</button>
                   </div>
                 </div>
@@ -1935,7 +1935,7 @@
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Client Dispatch Sender Email *</label>
-                  <input type="email" id="clientSmtpEmail" class="form-input" placeholder="youremail@gmail.com" value="neerajrawat001.bizz@gmail.com" />
+                  <input type="email" id="clientSmtpEmail" class="form-input" placeholder="youremail@domain.com" value="" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Sender Display Name</label>
@@ -1947,7 +1947,7 @@
                 <div class="form-group">
                   <label class="form-label">Google 16-Digit App Password (Client Dispatch) *</label>
                   <div style="display:flex; gap:8px;">
-                    <input type="password" id="clientSmtpPass" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="xxxx xxxx xxxx xxxx" value="bkou vujw zshy bplp" />
+                    <input type="password" id="clientSmtpPass" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="xxxx xxxx xxxx xxxx" value="" />
                     <button type="button" class="btn-outline" style="padding:0 12px;" onclick="togglePasswordVisibility('clientSmtpPass')">👁️</button>
                   </div>
                 </div>
@@ -1986,11 +1986,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Super Admin Private Inbox (Alert Recipient) *</label>
-                  <input type="email" id="adminAlertRecipient" class="form-input" placeholder="admin@domain.com" value="neerajrawat001.bizz@gmail.com" />
+                  <input type="email" id="adminAlertRecipient" class="form-input" placeholder="admin@domain.com" value="" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">System Alert Dispatch Email</label>
-                  <input type="email" id="adminAlertSender" class="form-input" placeholder="alerts@domain.com" value="neerajrawat001.bizz@gmail.com" />
+                  <input type="email" id="adminAlertSender" class="form-input" placeholder="alerts@domain.com" value="" />
                 </div>
               </div>
 
@@ -1998,7 +1998,7 @@
                 <div class="form-group">
                   <label class="form-label">Google 16-Digit App Password (Admin Alerts &amp; OTP) *</label>
                   <div style="display:flex; gap:8px;">
-                    <input type="password" id="adminSmtpPass" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="xxxx xxxx xxxx xxxx" value="bkou vujw zshy bplp" />
+                    <input type="password" id="adminSmtpPass" class="form-input" style="font-family:'JetBrains Mono'; font-size:13px;" placeholder="xxxx xxxx xxxx xxxx" value="" />
                     <button type="button" class="btn-outline" style="padding:0 12px;" onclick="togglePasswordVisibility('adminSmtpPass')">👁️</button>
                   </div>
                 </div>
@@ -2140,7 +2140,7 @@
               <span style="font-size:11px; font-weight:700; background:#ecfdf3; color:#12b76a; padding:3px 8px; border-radius:999px;">● Operational</span>
             </div>
             <div style="font-size:12.5px; color:var(--text-muted); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between;"><span>Account:</span><strong style="color:var(--text);" id="shClientEmail">neerajrawat001.bizz@gmail.com</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Account:</span><strong style="color:var(--text);" id="shClientEmail">Configured in Settings</strong></div>
               <div style="display:flex; justify-content:space-between;"><span>Gateway:</span><strong style="color:var(--text);">smtp.gmail.com:465 (SSL)</strong></div>
               <div style="display:flex; justify-content:space-between;"><span>Auth Status:</span><span style="color:#16a34a; font-weight:600;">16-Digit App Password Configured</span></div>
             </div>
@@ -2159,7 +2159,7 @@
               <span style="font-size:11px; font-weight:700; background:#ecfdf3; color:#12b76a; padding:3px 8px; border-radius:999px;">● Operational</span>
             </div>
             <div style="font-size:12.5px; color:var(--text-muted); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between;"><span>Admin Inbox:</span><strong style="color:var(--text);" id="shAdminEmail">neerajrawat001.bizz@gmail.com</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Admin Inbox:</span><strong style="color:var(--text);" id="shAdminEmail">Configured in Settings</strong></div>
               <div style="display:flex; justify-content:space-between;"><span>Alert Triggers:</span><span style="color:#16a34a; font-weight:600;">Leads, OTP, Daily Digest (ON)</span></div>
               <div style="display:flex; justify-content:space-between;"><span>Encryption:</span><strong style="color:var(--text);">SSL / TLS Secure</strong></div>
             </div>
@@ -2178,7 +2178,7 @@
               <span style="font-size:11px; font-weight:700; background:#ecfdf3; color:#12b76a; padding:3px 8px; border-radius:999px;">● Configured</span>
             </div>
             <div style="font-size:12.5px; color:var(--text-muted); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between;"><span>Key ID:</span><strong style="color:var(--text); font-family:'JetBrains Mono';">rzp_test_51aBCD...</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Key ID:</span><strong style="color:var(--text); font-family:'JetBrains Mono';">Configured via Vercel Env</strong></div>
               <div style="display:flex; justify-content:space-between;"><span>Direct UPI QR:</span><strong style="color:var(--text);">8708167959@paytm</strong></div>
               <div style="display:flex; justify-content:space-between;"><span>Webhook Status:</span><span style="color:#16a34a; font-weight:600;">Endpoint Registered</span></div>
             </div>
@@ -4165,8 +4165,8 @@
     /* ======================================================== */
     function initHealthView() {
       // Sync email displays
-      const clientEmail = document.getElementById('clientSmtpEmail') ? document.getElementById('clientSmtpEmail').value : 'neerajrawat001.bizz@gmail.com';
-      const adminEmail = document.getElementById('adminAlertRecipient') ? document.getElementById('adminAlertRecipient').value : 'neerajrawat001.bizz@gmail.com';
+      const clientEmail = (document.getElementById('clientSmtpEmail') && document.getElementById('clientSmtpEmail').value) ? document.getElementById('clientSmtpEmail').value : 'Not Configured';
+      const adminEmail = (document.getElementById('adminAlertRecipient') && document.getElementById('adminAlertRecipient').value) ? document.getElementById('adminAlertRecipient').value : 'Not Configured';
       if (document.getElementById('shClientEmail')) document.getElementById('shClientEmail').innerText = clientEmail;
       if (document.getElementById('shAdminEmail')) document.getElementById('shAdminEmail').innerText = adminEmail;
 
@@ -4220,10 +4220,10 @@
         document.title = savedTitle + ' — Portfolio Super Admin';
       }
 
-      // Load saved Razorpay settings if any (default to active credentials)
+      // Load saved Razorpay settings if any
       const savedRzp = localStorage.getItem('nr_rzp_settings');
-      let loadedKeyId = 'rzp_test_U3llbPWXVPP7tf';
-      let loadedKeySec = '2xgESwi0lC2dleQyqKyD6Zq3';
+      let loadedKeyId = '';
+      let loadedKeySec = '';
       if (savedRzp) {
         try {
           const r = JSON.parse(savedRzp);

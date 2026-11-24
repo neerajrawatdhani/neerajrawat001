@@ -2353,9 +2353,9 @@ const DEFAULT_PRODUCTS = [
 
 let currentDigitalProducts = [];
 let currentPaymentConfig = {
-  mode: 'test',
-  keyId: 'rzp_test_U3llbPWXVPP7tf',
-  upiId: '8708167959@paytm',
+  mode: 'live',
+  keyId: '',
+  upiId: '',
   upiName: 'Neeraj Rawat | Dhani Tech'
 };
 let activeCheckoutItems = [];
@@ -2790,7 +2790,7 @@ $('#checkoutForm')?.addEventListener('submit', e => {
     }
 
     const options = {
-      key: orderData.key_id || currentPaymentConfig.keyId || 'rzp_test_U3llbPWXVPP7tf',
+      key: orderData.key_id || currentPaymentConfig.keyId || '',
       amount: orderData.amount,
       currency: orderData.currency || 'INR',
       name: 'Neeraj Rawat | Dhani Tech',

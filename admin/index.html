@@ -613,7 +613,7 @@
         <form class="auth-form" id="reqOtpForm" onsubmit="event.preventDefault(); sendOtpBtn.click();">
           <div>
             <label class="auth-label">Enter Registered Admin Email</label>
-            <input type="email" id="recoveryEmailInput" class="auth-input" placeholder="e.g. neerajrawat001.bizz@gmail.com" required autofocus />
+            <input type="email" id="recoveryEmailInput" class="auth-input" placeholder="e.g. admin@yourdomain.com" required autofocus />
             <span style="font-size:11px; color:var(--fg-muted); display:block; margin-top:4px;">An official 6-digit OTP will be sent to your Gmail inbox.</span>
           </div>
           <div class="auth-err" id="otpErr1"></div>
@@ -923,7 +923,7 @@
 
       <div class="modal-field">
         <label class="modal-label">Gmail Address (SMTP User)</label>
-        <input type="email" id="setSmtpUser" class="auth-input" value="neerajrawat001.bizz@gmail.com" />
+        <input type="email" id="setSmtpUser" class="auth-input" value="" placeholder="youremail@gmail.com" />
       </div>
 
       <div class="modal-field">
@@ -932,14 +932,14 @@
           <a href="https://myaccount.google.com/apppasswords" target="_blank" style="font-size:11px; color:var(--accent); text-decoration:none;">Generate App Password ↗</a>
         </div>
         <div style="display:flex; gap:8px; margin-top:4px;">
-          <input type="password" id="setSmtpPass" class="auth-input" value="bkou vujw zshy bplp" placeholder="xxxx xxxx xxxx xxxx" />
+          <input type="password" id="setSmtpPass" class="auth-input" value="" placeholder="Enter SMTP App Password" />
           <button type="button" class="btn-secondary" id="togglePassVisibility" title="Show/Hide">👁️</button>
         </div>
       </div>
 
       <div class="modal-field">
         <label class="modal-label">Admin Notification Email (New Lead Alerts)</label>
-        <input type="email" id="setAdminEmail" class="auth-input" value="neerajrawat001.bizz@gmail.com" />
+        <input type="email" id="setAdminEmail" class="auth-input" value="" placeholder="admin@yourdomain.com" />
       </div>
 
       <div class="modal-field">
@@ -1000,7 +1000,7 @@
           <div class="quote-grid-2">
             <div class="modal-field">
               <label class="modal-label">Test Key ID</label>
-              <input type="text" id="setPgTestKeyId" class="auth-input" placeholder="rzp_test_xxxxxxxxxxxxxx" />
+              <input type="text" id="setPgTestKeyId" class="auth-input" placeholder="Enter Key ID" />
             </div>
             <div class="modal-field">
               <label class="modal-label">Test Key Secret</label>

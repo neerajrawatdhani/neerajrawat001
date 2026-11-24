@@ -32,7 +32,7 @@ exports.handler = async (event) => {
 
   // Allow GET to fetch public Key ID safely (never KEY_SECRET)
   if (httpMethod === 'GET') {
-    const keyId = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID || 'rzp_test_U3llbPWXVPP7tf';
+    const keyId = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID || '';
     return json(200, { success: true, key_id: keyId });
   }
 
@@ -40,8 +40,8 @@ exports.handler = async (event) => {
     return json(405, { error: 'Method not allowed' });
   }
 
-  const keyId = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID || 'rzp_test_U3llbPWXVPP7tf';
-  const keySecret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_TEST_KEY_SECRET || '2xgESwi0lC2dleQyqKyD6Zq3';
+  const keyId = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_TEST_KEY_SECRET;
   if (!keyId || !keySecret) {
     console.error('Razorpay keys missing in environment');
     return json(500, { error: 'Payment is not configured' });

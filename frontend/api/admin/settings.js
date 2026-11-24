@@ -44,11 +44,11 @@ module.exports = async (req, res) => {
         metaPricingIndia: settings.metaPricingIndia,
         paymentGateway: settings.paymentGateway || {
           mode: 'test',
-          testKeyId: 'rzp_test_51aBCD12345678',
+          testKeyId: process.env.RAZORPAY_KEY_ID || '',
           testKeySecret: '',
           liveKeyId: '',
           liveKeySecret: '',
-          upiId: '8708167959@paytm',
+          upiId: '',
           upiName: 'Neeraj Rawat | Dhani Tech'
         }
       }

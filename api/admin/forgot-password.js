@@ -3,9 +3,8 @@ const nodemailer = require('nodemailer');
 const { getSettings, saveSettings } = require('../_settings');
 
 const ALLOWED_ADMIN_EMAILS = [
-  'neerajrawat001.bizz@gmail.com',
-  'neerajrawatdhani@gmail.com'
-];
+  (process.env.ADMIN_EMAIL || '').toLowerCase().trim()
+].filter(Boolean);
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,7 +21,7 @@ module.exports = async (req, res) => {
 
   const { action, email, otp, newPassword, resetToken } = req.body || {};
   const settings = getSettings();
-  const configuredAdminEmail = (settings.adminEmail || 'neerajrawat001.bizz@gmail.com').toLowerCase().trim();
+  const configuredAdminEmail = (process.env.ADMIN_EMAIL || settings.adminEmail || '').toLowerCase().trim();
 
   // ==========================================
   // 1. STEP 1: REQUEST OTP (Verify Email & Send OTP)

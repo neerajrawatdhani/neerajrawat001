@@ -33,8 +33,8 @@ let visitCount = 22;
 const inquiriesList = [];
 
 // Setup Nodemailer transporter if available
-const SMTP_USER = process.env.SMTP_USER || 'neerajrawatdhani@gmail.com';
-const SMTP_PASS = process.env.SMTP_PASS || 'rwqu hghn cuct vuzp';
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || SMTP_USER;
 
 let transporter = null;
