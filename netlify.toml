@@ -1,5 +1,22 @@
 [build]
   publish = "frontend"
+  functions = "netlify/functions"
+
+# Lets the frontend call /api/create-order and /api/verify-payment
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/shop"
+  to = "/shop.html"
+  status = 200
+
+[[redirects]]
+  from = "/store"
+  to = "/store.html"
+  status = 200
 
 [[redirects]]
   from = "/home"
