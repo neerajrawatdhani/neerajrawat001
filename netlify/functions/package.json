@@ -1,0 +1,10 @@
+{
+  "name": "razorpay-checkout-functions",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Netlify Functions for Razorpay Standard Checkout",
+  "main": "create-order.js",
+  "dependencies": {
+    "razorpay": "^2.9.4"
+  }
+}
