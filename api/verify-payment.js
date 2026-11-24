@@ -1,83 +1,124 @@
-const { verifySignature, getRazorpayCredentials } = require('./_razorpay');
+const crypto = require('crypto');
+const { getRazorpayCredentials } = require('./_razorpay');
 
-module.exports = async function handler(req, res) {
-  // CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+const json = (statusCode, body) => ({
+  statusCode,
+  headers: {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+  },
+  body: JSON.stringify(body),
+});
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead ? res.writeHead(200) : res.status(200);
-    return res.end();
+// Netlify / AWS Lambda Handler
+async function lambdaHandler(event) {
+  if (!event) event = {};
+  const httpMethod = (event.httpMethod || 'POST').toUpperCase();
+
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+      },
+      body: ''
+    };
   }
 
-  if (req.method !== 'POST') {
-    const err = { success: false, error: 'Method not allowed. Use POST.' };
-    if (res.status && res.json) return res.status(405).json(err);
-    res.writeHead(405, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(err));
+  if (httpMethod !== 'POST') {
+    return json(405, { success: false, verified: false, error: 'Method not allowed' });
   }
 
-  // Parse body
-  let body = req.body;
-  if (typeof body === 'string') {
-    try { body = JSON.parse(body); } catch (e) { body = {}; }
+  const creds = getRazorpayCredentials();
+  const keySecret = process.env.RAZORPAY_KEY_SECRET || creds.keySecret;
+  if (!keySecret) {
+    console.error('RAZORPAY_KEY_SECRET missing in environment');
+    return json(500, { success: false, verified: false, error: 'Payment verification is not configured' });
   }
-  body = body || {};
+
+  let body;
+  try {
+    body = typeof event.body === 'string' ? JSON.parse(event.body || '{}') : (event.body || {});
+  } catch {
+    return json(400, { success: false, verified: false, error: 'Invalid JSON body' });
+  }
 
   const orderId = body.razorpay_order_id || body.order_id || body.orderId;
   const paymentId = body.razorpay_payment_id || body.payment_id || body.paymentId;
   const signature = body.razorpay_signature || body.signature;
 
-  // Validation: Missing fields
   if (!orderId || !paymentId || !signature) {
-    const err = {
-      success: false,
-      error: 'Missing required parameters: razorpay_order_id, razorpay_payment_id, and razorpay_signature are required.'
-    };
-    if (res.status && res.json) return res.status(400).json(err);
-    res.writeHead(400, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(err));
+    return json(400, { success: false, verified: false, error: 'Missing payment fields' });
   }
 
-  const { keySecret } = getRazorpayCredentials();
-  if (!keySecret) {
-    const err = {
-      success: false,
-      error: 'Razorpay Key Secret not configured on server.'
-    };
-    if (res.status && res.json) return res.status(500).json(err);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(err));
+  // HMAC-SHA256 of "order_id|payment_id" using the key secret
+  const expected = crypto
+    .createHmac('sha256', keySecret)
+    .update(`${orderId}|${paymentId}`)
+    .digest('hex');
+
+  const a = Buffer.from(expected, 'utf8');
+  const b = Buffer.from(String(signature), 'utf8');
+  const valid = a.length === b.length && crypto.timingSafeEqual(a, b);
+
+  if (!valid) {
+    console.warn('Signature mismatch for order', orderId);
+    return json(400, { success: false, verified: false, error: 'Payment signature verification failed' });
   }
 
-  // Verify HMAC SHA256 Signature
-  const isValid = verifySignature(orderId, paymentId, signature);
-
-  if (!isValid) {
-    console.warn(`Payment signature verification failed for Order: ${orderId}, Payment: ${paymentId}`);
-    const err = {
-      success: false,
-      verified: false,
-      error: 'Payment signature verification failed. Invalid signature.'
-    };
-    if (res.status && res.json) return res.status(400).json(err);
-    res.writeHead(400, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(err));
-  }
-
-  // Success
-  const successPayload = {
+  // Signature is valid: the payment is genuine.
+  return json(200, {
     success: true,
     verified: true,
     message: 'Payment verified successfully',
     order_id: orderId,
     payment_id: paymentId
+  });
+}
+
+// Vercel / Express / Node.js HTTP Handler
+async function nodeHandler(req, res) {
+  // CORS Headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Cache-Control', 'no-store');
+
+  if (req.method === 'OPTIONS') {
+    if (res.writeHead) res.writeHead(200);
+    else if (res.status) res.status(200);
+    return res.end();
+  }
+
+  const event = {
+    httpMethod: req.method,
+    body: req.body,
+    headers: req.headers
   };
 
+  const result = await lambdaHandler(event);
+  const status = result.statusCode || 200;
+  const payload = JSON.parse(result.body);
+
   if (res.status && res.json) {
-    return res.status(200).json(successPayload);
+    return res.status(status).json(payload);
   }
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  return res.end(JSON.stringify(successPayload));
+  res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+  return res.end(result.body);
+}
+
+// Dual Handler: supports Vercel / Express (req, res) AND AWS Lambda / Netlify (event)
+module.exports = async function handler(reqOrEvent, resOrContext) {
+  if (resOrContext && typeof resOrContext.end === 'function') {
+    return nodeHandler(reqOrEvent, resOrContext);
+  }
+  return lambdaHandler(reqOrEvent);
 };
+
+module.exports.handler = lambdaHandler;
+exports.handler = lambdaHandler;
