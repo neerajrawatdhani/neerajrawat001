@@ -1062,15 +1062,15 @@ html:not([data-mode="dark"]) .spill{mix-blend-mode:normal;background:linear-grad
 .close-btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-control);padding:.5rem 1rem;font-size:.75rem;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.7);transition:border-color .25s,color .25s}
 .close-btn:hover{border-color:rgba(255,255,255,.4);color:#fff}
 .close-btn svg{font-size:.875rem}
-.navm__nav{flex:1;display:flex;flex-direction:column;justify-content:center}
-.navm__nav ul{display:flex;flex-direction:column;gap:.25rem}
-.navm__item{display:flex;align-items:baseline;gap:1rem;width:100%;padding-block:.5rem;text-align:left;font-size:2.25rem;font-weight:600;letter-spacing:-.02em;transform:translateY(1rem);opacity:0;transition:all .5s ease-out;transition-delay:var(--d,0ms)}
+.navm__nav{flex:1;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+.navm__nav ul{display:flex;flex-direction:column;gap:.2rem}
+.navm__item{display:flex;align-items:baseline;gap:1rem;width:100%;padding-block:.42rem;text-align:left;font-size:clamp(1.5rem,4.6vh,2.25rem);font-weight:600;letter-spacing:-.02em;transform:translateY(1rem);opacity:0;transition:all .5s ease-out;transition-delay:var(--d,0ms)}
 .navm.open .navm__item{transform:none;opacity:1}
 .navm__item small{font-size:1rem;font-weight:400;color:rgba(255,255,255,.3);transition:color .3s}
 .navm__item span{color:rgba(255,255,255,.7);transition:color .3s}
 .navm__item:hover small{color:var(--accent-from)}
 .navm__item:hover span{color:#fff}
-@media (min-width:640px){.navm__item{font-size:3.75rem}}
+@media (min-width:640px){.navm__item{font-size:clamp(2rem,5.2vh,3.5rem)}}
 .navm__bot{display:flex;flex-direction:column;gap:.75rem;border-top:1px solid rgba(255,255,255,.1);padding-block:1.5rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.025em;color:rgba(255,255,255,.45)}
 @media (min-width:640px){.navm__bot{flex-direction:row;justify-content:space-between;align-items:center}}
 .navm__bot button{text-align:left;text-transform:uppercase;letter-spacing:.025em;color:rgba(255,255,255,.7)}
@@ -1715,7 +1715,7 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
     </div>
     <div class="sf__cols">
       <div><h3>Work</h3><ul class="work"><li><a href="web-developer/" data-door="0">Web Development</a></li><li><a href="app-developer/" data-door="1">App Development</a></li><li><a href="ui-ux-designer/" data-door="2">UI/UX Design</a></li><li><a href="graphic-designer/" data-door="3">Graphic Design</a></li><li><a href="photographer/" data-door="4">Photography</a></li><li><a href="/shop" data-door="5">Shop</a></li></ul></div>
-      <div><h3>Navigate</h3><ul><li><a href="./" data-go="home">Home</a></li><li><a href="photographer/" data-door="4">Photography</a></li><li><a href="./#about" data-go="about">My story</a></li><li><a href="/shop">Shop</a></li><li><button data-contact>Contact</button></li></ul></div>
+      <div><h3>Navigate</h3><ul><li><a href="./" data-go="home">Home</a></li><li><a href="photographer/" data-door="4">Photography</a></li><li><a href="./#about" data-go="about">My story</a></li><li><a href="/shop" data-door="5">Shop</a></li><li><button data-contact>Contact</button></li></ul></div>
       <div><h3>Status</h3><ul><li class="st">Available for work</li><li class="st">Remote-first, worldwide</li><li class="st">Local time <span data-ftime>—</span></li></ul></div>
     </div>
     <div class="sf__bot"><span>© <span data-fyear>2026</span> Neeraj Rawat · EduDhani. Designed and built by Neeraj.</span><span class="sf__legal"><a href="legal/" target="_top">Privacy &amp; credits</a></span><button data-go="home">Back to top ↑</button></div>
@@ -2217,7 +2217,8 @@ $('#navList').addEventListener('click', e => {
     } else if (id === 'home') {
       navigateSpa('/home');
     } else if (id === 'products') {
-      window.location.href = '/shop';
+      if (window.openDoor) window.openDoor(5);
+      else window.location.href = '/shop';
     } else if (id === 'about') {
       navigateSpa('/my-story');
     } else if (id === 'works') {
@@ -3501,7 +3502,8 @@ function formatWhatsAppText(name, mobile, mail, budget, proj) {
 function navigateSpa(route, push = true) {
   const clean = (route || '').replace(/\/+$/, '') || '/';
   if (clean === '/products' || clean === '/shop') {
-    window.location.href = '/shop';
+    if (window.openDoor) window.openDoor(5);
+    else window.location.href = '/shop';
     return;
   }
   if (false && clean === '/products') {
@@ -3580,7 +3582,7 @@ document.addEventListener('click', e => {
     const target = g.dataset.go;
     if (target === 'works') navigateSpa('/work');
     else if (target === 'story' || target === 'about') navigateSpa('/my-story');
-    else if (target === 'products') window.location.href = '/shop';
+    else if (target === 'products') { if (window.openDoor) window.openDoor(5); else window.location.href = '/shop'; }
     else if (target === 'home') navigateSpa('/home');
     else scrollToId(target);
   }
@@ -4407,11 +4409,55 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
     const p = (i - 2) / 3;
     return secTop + p * mSpan();
   };
-  function switchDoor(nextIdx){
-    if (nextIdx === 5){
-      window.location.href = '/shop';
-      return;
+  function alignAndEnter(i, minWait){
+    clearTimeout(mSettle);
+    if (sec.classList.contains('pre')){
+      sec.classList.add('in');
+      requestAnimationFrame(() => sec.classList.remove('pre'));
     }
+    const top = MOB.matches ? mobY(Math.min(i, 5)) : desktopY(i);
+    const far = Math.abs(pageYOffset - top) > 4;
+    if (far){
+      if (lenis) lenis.scrollTo(top, { duration: .55, easing: x => 1 - Math.pow(1 - x, 3) });
+      else scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+    }
+    const t0 = performance.now();
+    warm(i);
+    const settle = () => {
+      const elapsed = performance.now() - t0;
+      if (Math.abs(pageYOffset - top) > 8 && elapsed < 1200) return requestAnimationFrame(settle);
+      if (Math.abs(pageYOffset - top) > 8){
+        if (lenis) lenis.scrollTo(top, { immediate: true });
+        else scrollTo(0, top);
+      }
+      if (i === SECRET && !sec.classList.contains('reveal')) reveal(true);
+      if (MOB.matches){
+        const want = i === SECRET ? SECRET : Math.min(i, 5);
+        mForce = want; mIdx = want; mApply();
+        const slideT0 = performance.now();
+        const waitSlide = () => {
+          const slideElapsed = performance.now() - slideT0;
+          if (!reduced && (Math.abs(mCur - want) > 0.03 || slideElapsed < minWait) && slideElapsed < 650){
+            return requestAnimationFrame(waitSlide);
+          }
+          mCur = want; mFrame(performance.now());
+          enter(i);
+          mForce = -1;
+        };
+        requestAnimationFrame(waitSlide);
+      } else {
+        applyDesktopDoors();
+        const waitLeft = Math.max(i === SECRET ? (reduced ? 0 : 400) : 0, minWait - (performance.now() - t0));
+        setTimeout(() => {
+          applyDesktopDoors();
+          enter(i);
+        }, waitLeft);
+      }
+    };
+    requestAnimationFrame(settle);
+  }
+
+  function switchDoor(nextIdx){
     cancelAnimationFrame(walkRaf);
     inWall = false;
     busy = false;
@@ -4432,31 +4478,10 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
       doorsState[cur].s.set(0);
     }
 
-    const top = MOB.matches ? mobY(Math.min(nextIdx, 5)) : desktopY(nextIdx);
-    const far = Math.abs(pageYOffset - top) > 4;
-    if (far){
-      if (lenis) lenis.scrollTo(top, { duration: .4, easing: x => 1 - Math.pow(1 - x, 3) });
-      else scrollTo({ top, behavior: 'smooth' });
-    }
-
-    warm(nextIdx);
-    setTimeout(() => {
-      if (MOB.matches){
-        if (nextIdx === SECRET){ reveal(true); mForce = SECRET; } else mIdx = nextIdx;
-        mApply();
-      } else {
-        applyDesktopDoors();
-        if (nextIdx === SECRET && !sec.classList.contains('reveal')) reveal(true);
-      }
-      enter(nextIdx);
-    }, far ? 320 : 60);
+    alignAndEnter(nextIdx, reduced ? 0 : 280);
   }
 
   window.openDoor = i => {
-    if (i === 5){
-      window.location.href = '/shop';
-      return;
-    }
     if (inWall){
       if (i === cur) return;
       switchDoor(i);
@@ -4470,27 +4495,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
       holdScroll(false);
       busy = false;
     }
-    const top = MOB.matches ? mobY(Math.min(i, 5)) : desktopY(i);
-    const far = Math.abs(pageYOffset - top) > 4;
-    if (far){ if (lenis) lenis.scrollTo(top, { duration: .5, easing: x => 1 - Math.pow(1 - x, 3) }); else scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' }); }
-    const t0 = performance.now();
-    warm(i);
-    const settle = () => {
-      if (Math.abs(pageYOffset - top) > 24 && performance.now() - t0 < 800) return requestAnimationFrame(settle);
-      const row = $('.doors__row', sec), u = doorsState[i].u;
-      let wait = 0;
-      if (MOB.matches){
-        const want = i === SECRET ? SECRET : i, before = mForce >= 0 ? mForce : mIdx;
-        if (i === SECRET){ reveal(true); mForce = SECRET; } else mIdx = i;
-        mApply();
-        if (want !== before) wait = reduced ? 0 : 350;
-      } else {
-        applyDesktopDoors();
-        if (i === SECRET && !sec.classList.contains('reveal')){ reveal(true); wait = reduced ? 0 : 500; }
-      }
-      setTimeout(() => enter(i), wait);
-    };
-    requestAnimationFrame(settle);
+    alignAndEnter(i, 0);
   };
   function enter(i){
     if (busy) return;
@@ -4549,7 +4554,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
       const f = Math.min(1, e * 1.6);                                            // drift the door to the centre early on
       sec.style.transform = `translate(${tx * f}px, ${ty * f}px) scale(${sc})`;
       // the moment the dark covers the whole screen, the room takes over: no waiting in the blank
-      if (!handed && (sc >= sEnd / 1.15 || p >= 1)){ handed = true; handoff(); }
+      if (!handed && ((i === 5 && p >= 1) || (i !== 5 && (sc >= sEnd / 1.15 || p >= 1)))){ handed = true; handoff(); }
       if (p < 1) walkRaf = requestAnimationFrame(step);
     };
     walkRaf = requestAnimationFrame(step);
@@ -4656,6 +4661,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
     wallv.classList.remove('on','live'); wallv.style.clipPath = '';
     $('#cord')?.classList.remove('away'); $('.hdr')?.classList.remove('away');
     doorsState.forEach(d => d.s.set(0));
+    holdScroll(false);
     if (busy){ busy = false; startScroll(); }
   });
 })();
