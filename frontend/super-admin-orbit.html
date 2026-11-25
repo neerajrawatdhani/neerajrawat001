@@ -1120,6 +1120,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      flex-shrink: 0;
     }
     .modal-head h3 {
       margin: 0;
@@ -1142,9 +1143,14 @@
     .modal-body {
       padding: 20px 22px;
       overflow-y: auto;
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 16px;
+      flex: 1 1 auto;
+      min-height: 0;
     }
+    .modal-body > * { flex-shrink: 0; }
+    .modal-body .card { overflow: visible; height: auto; }
     .modal-foot {
       padding: 14px 22px;
       border-top: 1px solid var(--border-hair);
@@ -1153,6 +1159,7 @@
       align-items: center;
       justify-content: flex-end;
       gap: 10px;
+      flex-shrink: 0;
     }
 
     /* ========= FORM CONTROLS ========= */
@@ -1399,6 +1406,7 @@
     .prop-tbl tbody tr:nth-child(even) td { background: #F8FAFC; }
     .proposal-page tbody tr:hover td { background: #EFF4FA !important; color: #1E293B !important; }
     .form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .custom-item-row { display: grid; grid-template-columns: 1.8fr 1fr 0.9fr 0.9fr auto; gap: 8px; align-items: center; }
     .prop-note { font-size: 11px; color: #475569; margin: 4px 0 8px; line-height: 1.48; }
     .prop-footer {
       margin-top: 20px;
@@ -1415,6 +1423,7 @@
     @media (max-width: 720px) {
       .req-modules-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .form-grid-3 { grid-template-columns: 1fr; }
+      .custom-item-row { grid-template-columns: 1fr 1fr; }
       .proposal-page { padding: 20px 16px; min-height: auto; overflow-x: auto; }
       .proposal-sheet-stack { padding: 10px; }
     }
@@ -2306,10 +2315,28 @@
           <input class="input mono" id="qClientMobile" type="text" />
         </div>
         <div class="form-field">
-          <label class="form-label" for="qCurrency">Currency</label>
+          <label class="form-label" for="qCurrency">Currency (All Currencies Supported)</label>
           <select class="select" id="qCurrency" onchange="recomputeQuoteSummary()">
-            <option value="INR">INR (₹)</option>
-            <option value="USD">USD ($)</option>
+            <option value="INR">INR (₹) — Indian Rupee</option>
+            <option value="USD">USD ($) — US Dollar</option>
+            <option value="EUR">EUR (€) — Euro</option>
+            <option value="GBP">GBP (£) — British Pound</option>
+            <option value="AED">AED — UAE Dirham</option>
+            <option value="SAR">SAR — Saudi Riyal</option>
+            <option value="AUD">AUD (A$) — Australian Dollar</option>
+            <option value="CAD">CAD (C$) — Canadian Dollar</option>
+            <option value="SGD">SGD (S$) — Singapore Dollar</option>
+            <option value="JPY">JPY (¥) — Japanese Yen</option>
+            <option value="CHF">CHF — Swiss Franc</option>
+            <option value="QAR">QAR — Qatari Riyal</option>
+            <option value="KWD">KWD — Kuwaiti Dinar</option>
+            <option value="OMR">OMR — Omani Rial</option>
+            <option value="BHD">BHD — Bahraini Dinar</option>
+            <option value="MYR">MYR (RM) — Malaysian Ringgit</option>
+            <option value="NZD">NZD (NZ$) — New Zealand Dollar</option>
+            <option value="CNY">CNY (¥) — Chinese Yuan</option>
+            <option value="HKD">HKD (HK$) — Hong Kong Dollar</option>
+            <option value="ZAR">ZAR (R) — South African Rand</option>
           </select>
         </div>
       </div>
@@ -2446,6 +2473,18 @@
                 <input class="input mono" id="qBackupRen" type="number" value="3000" title="Renewal" oninput="recomputeQuoteSummary()" />
               </div>
             </div>
+            <div class="form-field" id="wrapDbCustomTier">
+              <label class="form-label" for="qDbCustomTier">Database Tier / Price Note</label>
+              <input class="input" id="qDbCustomTier" placeholder="e.g. Atlas Flex or custom client rate" oninput="recomputeQuoteSummary()" />
+            </div>
+          </div>
+
+          <div style="padding-top:10px; border-top:1px dashed var(--border-hair); display:grid; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span style="font-size:11.5px; font-weight:700; color:var(--ink-secondary);">Custom Charges &amp; Add-On Services (Set Your Exact Price Per Quote)</span>
+              <button type="button" class="btn btn-sm" onclick="addCustomQuoteItem()">+ Add Custom Service / Charge</button>
+            </div>
+            <div id="customQuoteItemsList" style="display:grid; gap:8px;"></div>
           </div>
 
           <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:10px; border-top:1px solid var(--border-hair);">
@@ -3612,7 +3651,7 @@
         </thead>
         <tbody>
           ${filtered.map(q => {
-            const sym = q.currency === 'USD' ? '$' : '₹';
+            const cMeta = getCurrencyMeta(q.currency);
             const mods = q.modules || {};
             const tags = [];
             if (mods.website !== false) tags.push('Web');
@@ -3628,10 +3667,10 @@
                 </td>
                 <td>
                   <div>${escHtml(q.scope || 'Custom Solution')}</div>
-                  <div class="mono" style="font-size:10.5px; color:var(--ink-muted); margin-top:2px;">${tags.map(escHtml).join(' · ')}</div>
+                  <div class="mono" style="font-size:10.5px; color:var(--ink-muted); margin-top:2px;">${escHtml(cMeta.code)}${tags.length ? ' · ' + tags.map(escHtml).join(' · ') : ''}</div>
                 </td>
-                <td class="mono">${sym}${(Number(q.totalOneTime ?? q.valNum) || 0).toLocaleString('en-IN')}</td>
-                <td class="mono" style="font-weight:700; color:var(--accent);">${sym}${(Number(q.totalYear1) || Number(q.valNum) || 0).toLocaleString('en-IN')}</td>
+                <td class="mono">${fmtMoneyWithCode(q.totalOneTime ?? q.valNum, q.currency)}</td>
+                <td class="mono" style="font-weight:700; color:var(--accent);">${fmtMoneyWithCode(q.totalYear1 ?? q.valNum, q.currency)}</td>
                 <td><span class="badge ${getStatusBadgeClass(q.status)}">${escHtml(q.status || 'In Discussion')}</span></td>
                 <td>
                   <div style="display:flex; gap:6px; flex-wrap:wrap;">
@@ -3656,6 +3695,89 @@
     const qSel = document.getElementById('quoteLeadPicker');
     if (waSel) waSel.innerHTML = opts;
     if (qSel) qSel.innerHTML = opts;
+  }
+
+  const CURRENCY_CATALOG = {
+    INR: { code: 'INR', sym: '₹', locale: 'en-IN' },
+    USD: { code: 'USD', sym: '$', locale: 'en-US' },
+    EUR: { code: 'EUR', sym: '€', locale: 'en-US' },
+    GBP: { code: 'GBP', sym: '£', locale: 'en-GB' },
+    AED: { code: 'AED', sym: 'AED ', locale: 'en-US' },
+    SAR: { code: 'SAR', sym: 'SAR ', locale: 'en-US' },
+    AUD: { code: 'AUD', sym: 'A$', locale: 'en-US' },
+    CAD: { code: 'CAD', sym: 'C$', locale: 'en-US' },
+    SGD: { code: 'SGD', sym: 'S$', locale: 'en-US' },
+    JPY: { code: 'JPY', sym: '¥', locale: 'en-US' },
+    CHF: { code: 'CHF', sym: 'CHF ', locale: 'en-US' },
+    QAR: { code: 'QAR', sym: 'QAR ', locale: 'en-US' },
+    KWD: { code: 'KWD', sym: 'KWD ', locale: 'en-US' },
+    OMR: { code: 'OMR', sym: 'OMR ', locale: 'en-US' },
+    BHD: { code: 'BHD', sym: 'BHD ', locale: 'en-US' },
+    MYR: { code: 'MYR', sym: 'RM ', locale: 'en-US' },
+    NZD: { code: 'NZD', sym: 'NZ$', locale: 'en-US' },
+    CNY: { code: 'CNY', sym: '¥', locale: 'en-US' },
+    HKD: { code: 'HKD', sym: 'HK$', locale: 'en-US' },
+    ZAR: { code: 'ZAR', sym: 'R ', locale: 'en-US' }
+  };
+
+  function getCurrencyMeta(code) {
+    const k = String(code || 'INR').toUpperCase().trim();
+    return CURRENCY_CATALOG[k] || { code: k, sym: k + ' ', locale: 'en-US' };
+  }
+
+  function fmtMoneyWithCode(n, code) {
+    const cMeta = getCurrencyMeta(code);
+    return cMeta.sym + (Number(n) || 0).toLocaleString(cMeta.locale);
+  }
+
+  let customQuoteItems = [];
+
+  function renderCustomQuoteItems() {
+    const host = document.getElementById('customQuoteItemsList');
+    if (!host) return;
+    if (!customQuoteItems.length) {
+      host.innerHTML = `<div style="font-size:11.5px; color:var(--ink-muted);">No extra custom charges added yet. Use "+ Add Custom Service / Charge" to add any custom service or custom rate.</div>`;
+      return;
+    }
+    host.innerHTML = customQuoteItems.map((it, idx) => `
+      <div class="custom-item-row">
+        <input class="input" type="text" value="${escHtml(it.label)}" placeholder="Service name (e.g. Mobile App / SEO)" oninput="updateCustomQuoteItem(${idx}, 'label', this.value)" />
+        <select class="select" onchange="updateCustomQuoteItem(${idx}, 'billing', this.value)">
+          <option value="one-time" ${it.billing === 'one-time' ? 'selected' : ''}>One-Time</option>
+          <option value="annual" ${it.billing === 'annual' ? 'selected' : ''}>Annual</option>
+        </select>
+        <input class="input mono" type="number" value="${Number(it.y1) || 0}" placeholder="Yr 1" title="Year 1 Price" oninput="updateCustomQuoteItem(${idx}, 'y1', this.value)" />
+        <input class="input mono" type="number" value="${it.billing === 'annual' ? (Number(it.y2) || 0) : 0}" placeholder="Yr 2+" title="Renewal Price" ${it.billing !== 'annual' ? 'disabled' : ''} oninput="updateCustomQuoteItem(${idx}, 'y2', this.value)" />
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeCustomQuoteItem(${idx})" title="Remove line item">x</button>
+      </div>
+    `).join('');
+  }
+
+  function addCustomQuoteItem(preset) {
+    customQuoteItems.push(preset || { label: '', billing: 'one-time', y1: 0, y2: 0 });
+    renderCustomQuoteItems();
+    recomputeQuoteSummary();
+  }
+
+  function removeCustomQuoteItem(idx) {
+    customQuoteItems.splice(idx, 1);
+    renderCustomQuoteItems();
+    recomputeQuoteSummary();
+  }
+
+  function updateCustomQuoteItem(idx, key, val) {
+    if (!customQuoteItems[idx]) return;
+    if (key === 'billing') {
+      customQuoteItems[idx].billing = val === 'annual' ? 'annual' : 'one-time';
+      if (customQuoteItems[idx].billing === 'one-time') customQuoteItems[idx].y2 = 0;
+      else if (!customQuoteItems[idx].y2) customQuoteItems[idx].y2 = customQuoteItems[idx].y1;
+      renderCustomQuoteItems();
+    } else if (key === 'y1' || key === 'y2') {
+      customQuoteItems[idx][key] = Number(val) || 0;
+    } else {
+      customQuoteItems[idx][key] = String(val || '');
+    }
+    recomputeQuoteSummary();
   }
 
   const PROPOSAL_DB_COMPANIES = {
@@ -3767,7 +3889,10 @@
     document.getElementById('qBackupRen').value = 3000;
     document.getElementById('qWaAllowance').value = 3500;
     document.getElementById('qWaRen').value = 3500;
+    document.getElementById('qDbCustomTier').value = '';
     document.getElementById('qCustomNotes').value = '';
+    customQuoteItems = [];
+    renderCustomQuoteItems();
     applyQuoteModulesState({
       website: true, customApi: false, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true
     });
@@ -3833,15 +3958,19 @@
     document.getElementById('qBackupRen').value = q.backupRenewal ?? 3000;
     document.getElementById('qWaAllowance').value = q.whatsappAllowance ?? 3500;
     document.getElementById('qWaRen').value = q.whatsappRenewal ?? 3500;
+    document.getElementById('qDbCustomTier').value = q.dbCustomTier || '';
     document.getElementById('qStatus').value = q.status || 'In Discussion';
     document.getElementById('qCustomNotes').value = q.notes || '';
+    customQuoteItems = Array.isArray(q.customItems) ? q.customItems.map(x => ({ ...x })) : [];
+    renderCustomQuoteItems();
     applyQuoteModulesState(q.modules || { website: true, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true });
     openModal('modalQuoteBuilder');
   }
 
   function collectQuoteFormPayload() {
     const mods = getQuoteModulesState();
-    const sym = document.getElementById('qCurrency').value === 'USD' ? '$' : '₹';
+    const curCode = document.getElementById('qCurrency').value || 'INR';
+    const cMeta = getCurrencyMeta(curCode);
 
     const web = mods.website ? Number(document.getElementById('qWebsiteFee').value || 0) : 0;
     const api = mods.customApi ? Number(document.getElementById('qApiFee').value || 0) : 0;
@@ -3858,14 +3987,30 @@
     const waAl = mods.whatsapp ? Number(document.getElementById('qWaAllowance').value || 0) : 0;
     const waRen = mods.whatsapp ? Number(document.getElementById('qWaRen').value || 0) : 0;
 
-    const oneTime = web + api + wa;
-    const opsY1 = vps + dom + db + bak + waAl;
+    const validCustom = customQuoteItems
+      .filter(it => it && String(it.label || '').trim())
+      .map(it => ({
+        label: String(it.label).trim(),
+        billing: it.billing === 'annual' ? 'annual' : 'one-time',
+        y1: Number(it.y1) || 0,
+        y2: it.billing === 'annual' ? (Number(it.y2 ?? it.y1) || 0) : 0
+      }));
+    const customOneTime = validCustom.filter(i => i.billing === 'one-time').reduce((s, i) => s + i.y1, 0);
+    const customOpsY1 = validCustom.filter(i => i.billing === 'annual').reduce((s, i) => s + i.y1, 0);
+    const customRen = validCustom.filter(i => i.billing === 'annual').reduce((s, i) => s + i.y2, 0);
+
+    const oneTime = web + api + wa + customOneTime;
+    const opsY1 = vps + dom + db + bak + waAl + customOpsY1;
     const yr1 = oneTime + opsY1;
-    const renewal = vpsRen + domRen + dbRen + bakRen + waRen;
+    const renewal = vpsRen + domRen + dbRen + bakRen + waRen + customRen;
 
     return {
-      sym,
+      currency: cMeta.code,
+      sym: cMeta.sym,
+      locale: cMeta.locale,
       modules: mods,
+      customItems: validCustom,
+      dbCustomTier: document.getElementById('qDbCustomTier')?.value.trim() || '',
       hostingProvider: document.getElementById('qHostingProvider').value,
       dbProvider: document.getElementById('qDbProvider').value,
       domainProvider: document.getElementById('qDomainProvider').value,
@@ -3878,10 +4023,11 @@
 
   function recomputeQuoteSummary() {
     const m = collectQuoteFormPayload();
-    document.getElementById('qSumOneTime').textContent = m.sym + m.oneTime.toLocaleString('en-IN');
-    document.getElementById('qSumOpsY1').textContent = m.sym + m.opsY1.toLocaleString('en-IN');
-    document.getElementById('qSumYear1').textContent = m.sym + m.yr1.toLocaleString('en-IN');
-    document.getElementById('qSumRenewal').textContent = m.sym + m.renewal.toLocaleString('en-IN') + ' / yr';
+    const fmt = v => fmtMoneyWithCode(v, m.currency);
+    document.getElementById('qSumOneTime').textContent = fmt(m.oneTime);
+    document.getElementById('qSumOpsY1').textContent = fmt(m.opsY1);
+    document.getElementById('qSumYear1').textContent = fmt(m.yr1);
+    document.getElementById('qSumRenewal').textContent = fmt(m.renewal) + ' / yr';
     return m;
   }
 
@@ -3906,8 +4052,10 @@
         clientEmail,
         clientMobile: document.getElementById('qClientMobile').value.trim(),
         businessType: m.businessType,
-        currency: document.getElementById('qCurrency').value,
+        currency: m.currency,
         modules: m.modules,
+        customItems: m.customItems,
+        dbCustomTier: m.dbCustomTier,
         hostingProvider: m.hostingProvider,
         dbProvider: m.dbProvider,
         domainProvider: m.domainProvider,
@@ -3951,10 +4099,12 @@
   }
 
   function renderCorporateProposalPages(cfg) {
-    const sym = cfg.currency === 'USD' ? '$' : '₹';
-    const fmt = n => sym + (Number(n) || 0).toLocaleString('en-IN');
+    const cMeta = getCurrencyMeta(cfg.currency);
+    const fmt = n => fmtMoneyWithCode(n, cMeta.code);
     const m = cfg.modules || {};
+    const customItems = Array.isArray(cfg.customItems) ? cfg.customItems : [];
     const dbMeta = PROPOSAL_DB_COMPANIES[cfg.dbProvider || 'mongodb'] || PROPOSAL_DB_COMPANIES.mongodb;
+    const dbBasisText = String(cfg.dbCustomTier || '').trim() || 'Low-usage planning budget';
     const hostLabel = PROPOSAL_HOSTING_NAMES[cfg.hostingProvider || 'hostinger'] || PROPOSAL_HOSTING_NAMES.hostinger;
     const domLabel = PROPOSAL_DOMAIN_NAMES[cfg.domainProvider || 'namecheap'] || PROPOSAL_DOMAIN_NAMES.namecheap;
     const orgTitle = (cfg.clientCompany || cfg.clientName || 'CLIENT').toUpperCase();
@@ -3970,13 +4120,15 @@
     if (m.website !== false) oneTimeRows.push([cfg.devTitle || 'Website + Complete Admin Content-Management Dashboard', cfg.web]);
     if (m.customApi) oneTimeRows.push([cfg.apiTitle || 'Custom REST APIs, Webhooks & Third-Party Service Integration', cfg.api]);
     if (m.whatsapp !== false) oneTimeRows.push(['WhatsApp Cloud API integration allowance (additional)', cfg.wa]);
+    customItems.filter(i => i.billing === 'one-time').forEach(i => oneTimeRows.push([i.label, i.y1]));
 
     const operatingRows = [];
     if (m.hosting !== false) operatingRows.push([hostLabel + ' (application + API)', cfg.vps, 'Estimated Year 1']);
     if (m.domain !== false) operatingRows.push([domLabel, cfg.dom, 'Estimated initial cost']);
-    if (m.database !== false) operatingRows.push([dbMeta.name, cfg.db, 'Low-usage planning budget']);
+    if (m.database !== false) operatingRows.push([dbMeta.name, cfg.db, dbBasisText]);
     if (m.backups !== false) operatingRows.push(['Backup / cloud storage', cfg.bak, 'Budget reserve']);
     if (m.whatsapp !== false) operatingRows.push(['Meta WhatsApp messaging', cfg.waAl, 'Usage illustration on Page 2']);
+    customItems.filter(i => i.billing === 'annual').forEach(i => operatingRows.push([i.label, i.y1, 'Custom annual allowance']));
 
     const renewalCols = [];
     if (m.hosting !== false) renewalCols.push(['VPS / Host', cfg.vpsRen]);
@@ -3984,13 +4136,14 @@
     if (m.database !== false) renewalCols.push(['Database', cfg.dbRen]);
     if (m.backups !== false) renewalCols.push(['Backups', cfg.bakRen]);
     if (m.whatsapp !== false) renewalCols.push(['WhatsApp', cfg.waRen]);
+    customItems.filter(i => i.billing === 'annual').forEach(i => renewalCols.push([i.label, i.y2]));
 
     const showPage2 = (m.whatsapp !== false) || Boolean(m.customApi);
     let pageCounter = 1;
     const totalPages = showPage2 ? 3 : 2;
     const footerHtml = pNum => `
       <div class="prop-footer">
-        <span>${escHtml(orgTitle)} | ANNUAL COST PROPOSAL (#${escHtml(ref)})</span>
+        <span>${escHtml(orgTitle)} | ANNUAL COST PROPOSAL (#${escHtml(ref)} · ${escHtml(cMeta.code)})</span>
         <span>Page ${pNum} of ${totalPages}</span>
       </div>
     `;
@@ -4000,12 +4153,12 @@
         <div>
           <div style="margin-bottom:14px;">
             <h1 class="prop-h1">${escHtml(orgTitle)}</h1>
-            <p class="prop-sub">${escHtml(subtitleParts.join(', '))} | Annual Cost Proposal | ${escHtml(dateStr)}</p>
+            <p class="prop-sub">${escHtml(subtitleParts.join(', '))} | Annual Cost Proposal (${escHtml(cMeta.code)}) | ${escHtml(dateStr)}</p>
           </div>
 
           <h3 class="prop-sec-h">Project overview</h3>
           <p class="prop-note" style="font-size:12px; color:#1E293B;">
-            Development of modular digital systems for <strong>${escHtml(cfg.clientCompany || cfg.clientName)}</strong> covering ${escHtml(subtitleParts.join(' with '))}${m.database !== false ? ` backed by ${escHtml(dbMeta.name)}` : ''}. Figures are indicative annual budgets in ${cfg.currency === 'USD' ? 'USD' : 'INR'}, not vendor invoices.
+            Development of modular digital systems for <strong>${escHtml(cfg.clientCompany || cfg.clientName)}</strong> covering ${escHtml(subtitleParts.join(' with '))}${m.database !== false ? ` backed by ${escHtml(dbMeta.name)}` : ''}. All figures are quoted in <strong>${escHtml(cMeta.code)} (${escHtml(cMeta.sym.trim())})</strong> and represent indicative annual planning budgets, not vendor invoices.
           </p>
 
           ${oneTimeRows.length ? `
@@ -4117,11 +4270,12 @@
 
     const dbRowsHtml = Object.entries(PROPOSAL_DB_COMPANIES).map(([key, info]) => {
       const selected = key === (cfg.dbProvider || 'mongodb');
+      const tierStr = (selected && cfg.dbCustomTier) ? cfg.dbCustomTier : info.tier;
       return `
         <tr style="${selected ? 'background:#EFF4FA !important;' : ''}">
           <td><strong>${escHtml(info.name)}</strong>${selected ? ' <span style="font-size:10px; background:#0F2843; color:#fff; padding:1px 5px; border-radius:3px;">Selected</span>' : ''}</td>
           <td>${escHtml(info.company)}</td>
-          <td class="mono">${escHtml(info.tier)}</td>
+          <td class="mono">${escHtml(tierStr)}</td>
           <td>${escHtml(info.bestFor)}</td>
         </tr>
       `;
@@ -4242,8 +4396,12 @@
     const bakRen = mods.backups !== false ? Number(q.backupRenewal ?? bak) : 0;
     const waAl = mods.whatsapp !== false ? Number(q.whatsappAllowance ?? 3500) : 0;
     const waRen = mods.whatsapp !== false ? Number(q.whatsappRenewal ?? waAl) : 0;
-    const oneTime = web + api + wa;
-    const opsY1 = vps + dom + db + bak + waAl;
+    const customList = Array.isArray(q.customItems) ? q.customItems : [];
+    const customOneTime = customList.filter(i => i.billing === 'one-time').reduce((s, i) => s + (Number(i.y1) || 0), 0);
+    const customOpsY1 = customList.filter(i => i.billing === 'annual').reduce((s, i) => s + (Number(i.y1) || 0), 0);
+    const customRen = customList.filter(i => i.billing === 'annual').reduce((s, i) => s + (Number(i.y2 ?? i.y1) || 0), 0);
+    const oneTime = web + api + wa + customOneTime;
+    const opsY1 = vps + dom + db + bak + waAl + customOpsY1;
 
     document.getElementById('quotePdfBody').innerHTML = renderCorporateProposalPages({
       quoteNumber: q.id,
@@ -4251,6 +4409,8 @@
       clientCompany: q.company,
       currency: q.currency || 'INR',
       modules: mods,
+      customItems: customList,
+      dbCustomTier: q.dbCustomTier || '',
       hostingProvider: q.hostingProvider || 'hostinger',
       dbProvider: q.dbProvider || 'mongodb',
       domainProvider: q.domainProvider || 'namecheap',
@@ -4262,7 +4422,7 @@
       oneTime,
       opsY1,
       yr1: oneTime + opsY1,
-      renewal: vpsRen + domRen + dbRen + bakRen + waRen,
+      renewal: vpsRen + domRen + dbRen + bakRen + waRen + customRen,
       notes: q.notes
     });
     openModal('modalQuotePdf');

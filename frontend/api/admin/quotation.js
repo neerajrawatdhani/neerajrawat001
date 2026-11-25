@@ -113,7 +113,9 @@ module.exports = async (req, res) => {
     modules: body.modules || {},
     hostingProvider: body.hostingProvider || 'hostinger',
     dbProvider: body.dbProvider || 'mongodb',
+    dbCustomTier: body.dbCustomTier || '',
     domainProvider: body.domainProvider || 'namecheap',
+    customItems: Array.isArray(body.customItems) ? body.customItems : [],
     websiteDevFee: Number(body.websiteDevFee ?? 50000),
     apiIntegrationFee: Number(body.apiIntegrationFee ?? 12000),
     waIntegrationFee: Number(body.waIntegrationFee ?? 8000),
@@ -131,7 +133,7 @@ module.exports = async (req, res) => {
   };
 
   const math = computeProposalMath(proposalPayload);
-  const { sym, totalOneTime, totalOperatingY1, grandTotalY1, grandTotalRenewal } = math;
+  const { currencyMeta, totalOneTime, totalOperatingY1, grandTotalY1, grandTotalRenewal } = math;
   const qId = body.quoteNumber || ('DT-' + new Date().getFullYear() + '-' + String(Math.floor(100 + Math.random() * 900)));
 
   const quoteRecord = {
@@ -146,11 +148,13 @@ module.exports = async (req, res) => {
     scopeDesc: proposalPayload.devDesc,
     apiTitle: proposalPayload.apiTitle,
     apiDesc: proposalPayload.apiDesc,
-    currency: proposalPayload.currency,
+    currency: math.currency,
     modules: math.modules,
     hostingProvider: proposalPayload.hostingProvider,
     dbProvider: proposalPayload.dbProvider,
+    dbCustomTier: proposalPayload.dbCustomTier,
     domainProvider: proposalPayload.domainProvider,
+    customItems: math.customItems,
     websiteDevFee: proposalPayload.websiteDevFee,
     apiIntegrationFee: proposalPayload.apiIntegrationFee,
     waIntegrationFee: proposalPayload.waIntegrationFee,
@@ -164,7 +168,7 @@ module.exports = async (req, res) => {
     backupRenewal: proposalPayload.backupRenewal,
     whatsappAllowance: proposalPayload.whatsappAllowance,
     whatsappRenewal: proposalPayload.whatsappRenewal,
-    value: sym + totalOneTime.toLocaleString('en-IN'),
+    value: currencyMeta.sym + totalOneTime.toLocaleString(currencyMeta.locale),
     valNum: totalOneTime,
     totalOneTime,
     totalOperatingY1,
@@ -200,7 +204,7 @@ module.exports = async (req, res) => {
       updateLead(proposalPayload.leadId, {
         status: 'Proposal Sent',
         company: proposalPayload.clientCompany || undefined,
-        notes: `Proposal #${qId} (${sym}${grandTotalY1.toLocaleString('en-IN')} Year 1 / ${sym}${grandTotalRenewal.toLocaleString('en-IN')} renewal) sent to ${proposalPayload.clientEmail}.`
+        notes: `Proposal #${qId} (${currencyMeta.sym}${grandTotalY1.toLocaleString(currencyMeta.locale)} Year 1 / ${currencyMeta.sym}${grandTotalRenewal.toLocaleString(currencyMeta.locale)} renewal) sent to ${proposalPayload.clientEmail}.`
       });
     } catch (e) {
       console.error('[Lead Quote Update Error]:', e.message);
