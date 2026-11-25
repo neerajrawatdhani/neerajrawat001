@@ -12,16 +12,16 @@ function computeFallbackSecret() {
 
 let memorySettings = {
   // SMTP Configuration
-  smtpHost: process.env.SMTP_HOST || '',
+  smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
   smtpPort: parseInt(process.env.SMTP_PORT || '465', 10),
   smtpSecure: process.env.SMTP_SECURE !== 'false',
-  smtpUser: process.env.SMTP_USER || '',
-  smtpPass: process.env.SMTP_PASS || undefined,
+  smtpUser: (process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER || process.env.MAIL_USER || '').trim(),
+  smtpPass: (process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || process.env.EMAIL_PASS || process.env.MAIL_PASS || '').trim(),
   adminUsername: process.env.ADMIN_USERNAME || 'admin',
-  adminEmail: process.env.ADMIN_EMAIL || '',
+  adminEmail: (process.env.ADMIN_EMAIL || 'neerajrawat001.biz@gmail.com').trim(),
   adminPassword: process.env.ADMIN_PASSWORD || '',
   adminSecret: process.env.ADMIN_SECRET || computeFallbackSecret(),
-  fromEmail: process.env.FROM_EMAIL || process.env.SMTP_USER || '',
+  fromEmail: (process.env.FROM_EMAIL || process.env.SMTP_USER || process.env.GMAIL_USER || '').trim(),
   fromName: process.env.FROM_NAME || 'Neeraj Rawat | Dhani Tech',
 
   // Annual Operating Costs (As per Official Gurukulam Proposal PDF)

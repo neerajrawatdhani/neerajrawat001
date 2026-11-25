@@ -1439,7 +1439,7 @@
       const emailVal = recoveryEmailInput.value.trim();
 
       if (!emailVal) {
-        otpErr1.textContent = 'कृपया अपना एडमिन ईमेल दर्ज करें।';
+        otpErr1.textContent = 'Please enter your registered admin email.';
         otpErr1.style.display = 'block';
         return;
       }
@@ -1465,11 +1465,11 @@
           if (confirmPassInput) confirmPassInput.value = '';
           otpInput.focus();
         } else {
-          otpErr1.textContent = data.error || 'OTP भेजने में विफलता।';
+          otpErr1.textContent = data.error || 'Failed to send OTP email.';
           otpErr1.style.display = 'block';
         }
       } catch (err) {
-        otpErr1.textContent = 'सर्वर कनेक्शन त्रुटि: ' + err.message;
+        otpErr1.textContent = 'Server connection error: ' + err.message;
         otpErr1.style.display = 'block';
       } finally {
         sendOtpBtn.disabled = false;
@@ -1493,17 +1493,17 @@
       const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : newPass;
 
       if (!otpVal || otpVal.length !== 6) {
-        otpErr2.textContent = 'कृपया ईमेल में आया सही 6-अंकीय OTP दर्ज करें।';
+        otpErr2.textContent = 'Please enter the valid 6-digit OTP sent to your email.';
         otpErr2.style.display = 'block';
         return;
       }
       if (!newPass || newPass.length < 4) {
-        otpErr2.textContent = 'नया पासवर्ड कम से कम 4 अक्षरों का होना चाहिए।';
+        otpErr2.textContent = 'New password must be at least 4 characters long.';
         otpErr2.style.display = 'block';
         return;
       }
       if (newPass !== confirmPass) {
-        otpErr2.textContent = 'दोनों पासवर्ड मेल नहीं खाते! कृपया पासवर्ड पुनः जाँचें।';
+        otpErr2.textContent = 'Passwords do not match. Please re-enter them.';
         otpErr2.style.display = 'block';
         return;
       }
@@ -1534,11 +1534,11 @@
             authErr.style.display = 'none';
           }, 1500);
         } else {
-          otpErr2.textContent = data.error || 'OTP वेरिफिकेशन असफल।';
+          otpErr2.textContent = data.error || 'OTP verification failed.';
           otpErr2.style.display = 'block';
         }
       } catch (err) {
-        otpErr2.textContent = 'त्रुटि: ' + err.message;
+        otpErr2.textContent = 'Error: ' + err.message;
         otpErr2.style.display = 'block';
       } finally {
         verifyOtpBtn.disabled = false;
@@ -1573,11 +1573,11 @@
           setToken(data.token);
           showDashboard();
         } else {
-          authErr.textContent = data.error || 'गलत पासवर्ड! कृपया सही पासवर्ड डालें।';
+          authErr.textContent = data.error || 'Incorrect password. Please try again.';
           authErr.style.display = 'block';
         }
       } catch (err) {
-        authErr.textContent = 'कनेक्शन त्रुटि! कृपया पुनः प्रयास करें।';
+        authErr.textContent = 'Connection error. Please try again.';
         authErr.style.display = 'block';
       } finally {
         loginBtn.disabled = false;
@@ -1927,11 +1927,11 @@
       const confirmAdminPass = document.getElementById('setConfirmAdminPassword')?.value.trim();
       if (newAdminPass) {
         if (newAdminPass.length < 4) {
-          alert('नया पासवर्ड कम से कम 4 अक्षरों का होना चाहिए!');
+          alert('New password must be at least 4 characters long.');
           return;
         }
         if (newAdminPass !== confirmAdminPass) {
-          alert('दोनों पासवर्ड मेल नहीं खाते! कृपया पासवर्ड पुनः जाँचें।');
+          alert('Passwords do not match. Please re-enter them.');
           return;
         }
       }
@@ -1979,7 +1979,7 @@
         const data = await res.json();
         if (data.success) {
           if (newAdminPass) {
-            alert('🎉 सेटिंग्स और नया पासवर्ड सफलतापूर्वक सेव हो गए हैं!');
+            alert('Settings and new password saved successfully.');
             document.getElementById('setNewAdminPassword').value = '';
             document.getElementById('setConfirmAdminPassword').value = '';
           } else {
@@ -2194,7 +2194,7 @@
         const status = document.getElementById('adminProdStatus').value;
 
         if (!title || !price) {
-          alert('Product Title और Price आवश्यक हैं!');
+          alert('Product Title and Price are required.');
           return;
         }
 
@@ -2219,7 +2219,7 @@
           });
           const data = await res.json();
           if (data.success) {
-            alert(id ? 'Product अपडेट हो गया!' : 'नया डिजिटल प्रोडक्ट सफलतापूर्वक जुड़ गया!');
+            alert(id ? 'Product updated successfully.' : 'New digital product published successfully.');
             resetProductForm();
             loadAdminProductsList();
           } else {
@@ -2235,7 +2235,7 @@
     }
 
     window.deleteAdminProduct = async function(id, name) {
-      if (!confirm(`क्या आप सच में "${name}" प्रोडक्ट को डिलीट करना चाहते हैं?`)) return;
+      if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
       const token = getToken();
       try {
         const res = await fetch('/api/products', {
@@ -2248,7 +2248,7 @@
         });
         const data = await res.json();
         if (data.success) {
-          alert('Product डिलीट हो गया!');
+          alert('Product deleted successfully.');
           loadAdminProductsList();
         } else {
           alert('Error: ' + data.error);
@@ -2391,7 +2391,7 @@
       const clientMobile = document.getElementById('qClientMobile').value.trim();
 
       if (!clientName || !clientEmail) {
-        alert('Client Name और Email आवश्यक हैं!');
+        alert('Client Name and Email are required.');
         return;
       }
 

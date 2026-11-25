@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
   if (!isUserValid) {
     return res.status(401).json({
       success: false,
-      error: 'गलत यूजरनेम! कृपया सही यूजरनेम ("admin") डालें।'
+      error: 'Invalid username or email. Please enter your registered admin username ("admin") or email.'
     });
   }
 
@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
   if (!isPassValid) {
     return res.status(401).json({
       success: false,
-      error: 'गलत पासवर्ड! कृपया सही पासवर्ड डालें या नीचे "Forgot Password?" पर क्लिक करके नया पासवर्ड सेट करें।'
+      error: 'Incorrect password. Please try again or click "Forgot password?" below to reset via email OTP.'
     });
   }
 
