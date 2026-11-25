@@ -1342,10 +1342,92 @@
       .cat-picker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .sync-pill { display: none; }
     }
+    /* ========= MODULAR QUOTATION BUILDER & 3-PAGE PDF SHEET ========= */
+    .req-modules-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .req-check-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 9px 10px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border-hair);
+      background: var(--bg-subtle);
+      cursor: pointer;
+      transition: border-color 0.14s, background 0.14s;
+      font-size: 12px;
+      font-weight: 600;
+      user-select: none;
+    }
+    .req-check-card:hover { border-color: var(--border-strong); }
+    .req-check-card.checked {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .req-check-card input { margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
+    .req-check-sub { display: block; font-size: 10.5px; font-weight: 400; color: var(--ink-muted); margin-top: 1px; }
+
+    .proposal-sheet-stack {
+      display: grid;
+      gap: 24px;
+      background: #E5E7EB;
+      padding: 20px;
+    }
+    .proposal-page {
+      background: #FFFFFF;
+      color: #1A202C;
+      padding: 36px 40px;
+      border-radius: 4px;
+      box-shadow: 0 4px 18px rgba(15, 40, 67, 0.12);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: 12.5px;
+      line-height: 1.48;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 920px;
+    }
+    .prop-h1 { margin: 0; font-size: 25px; font-weight: 800; color: #0F2843; letter-spacing: -0.01em; }
+    .prop-sub { margin: 4px 0 0; font-size: 12.5px; color: #475569; }
+    .prop-sec-h { margin: 18px 0 8px; font-size: 14px; font-weight: 800; color: #0F2843; }
+    .prop-tbl { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; border: 1px solid #CBD5E1; }
+    .prop-tbl thead th { background: #0F2843; color: #FFFFFF; padding: 8px 11px; text-align: left; font-weight: 700; }
+    .prop-tbl td { padding: 7.5px 11px; border-bottom: 1px solid #E2E8F0; color: #1E293B; }
+    .prop-tbl tbody tr:nth-child(even) td { background: #F8FAFC; }
+    .proposal-page tbody tr:hover td { background: #EFF4FA !important; color: #1E293B !important; }
+    .form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .prop-note { font-size: 11px; color: #475569; margin: 4px 0 8px; line-height: 1.48; }
+    .prop-footer {
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #CBD5E1;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 720px) {
+      .req-modules-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-grid-3 { grid-template-columns: 1fr; }
+      .proposal-page { padding: 20px 16px; min-height: auto; overflow-x: auto; }
+      .proposal-sheet-stack { padding: 10px; }
+    }
     @media print {
-      .sidebar, .topbar, .toast-stack, .no-print { display: none !important; }
-      .workspace { margin: 0 !important; }
-      body { background: #fff !important; color: #000 !important; }
+      @page { size: A4; margin: 10mm; }
+      body { background: #fff !important; color: #000 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .app-shell, .auth-screen, .toast-stack, .no-print, .modal-backdrop:not(#modalQuotePdf) { display: none !important; }
+      #modalQuotePdf.modal-backdrop.open { position: static !important; display: block !important; background: none !important; padding: 0 !important; overflow: visible !important; }
+      #modalQuotePdf .modal-box { box-shadow: none !important; border: none !important; max-width: 100% !important; max-height: none !important; width: 100% !important; overflow: visible !important; }
+      #modalQuotePdf .modal-body { padding: 0 !important; overflow: visible !important; }
+      .proposal-sheet-stack { background: #fff !important; padding: 0 !important; gap: 0 !important; }
+      .proposal-page { box-shadow: none !important; border-radius: 0 !important; padding: 14px 10px !important; min-height: 94vh; page-break-after: always; break-after: page; }
+      .proposal-page:last-child { page-break-after: auto; break-after: auto; }
     }
   </style>
 </head>
@@ -2174,21 +2256,32 @@
 <div class="modal-backdrop" id="modalQuoteBuilder">
   <div class="modal-box wide">
     <div class="modal-head">
-      <h3 id="quoteModalHeading">Commercial Quotation &amp; Annual Proposal</h3>
+      <h3 id="quoteModalHeading">Modular Proposal &amp; Quotation Builder</h3>
       <button type="button" class="modal-close" onclick="closeModal('modalQuoteBuilder')" aria-label="Close">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="qLinkedLeadId" />
-      <div class="form-field full">
-        <label class="form-label" for="quoteLeadPicker">Auto-Fill Client Details From CRM Lead</label>
-        <select class="select" id="quoteLeadPicker" onchange="prefillQuoteFromLead(this.value)">
-          <option value="">-- Optional: Pick a CRM lead --</option>
-        </select>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label" for="quoteLeadPicker">Auto-Fill From CRM Lead</label>
+          <select class="select" id="quoteLeadPicker" onchange="prefillQuoteFromLead(this.value)">
+            <option value="">-- Optional: Pick a CRM lead --</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="qBusinessType">Client Category / Domain Type</label>
+          <select class="select" id="qBusinessType" onchange="recomputeQuoteSummary()">
+            <option value="School / Institution">School / Educational Institution</option>
+            <option value="Corporate / Business">Corporate / SaaS / Business</option>
+            <option value="E-Commerce Store">E-Commerce / Retail Brand</option>
+            <option value="Startup / Custom App">Startup / Custom Platform</option>
+          </select>
+        </div>
       </div>
 
-      <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="form-grid form-grid-3">
         <div class="form-field">
           <label class="form-label" for="qQuoteNumber">Quote Reference</label>
           <input class="input mono" id="qQuoteNumber" type="text" placeholder="DT-2026-101" />
@@ -2199,13 +2292,13 @@
         </div>
         <div class="form-field">
           <label class="form-label" for="qClientCompany">Organization / Brand</label>
-          <input class="input" id="qClientCompany" type="text" />
+          <input class="input" id="qClientCompany" type="text" placeholder="e.g. Gurukulam School" />
         </div>
       </div>
 
-      <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="form-grid form-grid-3">
         <div class="form-field">
-          <label class="form-label" for="qClientEmail">Client Email (required for SMTP send)</label>
+          <label class="form-label" for="qClientEmail">Client Email (for SMTP send)</label>
           <input class="input" id="qClientEmail" type="email" />
         </div>
         <div class="form-field">
@@ -2221,7 +2314,56 @@
         </div>
       </div>
 
-      <div class="form-grid">
+      <!-- STEP 1: CLIENT REQUIREMENT MODULES -->
+      <div class="form-field full">
+        <label class="form-label">Select Client Requirements (Controls Proposal &amp; 3-Page PDF Sections)</label>
+        <div class="req-modules-grid" id="qModulesGrid">
+          <label class="req-check-card checked"><input type="checkbox" id="modWebsite" checked onchange="onQuoteModuleToggle()" /><span>Website &amp; CMS<span class="req-check-sub">Core UI, Admin Dashboard</span></span></label>
+          <label class="req-check-card"><input type="checkbox" id="modCustomApi" onchange="onQuoteModuleToggle()" /><span>Custom APIs<span class="req-check-sub">REST, Payment, ERP Sync</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modWhatsapp" checked onchange="onQuoteModuleToggle()" /><span>WhatsApp API<span class="req-check-sub">Meta Cloud + Rate Tables</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modHosting" checked onchange="onQuoteModuleToggle()" /><span>VPS / Hosting<span class="req-check-sub">Cloud Application Server</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modDatabase" checked onchange="onQuoteModuleToggle()" /><span>Cloud Database<span class="req-check-sub">Managed DB Allocation</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modDomain" checked onchange="onQuoteModuleToggle()" /><span>Domain (.com)<span class="req-check-sub">DNS &amp; Annual Renewal</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modBackups" checked onchange="onQuoteModuleToggle()" /><span>Cloud Backups<span class="req-check-sub">Snapshots &amp; Storage</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modDbComparison" checked onchange="onQuoteModuleToggle()" /><span>DB Companies<span class="req-check-sub">MongoDB, Supabase, Neon...</span></span></label>
+        </div>
+      </div>
+
+      <!-- STEP 2: DATABASE & CLOUD PROVIDERS -->
+      <div class="form-grid form-grid-3">
+        <div class="form-field" id="wrapDbProvider">
+          <label class="form-label" for="qDbProvider">Selected Database Company</label>
+          <select class="select" id="qDbProvider" onchange="recomputeQuoteSummary()">
+            <option value="mongodb">MongoDB Atlas Flex (MongoDB Inc.)</option>
+            <option value="supabase">Supabase Postgres (Supabase Inc.)</option>
+            <option value="neon">Neon Serverless Postgres (Databricks)</option>
+            <option value="firebase">Firebase Firestore (Google Cloud)</option>
+            <option value="aws_rds">Managed MySQL / AWS RDS</option>
+          </select>
+        </div>
+        <div class="form-field" id="wrapHostingProvider">
+          <label class="form-label" for="qHostingProvider">Cloud Hosting / VPS Provider</label>
+          <select class="select" id="qHostingProvider" onchange="recomputeQuoteSummary()">
+            <option value="hostinger">Hostinger Cloud / VPS</option>
+            <option value="digitalocean">DigitalOcean Droplet</option>
+            <option value="aws">AWS EC2 / Lightsail</option>
+            <option value="vercel">Vercel Pro Managed</option>
+            <option value="custom">Client-Managed Infra</option>
+          </select>
+        </div>
+        <div class="form-field" id="wrapDomainProvider">
+          <label class="form-label" for="qDomainProvider">Domain Registrar</label>
+          <select class="select" id="qDomainProvider" onchange="recomputeQuoteSummary()">
+            <option value="namecheap">Namecheap (.com)</option>
+            <option value="cloudflare">Cloudflare Registrar</option>
+            <option value="godaddy">GoDaddy (.com)</option>
+            <option value="bigrock">BigRock (.com / .in)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SCOPE DETAILS -->
+      <div class="form-grid" id="wrapWebsiteScope">
         <div class="form-field">
           <label class="form-label" for="qDevTitle">Primary Deliverable Title</label>
           <input class="input" id="qDevTitle" value="Custom Website + Complete Admin CMS Dashboard" />
@@ -2235,55 +2377,93 @@
             <option value="Lost">Closed / Lost</option>
           </select>
         </div>
+        <div class="form-field full">
+          <label class="form-label" for="qDevDesc">Included Scope Details</label>
+          <input class="input" id="qDevDesc" value="Home, About, Services/Admissions, Gallery, Enquiries, Responsive UI, Admin CMS Login, SEO & Cloud Deployment" />
+        </div>
       </div>
 
-      <div class="form-field full">
-        <label class="form-label" for="qDevDesc">Scope Breakdown</label>
-        <input class="input" id="qDevDesc" value="Custom UI/UX, Responsive Engineering, Admin CMS, Enquiry Pipelines, SEO & Cloud Deploy" />
+      <div class="form-grid" id="wrapApiScope" style="display:none;">
+        <div class="form-field">
+          <label class="form-label" for="qApiTitle">Custom API Deliverable Title</label>
+          <input class="input" id="qApiTitle" value="Custom REST APIs, Payment & Third-Party Service Integration" />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="qApiFee">Custom API Development Fee</label>
+          <input class="input mono" id="qApiFee" type="number" value="12000" oninput="recomputeQuoteSummary()" />
+        </div>
+        <div class="form-field full">
+          <label class="form-label" for="qApiDesc">API Integration Scope</label>
+          <input class="input" id="qApiDesc" value="Authenticated REST endpoints, webhook receivers, payment gateway / ERP connectors & structured audit logging" />
+        </div>
       </div>
 
+      <!-- INVESTMENT MATRIX (ONE-TIME + YEAR 1 + RENEWAL) -->
       <div class="card" style="background:var(--bg-subtle);">
         <div class="card-body" style="display:grid; gap:12px;">
-          <div style="font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-muted);">Investment Schedule (Auto-Calculated)</div>
-          <div class="form-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
-            <div class="form-field">
-              <label class="form-label" for="qWebsiteFee">Website / App Dev Fee</label>
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-muted);">Investment Schedule (Year 1 vs. Year 2+ Annual Renewal)</div>
+          <div class="form-grid form-grid-3">
+            <div class="form-field" id="wrapWebFee">
+              <label class="form-label" for="qWebsiteFee">Website / App Dev (One-Time)</label>
               <input class="input mono" id="qWebsiteFee" type="number" value="50000" oninput="recomputeQuoteSummary()" />
             </div>
-            <div class="form-field">
-              <label class="form-label" for="qWaFee">WhatsApp API Setup</label>
+            <div class="form-field" id="wrapWaFee">
+              <label class="form-label" for="qWaFee">WhatsApp API Setup (One-Time)</label>
               <input class="input mono" id="qWaFee" type="number" value="8000" oninput="recomputeQuoteSummary()" />
             </div>
-            <div class="form-field">
-              <label class="form-label" for="qVpsFee">Hosting / VPS (Yr 1)</label>
-              <input class="input mono" id="qVpsFee" type="number" value="12000" oninput="recomputeQuoteSummary()" />
+            <div class="form-field" id="wrapWaAllowance">
+              <label class="form-label" for="qWaAllowance">WhatsApp Credits (Yr 1 / Yr 2)</label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <input class="input mono" id="qWaAllowance" type="number" value="3500" title="Year 1" oninput="recomputeQuoteSummary()" />
+                <input class="input mono" id="qWaRen" type="number" value="3500" title="Renewal" oninput="recomputeQuoteSummary()" />
+              </div>
             </div>
-            <div class="form-field">
-              <label class="form-label" for="qDomainFee">Domain (Yr 1)</label>
-              <input class="input mono" id="qDomainFee" type="number" value="1800" oninput="recomputeQuoteSummary()" />
+            <div class="form-field" id="wrapVpsFee">
+              <label class="form-label" for="qVpsFee">Hosting / VPS (Yr 1 / Yr 2)</label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <input class="input mono" id="qVpsFee" type="number" value="12000" title="Year 1" oninput="recomputeQuoteSummary()" />
+                <input class="input mono" id="qVpsRen" type="number" value="15000" title="Renewal" oninput="recomputeQuoteSummary()" />
+              </div>
             </div>
-            <div class="form-field">
-              <label class="form-label" for="qDbFee">Managed Database (Yr 1)</label>
-              <input class="input mono" id="qDbFee" type="number" value="10000" oninput="recomputeQuoteSummary()" />
+            <div class="form-field" id="wrapDomainFee">
+              <label class="form-label" for="qDomainFee">Domain (Yr 1 / Yr 2)</label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <input class="input mono" id="qDomainFee" type="number" value="1800" title="Year 1" oninput="recomputeQuoteSummary()" />
+                <input class="input mono" id="qDomainRen" type="number" value="2200" title="Renewal" oninput="recomputeQuoteSummary()" />
+              </div>
             </div>
-            <div class="form-field">
-              <label class="form-label" for="qWaAllowance">WhatsApp Credits (Yr 1)</label>
-              <input class="input mono" id="qWaAllowance" type="number" value="3500" oninput="recomputeQuoteSummary()" />
+            <div class="form-field" id="wrapDbFee">
+              <label class="form-label" for="qDbFee">Database (Yr 1 / Yr 2)</label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <input class="input mono" id="qDbFee" type="number" value="10000" title="Year 1" oninput="recomputeQuoteSummary()" />
+                <input class="input mono" id="qDbRen" type="number" value="10000" title="Renewal" oninput="recomputeQuoteSummary()" />
+              </div>
+            </div>
+            <div class="form-field" id="wrapBackupFee">
+              <label class="form-label" for="qBackupFee">Backups (Yr 1 / Yr 2)</label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <input class="input mono" id="qBackupFee" type="number" value="3000" title="Year 1" oninput="recomputeQuoteSummary()" />
+                <input class="input mono" id="qBackupRen" type="number" value="3000" title="Renewal" oninput="recomputeQuoteSummary()" />
+              </div>
             </div>
           </div>
 
           <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:10px; border-top:1px solid var(--border-hair);">
             <div>
-              <span style="font-size:11.5px; color:var(--ink-muted);">One-Time Implementation:</span>
+              <span style="font-size:11.5px; color:var(--ink-muted);">One-Time Setup:</span>
               <strong class="mono" id="qSumOneTime" style="margin-left:6px;">₹58,000</strong>
             </div>
             <div>
-              <span style="font-size:11.5px; color:var(--ink-muted);">Year-1 Complete Total:</span>
-              <strong class="mono" id="qSumYear1" style="margin-left:6px; font-size:15px; color:var(--accent);">₹85,300</strong>
+              <span style="font-size:11.5px; color:var(--ink-muted);">Yr 1 Operating:</span>
+              <strong class="mono" id="qSumOpsY1" style="margin-left:6px;">₹30,300</strong>
             </div>
             <div>
-              <span style="font-size:11.5px; color:var(--ink-muted);">Est. Annual Renewal:</span>
-              <strong class="mono" id="qSumRenewal" style="margin-left:6px;">₹30,300</strong>
+              <span style="font-size:11.5px; color:var(--ink-muted);">First-Year Total:</span>
+              <strong class="mono" id="qSumYear1" style="margin-left:6px; font-size:15px; color:var(--accent);">₹88,300</strong>
+            </div>
+            <div>
+              <span style="font-size:11.5px; color:var(--ink-muted);">Year 2+ Renewal:</span>
+              <strong class="mono" id="qSumRenewal" style="margin-left:6px;">₹33,700 / yr</strong>
             </div>
           </div>
         </div>
@@ -2291,11 +2471,11 @@
 
       <div class="form-field full">
         <label class="form-label" for="qCustomNotes">Special Notes / Payment Terms</label>
-        <textarea class="textarea" id="qCustomNotes" rows="2" placeholder="50% advance kickoff, 50% staging verification prior to production launch."></textarea>
+        <textarea class="textarea" id="qCustomNotes" rows="2" placeholder="Optional custom exclusions, GST note, or milestone breakdown..."></textarea>
       </div>
     </div>
     <div class="modal-foot" style="flex-wrap:wrap;">
-      <button type="button" class="btn" onclick="openQuotePdfPreview()" style="margin-right:auto;">Preview / Print PDF</button>
+      <button type="button" class="btn" onclick="openQuotePdfPreview()" style="margin-right:auto;">Preview 3-Page PDF</button>
       <button type="button" class="btn" onclick="closeModal('modalQuoteBuilder')">Cancel</button>
       <button type="button" class="btn" id="qSaveDraftBtn" onclick="submitQuotation(false)">Save Draft</button>
       <button type="button" class="btn btn-primary" id="qSendEmailBtn" onclick="submitQuotation(true)">Save &amp; Send Proposal Email</button>
@@ -2307,15 +2487,15 @@
 <div class="modal-backdrop" id="modalQuotePdf">
   <div class="modal-box wide">
     <div class="modal-head no-print">
-      <h3>Printable Commercial Proposal Preview</h3>
+      <h3>Annual Cost Proposal — Print &amp; Save PDF Preview</h3>
       <div style="display:flex; gap:8px;">
-        <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">Print / Save PDF</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">Print / Save as PDF</button>
         <button type="button" class="modal-close" onclick="closeModal('modalQuotePdf')" aria-label="Close">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
     </div>
-    <div class="modal-body" id="quotePdfBody" style="background:#fff; color:#171615;"></div>
+    <div class="modal-body" id="quotePdfBody" style="padding:0; background:#E5E7EB;"></div>
   </div>
 </div>
 
@@ -3433,6 +3613,12 @@
         <tbody>
           ${filtered.map(q => {
             const sym = q.currency === 'USD' ? '$' : '₹';
+            const mods = q.modules || {};
+            const tags = [];
+            if (mods.website !== false) tags.push('Web');
+            if (mods.customApi) tags.push('API');
+            if (mods.whatsapp !== false) tags.push('WhatsApp');
+            if (mods.database !== false) tags.push(q.dbProvider ? q.dbProvider.toUpperCase() : 'DB');
             return `
               <tr>
                 <td class="mono" style="font-weight:700;">#${escHtml(q.id)}</td>
@@ -3440,13 +3626,17 @@
                   <strong>${escHtml(q.client)}</strong>
                   <div style="font-size:11.5px; color:var(--ink-muted);">${escHtml(q.company || q.email || '')}</div>
                 </td>
-                <td>${escHtml(q.scope || 'Custom Solution')}</td>
-                <td class="mono">${sym}${(Number(q.valNum) || 0).toLocaleString('en-IN')}</td>
+                <td>
+                  <div>${escHtml(q.scope || 'Custom Solution')}</div>
+                  <div class="mono" style="font-size:10.5px; color:var(--ink-muted); margin-top:2px;">${tags.map(escHtml).join(' · ')}</div>
+                </td>
+                <td class="mono">${sym}${(Number(q.totalOneTime ?? q.valNum) || 0).toLocaleString('en-IN')}</td>
                 <td class="mono" style="font-weight:700; color:var(--accent);">${sym}${(Number(q.totalYear1) || Number(q.valNum) || 0).toLocaleString('en-IN')}</td>
                 <td><span class="badge ${getStatusBadgeClass(q.status)}">${escHtml(q.status || 'In Discussion')}</span></td>
                 <td>
                   <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    <button type="button" class="btn btn-sm" onclick="editQuotation('${escHtml(q.id)}')">Edit / Send</button>
+                    <button type="button" class="btn btn-sm" onclick="previewSavedQuotePdf('${escHtml(q.id)}')">PDF</button>
+                    <button type="button" class="btn btn-sm" onclick="editQuotation('${escHtml(q.id)}')">Edit</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeleteQuote('${escHtml(q.id)}')">Delete</button>
                   </div>
                 </td>
@@ -3468,8 +3658,89 @@
     if (qSel) qSel.innerHTML = opts;
   }
 
+  const PROPOSAL_DB_COMPANIES = {
+    mongodb: { name: 'MongoDB Atlas Flex Database', company: 'MongoDB Inc.', tier: 'M0 Free / Atlas Flex ($8–$30/mo)', bestFor: 'Flexible JSON documents, CMS catalogs & fast Node/Next APIs' },
+    supabase: { name: 'Supabase Managed PostgreSQL', company: 'Supabase Inc.', tier: 'Free Tier / Pro ($25/mo+)', bestFor: 'Relational SQL schema, built-in Auth, Realtime & File Storage' },
+    neon: { name: 'Neon Serverless Postgres', company: 'Neon / Databricks', tier: 'Free / Launch ($19/mo+)', bestFor: 'Serverless edge functions, DB branching & scale-to-zero SQL' },
+    firebase: { name: 'Firebase Firestore Cloud DB', company: 'Google Cloud', tier: 'Spark Free / Blaze Pay-as-you-go', bestFor: 'Mobile iOS/Android sync, real-time alerts & Cloud Functions' },
+    aws_rds: { name: 'Managed MySQL / AWS RDS', company: 'Amazon AWS / Hostinger', tier: 'Included in VPS or RDS (~$15–$50/mo)', bestFor: 'Structured ERP records, accounting & strict SQL reporting' }
+  };
+
+  const PROPOSAL_HOSTING_NAMES = {
+    hostinger: 'Hostinger Cloud / VPS Hosting',
+    digitalocean: 'DigitalOcean Droplet',
+    aws: 'AWS EC2 / Lightsail Cloud Server',
+    vercel: 'Vercel Pro Managed Edge',
+    custom: 'Client-Managed Infrastructure'
+  };
+
+  const PROPOSAL_DOMAIN_NAMES = {
+    namecheap: '.com domain registration (Namecheap)',
+    cloudflare: '.com domain registration (Cloudflare)',
+    godaddy: '.com domain registration (GoDaddy)',
+    bigrock: '.com domain registration (BigRock)'
+  };
+
+  function getQuoteModulesState() {
+    return {
+      website: document.getElementById('modWebsite')?.checked !== false,
+      customApi: Boolean(document.getElementById('modCustomApi')?.checked),
+      whatsapp: document.getElementById('modWhatsapp')?.checked !== false,
+      hosting: document.getElementById('modHosting')?.checked !== false,
+      database: document.getElementById('modDatabase')?.checked !== false,
+      domain: document.getElementById('modDomain')?.checked !== false,
+      backups: document.getElementById('modBackups')?.checked !== false,
+      dbComparison: document.getElementById('modDbComparison')?.checked !== false
+    };
+  }
+
+  function applyQuoteModulesState(mods = {}) {
+    const map = {
+      modWebsite: mods.website !== false,
+      modCustomApi: Boolean(mods.customApi),
+      modWhatsapp: mods.whatsapp !== false,
+      modHosting: mods.hosting !== false,
+      modDatabase: mods.database !== false,
+      modDomain: mods.domain !== false,
+      modBackups: mods.backups !== false,
+      modDbComparison: mods.dbComparison !== false
+    };
+    Object.entries(map).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = val;
+    });
+    onQuoteModuleToggle();
+  }
+
+  function onQuoteModuleToggle() {
+    const m = getQuoteModulesState();
+    document.querySelectorAll('#qModulesGrid .req-check-card').forEach(card => {
+      const inp = card.querySelector('input[type="checkbox"]');
+      if (inp) card.classList.toggle('checked', inp.checked);
+    });
+
+    const toggleEl = (id, show) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? '' : 'none';
+    };
+    toggleEl('wrapWebsiteScope', m.website);
+    toggleEl('wrapWebFee', m.website);
+    toggleEl('wrapApiScope', m.customApi);
+    toggleEl('wrapWaFee', m.whatsapp);
+    toggleEl('wrapWaAllowance', m.whatsapp);
+    toggleEl('wrapVpsFee', m.hosting);
+    toggleEl('wrapHostingProvider', m.hosting);
+    toggleEl('wrapDbFee', m.database);
+    toggleEl('wrapDbProvider', m.database);
+    toggleEl('wrapDomainFee', m.domain);
+    toggleEl('wrapDomainProvider', m.domain);
+    toggleEl('wrapBackupFee', m.backups);
+
+    recomputeQuoteSummary();
+  }
+
   function openQuoteModal() {
-    document.getElementById('quoteModalHeading').textContent = 'New Commercial Proposal';
+    document.getElementById('quoteModalHeading').textContent = 'Modular Proposal & Quotation Builder';
     document.getElementById('qLinkedLeadId').value = '';
     document.getElementById('quoteLeadPicker').value = '';
     document.getElementById('qQuoteNumber').value = `DT-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
@@ -3477,8 +3748,29 @@
     document.getElementById('qClientCompany').value = '';
     document.getElementById('qClientEmail').value = '';
     document.getElementById('qClientMobile').value = '';
+    document.getElementById('qBusinessType').value = 'Corporate / Business';
+    document.getElementById('qCurrency').value = 'INR';
     document.getElementById('qStatus').value = 'In Discussion';
-    recomputeQuoteSummary();
+    document.getElementById('qDbProvider').value = 'mongodb';
+    document.getElementById('qHostingProvider').value = 'hostinger';
+    document.getElementById('qDomainProvider').value = 'namecheap';
+    document.getElementById('qWebsiteFee').value = 50000;
+    document.getElementById('qApiFee').value = 12000;
+    document.getElementById('qWaFee').value = 8000;
+    document.getElementById('qVpsFee').value = 12000;
+    document.getElementById('qVpsRen').value = 15000;
+    document.getElementById('qDomainFee').value = 1800;
+    document.getElementById('qDomainRen').value = 2200;
+    document.getElementById('qDbFee').value = 10000;
+    document.getElementById('qDbRen').value = 10000;
+    document.getElementById('qBackupFee').value = 3000;
+    document.getElementById('qBackupRen').value = 3000;
+    document.getElementById('qWaAllowance').value = 3500;
+    document.getElementById('qWaRen').value = 3500;
+    document.getElementById('qCustomNotes').value = '';
+    applyQuoteModulesState({
+      website: true, customApi: false, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true
+    });
     openModal('modalQuoteBuilder');
   }
 
@@ -3497,7 +3789,13 @@
     document.getElementById('qClientCompany').value = l.company || '';
     document.getElementById('qClientEmail').value = l.email || '';
     document.getElementById('qClientMobile').value = l.mobile || '';
+    const svc = String(l.service || '').toLowerCase();
     if (l.service) document.getElementById('qDevTitle').value = l.service;
+    if (svc.includes('school') || svc.includes('erp')) document.getElementById('qBusinessType').value = 'School / Institution';
+    if (svc.includes('api') || svc.includes('app')) {
+      document.getElementById('modCustomApi').checked = true;
+      onQuoteModuleToggle();
+    }
     const budgetDigits = parseCurrencyNumber(l.budget);
     if (budgetDigits >= 5000) document.getElementById('qWebsiteFee').value = budgetDigits;
     recomputeQuoteSummary();
@@ -3513,39 +3811,78 @@
     document.getElementById('qClientCompany').value = q.company || '';
     document.getElementById('qClientEmail').value = q.email || '';
     document.getElementById('qClientMobile').value = q.phone || '';
+    document.getElementById('qBusinessType').value = q.category || 'Corporate / Business';
     document.getElementById('qCurrency').value = q.currency || 'INR';
     document.getElementById('qDevTitle').value = q.scope || '';
     document.getElementById('qDevDesc').value = q.scopeDesc || '';
+    document.getElementById('qApiTitle').value = q.apiTitle || 'Custom REST APIs, Payment & Third-Party Service Integration';
+    document.getElementById('qApiDesc').value = q.apiDesc || 'Authenticated REST endpoints, webhooks & audit logging';
+    document.getElementById('qDbProvider').value = q.dbProvider || 'mongodb';
+    document.getElementById('qHostingProvider').value = q.hostingProvider || 'hostinger';
+    document.getElementById('qDomainProvider').value = q.domainProvider || 'namecheap';
     document.getElementById('qWebsiteFee').value = q.websiteDevFee ?? q.valNum ?? 50000;
+    document.getElementById('qApiFee').value = q.apiIntegrationFee ?? 12000;
     document.getElementById('qWaFee').value = q.waIntegrationFee ?? 8000;
     document.getElementById('qVpsFee').value = q.vpsFee ?? 12000;
+    document.getElementById('qVpsRen').value = q.vpsRenewal ?? 15000;
     document.getElementById('qDomainFee').value = q.domainFee ?? 1800;
+    document.getElementById('qDomainRen').value = q.domainRenewal ?? 2200;
     document.getElementById('qDbFee').value = q.mongodbFee ?? 10000;
+    document.getElementById('qDbRen').value = q.mongodbRenewal ?? 10000;
+    document.getElementById('qBackupFee').value = q.backupFee ?? 3000;
+    document.getElementById('qBackupRen').value = q.backupRenewal ?? 3000;
     document.getElementById('qWaAllowance').value = q.whatsappAllowance ?? 3500;
+    document.getElementById('qWaRen').value = q.whatsappRenewal ?? 3500;
     document.getElementById('qStatus').value = q.status || 'In Discussion';
     document.getElementById('qCustomNotes').value = q.notes || '';
-    recomputeQuoteSummary();
+    applyQuoteModulesState(q.modules || { website: true, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true });
     openModal('modalQuoteBuilder');
   }
 
-  function recomputeQuoteSummary() {
+  function collectQuoteFormPayload() {
+    const mods = getQuoteModulesState();
     const sym = document.getElementById('qCurrency').value === 'USD' ? '$' : '₹';
-    const web = Number(document.getElementById('qWebsiteFee').value || 0);
-    const wa = Number(document.getElementById('qWaFee').value || 0);
-    const vps = Number(document.getElementById('qVpsFee').value || 0);
-    const dom = Number(document.getElementById('qDomainFee').value || 0);
-    const db = Number(document.getElementById('qDbFee').value || 0);
-    const waAl = Number(document.getElementById('qWaAllowance').value || 0);
 
-    const oneTime = web + wa;
-    const ops = vps + dom + db + 3000 + waAl;
-    const yr1 = oneTime + ops;
-    const renewal = vps + dom + db + 3000 + waAl;
+    const web = mods.website ? Number(document.getElementById('qWebsiteFee').value || 0) : 0;
+    const api = mods.customApi ? Number(document.getElementById('qApiFee').value || 0) : 0;
+    const wa = mods.whatsapp ? Number(document.getElementById('qWaFee').value || 0) : 0;
 
-    document.getElementById('qSumOneTime').textContent = sym + oneTime.toLocaleString('en-IN');
-    document.getElementById('qSumYear1').textContent = sym + yr1.toLocaleString('en-IN');
-    document.getElementById('qSumRenewal').textContent = sym + renewal.toLocaleString('en-IN');
-    return { sym, web, wa, vps, dom, db, waAl, oneTime, yr1, renewal };
+    const vps = mods.hosting ? Number(document.getElementById('qVpsFee').value || 0) : 0;
+    const vpsRen = mods.hosting ? Number(document.getElementById('qVpsRen').value || 0) : 0;
+    const dom = mods.domain ? Number(document.getElementById('qDomainFee').value || 0) : 0;
+    const domRen = mods.domain ? Number(document.getElementById('qDomainRen').value || 0) : 0;
+    const db = mods.database ? Number(document.getElementById('qDbFee').value || 0) : 0;
+    const dbRen = mods.database ? Number(document.getElementById('qDbRen').value || 0) : 0;
+    const bak = mods.backups ? Number(document.getElementById('qBackupFee').value || 0) : 0;
+    const bakRen = mods.backups ? Number(document.getElementById('qBackupRen').value || 0) : 0;
+    const waAl = mods.whatsapp ? Number(document.getElementById('qWaAllowance').value || 0) : 0;
+    const waRen = mods.whatsapp ? Number(document.getElementById('qWaRen').value || 0) : 0;
+
+    const oneTime = web + api + wa;
+    const opsY1 = vps + dom + db + bak + waAl;
+    const yr1 = oneTime + opsY1;
+    const renewal = vpsRen + domRen + dbRen + bakRen + waRen;
+
+    return {
+      sym,
+      modules: mods,
+      hostingProvider: document.getElementById('qHostingProvider').value,
+      dbProvider: document.getElementById('qDbProvider').value,
+      domainProvider: document.getElementById('qDomainProvider').value,
+      businessType: document.getElementById('qBusinessType').value,
+      web, api, wa,
+      vps, vpsRen, dom, domRen, db, dbRen, bak, bakRen, waAl, waRen,
+      oneTime, opsY1, yr1, renewal
+    };
+  }
+
+  function recomputeQuoteSummary() {
+    const m = collectQuoteFormPayload();
+    document.getElementById('qSumOneTime').textContent = m.sym + m.oneTime.toLocaleString('en-IN');
+    document.getElementById('qSumOpsY1').textContent = m.sym + m.opsY1.toLocaleString('en-IN');
+    document.getElementById('qSumYear1').textContent = m.sym + m.yr1.toLocaleString('en-IN');
+    document.getElementById('qSumRenewal').textContent = m.sym + m.renewal.toLocaleString('en-IN') + ' / yr';
+    return m;
   }
 
   async function submitQuotation(sendEmail) {
@@ -3568,15 +3905,29 @@
         clientCompany: document.getElementById('qClientCompany').value.trim(),
         clientEmail,
         clientMobile: document.getElementById('qClientMobile').value.trim(),
+        businessType: m.businessType,
         currency: document.getElementById('qCurrency').value,
+        modules: m.modules,
+        hostingProvider: m.hostingProvider,
+        dbProvider: m.dbProvider,
+        domainProvider: m.domainProvider,
         devTitle: document.getElementById('qDevTitle').value.trim(),
         devDesc: document.getElementById('qDevDesc').value.trim(),
+        apiTitle: document.getElementById('qApiTitle').value.trim(),
+        apiDesc: document.getElementById('qApiDesc').value.trim(),
         websiteDevFee: m.web,
+        apiIntegrationFee: m.api,
         waIntegrationFee: m.wa,
         vpsFee: m.vps,
+        vpsRenewal: m.vpsRen,
         domainFee: m.dom,
+        domainRenewal: m.domRen,
         mongodbFee: m.db,
+        mongodbRenewal: m.dbRen,
+        backupFee: m.bak,
+        backupRenewal: m.bakRen,
         whatsappAllowance: m.waAl,
+        whatsappRenewal: m.waRen,
         status: sendEmail ? 'Quotation Sent' : document.getElementById('qStatus').value,
         customNotes: document.getElementById('qCustomNotes').value.trim(),
         sendEmail
@@ -3599,56 +3950,321 @@
     }
   }
 
-  function openQuotePdfPreview() {
-    const m = recomputeQuoteSummary();
-    const ref = document.getElementById('qQuoteNumber').value || 'DT-2026-001';
-    const name = document.getElementById('qClientName').value || 'Client';
-    const comp = document.getElementById('qClientCompany').value;
-    const scope = document.getElementById('qDevTitle').value;
-    const desc = document.getElementById('qDevDesc').value;
-    const notes = document.getElementById('qCustomNotes').value;
-    const dateStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+  function renderCorporateProposalPages(cfg) {
+    const sym = cfg.currency === 'USD' ? '$' : '₹';
+    const fmt = n => sym + (Number(n) || 0).toLocaleString('en-IN');
+    const m = cfg.modules || {};
+    const dbMeta = PROPOSAL_DB_COMPANIES[cfg.dbProvider || 'mongodb'] || PROPOSAL_DB_COMPANIES.mongodb;
+    const hostLabel = PROPOSAL_HOSTING_NAMES[cfg.hostingProvider || 'hostinger'] || PROPOSAL_HOSTING_NAMES.hostinger;
+    const domLabel = PROPOSAL_DOMAIN_NAMES[cfg.domainProvider || 'namecheap'] || PROPOSAL_DOMAIN_NAMES.namecheap;
+    const orgTitle = (cfg.clientCompany || cfg.clientName || 'CLIENT').toUpperCase();
+    const dateStr = cfg.quoteDate || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+    const ref = cfg.quoteNumber || 'DT-2026-001';
 
-    document.getElementById('quotePdfBody').innerHTML = `
-      <div style="border-bottom:2px solid #161414; padding-bottom:16px; margin-bottom:18px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-        <div>
-          <h2 style="margin:0; font-size:22px; text-transform:uppercase;">${escHtml(comp || name)}</h2>
-          <p style="margin:4px 0 0; font-size:13px; color:#534E49;">Official Cost Proposal &amp; Architecture Specification · ${escHtml(dateStr)}</p>
-        </div>
-        <div style="text-align:right;">
-          <span style="background:#161414; color:#FAF8F5; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:700;">COMMERCIAL PROPOSAL</span>
-          <div class="mono" style="margin-top:6px; font-size:13px; font-weight:700;">#${escHtml(ref)}</div>
-        </div>
-      </div>
-      <div style="margin-bottom:18px;">
-        <h4 style="margin:0 0 6px;">Deliverable Scope: ${escHtml(scope)}</h4>
-        <p style="margin:0; font-size:13px; color:#534E49;">${escHtml(desc)}</p>
-      </div>
-      <table style="width:100%; border:1px solid #E2DED7; margin-bottom:18px;">
-        <thead>
-          <tr style="background:#FAF9F6;">
-            <th>Component</th>
-            <th>Details</th>
-            <th style="text-align:right;">Investment (${m.sym})</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Custom Engineering &amp; UI/UX</strong></td><td>Full-stack development &amp; Admin CMS</td><td class="mono" style="text-align:right;">${m.sym}${m.web.toLocaleString('en-IN')}</td></tr>
-          <tr><td><strong>WhatsApp Business API</strong></td><td>Meta Cloud API &amp; inquiry automation</td><td class="mono" style="text-align:right;">${m.sym}${m.wa.toLocaleString('en-IN')}</td></tr>
-          <tr><td><strong>Cloud VPS &amp; Domain (Yr 1)</strong></td><td>Dedicated hosting, SSL &amp; registrar renewal</td><td class="mono" style="text-align:right;">${m.sym}${(m.vps + m.dom).toLocaleString('en-IN')}</td></tr>
-          <tr><td><strong>Managed Database &amp; Backups</strong></td><td>MongoDB Atlas + scheduled backups + WA credits</td><td class="mono" style="text-align:right;">${m.sym}${(m.db + 3000 + m.waAl).toLocaleString('en-IN')}</td></tr>
-          <tr style="background:#161414; color:#FAF8F5;">
-            <td colspan="2"><strong>Complete Year-1 Launch Total</strong></td>
-            <td class="mono" style="text-align:right; font-size:16px; color:#E8A87C;"><strong>${m.sym}${m.yr1.toLocaleString('en-IN')}</strong></td>
-          </tr>
-        </tbody>
-      </table>
-      ${notes ? `<p style="font-size:12.5px; color:#534E49;"><strong>Notes:</strong> ${escHtml(notes)}</p>` : ''}
-      <div style="margin-top:24px; padding-top:14px; border-top:1px solid #E2DED7; display:flex; justify-content:space-between; font-size:12.5px;">
-        <div><strong>Neeraj Rawat</strong> · Dhani Tech (neerajrawat.dev)</div>
-        <div class="mono">+91 87081 67959 · hello@neerajrawat.dev</div>
+    const subtitleParts = [];
+    if (m.website !== false) subtitleParts.push('Website & Complete Admin Dashboard');
+    if (m.customApi) subtitleParts.push('REST API & Integrations');
+    if (m.whatsapp !== false) subtitleParts.push('WhatsApp Business API');
+
+    const oneTimeRows = [];
+    if (m.website !== false) oneTimeRows.push([cfg.devTitle || 'Website + Complete Admin Content-Management Dashboard', cfg.web]);
+    if (m.customApi) oneTimeRows.push([cfg.apiTitle || 'Custom REST APIs, Webhooks & Third-Party Service Integration', cfg.api]);
+    if (m.whatsapp !== false) oneTimeRows.push(['WhatsApp Cloud API integration allowance (additional)', cfg.wa]);
+
+    const operatingRows = [];
+    if (m.hosting !== false) operatingRows.push([hostLabel + ' (application + API)', cfg.vps, 'Estimated Year 1']);
+    if (m.domain !== false) operatingRows.push([domLabel, cfg.dom, 'Estimated initial cost']);
+    if (m.database !== false) operatingRows.push([dbMeta.name, cfg.db, 'Low-usage planning budget']);
+    if (m.backups !== false) operatingRows.push(['Backup / cloud storage', cfg.bak, 'Budget reserve']);
+    if (m.whatsapp !== false) operatingRows.push(['Meta WhatsApp messaging', cfg.waAl, 'Usage illustration on Page 2']);
+
+    const renewalCols = [];
+    if (m.hosting !== false) renewalCols.push(['VPS / Host', cfg.vpsRen]);
+    if (m.domain !== false) renewalCols.push(['Domain renewal', cfg.domRen]);
+    if (m.database !== false) renewalCols.push(['Database', cfg.dbRen]);
+    if (m.backups !== false) renewalCols.push(['Backups', cfg.bakRen]);
+    if (m.whatsapp !== false) renewalCols.push(['WhatsApp', cfg.waRen]);
+
+    const showPage2 = (m.whatsapp !== false) || Boolean(m.customApi);
+    let pageCounter = 1;
+    const totalPages = showPage2 ? 3 : 2;
+    const footerHtml = pNum => `
+      <div class="prop-footer">
+        <span>${escHtml(orgTitle)} | ANNUAL COST PROPOSAL (#${escHtml(ref)})</span>
+        <span>Page ${pNum} of ${totalPages}</span>
       </div>
     `;
+
+    const page1 = `
+      <div class="proposal-page">
+        <div>
+          <div style="margin-bottom:14px;">
+            <h1 class="prop-h1">${escHtml(orgTitle)}</h1>
+            <p class="prop-sub">${escHtml(subtitleParts.join(', '))} | Annual Cost Proposal | ${escHtml(dateStr)}</p>
+          </div>
+
+          <h3 class="prop-sec-h">Project overview</h3>
+          <p class="prop-note" style="font-size:12px; color:#1E293B;">
+            Development of modular digital systems for <strong>${escHtml(cfg.clientCompany || cfg.clientName)}</strong> covering ${escHtml(subtitleParts.join(' with '))}${m.database !== false ? ` backed by ${escHtml(dbMeta.name)}` : ''}. Figures are indicative annual budgets in ${cfg.currency === 'USD' ? 'USD' : 'INR'}, not vendor invoices.
+          </p>
+
+          ${oneTimeRows.length ? `
+            <h3 class="prop-sec-h">1. One-time development &amp; integration</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Deliverable</th><th style="text-align:right; width:150px;">One-time charge</th></tr></thead>
+              <tbody>
+                ${oneTimeRows.map(([lbl, amt]) => `<tr><td>${escHtml(lbl)}</td><td class="mono" style="text-align:right; font-weight:700;">${fmt(amt)}</td></tr>`).join('')}
+                <tr style="background:#EFF4FA !important;"><td style="font-weight:800;">Total one-time implementation investment</td><td class="mono" style="text-align:right; font-weight:800; color:#0F2843;">${fmt(cfg.oneTime)}</td></tr>
+              </tbody>
+            </table>
+            ${m.website !== false ? `<p class="prop-note">Included deliverable scope: ${escHtml(cfg.devDesc)}</p>` : ''}
+            ${m.customApi ? `<p class="prop-note">API integration scope: ${escHtml(cfg.apiDesc)}</p>` : ''}
+            ${m.whatsapp !== false ? `<p class="prop-note">WhatsApp integration scope: Meta business setup assistance, approved-template integration, opt-in aware acknowledgements, secure server-side API calls, delivery-status webhook handling, error logging and admin dispatch/history view.</p>` : ''}
+          ` : ''}
+
+          ${operatingRows.length ? `
+            <h3 class="prop-sec-h">2. First-year annual operating budget</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Cost component</th><th style="width:130px;">Annual allowance</th><th>Basis</th></tr></thead>
+              <tbody>
+                ${operatingRows.map(([lbl, amt, b]) => `<tr><td>${escHtml(lbl)}</td><td class="mono" style="font-weight:700;">${fmt(amt)}</td><td style="color:#475569;">${escHtml(b)}</td></tr>`).join('')}
+                <tr><td style="font-weight:700;">Total first-year operating cost</td><td class="mono" style="font-weight:800;">${fmt(cfg.opsY1)}</td><td style="color:#475569;">Before taxes and optional BSP fees</td></tr>
+                <tr style="background:#EFF4FA !important;"><td style="font-weight:800;">First-year project total</td><td class="mono" style="font-weight:800; font-size:13.5px; color:#0F2843;">${fmt(cfg.yr1)}</td><td style="font-weight:600;">${fmt(cfg.oneTime)} implementation + ${fmt(cfg.opsY1)} running</td></tr>
+              </tbody>
+            </table>
+          ` : ''}
+
+          ${renewalCols.length ? `
+            <h3 class="prop-sec-h">3. Second-year onward — annual renewal</h3>
+            <table class="prop-tbl" style="text-align:center;">
+              <thead>
+                <tr>
+                  ${renewalCols.map(([h]) => `<th style="text-align:center;">${escHtml(h)}</th>`).join('')}
+                  <th style="text-align:center; background:#1B3B60;">Total/year</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  ${renewalCols.map(([, v]) => `<td class="mono" style="font-weight:700;">${fmt(v)}</td>`).join('')}
+                  <td class="mono" style="font-weight:800; background:#F1F5F9;">${fmt(cfg.renewal)}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="prop-note">One-time implementation investments (${fmt(cfg.oneTime)}) are not repeated in the annual renewal figure. Ongoing feature changes are quoted separately.</p>
+          ` : ''}
+        </div>
+        ${footerHtml(pageCounter++)}
+      </div>
+    `;
+
+    const page2 = showPage2 ? `
+      <div class="proposal-page">
+        <div>
+          <div style="margin-bottom:16px;">
+            <h1 class="prop-h1">${m.whatsapp !== false ? 'WHATSAPP BUSINESS API' : 'CUSTOM API &amp; SYSTEM ARCHITECTURE'}</h1>
+            <p class="prop-sub">${m.whatsapp !== false ? 'Meta Cloud API charges, illustrative messaging volume and activation criteria' : 'Dedicated REST endpoints, authentication and third-party webhook infrastructure'}</p>
+          </div>
+
+          ${m.whatsapp !== false ? `
+            <h3 class="prop-sec-h">4. Meta pricing for India (effective 01 October 2026)</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Message category</th><th style="width:200px;">Meta rate / delivered message</th><th>Common business use</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Utility</strong></td><td class="mono">₹0.1150</td><td>Operational updates / eligible reminders</td></tr>
+                <tr><td><strong>Authentication</strong></td><td class="mono">₹0.1150</td><td>OTP / verification codes</td></tr>
+                <tr><td><strong>Marketing</strong></td><td class="mono">₹0.8631</td><td>Promotional campaigns / announcements</td></tr>
+                <tr><td><strong>Service reply</strong></td><td class="mono">₹0.1150 after allowance</td><td>Replies to incoming customer chats</td></tr>
+              </tbody>
+            </table>
+            <p class="prop-note">Meta rates depend on delivered messages, recipient country and template classification. Utility vs. marketing templates require Meta approval under current policies.</p>
+
+            <h3 class="prop-sec-h">5. Illustrative annual messaging cost</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Usage scenario (annual deliveries)</th><th style="text-align:right;">Utility</th><th style="text-align:right;">Marketing</th><th style="text-align:right; background:#1B3B60;">Meta estimate/year</th></tr></thead>
+              <tbody>
+                <tr><td>Small: 5,000 utility + 500 marketing</td><td class="mono" style="text-align:right;">₹575</td><td class="mono" style="text-align:right;">₹432</td><td class="mono" style="text-align:right; font-weight:700;">₹1,007</td></tr>
+                <tr style="background:#EFF4FA !important;"><td><strong>Base: 12,000 utility + 2,400 marketing</strong></td><td class="mono" style="text-align:right; font-weight:700;">₹1,380</td><td class="mono" style="text-align:right; font-weight:700;">₹2,071</td><td class="mono" style="text-align:right; font-weight:800;">₹3,451 (~₹3,500 budget)</td></tr>
+                <tr><td>Growing: 60,000 utility + 12,000 marketing</td><td class="mono" style="text-align:right;">₹6,900</td><td class="mono" style="text-align:right;">₹10,357</td><td class="mono" style="text-align:right; font-weight:700;">₹17,257</td></tr>
+                <tr><td>Large: 240,000 utility + 48,000 marketing</td><td class="mono" style="text-align:right;">₹27,600</td><td class="mono" style="text-align:right;">₹41,429</td><td class="mono" style="text-align:right; font-weight:700;">₹69,029</td></tr>
+              </tbody>
+            </table>
+
+            <h3 class="prop-sec-h">6. Direct Meta API vs. third-party WhatsApp provider</h3>
+            <p class="prop-note" style="font-size:12px; color:#1E293B;">
+              The proposed budget assumes direct Meta Cloud API integration with no added BSP/SaaS monthly subscription markup. Third-party shared-inbox or campaign SaaS providers bill separately if chosen.
+            </p>
+            <h3 class="prop-sec-h" style="margin-top:12px;">Conditions for activation</h3>
+            <p class="prop-note" style="font-size:12px; color:#1E293B;">
+              Client must provide an eligible Meta Business Account, verified business assets, a clean phone number not active on WhatsApp Consumer app, active Meta billing method, approved message templates and user opt-in records.
+            </p>
+          ` : ''}
+
+          ${m.customApi ? `
+            <h3 class="prop-sec-h">Custom API &amp; Connector Architecture</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Layer</th><th>Specification &amp; Controls</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Endpoints &amp; Security</strong></td><td>REST / JSON routes with Bearer JWT/HMAC signatures, rate throttling &amp; CORS isolation</td></tr>
+                <tr><td><strong>External Integrations</strong></td><td>${escHtml(cfg.apiDesc || 'Payment gateways, mobile app endpoints & third-party ERP webhooks')}</td></tr>
+                <tr><td><strong>Monitoring &amp; Logs</strong></td><td>Structured error traces, webhook retries and admin diagnostic probes</td></tr>
+              </tbody>
+            </table>
+          ` : ''}
+        </div>
+        ${footerHtml(pageCounter++)}
+      </div>
+    ` : '';
+
+    const dbRowsHtml = Object.entries(PROPOSAL_DB_COMPANIES).map(([key, info]) => {
+      const selected = key === (cfg.dbProvider || 'mongodb');
+      return `
+        <tr style="${selected ? 'background:#EFF4FA !important;' : ''}">
+          <td><strong>${escHtml(info.name)}</strong>${selected ? ' <span style="font-size:10px; background:#0F2843; color:#fff; padding:1px 5px; border-radius:3px;">Selected</span>' : ''}</td>
+          <td>${escHtml(info.company)}</td>
+          <td class="mono">${escHtml(info.tier)}</td>
+          <td>${escHtml(info.bestFor)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const page3 = `
+      <div class="proposal-page">
+        <div>
+          <div style="margin-bottom:16px;">
+            <h1 class="prop-h1">ANNUAL COST, DATABASE &amp; SCALING</h1>
+            <p class="prop-sub">Infrastructure growth allowances, supported database companies and commercial summary</p>
+          </div>
+
+          <h3 class="prop-sec-h">7. Infrastructure scaling — annual budget bands</h3>
+          <table class="prop-tbl" style="text-align:center;">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Scenario</th>
+                <th style="text-align:center;">VPS/year</th>
+                <th style="text-align:center;">Database/year</th>
+                <th style="text-align:center;">Domain + storage/year</th>
+                <th style="text-align:center; background:#1B3B60;">Infrastructure/year (excl. WA)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="text-align:left; font-weight:700;">Starting</td><td class="mono">₹12k–15k</td><td class="mono">₹9k–12k</td><td class="mono">₹4k–6k</td><td class="mono" style="font-weight:700;">₹25k–33k</td></tr>
+              <tr><td style="text-align:left; font-weight:700;">Growing</td><td class="mono">₹15k–30k</td><td class="mono">₹12k–36k</td><td class="mono">₹5k–12k</td><td class="mono" style="font-weight:700;">₹32k–78k</td></tr>
+              <tr><td style="text-align:left; font-weight:700;">High usage</td><td class="mono">₹30k–60k+</td><td class="mono">₹65k–90k+</td><td class="mono">₹8k–25k+</td><td class="mono" style="font-weight:700;">₹103k–175k+</td></tr>
+            </tbody>
+          </table>
+
+          ${(m.database !== false && m.dbComparison !== false) ? `
+            <h3 class="prop-sec-h">8. Database companies &amp; cloud provider options</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Database Platform</th><th>Company / Vendor</th><th>Typical Pricing Tiers</th><th>Ideal Fit &amp; Capabilities</th></tr></thead>
+              <tbody>${dbRowsHtml}</tbody>
+            </table>
+          ` : `
+            <h3 class="prop-sec-h">8. Infrastructure &amp; domain pricing notes</h3>
+            <p class="prop-note" style="font-size:12px; color:#1E293B;">
+              Initial database, domain registrar and VPS allocations reflect standard commercial planning budgets and may vary with promotional hosting renewals, storage growth or regional pricing changes.
+            </p>
+          `}
+
+          <h3 class="prop-sec-h">9. Commercial summary</h3>
+          <table class="prop-tbl">
+            <thead><tr><th style="width:120px;">Period</th><th style="width:140px;">Estimate</th><th>Composition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Year 1</strong></td>
+                <td class="mono" style="font-weight:800;">${fmt(cfg.yr1)}</td>
+                <td>Implementation ${fmt(cfg.oneTime)} + operating/usage ${fmt(cfg.opsY1)}</td>
+              </tr>
+              <tr>
+                <td><strong>Year 2 onward</strong></td>
+                <td class="mono" style="font-weight:800;">${fmt(cfg.renewal)}/year</td>
+                <td>Recurring infrastructure${m.whatsapp !== false ? ' + Meta WhatsApp messaging allowance' : ''}</td>
+              </tr>
+              <tr>
+                <td><strong>Higher usage</strong></td>
+                <td>Variable</td>
+                <td>Compute scaling, database storage expansion &amp; usage billing</td>
+              </tr>
+            </tbody>
+          </table>
+          ${cfg.notes ? `<p class="prop-note"><strong>Custom Terms / Notes:</strong> ${escHtml(cfg.notes)}</p>` : ''}
+
+          <h3 class="prop-sec-h">10. Public pricing references &amp; contact</h3>
+          <div class="prop-note" style="font-size:11px; color:#3B82F6; line-height:1.6;">
+            <div>https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/</div>
+            <div>https://www.mongodb.com/docs/atlas/billing/atlas-flex-costs/ · https://supabase.com/pricing</div>
+            <div>https://www.hostinger.com/in/vps-hosting · https://www.namecheap.com</div>
+          </div>
+          <div style="margin-top:12px; display:flex; justify-content:space-between; font-size:11.5px; color:#1E293B;">
+            <span>Prepared for: <strong>${escHtml(cfg.clientCompany || cfg.clientName)}</strong> | Date: ${escHtml(dateStr)}</span>
+            <span><strong>Neeraj Rawat</strong> · Dhani Tech (+91 87081 67959)</span>
+          </div>
+        </div>
+        ${footerHtml(pageCounter)}
+      </div>
+    `;
+
+    return `<div class="proposal-sheet-stack">${page1}${page2}${page3}</div>`;
+  }
+
+  function openQuotePdfPreview() {
+    const m = recomputeQuoteSummary();
+    const cfg = {
+      quoteNumber: document.getElementById('qQuoteNumber').value || 'DT-2026-001',
+      clientName: document.getElementById('qClientName').value || 'Client',
+      clientCompany: document.getElementById('qClientCompany').value || '',
+      currency: document.getElementById('qCurrency').value,
+      devTitle: document.getElementById('qDevTitle').value,
+      devDesc: document.getElementById('qDevDesc').value,
+      apiTitle: document.getElementById('qApiTitle').value,
+      apiDesc: document.getElementById('qApiDesc').value,
+      notes: document.getElementById('qCustomNotes').value,
+      ...m
+    };
+    document.getElementById('quotePdfBody').innerHTML = renderCorporateProposalPages(cfg);
+    openModal('modalQuotePdf');
+  }
+
+  function previewSavedQuotePdf(qId) {
+    const q = quotationsData.find(x => String(x.id) === String(qId));
+    if (!q) return;
+    const mods = q.modules || { website: true, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true };
+    const web = mods.website !== false ? Number(q.websiteDevFee ?? q.valNum ?? 50000) : 0;
+    const api = mods.customApi ? Number(q.apiIntegrationFee ?? 12000) : 0;
+    const wa = mods.whatsapp !== false ? Number(q.waIntegrationFee ?? 8000) : 0;
+    const vps = mods.hosting !== false ? Number(q.vpsFee ?? 12000) : 0;
+    const vpsRen = mods.hosting !== false ? Number(q.vpsRenewal ?? vps) : 0;
+    const dom = mods.domain !== false ? Number(q.domainFee ?? 1800) : 0;
+    const domRen = mods.domain !== false ? Number(q.domainRenewal ?? dom) : 0;
+    const db = mods.database !== false ? Number(q.mongodbFee ?? 10000) : 0;
+    const dbRen = mods.database !== false ? Number(q.mongodbRenewal ?? db) : 0;
+    const bak = mods.backups !== false ? Number(q.backupFee ?? 3000) : 0;
+    const bakRen = mods.backups !== false ? Number(q.backupRenewal ?? bak) : 0;
+    const waAl = mods.whatsapp !== false ? Number(q.whatsappAllowance ?? 3500) : 0;
+    const waRen = mods.whatsapp !== false ? Number(q.whatsappRenewal ?? waAl) : 0;
+    const oneTime = web + api + wa;
+    const opsY1 = vps + dom + db + bak + waAl;
+
+    document.getElementById('quotePdfBody').innerHTML = renderCorporateProposalPages({
+      quoteNumber: q.id,
+      clientName: q.client,
+      clientCompany: q.company,
+      currency: q.currency || 'INR',
+      modules: mods,
+      hostingProvider: q.hostingProvider || 'hostinger',
+      dbProvider: q.dbProvider || 'mongodb',
+      domainProvider: q.domainProvider || 'namecheap',
+      devTitle: q.scope,
+      devDesc: q.scopeDesc,
+      apiTitle: q.apiTitle,
+      apiDesc: q.apiDesc,
+      web, api, wa, vps, vpsRen, dom, domRen, db, dbRen, bak, bakRen, waAl, waRen,
+      oneTime,
+      opsY1,
+      yr1: oneTime + opsY1,
+      renewal: vpsRen + domRen + dbRen + bakRen + waRen,
+      notes: q.notes
+    });
     openModal('modalQuotePdf');
   }
 
