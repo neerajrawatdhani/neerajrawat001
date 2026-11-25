@@ -6,4 +6,6 @@
 /app-developer/*  /app-developer/:splat  200
 /ability-card/*  /ability-card/:splat  200
 /legal/*  /legal/:splat  200
+/contact     /contact.html                   200
+/contact/    /contact.html                   200
 /*           /index.html                     200

@@ -3514,10 +3514,7 @@ function navigateSpa(route, push = true) {
     return;
   }
   if (clean === '/contact') {
-    openModal();
-    if (push && window.location.pathname !== '/contact') {
-      try { history.pushState({ route: '/contact' }, '', '/contact'); } catch(e) {}
-    }
+    window.location.href = '/contact';
     return;
   }
   if (clean === '/work' || clean === '/works') {
@@ -4633,7 +4630,7 @@ const toggleMode = () => setMode(getMode() === 'dark' ? 'light' : 'dark');
     if (e.data.wall === 'go'){
       // a link in the room's navbar or footer
       const to = String(e.data.to || '');
-      if (to === 'contact'){ openModal(); return; }                         // the request form opens right over the room
+      if (to === 'contact'){ const svcMap = ['web','app','uiux','graphic','photo','erp','photo']; window.location.href = '/contact' + (inWall && svcMap[cur] ? '?service=' + svcMap[cur] : ''); return; }
       const n = to.startsWith('door:') ? +to.slice(5) : -1;
       if (n >= 0){
         if (n === cur) return;
@@ -4676,11 +4673,12 @@ const isWorksRoute = pName === '/work' || pName === '/works' || location.hash ==
 const isAboutRoute = pName === '/my-story' || pName === '/about' || location.hash === '#about';
 const isContactRoute = pName === '/contact' || location.hash === '#contact' || location.search.includes('contact');
 
-if (['#works', '#about', '#contact'].includes(location.hash) || isWorksRoute || isAboutRoute || isContactRoute || isHomeRoute){
+if (isContactRoute) {
+  window.location.replace('/contact');
+} else if (['#works', '#about'].includes(location.hash) || isWorksRoute || isAboutRoute || isHomeRoute){
   loader?.remove();
   document.body.classList.add('ready');
   requestAnimationFrame(() => {
-    if (isContactRoute) openModal();
     const el = isAboutRoute ? $('#about') : isWorksRoute ? $('#works') : null;
     if (el) window.scrollTo(0, el.getBoundingClientRect().top + pageYOffset);
     dispatchEvent(new Event('intro:ready'));

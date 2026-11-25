@@ -769,7 +769,7 @@ if (!reduced){ addEventListener('scroll', () => { if (!ticking){ ticking = true;
     if (EMBED){ parent.postMessage({ wall: 'go', to }, location.origin === 'null' ? '*' : location.origin); return; }
     if (to === 'home') location.href = HOME;
     else if (to === 'about') location.href = HOME + '#about';
-    else if (to === 'contact') location.href = HOME + '#contact';
+    else if (to === 'contact') location.href = HOME + 'contact?service=app';
     else if (to.startsWith('door:')) location.href = HOME + '#' + SLUGS[+to.slice(5)];
   };
   document.addEventListener('click', e => {

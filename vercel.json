@@ -262,11 +262,11 @@
     },
     {
       "source": "/contact",
-      "destination": "/frontend/index.html"
+      "destination": "/frontend/contact.html"
     },
     {
       "source": "/contact/",
-      "destination": "/frontend/index.html"
+      "destination": "/frontend/contact.html"
     },
     {
       "source": "/",

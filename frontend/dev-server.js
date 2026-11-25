@@ -244,8 +244,22 @@ const server = http.createServer((req, res) => {
     }
   }
 
-  // 2. Clean SPA section routes: /home, /work, /my-story, /contact -> serve index.html directly
-  const cleanRoutes = ['/home', '/work', '/works', '/my-story', '/about', '/contact', ''];
+  // 2. Clean Contact page route -> serve contact.html directly
+  if (cleanNorm === '/contact' || cleanNorm === '/contact.html') {
+    const contactPath = path.join(ROOT, 'contact.html');
+    if (fs.existsSync(contactPath)) {
+      res.writeHead(200, {
+        'Content-Length': fs.statSync(contactPath).size,
+        'Content-Type': 'text/html; charset=utf-8',
+        'Access-Control-Allow-Origin': '*'
+      });
+      fs.createReadStream(contactPath).pipe(res);
+      return;
+    }
+  }
+
+  // 3. Clean SPA section routes: /home, /work, /my-story -> serve index.html directly
+  const cleanRoutes = ['/home', '/work', '/works', '/my-story', '/about', ''];
   if (cleanRoutes.includes(cleanNorm)) {
     const indexPath = path.join(ROOT, 'index.html');
     res.writeHead(200, {
@@ -287,7 +301,7 @@ const server = http.createServer((req, res) => {
   }
 
   // 5. Virtual route prefix stripping (e.g., if a browser requests /home/card/win_sub.webp)
-  const virtualPrefixes = ['/home/', '/work/', '/works/', '/my-story/', '/about/', '/contact/'];
+  const virtualPrefixes = ['/home/', '/work/', '/works/', '/my-story/', '/about/'];
   for (const vp of virtualPrefixes) {
     if (reqPath.startsWith(vp)) {
       const stripped = reqPath.slice(vp.length - 1);

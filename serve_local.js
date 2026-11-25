@@ -172,11 +172,40 @@ const server = http.createServer((req, res) => {
       });
       return;
     }
+    // 7. Contact Lead Submission API
+    if (clean === '/api/contact') {
+      const contactApi = require('./frontend/api/contact.js');
+      let bodyData = '';
+      req.on('data', chunk => { bodyData += chunk; });
+      req.on('end', async () => {
+        if (bodyData) {
+          try { req.body = JSON.parse(bodyData); } catch(e) { req.body = {}; }
+        } else {
+          req.body = {};
+        }
+        res.status = function(code) { res.statusCode = code; return res; };
+        res.json = function(obj) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          await contactApi(req, res);
+        } catch(err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: err.message }));
+        }
+      });
+      return;
+    }
   }
 
   // 1. Core route rewrites (matching vercel.json)
-  if (clean === '/' || clean === '/home' || clean === '/work' || clean === '/works' || clean === '/my-story' || clean === '/about' || clean === '/contact') {
+  if (clean === '/' || clean === '/home' || clean === '/work' || clean === '/works' || clean === '/my-story' || clean === '/about') {
     return serveFile(path.join(DIR, 'frontend', 'index.html'), res);
+  }
+
+  if (clean === '/contact' || clean === '/contact.html') {
+    return serveFile(path.join(DIR, 'frontend', 'contact.html'), res);
   }
 
   if (clean === '/shop' || clean === '/store') {

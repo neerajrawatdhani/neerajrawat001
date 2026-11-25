@@ -251,11 +251,11 @@
     },
     {
       "source": "/contact",
-      "destination": "/"
+      "destination": "/contact.html"
     },
     {
       "source": "/contact/",
-      "destination": "/"
+      "destination": "/contact.html"
     }
   ],
   "headers": [

@@ -1,307 +1,989 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact Neeraj Rawat | Start a Project</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<base href="/" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Start a Project &amp; Contact — Neeraj Rawat</title>
+<meta name="description" content="Start a project with Neeraj Rawat: Web Development, iOS App Development, UI/UX Design, Graphic &amp; Brand Identity, Photography, and EduDhani School ERP &amp; Workflow Automation." />
+<meta name="theme-color" content="#1A1818" />
+<link rel="icon" type="image/webp" href="neeraj_colour.webp" />
+<link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/eb-garamond-latin.woff2" as="font" type="font/woff2" crossorigin />
+<style>
+@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Onest';font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/onest-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'EB Garamond';font-style:italic;font-display:swap;font-weight:400 700;src:url(fonts/eb-garamond-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+</style>
+<script>
+try{if(localStorage.getItem('rishi-mode')==='dark')document.documentElement.dataset.mode='dark';}catch(e){}
+</script>
 <style>
 :root{
-  --bg:#EDEEF2;
-  --panel:#F7F7F9;
-  --field:#EFF0F4;
-  --ink:#111217;
-  --muted:#7A7F8C;
-  --wa:#22C55E;
-  --wa-ink:#06210F;
-  --dark:#111217;
+  --bg:#E8E4E0;
+  --fg:#1A1818;
+  --fg-rgb:26,24,24;
+  --muted:#6A5D5D;
+  --line:rgba(26,24,24,.12);
+  --surface:#F3F0EC;
+  --surface-2:#E0DBD5;
+  --field:#FAF8F5;
+  --field-hover:#FFFFFF;
+  --accent:#A4552C;
+  --accent-soft:rgba(164,85,44,.11);
+  --green:#16A34A;
+  --green-soft:rgba(22,163,74,.12);
   --err:#DC2626;
-  --ease:cubic-bezier(.22,.8,.24,1);
-  --spring:cubic-bezier(.34,1.4,.64,1);
+  --err-soft:rgba(220,38,38,.09);
+  --shadow-card:0 24px 60px -32px rgba(26,24,24,.22), 0 1px 0 rgba(255,255,255,.7) inset;
+  --font:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --serif:'EB Garamond',Georgia,serif;
+  --e-out:cubic-bezier(.16,1,.3,1);
+  --e-spring:cubic-bezier(.34,1.35,.64,1);
+  color-scheme:light;
 }
-*{box-sizing:border-box}
+html[data-mode="dark"]{
+  --bg:#161414;
+  --fg:#EDE9E4;
+  --fg-rgb:237,233,228;
+  --muted:#A79B9B;
+  --line:rgba(237,233,228,.12);
+  --surface:#201D1D;
+  --surface-2:#2A2626;
+  --field:#181515;
+  --field-hover:#221E1E;
+  --accent:#E8A87C;
+  --accent-soft:rgba(232,168,124,.14);
+  --green:#22C55E;
+  --green-soft:rgba(34,197,94,.16);
+  --err:#F87171;
+  --err-soft:rgba(248,113,113,.14);
+  --shadow-card:0 28px 70px -28px rgba(0,0,0,.75), 0 1px 0 rgba(255,255,255,.05) inset;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overscroll-behavior-y:none;background:#1A1818}
+html[data-mode="dark"]{background:#0F0E0E}
 body{
-  margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;
-  background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;font-size:14px;
+  min-height:100vh;
+  background:
+    radial-gradient(65% 45% at 12% 0%, rgba(164,85,44,.08), transparent 65%),
+    radial-gradient(55% 45% at 92% 10%, rgba(196,176,176,.14), transparent 70%),
+    var(--bg);
+  color:var(--fg);
+  font-family:var(--font);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:clip;
+  line-height:1.5;
 }
-:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-
-/* back home link */
-.back-home{
-  position:fixed;top:16px;left:16px;z-index:99;
-  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
-  background:rgba(255,255,255,.9);border-radius:10px;border:1px solid #E3E5EC;
-  color:var(--ink);font-weight:600;font-size:13px;text-decoration:none;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);transition:transform .2s,background .2s;
+html[data-mode="dark"] body{
+  background:
+    radial-gradient(60% 42% at 15% 0%, rgba(232,168,124,.09), transparent 65%),
+    radial-gradient(50% 40% at 90% 10%, rgba(107,92,92,.18), transparent 70%),
+    var(--bg);
 }
-.back-home:hover{transform:translateY(-1px);background:#fff}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* overlay + modal */
-.overlay{
-  position:fixed;inset:0;background:rgba(17,18,23,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  display:flex;justify-content:center;align-items:center;
-  overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;
-  padding:clamp(6px, 1.5vh, 14px) 10px;
-  opacity:1;pointer-events:auto;transition:opacity .35s var(--ease);
-  scrollbar-width:thin !important;scrollbar-color:rgba(17,18,23,.25) transparent !important;
+.skip{position:absolute;left:-9999px;top:auto}
+.skip:focus{
+  position:fixed;left:1rem;top:1rem;z-index:120;min-height:44px;display:inline-flex;align-items:center;
+  border-radius:12px;background:var(--fg);color:var(--bg);padding:.5rem 1rem;font-size:.875rem;font-weight:600;
 }
-.overlay::-webkit-scrollbar{display:block !important;width:5px !important}
-.overlay::-webkit-scrollbar-track{background:transparent !important}
-.overlay::-webkit-scrollbar-thumb{background:rgba(17,18,23,.25) !important;border-radius:99px !important}
-.overlay::-webkit-scrollbar-thumb:hover{background:rgba(17,18,23,.45) !important}
 
-.modal{
-  position:relative;width:100%;max-width:740px;margin:auto !important;
-  max-height:calc(100vh - 12px);max-height:calc(100dvh - 12px);overflow-y:auto;overflow-x:hidden;
-  background:var(--panel);border-radius:18px;padding:10px 16px 8px;
-  box-shadow:0 30px 70px -25px rgba(0,0,0,.45);
-  transform:none;opacity:1;
-  transition:transform .5s var(--spring),opacity .35s var(--ease);
-  touch-action:pan-y;overscroll-behavior:contain;
-  scrollbar-width:thin !important;scrollbar-color:rgba(17,18,23,.25) transparent !important;
+/* ---------- Header (.rn matching portfolio room pages) ---------- */
+.rn{position:sticky;top:0;z-index:45;background:var(--bg);transition:box-shadow .3s ease,background .3s ease}
+.rn.stuck{box-shadow:0 1px 0 var(--line)}
+.rn__in{max-width:88rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding:1.05rem max(18px,env(safe-area-inset-right)) 1.05rem max(18px,env(safe-area-inset-left));transition:padding .3s ease}
+.rn.stuck .rn__in{padding-block:.78rem}
+@media (min-width:1024px){.rn__in{padding-inline:48px}}
+.rn nav ul{display:none;list-style:none;margin:0;padding:0;gap:1.05rem;white-space:nowrap;align-items:center}
+.rn nav a,.rn nav button{padding:0;border:0;background:none;color:var(--fg);font-size:.9375rem;font-weight:500;opacity:.76;cursor:pointer;transition:opacity .2s}
+.rn nav a:hover,.rn nav button:hover,.rn nav [aria-current="page"]{opacity:1}
+.rn nav [aria-current="page"]{text-decoration:underline;text-underline-offset:.36em;text-decoration-thickness:1.5px}
+.rn__right{display:flex;align-items:center;gap:.65rem;margin-left:auto}
+.rn__clock{display:none;align-items:center;gap:.55rem;padding:.5rem .85rem;border-radius:999px;border:1px solid var(--line);font-size:.8125rem;font-weight:500;white-space:nowrap}
+.rn__clock span{color:var(--muted)}
+.theme-btn{
+  display:inline-flex;align-items:center;gap:.45rem;height:2.55rem;padding:0 .9rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface);color:var(--fg);font-size:.8125rem;font-weight:600;
+  cursor:pointer;transition:transform .2s var(--e-spring),background .2s,border-color .2s;
 }
-.modal::-webkit-scrollbar{display:block !important;width:4px !important}
-.modal::-webkit-scrollbar-track{background:transparent !important}
-.modal::-webkit-scrollbar-thumb{background:rgba(17,18,23,.25) !important;border-radius:99px !important}
-
-/* entrance */
-.reveal{opacity:1;transform:none;transition:opacity .4s var(--ease),transform .4s var(--ease)}
-
-/* header */
-.kicker{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px;margin:0 0 1px}
-.kicker i{width:5px;height:5px;border-radius:50%;background:var(--ink);display:inline-block}
-.title{margin:0;font-size:16px;font-weight:700;letter-spacing:-.02em;padding-right:32px;line-height:1.15}
-.sub{display:none}
-.close{
-  position:absolute;top:8px;right:10px;width:26px;height:26px;border-radius:50%;border:0;background:var(--field);
-  display:grid;place-items:center;cursor:pointer;color:var(--ink);
-  transition:transform .4s var(--spring),background .25s;text-decoration:none;
+.theme-btn:hover{transform:translateY(-1px);background:var(--surface-2)}
+.theme-btn svg{width:15px;height:15px;flex:none}
+.rn__menu{
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:2.55rem;padding:0 1rem;
+  font-size:.9rem;font-weight:600;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;
 }
-.close:hover{transform:rotate(90deg);background:#E3E5EC}
-.close svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
+.rn__menu svg{width:1.05rem;height:1.05rem}
+.back-top-chip{
+  display:inline-flex;align-items:center;gap:.45rem;height:2.55rem;padding:0 1rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface);font-size:.84rem;font-weight:600;white-space:nowrap;
+  transition:background .2s,transform .2s var(--e-spring);
+}
+.back-top-chip:hover{background:var(--surface-2);transform:translateY(-1px)}
+@media (min-width:1200px){
+  .rn nav ul{display:flex}
+  .rn__clock{display:flex}
+  .rn__menu,.rn__panel,.back-top-chip{display:none!important}
+}
 
-/* progress */
-.progress{margin:2px 0 1px;height:3px;border-radius:3px;background:var(--field);overflow:hidden}
-.progress i{display:block;height:100%;width:0;background:var(--ink);border-radius:3px;transition:width .5s var(--ease)}
-.progress-txt{font-size:9.5px;color:var(--muted);margin:0 0 2px}
-.divider{display:none}
-.section-h{display:none}
+/* Mobile drawer */
+.rn__panel{
+  position:fixed;inset:0;width:100vw;height:100dvh;z-index:110;display:flex;flex-direction:column;
+  padding:max(1rem,env(safe-area-inset-top)) max(1.25rem,env(safe-area-inset-right)) max(1.5rem,env(safe-area-inset-bottom)) max(1.25rem,env(safe-area-inset-left));
+  background:var(--bg);color:var(--fg);visibility:hidden;opacity:0;pointer-events:none;
+  transition:opacity .35s ease,visibility 0s linear .35s;
+}
+.rn__panel.open,.rn.open .rn__panel{visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s}
+.rn__phead{display:flex;align-items:center;justify-content:space-between;min-height:2.75rem;margin-bottom:auto}
+.rn__plbl{font-size:.75rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.rn__pclose{
+  display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border-radius:999px;
+  border:1px solid var(--line);background:none;cursor:pointer;transition:transform .3s var(--e-out),background .2s;
+}
+.rn__pclose:hover{background:var(--surface-2);transform:rotate(90deg)}
+.rn__pclose svg{width:1.15rem;height:1.15rem}
+.rn__plist{display:flex;flex-direction:column;justify-content:center;gap:.05rem;padding-block:.75rem;overflow-y:auto;counter-reset:rnc}
+.rn__plist a{
+  display:flex;align-items:baseline;gap:.85rem;padding:.35rem 0;
+  font-size:clamp(1.35rem,6vw,2.05rem);font-weight:600;letter-spacing:-.03em;line-height:1.12;
+}
+.rn__plist a::before{
+  content:counter(rnc,decimal-leading-zero);counter-increment:rnc;
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.8125rem;letter-spacing:.1em;color:var(--muted);
+}
+.rn__plist a[aria-current="page"],.rn__plist a:hover{color:var(--accent)}
+.rn__pfoot{margin-top:auto;padding-top:1rem;border-top:1px solid var(--line);font-size:.8125rem;color:var(--muted)}
+html.rn-lock,html.rn-lock body{overflow:hidden}
 
-/* 2-column horizontal grid */
-.body-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;margin-top:2px}
-.col{display:flex;flex-direction:column;min-width:0}
-.col-r .textarea{height:54px !important;resize:none !important}
-.field{display:flex;flex-direction:column;gap:1.5px;margin-top:3px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.label{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.req{color:var(--err);margin-left:2px}
+/* ---------- Page Layout ---------- */
+.page-shell{max-width:88rem;margin:0 auto;padding:1.25rem max(18px,env(safe-area-inset-right)) 6rem max(18px,env(safe-area-inset-left))}
+@media (min-width:1024px){.page-shell{padding:2.25rem 48px 7rem}}
+
+/* Back to doors inline chip inside hero on desktop (never overlaps cards or footer) */
+.hero-top{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;margin-bottom:1.15rem}
+.back-pill{
+  display:none;align-items:center;gap:.45rem;height:2.1rem;padding:0 .9rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface);font-size:.78rem;font-weight:600;color:var(--fg);
+  transition:transform .2s var(--e-spring),background .2s;
+}
+.back-pill:hover{background:var(--surface-2);transform:translateY(-1px)}
+.back-pill svg{width:14px;height:14px}
+@media (min-width:1200px){.back-pill{display:inline-flex}}
+
+/* ---------- Hero ---------- */
+.hero-intro{padding-bottom:2.25rem;border-bottom:1px solid var(--line);margin-bottom:2.25rem;animation:fadeUp .7s var(--e-out) both}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.55rem;padding:.4rem .85rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface);font-size:.75rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0;
+}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(34,197,94,.65);animation:pulseDot 2s infinite}
+@keyframes pulseDot{70%{box-shadow:0 0 0 .5rem rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.hero-title{
+  font-size:clamp(2.35rem,5.4vw,4.75rem);font-weight:600;letter-spacing:-.035em;line-height:.98;max-width:17ch;margin-bottom:1rem;
+}
+.hero-title em{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--accent);font-size:1.06em;letter-spacing:-.015em}
+.hero-sub{max-width:66ch;font-size:clamp(1rem,1.2vw,1.15rem);color:var(--muted);line-height:1.6}
+.hero-stats{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.5rem}
+.stat-pill{
+  display:inline-flex;align-items:center;gap:.45rem;padding:.48rem .9rem;border-radius:999px;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 75%,transparent);
+  font-size:.8125rem;font-weight:500;
+}
+.stat-pill b{color:var(--accent);font-weight:700}
+
+/* ---------- Studio Split Grid ---------- */
+.studio-grid{display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
+@media (min-width:1040px){
+  .studio-grid{grid-template-columns:minmax(0,5.2fr) minmax(0,6.8fr);gap:2.5rem}
+  .form-sticky{position:sticky;top:5.5rem}
+}
+
+/* ---------- Left Column: Capabilities & Live Scope ---------- */
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:.85rem}
+.sec-kicker{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.sec-sub{font-size:.875rem;color:var(--muted);margin-bottom:1.15rem;line-height:1.5}
+
+.cap-grid{display:grid;grid-template-columns:1fr;gap:.85rem}
+@media (min-width:580px) and (max-width:1039.98px){.cap-grid{grid-template-columns:1fr 1fr}}
+.cap-card{
+  position:relative;text-align:left;width:100%;padding:1.1rem 1.15rem;border-radius:1.25rem;
+  border:1px solid var(--line);background:var(--surface);cursor:pointer;
+  transition:transform .25s var(--e-out),border-color .25s,box-shadow .25s,background .25s;
+}
+.cap-card:hover{transform:translateY(-2px);border-color:rgba(var(--fg-rgb),.28)}
+.cap-card[aria-pressed="true"]{
+  border-color:var(--accent);
+  background:color-mix(in srgb,var(--accent-soft) 72%,var(--surface));
+  box-shadow:0 16px 34px -24px rgba(164,85,44,.45),0 0 0 1px var(--accent);
+}
+.cap-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.42rem}
+.cap-title-wrap{display:flex;align-items:center;gap:.55rem;min-width:0}
+.cap-num{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.72rem;font-weight:700;color:var(--accent);opacity:.85}
+.cap-title{font-size:1rem;font-weight:700;letter-spacing:-.015em}
+.cap-check{
+  flex:none;width:1.4rem;height:1.4rem;border-radius:999px;border:1.5px solid var(--line);
+  display:grid;place-items:center;color:transparent;transition:all .22s var(--e-spring);
+}
+.cap-card[aria-pressed="true"] .cap-check{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.06)}
+.cap-check svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.cap-desc{font-size:.86rem;color:var(--muted);line-height:1.48;margin-bottom:.65rem}
+.cap-tags{display:flex;flex-wrap:wrap;gap:.38rem}
+.cap-tags span{
+  font-size:.72rem;font-weight:600;padding:.24rem .58rem;border-radius:999px;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 65%,transparent);color:var(--fg);opacity:.82;
+}
+
+/* Live Auto-Included Deliverables Box */
+.scope-box{
+  margin-top:1.15rem;padding:1.25rem;border-radius:1.25rem;border:1px solid var(--line);
+  background:color-mix(in srgb,var(--surface) 88%,var(--accent-soft));
+}
+.scope-box__head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.7rem}
+.scope-box__title{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.scope-badge{font-size:.72rem;font-weight:600;padding:.2rem .6rem;border-radius:999px;background:var(--green-soft);color:var(--green)}
+.scope-list{list-style:none;display:grid;gap:.48rem}
+.scope-list li{display:flex;align-items:flex-start;gap:.55rem;font-size:.875rem;line-height:1.45}
+.scope-list svg{width:16px;height:16px;flex:none;margin-top:2px;color:var(--green)}
+
+/* Direct contact box */
+.direct-card{
+  margin-top:1.15rem;padding:1.15rem 1.25rem;border-radius:1.25rem;border:1px solid var(--line);
+  background:var(--surface);display:grid;gap:.85rem;
+}
+.direct-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.direct-meta small{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.direct-meta a,.direct-meta span{font-size:.95rem;font-weight:600}
+.copy-btn{
+  padding:.42rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--field);
+  font-size:.78rem;font-weight:600;cursor:pointer;transition:background .2s,border-color .2s;
+}
+.copy-btn:hover{background:var(--surface-2);border-color:rgba(var(--fg-rgb),.28)}
+
+/* ---------- Right Column: Automated Interactive Form Card ---------- */
+.form-card{
+  position:relative;border-radius:1.75rem;border:1px solid var(--line);background:var(--surface);
+  padding:1.5rem 1.35rem;box-shadow:var(--shadow-card);animation:fadeUp .75s var(--e-out) .08s both;
+}
+@media (min-width:640px){.form-card{padding:2rem 2.15rem}}
+
+.fhead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
+.fhead h2{font-size:clamp(1.45rem,2.4vw,1.95rem);font-weight:600;letter-spacing:-.025em;line-height:1.1}
+.fhead p{font-size:.875rem;color:var(--muted);margin-top:.25rem}
+.f-score{
+  display:inline-flex;align-items:center;gap:.45rem;padding:.38rem .78rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--field);font-size:.78rem;font-weight:600;white-space:nowrap;
+}
+.f-score.ready{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+
+.prog-track{height:5px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-bottom:1.35rem}
+.prog-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--accent),#D6B26E,var(--green));transition:width .45s var(--e-out)}
+
+/* In-form quick chips */
+.sub-block{margin-bottom:1.2rem}
+.block-lbl{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.48rem}
+.lbl-txt{font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.lbl-txt .req{color:var(--err);margin-left:2px}
+.auto-tag{font-size:.7rem;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:.16rem .5rem;border-radius:999px}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:.45rem}
+.fchip{
+  display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--field);font-size:.8125rem;font-weight:500;cursor:pointer;
+  transition:all .2s var(--e-out);
+}
+.fchip:hover{border-color:rgba(var(--fg-rgb),.32);background:var(--field-hover)}
+.fchip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
+
+.fgrid-2{display:grid;grid-template-columns:1fr;gap:.95rem}
+@media (min-width:600px){.fgrid-2{grid-template-columns:1fr 1fr}}
+
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem}
 .input{
-  width:100%;height:29px;border-radius:6px;border:1px solid transparent;background:var(--field);
-  padding:0 8px;font:500 11.5px/1 Inter,system-ui,sans-serif;color:var(--ink);outline:none;
-  transition:border-color .25s,background .25s,box-shadow .25s;
+  width:100%;height:46px;border-radius:.85rem;border:1.5px solid var(--line);background:var(--field);
+  padding:0 .9rem;font-size:.9375rem;font-weight:500;color:var(--fg);outline:none;
+  transition:border-color .2s,background .2s,box-shadow .2s;
 }
-.input::placeholder{color:#9EA3AF;font-weight:400;font-size:11px}
-.input:hover:not(:disabled){background:#E9EAF0}
-.input:focus{background:#fff;border-color:var(--ink);box-shadow:0 0 0 3px rgba(17,18,23,.08)}
-.input:disabled{opacity:.5;cursor:not-allowed}
-.input.invalid{border-color:var(--err);background:#FFF5F5}
-.input.valid{border-color:#B7E4C7}
-select.input{appearance:none;-webkit-appearance:none;padding-right:24px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23111217' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
-.textarea{height:54px;padding:5px 8px;resize:none;line-height:1.3;font-size:11px}
-.row-2{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.phone{position:relative;display:flex;align-items:center}
-.dial{
-  position:absolute;left:7px;font-weight:600;font-size:11.5px;color:var(--ink);pointer-events:none;
-  transition:opacity .25s;
+.input::placeholder{color:var(--muted);opacity:.65;font-weight:400}
+.input:hover:not(:disabled){background:var(--field-hover);border-color:rgba(var(--fg-rgb),.24)}
+.input:focus{background:var(--field-hover);border-color:var(--fg);box-shadow:0 0 0 3px rgba(var(--fg-rgb),.08)}
+.input:disabled{opacity:.52;cursor:not-allowed}
+.input.invalid{border-color:var(--err);background:var(--err-soft)}
+.input.valid{border-color:color-mix(in srgb,var(--green) 65%,var(--line))}
+select.input{
+  appearance:none;-webkit-appearance:none;padding-right:2.2rem;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .85rem center;
 }
-.phone .input{padding-left:48px}
-.hint{font-size:9px;color:var(--muted);margin:0;min-height:10px;transition:color .25s}
-.hint.err{color:var(--err)}
+.phone-wrap{position:relative;display:flex;align-items:center}
+.dial-badge{
+  position:absolute;left:.85rem;font-size:.9rem;font-weight:700;color:var(--fg);pointer-events:none;transition:opacity .2s;
+}
+.phone-wrap .input{padding-left:3.65rem}
+.fhint{font-size:.76rem;color:var(--muted);min-height:1.1em}
+.fhint.err{color:var(--err);font-weight:600}
+.fhint.ok{color:var(--green);font-weight:600}
 
-/* consent */
+/* Smart Quick-Template Pills */
+.tpl-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin-bottom:.55rem}
+.tpl-lbl{font-size:.74rem;font-weight:600;color:var(--accent);margin-right:.2rem}
+.tpl-btn{
+  padding:.3rem .68rem;border-radius:999px;border:1px dashed color-mix(in srgb,var(--accent) 55%,var(--line));
+  background:var(--accent-soft);color:var(--fg);font-size:.75rem;font-weight:600;cursor:pointer;
+  transition:transform .18s var(--e-spring),background .18s,border-style .18s;
+}
+.tpl-btn:hover{transform:translateY(-1px);background:var(--accent);color:#fff;border-style:solid}
+
+.textarea{height:auto;min-height:126px;padding:.8rem .9rem;line-height:1.55;resize:vertical}
+
+/* Consent box */
 .consent{
-  display:flex;gap:6px;align-items:center;margin-top:4px;padding:3px 6px;border-radius:6px;background:var(--field);
-  cursor:pointer;transition:background .25s;user-select:none;position:relative;
+  display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1rem;border-radius:.95rem;
+  border:1.5px solid var(--line);background:var(--field);cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:1rem;
 }
-.consent:hover{background:#E9EAF0}
+.consent:hover{border-color:rgba(var(--fg-rgb),.28);background:var(--field-hover)}
+.consent.err{border-color:var(--err);background:var(--err-soft)}
 .consent input{position:absolute;opacity:0;pointer-events:none}
-.box{
-  flex:none;width:14px;height:14px;border-radius:4px;border:1.2px solid #B8BCC8;background:#fff;
-  display:grid;place-items:center;transition:background .3s var(--ease),border-color .3s,transform .3s var(--spring);
+.cbox{
+  flex:none;width:20px;height:20px;margin-top:1px;border-radius:6px;border:1.6px solid rgba(var(--fg-rgb),.38);
+  background:var(--surface);display:grid;place-items:center;transition:all .2s var(--e-spring);
 }
-.box svg{width:8px;height:8px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;transition:stroke-dashoffset .4s var(--ease) .05s}
-.consent input:checked + .box{background:var(--ink);border-color:var(--ink);transform:scale(1.04)}
-.consent input:checked + .box svg{stroke-dashoffset:0}
-.consent input:focus-visible + .box{outline:2px solid var(--ink);outline-offset:2px}
-.consent-text{font-size:9.5px;color:#4B5060;line-height:1.22}
+.cbox svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.6);transition:all .18s var(--e-spring)}
+.consent input:checked + .cbox{background:var(--fg);border-color:var(--fg)}
+.consent input:checked + .cbox svg{opacity:1;transform:scale(1)}
+html[data-mode="dark"] .cbox svg{stroke:#161414}
+.ctext{font-size:.82rem;color:var(--muted);line-height:1.45}
 
-/* buttons */
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}
-.btn{
-  position:relative;overflow:hidden;height:32px;border-radius:7px;border:0;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 9px;
-  font:600 11px/1.2 Inter,system-ui,sans-serif;text-align:left;
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease),opacity .3s,filter .3s;
+/* Alert banner when validation needs attention */
+.form-alert{
+  display:none;margin-bottom:1rem;padding:.75rem .95rem;border-radius:.85rem;
+  border:1px solid var(--err);background:var(--err-soft);color:var(--err);font-size:.84rem;font-weight:600;
 }
-.btn::before{
-  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);
-  transition:left .7s var(--ease);
+.form-alert.show{display:block;animation:fadeUp .25s var(--e-out)}
+
+/* Dispatch buttons */
+.actions{display:grid;grid-template-columns:1fr;gap:.75rem}
+@media (min-width:520px){.actions{grid-template-columns:1fr 1fr}}
+.send-btn{
+  position:relative;overflow:hidden;height:52px;border-radius:.95rem;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;padding:0 .85rem 0 1.15rem;
+  font-size:.9375rem;font-weight:700;transition:transform .25s var(--e-spring),box-shadow .25s,opacity .25s,filter .25s;
 }
-.btn:not(:disabled):hover::before{left:120%}
-.btn:not(:disabled):hover{transform:translateY(-1px)}
-.btn:not(:disabled):active{transform:translateY(0) scale(.98)}
-.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;filter:grayscale(.4)}
-.btn-wa{background:var(--wa);color:var(--wa-ink);box-shadow:0 10px 20px -12px rgba(34,197,94,.9)}
-.btn-wa:not(:disabled):hover{box-shadow:0 14px 24px -10px rgba(34,197,94,1)}
-.btn-mail{background:var(--dark);color:#fff;box-shadow:0 10px 20px -12px rgba(17,18,23,.9)}
-.btn-mail:not(:disabled):hover{box-shadow:0 14px 24px -10px rgba(17,18,23,.9)}
-.round{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .4s var(--spring)}
-.btn:not(:disabled):hover .round{transform:rotate(-12deg) scale(1.08)}
-.btn-wa .round{background:rgba(6,33,15,.12)}
-.btn-mail .round{background:rgba(255,255,255,.14)}
-.round svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.btn-wa:not(:disabled):hover .round svg{transform:translate(1px,-1px) scale(1.1);transition:transform .5s var(--ease)}
-.btn-mail:not(:disabled):hover .round svg{transform:translate(2px,-2px);transition:transform .4s var(--ease)}
-.btn.loading{pointer-events:none}
-.btn.loading .label-txt{opacity:0}
+.send-btn:hover{transform:translateY(-2px)}
+.send-btn:active{transform:scale(.985)}
+.send-btn.pending{opacity:.72}
+.send-btn--wa{background:#22C55E;color:#05210E;box-shadow:0 14px 28px -16px rgba(34,197,94,.85)}
+.send-btn--mail{background:var(--fg);color:var(--bg);box-shadow:0 14px 28px -16px rgba(0,0,0,.45)}
+.send-ico{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;flex:none}
+.send-btn--wa .send-ico{background:rgba(5,33,14,.14)}
+.send-btn--mail .send-ico{background:rgba(var(--fg-rgb),.14);background:color-mix(in srgb,var(--bg) 16%,transparent)}
+.send-ico svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.send-btn.loading .btn-lbl,.send-btn.loading .send-ico{opacity:0}
 .spinner{
-  position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;
-  border:2px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .8s linear infinite;
+  position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
+  border:2.2px solid currentColor;border-right-color:transparent;opacity:0;animation:spin .75s linear infinite;
 }
-.btn.loading .spinner{opacity:1}
-
-/* footer */
-.foot{margin:3px 0 0;text-align:center;font-size:9px;color:var(--muted);line-height:1.2}
-.live{display:inline-flex;align-items:center;gap:4px}
-.live::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--wa);animation:ping 1.8s infinite}
-
+.send-btn.loading .spinner{opacity:1}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
 
-@media (max-width:480px){
-  .body-grid{grid-template-columns:1fr;gap:0}
-  .modal{max-width:420px;padding:12px 14px 10px}
-  .col-r .textarea{height:54px !important}
-  .actions{grid-template-columns:1fr 1fr}
+.form-foot{
+  margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;
+  justify-content:space-between;gap:.5rem;font-size:.78rem;color:var(--muted);
 }
-@media (max-width:360px){
-  .grid2,.actions,.row-2{grid-template-columns:1fr}
-  .title{font-size:15px}
-  .modal{padding:10px 10px 8px}
+
+/* ---------- Success View ---------- */
+.success-panel{padding:1.25rem .25rem;text-align:center;animation:fadeUp .45s var(--e-out)}
+.success-panel[hidden]{display:none}
+.ok-badge{
+  width:64px;height:64px;border-radius:999px;margin:0 auto 1rem;display:grid;place-items:center;
+  background:var(--green-soft);color:var(--green);border:1.5px solid var(--green);
 }
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}
-  .reveal{opacity:1;transform:none}
-  .modal{transform:none}
+.ok-badge svg{width:30px;height:30px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.success-panel h2{font-size:1.75rem;font-weight:700;letter-spacing:-.025em;margin-bottom:.45rem}
+.success-panel p.lead{max-width:46ch;margin:0 auto 1.25rem;color:var(--muted);font-size:.95rem}
+.receipt{
+  text-align:left;border:1px solid var(--line);border-radius:1.1rem;background:var(--field);
+  padding:1rem 1.15rem;margin-bottom:1.25rem;display:grid;gap:.55rem;font-size:.86rem;
 }
+.receipt-row{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dashed var(--line);padding-bottom:.42rem}
+.receipt-row:last-child{border-bottom:0;padding-bottom:0}
+.receipt-row span:first-child{color:var(--muted);font-weight:600}
+.receipt-row strong{text-align:right}
+.ok-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem}
+.ok-btn{
+  display:inline-flex;align-items:center;gap:.45rem;height:44px;padding:0 1.2rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--field);font-size:.86rem;font-weight:600;cursor:pointer;
+  transition:transform .2s,background .2s;
+}
+.ok-btn:hover{transform:translateY(-1px);background:var(--surface-2)}
+.ok-btn--primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.ok-btn--wa{background:#22C55E;color:#05210E;border-color:#22C55E}
+
+/* ---------- Footer ---------- */
+.sfw{position:relative;z-index:2;background:transparent;margin-top:-32px}
+.sf{
+  --sf-bg:#1A1818;--sf-fg:#E8E4E0;--sf-rgb:232,228,224;background:var(--sf-bg);color:var(--sf-fg);
+  border-radius:2rem 2rem 0 0;overflow:hidden;font-family:var(--font);
+}
+html[data-mode="dark"] .sf{--sf-bg:#0F0E0E;box-shadow:inset 0 1px 0 rgba(232,228,224,.1)}
+.sf__in{max-width:88rem;margin:0 auto;padding:4rem 1.25rem 1.75rem}
+@media (min-width:1024px){.sf__in{padding:4.5rem 5.5rem 2rem}}
+.sf__cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem 1.5rem}
+@media (min-width:768px){.sf__cols{grid-template-columns:2fr 1fr 1fr}}
+.sf__cols h3{margin-bottom:.9rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(var(--sf-rgb),.66)}
+.sf__cols ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.sf__cols .work{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:.55rem 1.5rem}
+.sf__cols a,.sf__cols button{padding:0;border:0;background:none;color:rgba(var(--sf-rgb),.85);font-size:.9375rem;font-weight:500;cursor:pointer;text-align:left}
+.sf__cols a:hover,.sf__cols button:hover{color:#fff}
+.sf__cols li.st{font-size:.9375rem;color:rgba(var(--sf-rgb),.85)}
+.sf__bot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem;margin-top:2rem;padding-top:1.25rem;border-top:1px solid rgba(var(--sf-rgb),.12);font-size:.8125rem;color:rgba(var(--sf-rgb),.68)}
+.sf__bot a{text-decoration:underline;text-underline-offset:.2em;text-decoration-color:rgba(var(--sf-rgb),.35)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<a class="skip" href="#contactForm">Skip to project inquiry form</a>
 
-<a href="/" class="back-home" title="Back to Portfolio">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-  <span>Back to Portfolio</span>
-</a>
-
-<div class="overlay" id="overlay">
-  <div class="modal" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
-    <a class="close reveal" href="/" aria-label="Close">
-      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </a>
-
-    <p class="kicker reveal"><i></i>Start a project</p>
-    <h2 class="title reveal" id="dlg-title">Tell me what you're building.</h2>
-    <p class="sub reveal">Share a few details about your project. We reply within 5 hours.</p>
-    <div class="divider reveal"></div>
-
-    <div class="reveal">
-      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
-      <p class="progress-txt" id="progTxt" aria-live="polite">0 of 8 done</p>
+<header class="rn" id="rn">
+  <div class="rn__in">
+    <a class="back-top-chip" href="/">← Portfolio</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/#web-developer">Web Development</a></li>
+        <li><a href="/#app-developer">App Development</a></li>
+        <li><a href="/#ui-ux-designer">UI/UX Design</a></li>
+        <li><a href="/#graphic-designer">Graphic Design</a></li>
+        <li><a href="/#photographer">Photography</a></li>
+        <li><a href="/#shop">Shop</a></li>
+        <li><a href="/#about">My story</a></li>
+        <li><a href="/contact" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="rn__right">
+      <div class="rn__clock" aria-label="Local time"><span>Local time</span><b data-ftime>—</b><span class="d">•</span><span data-fdate></span></div>
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle color theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <span id="themeLbl">Dark</span>
+      </button>
+      <button class="rn__menu" id="rnMenu" type="button" aria-expanded="false" aria-controls="rnPanel">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>Menu</span>
+      </button>
     </div>
+  </div>
+</header>
 
-    <form id="form" novalidate>
-      <div class="body-grid">
-        <div class="col">
-          <h3 class="section-h reveal">Your details</h3>
-          <div class="grid2 reveal">
-            <div class="field" style="margin-top:0">
-              <label class="label" for="name">Name<span class="req">*</span></label>
-              <input class="input" id="name" type="text" placeholder="Your name" autocomplete="name">
-            </div>
-            <div class="field" style="margin-top:0">
-              <label class="label" for="org">Organisation<span class="req">*</span></label>
-              <input class="input" id="org" type="text" placeholder="Company or school name" autocomplete="organization">
-            </div>
-          </div>
+<div class="rn__panel" id="rnPanel" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="rn__phead">
+    <span class="rn__plbl">Menu</span>
+    <button class="rn__pclose" id="rnClose" type="button" aria-label="Close menu"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="rn__plist">
+    <a href="/home">Home</a>
+    <a href="/#web-developer">Web Development</a>
+    <a href="/#app-developer">App Development</a>
+    <a href="/#ui-ux-designer">UI/UX Design</a>
+    <a href="/#graphic-designer">Graphic Design</a>
+    <a href="/#photographer">Photography</a>
+    <a href="/#shop">Shop</a>
+    <a href="/#about">My story</a>
+    <a href="/contact" aria-current="page">Contact</a>
+  </div>
+  <p class="rn__pfoot">Neeraj Rawat — available for new work<br>Replies within 5 hours</p>
+</div>
 
-          <div class="field reveal">
-            <label class="label" for="email">Email ID<span class="req">*</span></label>
-            <input class="input" id="email" type="email" placeholder="you@company.com" autocomplete="email">
-          </div>
+<main class="page-shell">
+  <section class="hero-intro">
+    <div class="hero-top">
+      <a class="back-pill" href="/#works" aria-label="Back to the doors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <span>Back to the doors</span>
+      </a>
+      <p class="eyebrow"><i></i>Accepting New Projects · Replies within 5 hours</p>
+    </div>
+    <h1 class="hero-title">Let's build something <em>extraordinary</em> together.</h1>
+    <p class="hero-sub">Whether you need a high-converting website, a native iOS app, an intuitive Figma design system, a complete brand identity, photography, EduDhani School ERP, or custom business automation with WhatsApp and Razorpay workflows — tell me your vision below.</p>
+    <div class="hero-stats">
+      <span class="stat-pill"><b>End-to-End</b> Strategy, Design &amp; Engineering</span>
+      <span class="stat-pill"><b>Automated</b> Instant Brief Receipt &amp; WhatsApp Sync</span>
+      <span class="stat-pill"><b>150+ Countries</b> Live Currency Budget Estimator</span>
+      <span class="stat-pill"><b>Direct</b> Founder-Led Execution</span>
+    </div>
+  </section>
 
-          <div class="field reveal">
-            <span class="label">Country &amp; mobile number<span class="req">*</span></span>
-            <div class="row-2">
-              <select class="input" id="country" aria-label="Country">
-                <option value="">Select country</option>
-              </select>
-              <div class="phone">
-                <span class="dial" id="dial" aria-hidden="true" style="opacity:.4">+</span>
-                <input class="input" id="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint">
-              </div>
-            </div>
-            <p class="hint" id="phoneHint">Select country first</p>
-          </div>
+  <section class="studio-grid" aria-label="Project capabilities and inquiry form">
+    <!-- LEFT: Interactive Multi-Service Showcase & Live Deliverables -->
+    <div>
+      <div class="sec-head">
+        <span class="sec-kicker">01 / Capabilities &amp; What Gets Built</span>
+      </div>
+      <p class="sec-sub">Select one or more capabilities below to preview what is included and automatically tailor your project inquiry.</p>
 
-          <div class="field reveal">
-            <label class="label" for="budget">Budget<span class="req">*</span></label>
-            <select class="input" id="budget" disabled>
-              <option value="">Select country first</option>
-            </select>
+      <div class="cap-grid" id="capGrid">
+        <button type="button" class="cap-card" data-cap="web" aria-pressed="false">
+          <div class="cap-top">
+            <span class="cap-title-wrap"><span class="cap-num">01</span><span class="cap-title">Web Development &amp; Portals</span></span>
+            <span class="cap-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
           </div>
+          <p class="cap-desc">Custom high-speed websites, interactive SaaS dashboards, dynamic calculators, REST APIs, database integration, SEO setup &amp; cloud deployment.</p>
+          <div class="cap-tags"><span>Responsive UI</span><span>SaaS Portals</span><span>API &amp; SEO</span><span>Fast Launch</span></div>
+        </button>
+
+        <button type="button" class="cap-card" data-cap="app" aria-pressed="false">
+          <div class="cap-top">
+            <span class="cap-title-wrap"><span class="cap-num">02</span><span class="cap-title">App Development (iOS &amp; Mobile)</span></span>
+            <span class="cap-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+          </div>
+          <p class="cap-desc">Native iOS applications, fintech/privacy utilities and arcade apps built with crisp micro-interactions, offline sync &amp; App Store release prep.</p>
+          <div class="cap-tags"><span>iOS Native</span><span>Smooth 60fps UI</span><span>App Store Ready</span><span>Cloud Sync</span></div>
+        </button>
+
+        <button type="button" class="cap-card" data-cap="uiux" aria-pressed="false">
+          <div class="cap-top">
+            <span class="cap-title-wrap"><span class="cap-num">03</span><span class="cap-title">UI/UX Design &amp; Figma Systems</span></span>
+            <span class="cap-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+          </div>
+          <p class="cap-desc">Conversion-focused user journeys, interactive Figma prototypes, multi-role SaaS admin panels, mobile UX &amp; scalable component libraries.</p>
+          <div class="cap-tags"><span>User Flows</span><span>Figma Prototypes</span><span>Admin Panels</span><span>Design System</span></div>
+        </button>
+
+        <button type="button" class="cap-card" data-cap="graphic" aria-pressed="false">
+          <div class="cap-top">
+            <span class="cap-title-wrap"><span class="cap-num">04</span><span class="cap-title">Graphic Design &amp; Brand Identity</span></span>
+            <span class="cap-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+          </div>
+          <p class="cap-desc">Memorable logos, brand kits, social media carousels &amp; reels campaigns, packaging concepts, recruitment posters &amp; print-ready creatives.</p>
+          <div class="cap-tags"><span>Logo &amp; Brand Kit</span><span>Social Campaigns</span><span>Posters</span><span>Print Ready</span></div>
+        </button>
+
+        <button type="button" class="cap-card" data-cap="erp" aria-pressed="false">
+          <div class="cap-top">
+            <span class="cap-title-wrap"><span class="cap-num">05</span><span class="cap-title">EduDhani ERP, Automation &amp; Payments</span></span>
+            <span class="cap-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+          </div>
+          <p class="cap-desc">Cloud School ERP setup (EduDhani), automated Excel/GST sheets, WhatsApp &amp; Email lead pipelines, Razorpay checkout &amp; admin automation.</p>
+          <div class="cap-tags"><span>School ERP</span><span>WhatsApp/Email Flow</span><span>Razorpay</span><span>GST / Excel</span></div>
+        </button>
+
+        <button type="button" class="cap-card" data-cap="photo" aria-pressed="false">
+          <div class="cap-top">
+            <span class="cap-title-wrap"><span class="cap-num">06</span><span class="cap-title">Photography &amp; Visual Storytelling</span></span>
+            <span class="cap-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+          </div>
+          <p class="cap-desc">Portrait, campus, event &amp; editorial photography shoots with natural colour grading, curated high-res galleries &amp; web-optimised visual assets.</p>
+          <div class="cap-tags"><span>Portraits</span><span>Event Stories</span><span>Brand Visuals</span><span>Retouching</span></div>
+        </button>
+      </div>
+
+      <!-- Dynamic Scope Preview Box -->
+      <div class="scope-box" aria-live="polite">
+        <div class="scope-box__head">
+          <span class="scope-box__title" id="scopeHeading">Full-Studio Deliverables Included</span>
+          <span class="scope-badge" id="scopeBadge">All Disciplines Ready</span>
         </div>
+        <ul class="scope-list" id="scopeList"></ul>
+      </div>
 
-        <div class="col col-r">
-          <h3 class="section-h reveal">Project details</h3>
-          <div class="field reveal" style="margin-top:0">
-            <label class="label" for="brief">Project description<span class="req">*</span></label>
-            <textarea class="input textarea" id="brief" placeholder="Describe your project, requirements, timeline or design vision (at least 10 characters)."></textarea>
+      <!-- Direct Reach Card -->
+      <div class="direct-card">
+        <div class="direct-row">
+          <div class="direct-meta">
+            <small>Direct Email</small>
+            <a id="directMailLink" href="mailto:neerajrawatdhani@gmail.com">neerajrawatdhani@gmail.com</a>
           </div>
-
-          <h3 class="section-h reveal">Confirm &amp; send</h3>
-          <label class="consent reveal" for="agree">
-            <input type="checkbox" id="agree">
-            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-            <span class="consent-text">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
-          </label>
-
-          <div class="actions reveal">
-            <button class="btn btn-wa" type="button" id="waBtn" disabled>
-              <span class="label-txt">Send WhatsApp</span>
-              <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
-              <span class="spinner" aria-hidden="true"></span>
-            </button>
-            <button class="btn btn-mail" type="button" id="mailBtn" disabled>
-              <span class="label-txt">Send Email</span>
-              <span class="round" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-              <span class="spinner" aria-hidden="true"></span>
-            </button>
+          <button type="button" class="copy-btn" id="copyMailBtn">Copy Email</button>
+        </div>
+        <div class="direct-row">
+          <div class="direct-meta">
+            <small>Direct WhatsApp</small>
+            <a href="https://wa.me/918708167959" target="_blank" rel="noopener noreferrer">+91 87081 67959</a>
+          </div>
+          <div class="direct-meta" style="text-align:right">
+            <small>Privacy Guarantee</small>
+            <span>🔒 Confidential · Zero Spam</span>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
-    <p class="foot reveal"><span class="live">Replies within 5 hours</span></p>
+    <!-- RIGHT: Smart Automated Contact Form -->
+    <div class="form-sticky">
+      <div class="form-card">
+        <div id="formContainer">
+          <div class="fhead">
+            <div>
+              <h2>02 / Tell me what you're building</h2>
+              <p>Complete your smart brief below — instant confirmation + WhatsApp sync built in.</p>
+            </div>
+            <span class="f-score" id="scorePill" aria-live="polite">0 of 7 ready</span>
+          </div>
+
+          <div class="prog-track" aria-hidden="true"><div class="prog-fill" id="progBar"></div></div>
+
+          <form id="contactForm" novalidate>
+            <div class="sub-block">
+              <div class="block-lbl">
+                <span class="lbl-txt">Selected Scope (Optional · Synced)</span>
+                <span class="auto-tag" id="selectedCountTag">Custom / Full Studio</span>
+              </div>
+              <div class="chip-row" id="inlineCapRow"></div>
+            </div>
+
+            <div class="fgrid-2">
+              <div class="field">
+                <label class="lbl-txt" for="fName">Your Name<span class="req">*</span></label>
+                <input class="input" id="fName" name="name" type="text" placeholder="e.g. Aarav Sharma" autocomplete="name" />
+              </div>
+              <div class="field">
+                <label class="lbl-txt" for="fOrg">Organisation / School / Brand<span class="req">*</span></label>
+                <input class="input" id="fOrg" name="org" type="text" placeholder="e.g. EduDhani / Apex Studio" autocomplete="organization" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="lbl-txt" for="fEmail">Email Address<span class="req">*</span></label>
+              <input class="input" id="fEmail" name="email" type="email" placeholder="you@company.com" autocomplete="email" />
+            </div>
+
+            <div class="fgrid-2">
+              <div class="field">
+                <div class="block-lbl">
+                  <label class="lbl-txt" for="fCountry">Country<span class="req">*</span></label>
+                  <span class="auto-tag" id="countryAutoTag" hidden>Auto-detected</span>
+                </div>
+                <select class="input" id="fCountry" name="country">
+                  <option value="">Select country</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="lbl-txt" for="fPhone">Mobile / WhatsApp<span class="req">*</span></label>
+                <div class="phone-wrap">
+                  <span class="dial-badge" id="dialBadge" style="opacity:.45">+</span>
+                  <input class="input" id="fPhone" name="phone" type="tel" inputmode="numeric" placeholder="Select country first" disabled aria-describedby="phoneHint" />
+                </div>
+                <p class="fhint" id="phoneHint">Select country to enable number &amp; local currency</p>
+              </div>
+            </div>
+
+            <div class="fgrid-2">
+              <div class="field">
+                <div class="block-lbl">
+                  <label class="lbl-txt" for="fBudget">Estimated Budget<span class="req">*</span></label>
+                  <span class="auto-tag" id="currencyTag" hidden>INR</span>
+                </div>
+                <select class="input" id="fBudget" name="budget" disabled>
+                  <option value="">Select country first</option>
+                </select>
+              </div>
+              <div class="field">
+                <span class="lbl-txt">Target Timeline</span>
+                <div class="chip-row" id="timelineRow">
+                  <button type="button" class="fchip" data-tl="Urgent (1–2 weeks)" aria-pressed="false">1–2 wks</button>
+                  <button type="button" class="fchip" data-tl="Standard (2–4 weeks)" aria-pressed="true">2–4 wks</button>
+                  <button type="button" class="fchip" data-tl="Flexible (1–3 months)" aria-pressed="false">1–3 mos</button>
+                  <button type="button" class="fchip" data-tl="Ongoing Retainer" aria-pressed="false">Retainer</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="block-lbl">
+                <label class="lbl-txt" for="fBrief">Project Vision &amp; Requirements<span class="req">*</span></label>
+                <span class="fhint" id="briefCount">0 / 10+ chars</span>
+              </div>
+              <div class="tpl-bar">
+                <span class="tpl-lbl">✨ Auto-draft brief:</span>
+                <button type="button" class="tpl-btn" data-tpl="web">Website + SEO + Automation</button>
+                <button type="button" class="tpl-btn" data-tpl="erp">School ERP (EduDhani)</button>
+                <button type="button" class="tpl-btn" data-tpl="app">Mobile App (iOS)</button>
+                <button type="button" class="tpl-btn" data-tpl="uiux">UI/UX + Brand Kit</button>
+                <button type="button" class="tpl-btn" data-tpl="shop">E-Commerce + Razorpay</button>
+              </div>
+              <textarea class="input textarea" id="fBrief" name="project" placeholder="Tell me what you're building, key features (login, dashboard, payments, booking, ERP, automation), target launch date or inspiration links..."></textarea>
+            </div>
+
+            <label class="consent" id="consentBox" for="fAgree">
+              <input type="checkbox" id="fAgree" name="consent" />
+              <span class="cbox" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span class="ctext">I explicitly agree and confirm that the details provided by me will not be shared with any third party and will only be used to respond to this inquiry.</span>
+            </label>
+
+            <div class="form-alert" id="formAlert" role="alert"></div>
+
+            <div class="actions">
+              <button type="button" class="send-btn send-btn--wa pending" id="waBtn">
+                <span class="btn-lbl">Send via WhatsApp</span>
+                <span class="send-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+                <span class="spinner" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="send-btn send-btn--mail pending" id="mailBtn">
+                <span class="btn-lbl" id="mailLbl">Submit Inquiry</span>
+                <span class="send-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+                <span class="spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div class="form-foot">
+              <span>⚡ Automated CRM logging &amp; email notification</span>
+              <span>Replies within 5 hours</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="success-panel" id="successView" hidden role="status" aria-live="polite">
+          <div class="ok-badge"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h2 id="okTitle">Inquiry Received!</h2>
+          <p class="lead" id="okDesc">Thank you for sharing your project brief. Your inquiry is logged and Neeraj will respond within 5 hours.</p>
+          <div class="receipt" id="okReceipt"></div>
+          <div class="ok-actions">
+            <a class="ok-btn ok-btn--wa" id="okWaLink" href="#" target="_blank" rel="noopener noreferrer">Open WhatsApp Brief →</a>
+            <button type="button" class="ok-btn" id="okCopyBtn">Copy Receipt</button>
+            <button type="button" class="ok-btn ok-btn--primary" id="okNewBtn">Submit Another Inquiry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="sfw">
+<footer class="sf" aria-label="Footer">
+  <div class="sf__in">
+    <div class="sf__cols">
+      <div><h3>Work</h3><ul class="work"><li><a href="/#web-developer">Web Development</a></li><li><a href="/#app-developer">App Development</a></li><li><a href="/#ui-ux-designer">UI/UX Design</a></li><li><a href="/#graphic-designer">Graphic Design</a></li><li><a href="/#photographer">Photography</a></li><li><a href="/#shop">Shop</a></li></ul></div>
+      <div><h3>Navigate</h3><ul><li><a href="/home">Home</a></li><li><a href="/#about">My story</a></li><li><a href="/contact">Contact</a></li></ul></div>
+      <div><h3>Status</h3><ul><li class="st">Available for work</li><li class="st">Remote-first, worldwide</li><li class="st">Local time <span data-ftime>—</span></li></ul></div>
+    </div>
+    <div class="sf__bot">
+      <span>© <span data-fyear>2026</span> Neeraj Rawat · EduDhani. Designed and built by Neeraj.</span>
+      <span><a href="/legal/">Privacy &amp; credits</a></span>
+    </div>
   </div>
+</footer>
 </div>
 
 <script>
 (() => {
-  /* ---- all sovereign countries ----
-     [code, name, dial code, national mobile length, currency code, approx. units of currency per 1 USD] */
+  /* ---- Theme & Navigation Controls ---- */
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('themeToggle');
+  const themeLbl = document.getElementById('themeLbl');
+  const syncTheme = () => {
+    const dark = root.dataset.mode === 'dark';
+    themeLbl.textContent = dark ? 'Light' : 'Dark';
+  };
+  syncTheme();
+  themeBtn.addEventListener('click', () => {
+    const dark = root.dataset.mode === 'dark';
+    if (dark) delete root.dataset.mode;
+    else root.dataset.mode = 'dark';
+    try { localStorage.setItem('rishi-mode', root.dataset.mode === 'dark' ? 'dark' : 'light'); } catch (e) {}
+    syncTheme();
+  });
+
+  const rn = document.getElementById('rn');
+  const menuBtn = document.getElementById('rnMenu');
+  const closeBtn = document.getElementById('rnClose');
+  const panel = document.getElementById('rnPanel');
+  const setMenu = (open) => {
+    panel.classList.toggle('open', open);
+    rn.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    root.classList.toggle('rn-lock', open);
+    if (open) setTimeout(() => closeBtn.focus(), 60);
+    else menuBtn.focus();
+  };
+  menuBtn?.addEventListener('click', () => setMenu(!panel.classList.contains('open')));
+  closeBtn?.addEventListener('click', () => setMenu(false));
+  panel?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) setMenu(false); });
+  addEventListener('scroll', () => rn.classList.toggle('stuck', scrollY > 10), { passive: true });
+
+  /* ---- Local Time Clock (IST) ---- */
+  const M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const tickClock = () => {
+    const now = new Date();
+    const d = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const h = d.getHours(), m = String(d.getMinutes()).padStart(2, '0');
+    const txt = `${h % 12 || 12}:${m}${h < 12 ? 'am' : 'pm'}`;
+    document.querySelectorAll('[data-ftime]').forEach(el => { el.textContent = txt; });
+    const short = matchMedia('(max-width: 767.98px)').matches;
+    const dTxt = short ? `${d.getDate()} ${M[d.getMonth()].slice(0, 3)}` : `${d.getDate()} ${M[d.getMonth()]}, ${d.getFullYear()}`;
+    document.querySelectorAll('[data-fdate]').forEach(el => { el.textContent = dTxt; });
+    document.querySelectorAll('[data-fyear]').forEach(el => { el.textContent = d.getFullYear(); });
+  };
+  tickClock();
+  setInterval(tickClock, 20000);
+
+  /* ---- Copy Direct Email ---- */
+  const copyMailBtn = document.getElementById('copyMailBtn');
+  copyMailBtn?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText('neerajrawatdhani@gmail.com'); } catch (e) {}
+    copyMailBtn.textContent = 'Copied ✓';
+    setTimeout(() => { copyMailBtn.textContent = 'Copy Email'; }, 1800);
+  });
+
+  /* ---- Service Capabilities & Automated Deliverables Engine ---- */
+  const CAPS = {
+    web: {
+      label: 'Web Development',
+      deliverables: [
+        'Custom responsive website or web app engineered for speed & Core Web Vitals',
+        'Admin dashboard, authentication, dynamic calculators & REST API integrations',
+        'Technical SEO metadata, Google Analytics & clean production deployment'
+      ]
+    },
+    app: {
+      label: 'App Development',
+      deliverables: [
+        'Native iOS mobile experience with smooth 60fps animations & gestures',
+        'Secure local vaults, push notifications & real-time backend/cloud API sync',
+        'TestFlight builds, App Store assets & complete submission support'
+      ]
+    },
+    uiux: {
+      label: 'UI/UX Design',
+      deliverables: [
+        'Complete user flows, wireframes & interactive clickable Figma prototypes',
+        'Multi-role SaaS dashboards, dark/light design tokens & reusable component systems',
+        'Conversion-optimised checkout, onboarding & developer-ready specs'
+      ]
+    },
+    graphic: {
+      label: 'Graphic & Brand Identity',
+      deliverables: [
+        'Original logo system, colour palette, typography rules & brand guidelines',
+        'High-impact social media carousels, posters, banners & campaign creatives',
+        'Editable source files + print & digital exports ready for immediate launch'
+      ]
+    },
+    erp: {
+      label: 'EduDhani ERP & Automation',
+      deliverables: [
+        'EduDhani cloud School ERP setup: admissions, fees, attendance & admin portals',
+        'Automated WhatsApp, SMTP email confirmation & CRM lead capture pipelines',
+        'Razorpay payment gateway, instant digital delivery & automated GST/Excel tools'
+      ]
+    },
+    photo: {
+      label: 'Photography & Visual Stories',
+      deliverables: [
+        'Planned portrait, corporate campus, event or product storytelling shoot',
+        'Professional colour grading, retouching & curated high-resolution gallery',
+        'Web-optimised imagery formatted seamlessly for portfolios, decks & social'
+      ]
+    }
+  };
+
+  const TEMPLATES = {
+    web: {
+      caps: ['web', 'uiux'],
+      text: 'I want to build a modern, fast website / web application with responsive UI, custom interactive sections, technical SEO, lead capture automation (Email + WhatsApp alerts), and clean cloud deployment.'
+    },
+    erp: {
+      caps: ['erp', 'web'],
+      text: 'We are looking to implement EduDhani School ERP & Automation for our institution — including student admissions, fee/Razorpay collection, staff & admin dashboards, automated WhatsApp/Email parent alerts, and custom workflow setup.'
+    },
+    app: {
+      caps: ['app', 'uiux'],
+      text: 'I want to design and develop a mobile app (iOS) covering clean onboarding, smooth 60fps animations, secure user data/cloud APIs, and complete App Store launch readiness.'
+    },
+    uiux: {
+      caps: ['uiux', 'graphic'],
+      text: 'We need an end-to-end UI/UX redesign in Figma (user flows, interactive prototype, scalable design system) along with refreshed brand identity, logos, and social campaign creatives.'
+    },
+    shop: {
+      caps: ['web', 'erp'],
+      text: 'I want to launch a digital store / e-commerce platform featuring product filtering, cart & checkout UX, Razorpay payment verification, instant downloadable file delivery, and automated customer confirmation emails.'
+    }
+  };
+
+  const selectedCaps = new Set();
+  const inlineCapRow = document.getElementById('inlineCapRow');
+  const scopeHeading = document.getElementById('scopeHeading');
+  const scopeBadge = document.getElementById('scopeBadge');
+  const scopeList = document.getElementById('scopeList');
+  const selectedCountTag = document.getElementById('selectedCountTag');
+
+  Object.entries(CAPS).forEach(([key, item]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'fchip';
+    b.dataset.cap = key;
+    b.setAttribute('aria-pressed', 'false');
+    b.textContent = item.label;
+    inlineCapRow.appendChild(b);
+  });
+
+  const renderScope = () => {
+    document.querySelectorAll('[data-cap]').forEach(el => {
+      el.setAttribute('aria-pressed', String(selectedCaps.has(el.dataset.cap)));
+    });
+    const keys = [...selectedCaps];
+    if (!keys.length) {
+      scopeHeading.textContent = 'Full-Studio Deliverables Included';
+      scopeBadge.textContent = 'All 6 Disciplines Available';
+      selectedCountTag.textContent = 'Custom / Full Studio';
+      const defaultItems = [
+        'End-to-end execution: Strategy, UI/UX Design, Engineering & Production Launch',
+        'Built-in automation: Instant CRM lead logging, WhatsApp handoff & Email alerts',
+        'Clean documentation, source ownership & responsive mobile/desktop polish'
+      ];
+      scopeList.innerHTML = defaultItems.map(line =>
+        `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${line}</span></li>`
+      ).join('');
+      return;
+    }
+
+    const labels = keys.map(k => CAPS[k].label);
+    scopeHeading.textContent = `Included in ${labels.join(' + ')}`;
+    scopeBadge.textContent = `${keys.length} Selected`;
+    selectedCountTag.textContent = labels.join(' · ');
+
+    const lines = [];
+    keys.forEach(k => {
+      CAPS[k].deliverables.slice(0, keys.length > 2 ? 2 : 3).forEach(d => lines.push(d));
+    });
+    scopeList.innerHTML = lines.map(line =>
+      `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${line}</span></li>`
+    ).join('');
+  };
+
+  document.addEventListener('click', e => {
+    const capBtn = e.target.closest('[data-cap]');
+    if (!capBtn) return;
+    const key = capBtn.dataset.cap;
+    if (!CAPS[key]) return;
+    if (selectedCaps.has(key)) selectedCaps.delete(key);
+    else selectedCaps.add(key);
+    renderScope();
+  });
+
+  // Pre-select capability from URL query (?service=...) or referrer without keeping noisy query string
+  (() => {
+    const qs = new URLSearchParams(location.search);
+    const svc = (qs.get('service') || '').toLowerCase();
+    const ref = (document.referrer || '').toLowerCase();
+    const map = { web: 'web', 'web-developer': 'web', app: 'app', 'app-developer': 'app', uiux: 'uiux', 'ui-ux-designer': 'uiux', graphic: 'graphic', 'graphic-designer': 'graphic', photo: 'photo', photographer: 'photo', erp: 'erp', shop: 'erp' };
+    if (map[svc]) selectedCaps.add(map[svc]);
+    else {
+      for (const [slug, target] of Object.entries(map)) {
+        if (ref.includes('/' + slug)) { selectedCaps.add(target); break; }
+      }
+    }
+    if (qs.has('service')) {
+      try { history.replaceState(null, '', '/contact'); } catch (e) {}
+    }
+    renderScope();
+  })();
+
+  /* ---- Country / Phone / Dynamic Currency Budget Data ---- */
   const RAW = [
     ["AF","Afghanistan","+93",9,"AFN",70],["AL","Albania","+355",9,"ALL",95],["DZ","Algeria","+213",9,"DZD",135],
     ["AD","Andorra","+376",6,"EUR",0.92],["AO","Angola","+244",9,"AOA",900],["AG","Antigua and Barbuda","+1268",7,"XCD",2.7],
@@ -371,219 +1053,388 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:24px;cursor:p
   ];
 
   const COUNTRIES = {};
-  RAW.forEach(([code, name, dial, len, cur, rate]) => {
-    COUNTRIES[code] = { name, dial, len, cur, rate };
-  });
+  RAW.forEach(([code, name, dial, len, cur, rate]) => { COUNTRIES[code] = { name, dial, len, cur, rate }; });
 
-  /* ---- currency formatting for budget bands ---- */
   const SYM = { USD: '$', INR: '₹', GBP: '£', EUR: '€', JPY: '¥', CNY: '¥', KRW: '₩', PHP: '₱' };
-  const nice = (x) => {
+  const nice = x => {
     const r = Math.pow(10, Math.max(0, Math.floor(Math.log10(x)) - 1));
     return Math.round(x / r) * r;
   };
   const BASE_RATE = COUNTRIES.IN.rate;
-  const money = (inrAmount, c) => {
-    const v = nice(inrAmount / BASE_RATE * c.rate);
+  const money = (inr, c) => {
+    const v = nice(inr / BASE_RATE * c.rate);
     const loc = c.cur === 'INR' ? 'en-IN' : 'en-US';
-    const prefix = SYM[c.cur] ?? (c.cur + ' ');
-    return prefix + v.toLocaleString(loc);
+    return (SYM[c.cur] ?? (c.cur + ' ')) + v.toLocaleString(loc);
   };
   const BUDGET_INR = [25000, 50000, 100000, 250000, 500000];
-  const bandsFor = (c) => {
-    const pts = BUDGET_INR.map((x) => money(x, c));
-    const bands = [];
-    for (let i = 0; i < pts.length - 1; i++) bands.push(`${pts[i]} – ${pts[i + 1]}`);
-    bands.push(`${pts[pts.length - 1]}+`);
-    bands.push('Flexible / To be discussed');
-    return bands;
+  const bandsFor = c => {
+    const pts = BUDGET_INR.map(x => money(x, c));
+    const out = [];
+    for (let i = 0; i < pts.length - 1; i++) out.push(`${pts[i]} – ${pts[i + 1]}`);
+    out.push(`${pts[pts.length - 1]}+`);
+    out.push('Flexible / To be discussed');
+    return out;
   };
 
-  /* ---- DOM bindings ---- */
-  const $ = (id) => document.getElementById(id);
-  const overlay = $('overlay'), dlg = $('dlg');
-  const name = $('name'), org = $('org'), email = $('email');
-  const country = $('country'), phone = $('phone'), dial = $('dial'), phoneHint = $('phoneHint');
-  const budget = $('budget'), brief = $('brief'), agree = $('agree');
-  const waBtn = $('waBtn'), mailBtn = $('mailBtn');
-  const bar = $('bar'), progTxt = $('progTxt');
+  /* ---- Form Bindings & Smart Automation ---- */
+  const fName = document.getElementById('fName');
+  const fOrg = document.getElementById('fOrg');
+  const fEmail = document.getElementById('fEmail');
+  const fCountry = document.getElementById('fCountry');
+  const countryAutoTag = document.getElementById('countryAutoTag');
+  const currencyTag = document.getElementById('currencyTag');
+  const fPhone = document.getElementById('fPhone');
+  const dialBadge = document.getElementById('dialBadge');
+  const phoneHint = document.getElementById('phoneHint');
+  const fBudget = document.getElementById('fBudget');
+  const fBrief = document.getElementById('fBrief');
+  const briefCount = document.getElementById('briefCount');
+  const fAgree = document.getElementById('fAgree');
+  const consentBox = document.getElementById('consentBox');
+  const formAlert = document.getElementById('formAlert');
+  const progBar = document.getElementById('progBar');
+  const scorePill = document.getElementById('scorePill');
+  const waBtn = document.getElementById('waBtn');
+  const mailBtn = document.getElementById('mailBtn');
+  const mailLbl = document.getElementById('mailLbl');
 
   Object.entries(COUNTRIES)
     .sort((a, b) => a[1].name.localeCompare(b[1].name))
-    .forEach(([code, c]) => country.add(new Option(c.name, code)));
+    .forEach(([code, c]) => fCountry.add(new Option(c.name, code)));
 
-  /* ---- pop helper ---- */
-  const pop = (el) => el.animate(
-    [{ transform: 'scale(.98)' }, { transform: 'scale(1)' }],
-    { duration: 300, easing: 'cubic-bezier(.34,1.4,.64,1)' }
-  );
-  const phoneDigits = () => phone.value.replace(/\D/g, '');
-  const emailOk = () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+  let selectedTimeline = 'Standard (2–4 weeks)';
+  document.getElementById('timelineRow').addEventListener('click', e => {
+    const b = e.target.closest('[data-tl]');
+    if (!b) return;
+    selectedTimeline = b.dataset.tl;
+    document.querySelectorAll('[data-tl]').forEach(btn => btn.setAttribute('aria-pressed', String(btn === b)));
+  });
 
-  /* ---- validation checks ---- */
+  // One-click smart brief templates + capability linking
+  document.querySelectorAll('[data-tpl]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tpl = TEMPLATES[btn.dataset.tpl];
+      if (!tpl) return;
+      tpl.caps.forEach(c => selectedCaps.add(c));
+      renderScope();
+      fBrief.value = tpl.text;
+      touch(fBrief);
+      update();
+      fBrief.focus();
+    });
+  });
+
+  const digits = () => (fPhone.value || '').replace(/\D/g, '');
+  const emailOk = () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((fEmail.value || '').trim());
+
   const checks = () => {
-    const c = COUNTRIES[country.value];
+    const c = COUNTRIES[fCountry.value];
     return {
-      name: name.value.trim().length > 0,
-      org: org.value.trim().length > 0,
+      name: (fName.value || '').trim().length > 0,
+      org: (fOrg.value || '').trim().length > 0,
       email: emailOk(),
       country: !!c,
-      phone: !!c && phoneDigits().length === c.len,
-      budget: !!budget.value,
-      brief: brief.value.trim().length >= 10,
-      agree: agree.checked,
+      phone: !!c && digits().length === c.len,
+      budget: !!fBudget.value,
+      brief: (fBrief.value || '').trim().length >= 10,
+      agree: !!fAgree.checked
     };
   };
 
   const touched = new Set();
-  const touch = (el) => touched.add(el.id);
+  const touch = el => { if (el) touched.add(el.id); };
   const mark = (el, ok) => {
+    if (!el) return;
     el.classList.toggle('invalid', touched.has(el.id) && !ok);
     el.classList.toggle('valid', touched.has(el.id) && ok);
   };
 
+  const applyCountry = (code, isAuto = false) => {
+    const c = COUNTRIES[code];
+    fBudget.innerHTML = '';
+    countryAutoTag.hidden = !isAuto;
+    if (!c) {
+      fPhone.disabled = true;
+      fPhone.value = '';
+      fPhone.placeholder = 'Select country first';
+      phoneHint.textContent = 'Select country to enable number & local currency';
+      phoneHint.className = 'fhint';
+      dialBadge.textContent = '+';
+      dialBadge.style.opacity = '.45';
+      fBudget.disabled = true;
+      fBudget.add(new Option('Select country first', ''));
+      currencyTag.hidden = true;
+      return;
+    }
+    fPhone.disabled = false;
+    fPhone.placeholder = `${c.len}-digit mobile number`;
+    phoneHint.textContent = `Enter ${c.len} digits (${c.name})`;
+    phoneHint.className = 'fhint';
+    dialBadge.textContent = c.dial;
+    dialBadge.style.opacity = '1';
+    fBudget.disabled = false;
+    fBudget.add(new Option('Select estimated budget', ''));
+    bandsFor(c).forEach(label => fBudget.add(new Option(label, label)));
+    currencyTag.textContent = c.cur;
+    currencyTag.hidden = false;
+  };
+
+  // Auto-detect visitor region by timezone so domestic/international currency & dial code are ready immediately
+  (() => {
+    const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+    let code = '';
+    if (tz.includes('kolkata') || tz.includes('calcutta')) code = 'IN';
+    else if (tz.includes('dubai')) code = 'AE';
+    else if (tz.includes('london')) code = 'GB';
+    else if (tz.includes('singapore')) code = 'SG';
+    else if (tz.includes('sydney') || tz.includes('melbourne') || tz.includes('brisbane') || tz.includes('perth')) code = 'AU';
+    else if (tz.includes('toronto') || tz.includes('vancouver') || tz.includes('montreal')) code = 'CA';
+    else if (tz.startsWith('america/')) code = 'US';
+    else if (tz.includes('berlin') || tz.includes('paris') || tz.includes('amsterdam')) code = 'DE';
+    if (code && COUNTRIES[code]) {
+      fCountry.value = code;
+      applyCountry(code, true);
+    }
+  })();
+
   const update = () => {
     const c = checks();
     const keys = Object.keys(c);
-    const done = keys.filter((k) => c[k]).length;
-    bar.style.width = (done / keys.length * 100) + '%';
+    const done = keys.filter(k => c[k]).length;
     const ready = done === keys.length;
-    progTxt.textContent = ready ? 'All set. Choose how to send.' : `${done} of ${keys.length} done`;
-    waBtn.disabled = !ready;
-    mailBtn.disabled = !ready;
+    progBar.style.width = `${Math.round((done / keys.length) * 100)}%`;
+    scorePill.textContent = ready ? 'All 8 checks ready ✓' : `${done} of ${keys.length} ready`;
+    scorePill.classList.toggle('ready', ready);
+    waBtn.classList.toggle('pending', !ready);
+    mailBtn.classList.toggle('pending', !ready);
 
-    mark(name, c.name);
-    mark(org, c.org);
-    mark(email, c.email);
-    mark(brief, c.brief);
-    mark(country, c.country);
-    mark(phone, c.phone);
-    mark(budget, c.budget);
+    const bLen = (fBrief.value || '').trim().length;
+    briefCount.textContent = bLen >= 10 ? `${bLen} chars ✓` : `${bLen} / 10+ chars`;
+    briefCount.className = bLen >= 10 ? 'fhint ok' : 'fhint';
+
+    mark(fName, c.name);
+    mark(fOrg, c.org);
+    mark(fEmail, c.email);
+    mark(fCountry, c.country);
+    mark(fPhone, c.phone);
+    mark(fBudget, c.budget);
+    mark(fBrief, c.brief);
+    if (c.agree) consentBox.classList.remove('err');
+    if (ready) formAlert.classList.remove('show');
   };
 
-  [name, org, email, brief].forEach((el) => {
+  [fName, fOrg, fEmail, fBrief].forEach(el => {
     el.addEventListener('input', () => { touch(el); update(); });
     el.addEventListener('blur', () => { touch(el); update(); });
   });
-  agree.addEventListener('change', update);
+  fAgree.addEventListener('change', update);
+  fBudget.addEventListener('change', () => { touch(fBudget); update(); });
+  fBudget.addEventListener('blur', () => { touch(fBudget); update(); });
 
-  country.addEventListener('change', () => {
-    touch(country);
-    const c = COUNTRIES[country.value];
-    touched.delete('phone');
-    touched.delete('budget');
-    phone.value = '';
-    budget.innerHTML = '';
-
-    if (!c) {
-      phone.disabled = true;
-      phone.placeholder = 'Select country first';
-      phoneHint.textContent = 'Select country first';
-      phoneHint.classList.remove('err');
-      dial.textContent = '+';
-      dial.style.opacity = '.4';
-      budget.disabled = true;
-      budget.add(new Option('Select country first', ''));
-    } else {
-      phone.disabled = false;
-      phone.placeholder = `${c.len} digits`;
-      phoneHint.textContent = `Enter your ${c.len}-digit mobile number`;
-      phoneHint.classList.remove('err');
-      dial.textContent = c.dial;
-      dial.style.opacity = '1';
-      budget.disabled = false;
-      budget.add(new Option('Select estimated budget', ''));
-      bandsFor(c).forEach((label) => budget.add(new Option(label, label)));
-      pop(budget);
-      pop(phone);
-      phone.focus();
-    }
+  fCountry.addEventListener('change', () => {
+    touch(fCountry);
+    touched.delete('fPhone');
+    touched.delete('fBudget');
+    fPhone.value = '';
+    applyCountry(fCountry.value, false);
     update();
+    if (fCountry.value) fPhone.focus();
   });
 
-  phone.addEventListener('input', () => {
-    const c = COUNTRIES[country.value];
+  fPhone.addEventListener('input', () => {
+    const c = COUNTRIES[fCountry.value];
     if (!c) return;
-    const d = phoneDigits().slice(0, c.len);
-    phone.value = d;
-    touch(phone);
+    const d = digits().slice(0, c.len);
+    fPhone.value = d;
+    touch(fPhone);
     const left = c.len - d.length;
-    phoneHint.textContent = left > 0 ? `${left} more digit${left > 1 ? 's' : ''} needed` : 'Looks good';
-    phoneHint.classList.remove('err');
+    phoneHint.textContent = left > 0 ? `${left} more digit${left > 1 ? 's' : ''} needed` : `Valid ${c.len}-digit number ✓`;
+    phoneHint.className = left > 0 ? 'fhint' : 'fhint ok';
     update();
   });
-  phone.addEventListener('blur', () => {
-    const c = COUNTRIES[country.value];
-    touch(phone);
-    if (c && phoneDigits().length !== c.len) {
-      phoneHint.textContent = `Enter a valid ${c.len}-digit number`;
-      phoneHint.classList.add('err');
+  fPhone.addEventListener('blur', () => {
+    const c = COUNTRIES[fCountry.value];
+    touch(fPhone);
+    if (c && digits().length !== c.len) {
+      phoneHint.textContent = `Please enter a valid ${c.len}-digit number`;
+      phoneHint.className = 'fhint err';
     }
     update();
   });
 
-  budget.addEventListener('change', () => { touch(budget); update(); });
-  budget.addEventListener('blur', () => { touch(budget); update(); });
+  const focusFirstMissing = () => {
+    const c = checks();
+    const order = [
+      ['name', fName, 'Please enter your name.'],
+      ['org', fOrg, 'Please enter your organisation, school, or brand name.'],
+      ['email', fEmail, 'Please enter a valid email address.'],
+      ['country', fCountry, 'Please select your country.'],
+      ['phone', fPhone, 'Please enter a complete mobile number matching your country dial code.'],
+      ['budget', fBudget, 'Please select your estimated budget range.'],
+      ['brief', fBrief, 'Please add at least 10 characters describing your project (or pick an Auto-draft template above).'],
+      ['agree', fAgree, 'Please tick the privacy confirmation checkbox below before sending.']
+    ];
+    for (const [key, el, msg] of order) {
+      if (!c[key]) {
+        if (key === 'agree') consentBox.classList.add('err');
+        else touch(el);
+        update();
+        formAlert.textContent = msg;
+        formAlert.classList.add('show');
+        el.focus({ preventScroll: false });
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+    }
+    return true;
+  };
 
   const getPayload = () => {
-    const c = COUNTRIES[country.value];
-    const fullPhone = c ? `${c.dial} ${phone.value.trim()}` : phone.value.trim();
+    const c = COUNTRIES[fCountry.value];
+    const dial = c ? c.dial : '';
+    const fullPhone = `${dial} ${(fPhone.value || '').trim()}`.trim();
+    const servicesArr = [...selectedCaps].map(k => CAPS[k].label);
+    const serviceStr = servicesArr.length ? servicesArr.join(' · ') : 'Full-Studio / Custom Project';
+    const waText =
+      `*New Project Inquiry — Neeraj Rawat*\n\n` +
+      `*Name:* ${(fName.value || '').trim()}\n` +
+      `*Organisation:* ${(fOrg.value || '').trim()}\n` +
+      `*Services:* ${serviceStr}\n` +
+      `*Timeline:* ${selectedTimeline}\n` +
+      `*Budget:* ${fBudget.value}\n` +
+      `*Email:* ${(fEmail.value || '').trim()}\n` +
+      `*Mobile:* ${fullPhone} (${c ? c.name : ''})\n\n` +
+      `*Project Brief:*\n${(fBrief.value || '').trim()}`;
     return {
-      name: name.value.trim(),
-      org: org.value.trim(),
-      email: email.value.trim(),
-      country: c ? c.name : country.value,
+      name: (fName.value || '').trim(),
+      org: (fOrg.value || '').trim(),
+      email: (fEmail.value || '').trim(),
+      country: c ? c.name : fCountry.value,
+      countryCode: fCountry.value || 'IN',
       phone: fullPhone,
-      budget: budget.value,
-      project: brief.value.trim()
+      services: servicesArr,
+      service: serviceStr,
+      timeline: selectedTimeline,
+      budget: fBudget.value,
+      project: (fBrief.value || '').trim(),
+      waUrl: `https://wa.me/918708167959?text=${encodeURIComponent(waText)}`
     };
   };
 
-  const sendWa = () => {
-    const p = getPayload();
-    const msg = `*New Project Inquiry - Neeraj Rawat Portfolio*\n\n` +
-      `*Name:* ${p.name}\n` +
-      `*Organisation:* ${p.org}\n` +
-      `*Email:* ${p.email}\n` +
-      `*Country & Mobile:* ${p.phone} (${p.country})\n` +
-      `*Budget:* ${p.budget}\n` +
-      `*Project Details:*\n${p.project}`;
-    const url = `https://wa.me/918708167959?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+  const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[ch]));
+
+  const showSuccess = (mode, p, apiRes) => {
+    const saved = !!(apiRes && apiRes.success);
+    const refId = (saved && apiRes.inquiry && apiRes.inquiry.id) ? apiRes.inquiry.id : ('wa_' + Date.now());
+    const emailDone = !!(saved && apiRes.emailSent);
+    document.getElementById('okTitle').textContent = mode === 'wa'
+      ? (saved ? 'WhatsApp Ready & Logged!' : 'WhatsApp Opened!')
+      : 'Project Inquiry Submitted!';
+    document.getElementById('okDesc').textContent = mode === 'wa'
+      ? (saved
+          ? `Thanks, ${p.name}! Your inquiry has been logged in our system and WhatsApp is ready with your complete formatted brief.`
+          : `Thanks, ${p.name}! WhatsApp has opened with your formatted project brief. Just press send to reach Neeraj directly.`)
+      : emailDone
+        ? `Thanks, ${p.name}! Your inquiry is saved and an automated confirmation has been sent to ${p.email}. Neeraj replies within 5 hours.`
+        : `Thanks, ${p.name}! Your inquiry (${refId}) has been saved. You can also tap WhatsApp below for an instant direct ping.`;
+
+    const statusText = mode === 'wa'
+      ? (saved ? (emailDone ? 'CRM Logged + Auto-Email Sent ✓' : 'WhatsApp Ready · CRM Logged ✓') : 'WhatsApp Opened (Server sync offline)')
+      : (emailDone ? 'CRM Logged + Auto-Email Sent ✓' : 'CRM Logged · Ready ✓');
+
+    document.getElementById('okReceipt').innerHTML = `
+      <div class="receipt-row"><span>Reference ID</span><strong>${esc(refId)}</strong></div>
+      <div class="receipt-row"><span>Client / Org</span><strong>${esc(p.name)} · ${esc(p.org)}</strong></div>
+      <div class="receipt-row"><span>Capabilities</span><strong>${esc(p.service)}</strong></div>
+      <div class="receipt-row"><span>Timeline &amp; Budget</span><strong>${esc(p.timeline)} · ${esc(p.budget)}</strong></div>
+      <div class="receipt-row"><span>Automation Status</span><strong>${statusText}</strong></div>
+    `;
+    document.getElementById('okWaLink').href = p.waUrl;
+    document.getElementById('okCopyBtn').dataset.copyText =
+      `Reference: ${refId}\nName: ${p.name}\nOrg: ${p.org}\nServices: ${p.service}\nTimeline: ${p.timeline}\nBudget: ${p.budget}\nEmail: ${p.email}\nMobile: ${p.phone}\n\nBrief:\n${p.project}`;
+
+    document.getElementById('formContainer').hidden = true;
+    document.getElementById('successView').hidden = false;
   };
 
-  const sendMail = async (btn) => {
-    btn.classList.add('loading');
-    const p = getPayload();
+  const dispatchLead = async (channelLabel, p) => {
     try {
-      await fetch('/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: p.name,
+          org: p.org,
+          company: p.org,
           email: p.email,
+          country: p.country,
+          countryCode: p.countryCode,
           mobile: p.phone,
-          channel: 'Email / Portfolio Inquiry',
-          service: p.org ? `Org: ${p.org}` : 'Project Inquiry',
+          channel: channelLabel,
+          service: p.service,
+          services: p.services,
+          timeline: p.timeline,
           budget: p.budget,
-          project: p.project
+          project: p.project,
+          consent: true
         })
       });
-    } catch(e){}
-    setTimeout(() => {
-      btn.classList.remove('loading');
-      const txt = btn.querySelector('.label-txt');
-      txt.textContent = 'Sent ✓';
-      txt.style.opacity = 1;
-      setTimeout(() => { txt.textContent = 'Send Email'; }, 2000);
-      const subject = encodeURIComponent(`Project Inquiry: ${p.org || p.name}`);
-      const body = encodeURIComponent(`Name: ${p.name}\nOrganisation: ${p.org}\nEmail: ${p.email}\nPhone: ${p.phone}\nBudget: ${p.budget}\n\nProject Details:\n${p.project}`);
-      window.location.href = `mailto:neerajrawatdhani@gmail.com?subject=${subject}&body=${body}`;
-    }, 800);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        return { success: false, error: data.error || `Server error (HTTP ${res.status})` };
+      }
+      return data;
+    } catch (e) {
+      return { success: false, error: 'Unable to reach server right now.' };
+    }
   };
 
-  waBtn.addEventListener('click', sendWa);
-  mailBtn.addEventListener('click', () => sendMail(mailBtn));
-  $('form').addEventListener('submit', (e) => e.preventDefault());
+  waBtn.addEventListener('click', async () => {
+    if (!focusFirstMissing()) return;
+    const p = getPayload();
+    formAlert.classList.remove('show');
+    window.open(p.waUrl, '_blank', 'noopener,noreferrer');
+    waBtn.classList.add('loading');
+    const apiRes = await dispatchLead('WhatsApp / Full Contact Studio', p);
+    waBtn.classList.remove('loading');
+    showSuccess('wa', p, apiRes);
+  });
+
+  mailBtn.addEventListener('click', async () => {
+    if (!focusFirstMissing()) return;
+    const p = getPayload();
+    formAlert.classList.remove('show');
+    mailBtn.classList.add('loading');
+    const apiRes = await dispatchLead('Email / Full Contact Studio', p);
+    mailBtn.classList.remove('loading');
+    if (!apiRes || !apiRes.success) {
+      formAlert.textContent = `${(apiRes && apiRes.error) ? apiRes.error : 'Could not submit inquiry right now.'} Please try again or use "Send via WhatsApp".`;
+      formAlert.classList.add('show');
+      return;
+    }
+    showSuccess('mail', p, apiRes);
+  });
+
+  document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    mailBtn.click();
+  });
+
+  document.getElementById('okCopyBtn').addEventListener('click', async function() {
+    try { await navigator.clipboard.writeText(this.dataset.copyText || ''); } catch (e) {}
+    this.textContent = 'Copied ✓';
+    setTimeout(() => { this.textContent = 'Copy Receipt'; }, 1800);
+  });
+
+  document.getElementById('okNewBtn').addEventListener('click', () => {
+    document.getElementById('successView').hidden = true;
+    document.getElementById('formContainer').hidden = false;
+    touched.clear();
+    fBrief.value = '';
+    fAgree.checked = false;
+    formAlert.classList.remove('show');
+    update();
+  });
 
   update();
 })();
