@@ -1352,7 +1352,7 @@
     /* ========= MODULAR QUOTATION BUILDER & 3-PAGE PDF SHEET ========= */
     .req-modules-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 8px;
     }
     .req-check-card {
@@ -1399,8 +1399,8 @@
     }
     .prop-h1 { margin: 0; font-size: 25px; font-weight: 800; color: #0F2843; letter-spacing: -0.01em; }
     .prop-sub { margin: 4px 0 0; font-size: 12.5px; color: #475569; }
-    .prop-sec-h { margin: 18px 0 8px; font-size: 14px; font-weight: 800; color: #0F2843; }
-    .prop-tbl { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; border: 1px solid #CBD5E1; }
+    .prop-sec-h { margin: 16px 0 8px; font-size: 14px; font-weight: 800; color: #0F2843; break-after: avoid; }
+    .prop-tbl { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; border: 1px solid #CBD5E1; break-inside: avoid; }
     .prop-tbl thead th { background: #0F2843; color: #FFFFFF; padding: 8px 11px; text-align: left; font-weight: 700; }
     .prop-tbl td { padding: 7.5px 11px; border-bottom: 1px solid #E2E8F0; color: #1E293B; }
     .prop-tbl tbody tr:nth-child(even) td { background: #F8FAFC; }
@@ -2272,7 +2272,7 @@
     </div>
     <div class="modal-body">
       <input type="hidden" id="qLinkedLeadId" />
-      <div class="form-grid">
+      <div class="form-grid form-grid-3">
         <div class="form-field">
           <label class="form-label" for="quoteLeadPicker">Auto-Fill From CRM Lead</label>
           <select class="select" id="quoteLeadPicker" onchange="prefillQuoteFromLead(this.value)">
@@ -2280,12 +2280,23 @@
           </select>
         </div>
         <div class="form-field">
-          <label class="form-label" for="qBusinessType">Client Category / Domain Type</label>
+          <label class="form-label" for="qPackagePreset">Project Package Type</label>
+          <select class="select" id="qPackagePreset" onchange="applyQuotePackagePreset(this.value)">
+            <option value="website-only">Website Only (Frontend / Portfolio / Business)</option>
+            <option value="website-cms" selected>Website + Complete Admin CMS</option>
+            <option value="website-cms-wa">Website + Admin CMS + WhatsApp API</option>
+            <option value="fullstack-api">Full-Stack Web App + REST APIs + DB</option>
+            <option value="ecommerce">E-Commerce Store + Payments</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="qBusinessType">Client Industry</label>
           <select class="select" id="qBusinessType" onchange="recomputeQuoteSummary()">
-            <option value="School / Institution">School / Educational Institution</option>
             <option value="Corporate / Business">Corporate / SaaS / Business</option>
+            <option value="School / Institution">School / Educational Institution</option>
             <option value="E-Commerce Store">E-Commerce / Retail Brand</option>
             <option value="Startup / Custom App">Startup / Custom Platform</option>
+            <option value="Personal / Portfolio">Personal Brand / Studio</option>
           </select>
         </div>
       </div>
@@ -2343,48 +2354,64 @@
 
       <!-- STEP 1: CLIENT REQUIREMENT MODULES -->
       <div class="form-field full">
-        <label class="form-label">Select Client Requirements (Controls Proposal &amp; 3-Page PDF Sections)</label>
+        <label class="form-label">Select Client Requirements &amp; Comparison Tables Included in PDF</label>
         <div class="req-modules-grid" id="qModulesGrid">
-          <label class="req-check-card checked"><input type="checkbox" id="modWebsite" checked onchange="onQuoteModuleToggle()" /><span>Website &amp; CMS<span class="req-check-sub">Core UI, Admin Dashboard</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modWebsite" checked onchange="onQuoteModuleToggle()" /><span>Website Build<span class="req-check-sub">Site or Website + CMS</span></span></label>
           <label class="req-check-card"><input type="checkbox" id="modCustomApi" onchange="onQuoteModuleToggle()" /><span>Custom APIs<span class="req-check-sub">REST, Payment, ERP Sync</span></span></label>
           <label class="req-check-card checked"><input type="checkbox" id="modWhatsapp" checked onchange="onQuoteModuleToggle()" /><span>WhatsApp API<span class="req-check-sub">Meta Cloud + Rate Tables</span></span></label>
           <label class="req-check-card checked"><input type="checkbox" id="modHosting" checked onchange="onQuoteModuleToggle()" /><span>VPS / Hosting<span class="req-check-sub">Cloud Application Server</span></span></label>
           <label class="req-check-card checked"><input type="checkbox" id="modDatabase" checked onchange="onQuoteModuleToggle()" /><span>Cloud Database<span class="req-check-sub">Managed DB Allocation</span></span></label>
-          <label class="req-check-card checked"><input type="checkbox" id="modDomain" checked onchange="onQuoteModuleToggle()" /><span>Domain (.com)<span class="req-check-sub">DNS &amp; Annual Renewal</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modDomain" checked onchange="onQuoteModuleToggle()" /><span>Domain (.com/.in)<span class="req-check-sub">DNS &amp; Annual Renewal</span></span></label>
           <label class="req-check-card checked"><input type="checkbox" id="modBackups" checked onchange="onQuoteModuleToggle()" /><span>Cloud Backups<span class="req-check-sub">Snapshots &amp; Storage</span></span></label>
-          <label class="req-check-card checked"><input type="checkbox" id="modDbComparison" checked onchange="onQuoteModuleToggle()" /><span>DB Companies<span class="req-check-sub">MongoDB, Supabase, Neon...</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modDbComparison" checked onchange="onQuoteModuleToggle()" /><span>DB Companies<span class="req-check-sub">10 Cloud DB Vendors</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modHostingComparison" checked onchange="onQuoteModuleToggle()" /><span>Hosting Companies<span class="req-check-sub">10 Cloud/VPS Providers</span></span></label>
+          <label class="req-check-card checked"><input type="checkbox" id="modDomainComparison" checked onchange="onQuoteModuleToggle()" /><span>Domain Companies<span class="req-check-sub">8 Global Registrars</span></span></label>
         </div>
       </div>
 
-      <!-- STEP 2: DATABASE & CLOUD PROVIDERS -->
+      <!-- STEP 2: DATABASE, HOSTING & DOMAIN PROVIDERS -->
       <div class="form-grid form-grid-3">
         <div class="form-field" id="wrapDbProvider">
-          <label class="form-label" for="qDbProvider">Selected Database Company</label>
+          <label class="form-label" for="qDbProvider">Selected Database Company (10)</label>
           <select class="select" id="qDbProvider" onchange="recomputeQuoteSummary()">
             <option value="mongodb">MongoDB Atlas Flex (MongoDB Inc.)</option>
             <option value="supabase">Supabase Postgres (Supabase Inc.)</option>
             <option value="neon">Neon Serverless Postgres (Databricks)</option>
             <option value="firebase">Firebase Firestore (Google Cloud)</option>
-            <option value="aws_rds">Managed MySQL / AWS RDS</option>
+            <option value="planetscale">PlanetScale Vitess (PlanetScale Inc.)</option>
+            <option value="upstash">Upstash Serverless Redis (Upstash Inc.)</option>
+            <option value="aws_rds">AWS RDS Postgres / MySQL (Amazon AWS)</option>
+            <option value="turso">Turso Edge SQLite (Turso)</option>
+            <option value="appwrite">Appwrite Cloud DB (Appwrite)</option>
+            <option value="hostinger_db">Managed MySQL / MariaDB (VPS Local)</option>
           </select>
         </div>
         <div class="form-field" id="wrapHostingProvider">
-          <label class="form-label" for="qHostingProvider">Cloud Hosting / VPS Provider</label>
+          <label class="form-label" for="qHostingProvider">Cloud Hosting / VPS Provider (10)</label>
           <select class="select" id="qHostingProvider" onchange="recomputeQuoteSummary()">
-            <option value="hostinger">Hostinger Cloud / VPS</option>
-            <option value="digitalocean">DigitalOcean Droplet</option>
-            <option value="aws">AWS EC2 / Lightsail</option>
-            <option value="vercel">Vercel Pro Managed</option>
-            <option value="custom">Client-Managed Infra</option>
+            <option value="hostinger">Hostinger Cloud / KVM VPS</option>
+            <option value="vercel">Vercel Cloud &amp; Edge Functions</option>
+            <option value="digitalocean">DigitalOcean Droplet / App Platform</option>
+            <option value="aws">AWS EC2 / Lightsail Cloud</option>
+            <option value="gcp">Google Cloud Run / Compute Engine</option>
+            <option value="cloudflare_pages">Cloudflare Pages &amp; Workers</option>
+            <option value="hetzner">Hetzner Cloud NVMe VPS</option>
+            <option value="linode">Akamai / Linode Cloud VPS</option>
+            <option value="railway">Railway / Render Cloud</option>
+            <option value="netlify">Netlify Edge Cloud</option>
           </select>
         </div>
         <div class="form-field" id="wrapDomainProvider">
-          <label class="form-label" for="qDomainProvider">Domain Registrar</label>
+          <label class="form-label" for="qDomainProvider">Domain Registrar Company (8)</label>
           <select class="select" id="qDomainProvider" onchange="recomputeQuoteSummary()">
-            <option value="namecheap">Namecheap (.com)</option>
-            <option value="cloudflare">Cloudflare Registrar</option>
-            <option value="godaddy">GoDaddy (.com)</option>
-            <option value="bigrock">BigRock (.com / .in)</option>
+            <option value="namecheap">Namecheap Inc. (.com / .dev)</option>
+            <option value="cloudflare">Cloudflare Registrar (At-Cost Wholesale)</option>
+            <option value="godaddy">GoDaddy Domains</option>
+            <option value="bigrock">BigRock India (.in / .com)</option>
+            <option value="hostinger_dom">Hostinger Domains</option>
+            <option value="porkbun">Porkbun Registrar</option>
+            <option value="squarespace">Squarespace Domains (ex-Google)</option>
+            <option value="route53">AWS Route 53 (Amazon AWS)</option>
           </select>
         </div>
       </div>
@@ -3785,22 +3812,36 @@
     supabase: { name: 'Supabase Managed PostgreSQL', company: 'Supabase Inc.', tier: 'Free Tier / Pro ($25/mo+)', bestFor: 'Relational SQL schema, built-in Auth, Realtime & File Storage' },
     neon: { name: 'Neon Serverless Postgres', company: 'Neon / Databricks', tier: 'Free / Launch ($19/mo+)', bestFor: 'Serverless edge functions, DB branching & scale-to-zero SQL' },
     firebase: { name: 'Firebase Firestore Cloud DB', company: 'Google Cloud', tier: 'Spark Free / Blaze Pay-as-you-go', bestFor: 'Mobile iOS/Android sync, real-time alerts & Cloud Functions' },
-    aws_rds: { name: 'Managed MySQL / AWS RDS', company: 'Amazon AWS / Hostinger', tier: 'Included in VPS or RDS (~$15–$50/mo)', bestFor: 'Structured ERP records, accounting & strict SQL reporting' }
+    planetscale: { name: 'PlanetScale Vitess MySQL/PG', company: 'PlanetScale Inc.', tier: 'Scaler Pro ($39/mo+)', bestFor: 'High-throughput production SQL clusters & zero-downtime migrations' },
+    upstash: { name: 'Upstash Serverless Redis', company: 'Upstash Inc.', tier: 'Free / Pay-per-request', bestFor: 'Sub-millisecond caching, queues, rate limits & edge sessions' },
+    aws_rds: { name: 'AWS RDS (PostgreSQL / MySQL)', company: 'Amazon Web Services', tier: 'Free 12mo / ~$15–$55/mo+', bestFor: 'Enterprise VPC relational databases, compliance & automated backups' },
+    turso: { name: 'Turso Edge SQLite (libSQL)', company: 'Turso', tier: 'Starter Free / Scaler ($29/mo+)', bestFor: 'Multi-region low-latency edge websites & lightweight SaaS' },
+    appwrite: { name: 'Appwrite Cloud Database', company: 'Appwrite', tier: 'Free / Pro ($15/mo+)', bestFor: 'All-in-one backend database, storage & auth SDKs' },
+    hostinger_db: { name: 'Managed MySQL / MariaDB (VPS)', company: 'Hostinger / cPanel', tier: 'Included in VPS Plan', bestFor: 'Dedicated local VPS apps, PHP/WordPress & budget ERP deployments' }
   };
 
-  const PROPOSAL_HOSTING_NAMES = {
-    hostinger: 'Hostinger Cloud / VPS Hosting',
-    digitalocean: 'DigitalOcean Droplet',
-    aws: 'AWS EC2 / Lightsail Cloud Server',
-    vercel: 'Vercel Pro Managed Edge',
-    custom: 'Client-Managed Infrastructure'
+  const PROPOSAL_HOSTING_COMPANIES = {
+    hostinger: { name: 'Hostinger Cloud / KVM VPS', company: 'Hostinger', tier: 'KVM 1–4 (~₹5k–₹18k/yr)', bestFor: 'Cost-effective VPS with root SSH, India/Global nodes & easy management' },
+    vercel: { name: 'Vercel Cloud & Edge Network', company: 'Vercel Inc.', tier: 'Hobby Free / Pro ($20/mo)', bestFor: 'Zero-config Next.js, static websites & serverless Node/Python APIs' },
+    digitalocean: { name: 'DigitalOcean Droplets / App', company: 'DigitalOcean', tier: '$4–$24+/mo', bestFor: 'Developer-friendly Linux VPS, managed Docker & predictable bandwidth' },
+    aws: { name: 'AWS EC2 / Lightsail Cloud', company: 'Amazon Web Services', tier: '$5–$40+/mo', bestFor: 'Enterprise Mumbai (ap-south-1) scaling, S3/CDN & SLA workloads' },
+    gcp: { name: 'Google Cloud Run / Compute', company: 'Google Cloud', tier: 'Pay-as-you-go / Free tier', bestFor: 'Autoscaling containerized apps, AI workflows & Firebase backends' },
+    cloudflare_pages: { name: 'Cloudflare Pages & Workers', company: 'Cloudflare', tier: 'Free / Paid ($5/mo+)', bestFor: 'Ultra-fast edge static sites, unlimited bandwidth & global CDN' },
+    hetzner: { name: 'Hetzner Cloud NVMe VPS', company: 'Hetzner Online', tier: '€3.79–€15+/mo', bestFor: 'High-CPU/RAM dedicated NVMe VPS in Europe/US/Singapore' },
+    linode: { name: 'Akamai / Linode Cloud VPS', company: 'Akamai Technologies', tier: '$5–$24+/mo', bestFor: 'Stable Mumbai/global cloud compute & predictable enterprise routing' },
+    railway: { name: 'Railway / Render Cloud', company: 'Railway / Render', tier: '$5–$20+/mo', bestFor: 'Fast Git-push deployment for Node, Python backends & PostgreSQL' },
+    netlify: { name: 'Netlify Edge Cloud', company: 'Netlify', tier: 'Starter Free / Pro ($19/mo)', bestFor: 'Marketing websites, JAMstack portfolios & instant preview builds' }
   };
 
-  const PROPOSAL_DOMAIN_NAMES = {
-    namecheap: '.com domain registration (Namecheap)',
-    cloudflare: '.com domain registration (Cloudflare)',
-    godaddy: '.com domain registration (GoDaddy)',
-    bigrock: '.com domain registration (BigRock)'
+  const PROPOSAL_DOMAIN_COMPANIES = {
+    namecheap: { name: 'Namecheap', company: 'Namecheap Inc.', tier: '~₹950–₹1,800/yr (.com)', bestFor: 'Competitive renewals, free WHOIS privacy & intuitive DNS control' },
+    cloudflare: { name: 'Cloudflare Registrar', company: 'Cloudflare Inc.', tier: 'Wholesale (~$10.44/yr)', bestFor: 'Zero-markup ICANN cost renewals + enterprise DNSSEC & DDoS WAF' },
+    godaddy: { name: 'GoDaddy Domains', company: 'GoDaddy Inc.', tier: 'Intro ~₹499 / Ren ~₹1,600+', bestFor: 'Widely known corporate domain management & workspace bundles' },
+    bigrock: { name: 'BigRock India', company: 'Newfold Digital', tier: '₹899–₹1,600/yr (.in/.com)', bestFor: 'Indian INR billing, GST invoices & .in/.co.in domain bundles' },
+    hostinger_dom: { name: 'Hostinger Domains', company: 'Hostinger', tier: '~₹800–₹1,400/yr', bestFor: 'Consolidated single dashboard billing alongside Hostinger VPS' },
+    porkbun: { name: 'Porkbun Registrar', company: 'Porkbun LLC', tier: '~$10–$11/yr (.com)', bestFor: 'Lowest transparent renewal fees, free SSL & developer DNS API' },
+    squarespace: { name: 'Squarespace Domains', company: 'Squarespace (Google Domains)', tier: '~$12–$20/yr', bestFor: 'Clean UI migrated from Google Domains + Google Workspace link' },
+    route53: { name: 'AWS Route 53', company: 'Amazon Web Services', tier: '~$13/yr + hosted zone', bestFor: 'Programmatic enterprise cloud DNS, latency routing & SLA failover' }
   };
 
   function getQuoteModulesState() {
@@ -3812,7 +3853,9 @@
       database: document.getElementById('modDatabase')?.checked !== false,
       domain: document.getElementById('modDomain')?.checked !== false,
       backups: document.getElementById('modBackups')?.checked !== false,
-      dbComparison: document.getElementById('modDbComparison')?.checked !== false
+      dbComparison: document.getElementById('modDbComparison')?.checked !== false,
+      hostingComparison: document.getElementById('modHostingComparison')?.checked !== false,
+      domainComparison: document.getElementById('modDomainComparison')?.checked !== false
     };
   }
 
@@ -3825,13 +3868,69 @@
       modDatabase: mods.database !== false,
       modDomain: mods.domain !== false,
       modBackups: mods.backups !== false,
-      modDbComparison: mods.dbComparison !== false
+      modDbComparison: mods.dbComparison !== false,
+      modHostingComparison: mods.hostingComparison !== false,
+      modDomainComparison: mods.domainComparison !== false
     };
     Object.entries(map).forEach(([id, val]) => {
       const el = document.getElementById(id);
       if (el) el.checked = val;
     });
     onQuoteModuleToggle();
+  }
+
+  function applyQuotePackagePreset(preset) {
+    if (preset === 'website-only') {
+      document.getElementById('qDevTitle').value = 'Custom Responsive Website (Frontend & Portfolio Build)';
+      document.getElementById('qDevDesc').value = 'Custom UI/UX design, mobile responsive pages, contact/lead inquiry integration, on-page SEO & cloud launch (No CMS/Database needed)';
+      document.getElementById('qWebsiteFee').value = 18000;
+      document.getElementById('qHostingProvider').value = 'vercel';
+      document.getElementById('qVpsFee').value = 0;
+      document.getElementById('qVpsRen').value = 0;
+      document.getElementById('qDomainFee').value = 1800;
+      document.getElementById('qDomainRen').value = 2200;
+      applyQuoteModulesState({
+        website: true, customApi: false, whatsapp: false, hosting: true, database: false, domain: true, backups: false, dbComparison: false, hostingComparison: true, domainComparison: true
+      });
+    } else if (preset === 'website-cms') {
+      document.getElementById('qDevTitle').value = 'Custom Website + Complete Admin CMS Dashboard';
+      document.getElementById('qDevDesc').value = 'Home, About, Services, Gallery, Enquiries, Responsive UI, Admin CMS Login, SEO & Cloud Deployment';
+      document.getElementById('qWebsiteFee').value = 50000;
+      document.getElementById('qVpsFee').value = 12000;
+      document.getElementById('qVpsRen').value = 15000;
+      applyQuoteModulesState({
+        website: true, customApi: false, whatsapp: false, hosting: true, database: true, domain: true, backups: true, dbComparison: true, hostingComparison: true, domainComparison: true
+      });
+    } else if (preset === 'website-cms-wa') {
+      document.getElementById('qDevTitle').value = 'Custom Website + Complete Admin CMS + WhatsApp API';
+      document.getElementById('qDevDesc').value = 'Responsive Website, Complete Admin CMS Dashboard, Enquiry Pipelines, WhatsApp Business Cloud API & Cloud Deployment';
+      document.getElementById('qWebsiteFee').value = 50000;
+      document.getElementById('qWaFee').value = 8000;
+      document.getElementById('qVpsFee').value = 12000;
+      document.getElementById('qVpsRen').value = 15000;
+      applyQuoteModulesState({
+        website: true, customApi: false, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true, hostingComparison: true, domainComparison: true
+      });
+    } else if (preset === 'fullstack-api') {
+      document.getElementById('qDevTitle').value = 'Full-Stack Web Application + Custom REST APIs + Cloud DB';
+      document.getElementById('qDevDesc').value = 'Custom Web Application, Role-Based Dashboards, REST API Layer, Managed Cloud Database & Automated Cloud Hosting';
+      document.getElementById('qWebsiteFee').value = 65000;
+      document.getElementById('qApiFee').value = 15000;
+      document.getElementById('qVpsFee').value = 15000;
+      document.getElementById('qVpsRen').value = 18000;
+      applyQuoteModulesState({
+        website: true, customApi: true, whatsapp: false, hosting: true, database: true, domain: true, backups: true, dbComparison: true, hostingComparison: true, domainComparison: true
+      });
+    } else if (preset === 'ecommerce') {
+      document.getElementById('qDevTitle').value = 'E-Commerce Online Store + Admin CMS + Payment Gateway';
+      document.getElementById('qDevDesc').value = 'Product Catalog, Cart & Checkout, Razorpay / Payment Gateway APIs, Order CMS & Instant Digital/Shipping Workflows';
+      document.getElementById('qWebsiteFee').value = 45000;
+      document.getElementById('qApiFee').value = 10000;
+      document.getElementById('qBusinessType').value = 'E-Commerce Store';
+      applyQuoteModulesState({
+        website: true, customApi: true, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true, hostingComparison: true, domainComparison: true
+      });
+    }
   }
 
   function onQuoteModuleToggle() {
@@ -3871,6 +3970,9 @@
     document.getElementById('qClientEmail').value = '';
     document.getElementById('qClientMobile').value = '';
     document.getElementById('qBusinessType').value = 'Corporate / Business';
+    document.getElementById('qPackagePreset').value = 'website-cms-wa';
+    document.getElementById('qDevTitle').value = 'Custom Website + Complete Admin CMS Dashboard';
+    document.getElementById('qDevDesc').value = 'Home, About, Services/Admissions, Gallery, Enquiries, Responsive UI, Admin CMS Login, SEO & Cloud Deployment';
     document.getElementById('qCurrency').value = 'INR';
     document.getElementById('qStatus').value = 'In Discussion';
     document.getElementById('qDbProvider').value = 'mongodb';
@@ -3894,7 +3996,7 @@
     customQuoteItems = [];
     renderCustomQuoteItems();
     applyQuoteModulesState({
-      website: true, customApi: false, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true
+      website: true, customApi: false, whatsapp: true, hosting: true, database: true, domain: true, backups: true, dbComparison: true, hostingComparison: true, domainComparison: true
     });
     openModal('modalQuoteBuilder');
   }
@@ -4104,15 +4206,17 @@
     const m = cfg.modules || {};
     const customItems = Array.isArray(cfg.customItems) ? cfg.customItems : [];
     const dbMeta = PROPOSAL_DB_COMPANIES[cfg.dbProvider || 'mongodb'] || PROPOSAL_DB_COMPANIES.mongodb;
-    const dbBasisText = String(cfg.dbCustomTier || '').trim() || 'Low-usage planning budget';
-    const hostLabel = PROPOSAL_HOSTING_NAMES[cfg.hostingProvider || 'hostinger'] || PROPOSAL_HOSTING_NAMES.hostinger;
-    const domLabel = PROPOSAL_DOMAIN_NAMES[cfg.domainProvider || 'namecheap'] || PROPOSAL_DOMAIN_NAMES.namecheap;
+    const dbBasisText = String(cfg.dbCustomTier || '').trim() || dbMeta.tier;
+    const hostInfo = PROPOSAL_HOSTING_COMPANIES[cfg.hostingProvider || 'hostinger'] || PROPOSAL_HOSTING_COMPANIES.hostinger;
+    const domInfo = PROPOSAL_DOMAIN_COMPANIES[cfg.domainProvider || 'namecheap'] || PROPOSAL_DOMAIN_COMPANIES.namecheap;
+    const hostLabel = hostInfo.name;
+    const domLabel = domInfo.name + ' Domain Registration';
     const orgTitle = (cfg.clientCompany || cfg.clientName || 'CLIENT').toUpperCase();
     const dateStr = cfg.quoteDate || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     const ref = cfg.quoteNumber || 'DT-2026-001';
 
     const subtitleParts = [];
-    if (m.website !== false) subtitleParts.push('Website & Complete Admin Dashboard');
+    if (m.website !== false) subtitleParts.push(cfg.devTitle || 'Custom Website');
     if (m.customApi) subtitleParts.push('REST API & Integrations');
     if (m.whatsapp !== false) subtitleParts.push('WhatsApp Business API');
 
@@ -4268,9 +4372,9 @@
       </div>
     ` : '';
 
-    const dbRowsHtml = Object.entries(PROPOSAL_DB_COMPANIES).map(([key, info]) => {
-      const selected = key === (cfg.dbProvider || 'mongodb');
-      const tierStr = (selected && cfg.dbCustomTier) ? cfg.dbCustomTier : info.tier;
+    const renderProviderRows = (map, selectedKey, overrideTier) => Object.entries(map).map(([key, info]) => {
+      const selected = key === selectedKey;
+      const tierStr = (selected && overrideTier) ? overrideTier : info.tier;
       return `
         <tr style="${selected ? 'background:#EFF4FA !important;' : ''}">
           <td><strong>${escHtml(info.name)}</strong>${selected ? ' <span style="font-size:10px; background:#0F2843; color:#fff; padding:1px 5px; border-radius:3px;">Selected</span>' : ''}</td>
@@ -4281,15 +4385,19 @@
       `;
     }).join('');
 
+    const dbRowsHtml = renderProviderRows(PROPOSAL_DB_COMPANIES, cfg.dbProvider || 'mongodb', cfg.dbCustomTier);
+    const hostingRowsHtml = renderProviderRows(PROPOSAL_HOSTING_COMPANIES, cfg.hostingProvider || 'hostinger', '');
+    const domainRowsHtml = renderProviderRows(PROPOSAL_DOMAIN_COMPANIES, cfg.domainProvider || 'namecheap', '');
+
     const page3 = `
       <div class="proposal-page">
         <div>
           <div style="margin-bottom:16px;">
-            <h1 class="prop-h1">ANNUAL COST, DATABASE &amp; SCALING</h1>
-            <p class="prop-sub">Infrastructure growth allowances, supported database companies and commercial summary</p>
+            <h1 class="prop-h1">CLOUD PROVIDERS, SCALING &amp; SUMMARY</h1>
+            <p class="prop-sub">Infrastructure growth allowances, cloud vendor comparisons and commercial summary</p>
           </div>
 
-          <h3 class="prop-sec-h">7. Infrastructure scaling — annual budget bands</h3>
+          <h3 class="prop-sec-h">Infrastructure scaling — annual budget bands</h3>
           <table class="prop-tbl" style="text-align:center;">
             <thead>
               <tr>
@@ -4308,17 +4416,28 @@
           </table>
 
           ${(m.database !== false && m.dbComparison !== false) ? `
-            <h3 class="prop-sec-h">8. Database companies &amp; cloud provider options</h3>
+            <h3 class="prop-sec-h">Database companies &amp; cloud provider options</h3>
             <table class="prop-tbl">
               <thead><tr><th>Database Platform</th><th>Company / Vendor</th><th>Typical Pricing Tiers</th><th>Ideal Fit &amp; Capabilities</th></tr></thead>
               <tbody>${dbRowsHtml}</tbody>
             </table>
-          ` : `
-            <h3 class="prop-sec-h">8. Infrastructure &amp; domain pricing notes</h3>
-            <p class="prop-note" style="font-size:12px; color:#1E293B;">
-              Initial database, domain registrar and VPS allocations reflect standard commercial planning budgets and may vary with promotional hosting renewals, storage growth or regional pricing changes.
-            </p>
-          `}
+          ` : ''}
+
+          ${(m.hosting !== false && m.hostingComparison !== false) ? `
+            <h3 class="prop-sec-h">Cloud hosting &amp; VPS providers</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Hosting / VPS Platform</th><th>Company</th><th>Typical Tiers</th><th>Best Use Case</th></tr></thead>
+              <tbody>${hostingRowsHtml}</tbody>
+            </table>
+          ` : ''}
+
+          ${(m.domain !== false && m.domainComparison !== false) ? `
+            <h3 class="prop-sec-h">Domain registrar companies</h3>
+            <table class="prop-tbl">
+              <thead><tr><th>Domain Registrar</th><th>Company</th><th>Typical Annual Cost</th><th>Highlights</th></tr></thead>
+              <tbody>${domainRowsHtml}</tbody>
+            </table>
+          ` : ''}
 
           <h3 class="prop-sec-h">9. Commercial summary</h3>
           <table class="prop-tbl">
