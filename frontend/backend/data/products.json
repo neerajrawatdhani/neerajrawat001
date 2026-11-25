@@ -9,10 +9,10 @@
     "originalPrice": "₹999",
     "originalPriceNum": 999,
     "discountPercent": 50,
-    "img": "frontend/apple-touch-icon.png",
-    "image": "frontend/apple-touch-icon.png",
+    "img": "/apple-touch-icon.png",
+    "image": "/apple-touch-icon.png",
     "images": [
-      "frontend/web-developer/2-tax-pnl.webp"
+      "/web-developer/2-tax-pnl.webp"
     ],
     "fileUrl": "https://neerajrawat.dev/downloads/gst-pro.xlsx",
     "downloadUrl": "https://neerajrawat.dev/downloads/gst-pro.xlsx",

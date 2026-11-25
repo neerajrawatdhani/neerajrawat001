@@ -8,6 +8,7 @@ const DIR = __dirname;
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript',
+  '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css',
   '.json': 'application/json',
   '.png': 'image/png',
@@ -15,6 +16,7 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
   '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
   '.mp4': 'video/mp4'
 };

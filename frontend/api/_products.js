@@ -19,22 +19,36 @@ function getStorageFile() {
 
 let memoryProducts = [];
 
+function normalizeProductUrl(u) {
+  if (!u || typeof u !== 'string') return '/apple-touch-icon.png';
+  return u.replace(/^\/?frontend\//, '/');
+}
+
+function normalizeProduct(p) {
+  if (!p || typeof p !== 'object') return p;
+  const img = normalizeProductUrl(p.img || p.image || '/apple-touch-icon.png');
+  const images = Array.isArray(p.images) && p.images.length
+    ? p.images.map(normalizeProductUrl)
+    : [img];
+  return { ...p, img, image: img, images };
+}
+
 function loadProducts() {
   try {
     const file = getStorageFile();
     if (file) {
       const data = JSON.parse(fs.readFileSync(file, 'utf8'));
       if (Array.isArray(data)) {
-        memoryProducts = data;
-        return data;
+        memoryProducts = data.map(normalizeProduct);
+        return memoryProducts;
       }
     }
   } catch (e) {}
-  return memoryProducts;
+  return memoryProducts.map(normalizeProduct);
 }
 
 function saveProducts(products) {
-  memoryProducts = Array.isArray(products) ? products : [];
+  memoryProducts = (Array.isArray(products) ? products : []).map(normalizeProduct);
 
   for (const f of CANDIDATE_FILES) {
     try {

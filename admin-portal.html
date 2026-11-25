@@ -1314,7 +1314,7 @@
   <aside class="sidebar" id="side" aria-label="Admin navigation">
     <div class="profile">
       <div class="avatar" aria-hidden="true" style="width:44px; height:44px; border-radius:12px; overflow:hidden; border:2px solid #5B4BDB; box-shadow:0 4px 12px rgba(91,75,219,0.35); flex-shrink:0;">
-        <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:100%; height:100%; object-fit:cover; border-radius:10px; display:block;" onerror="this.onerror=null; this.src='frontend/neeraj_colour.webp';" />
+        <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:100%; height:100%; object-fit:cover; border-radius:10px; display:block;" onerror="this.onerror=null; this.src='/apple-touch-icon.png';" />
       </div>
       <div class="who">
         <b id="sbBrandTitle">Neeraj Rawat</b>
@@ -1390,7 +1390,7 @@
 
     <div class="foot">
       <div class="av" aria-hidden="true" style="width:36px; height:36px; border-radius:50%; overflow:hidden; border:2px solid #5B4BDB; flex-shrink:0;">
-        <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" onerror="this.onerror=null; this.src='frontend/neeraj_colour.webp';" />
+        <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" onerror="this.onerror=null; this.src='/apple-touch-icon.png';" />
       </div>
       <div class="fi">
         <b>Neeraj Rawat</b>
@@ -1428,7 +1428,7 @@
         </button>
         <button class="btn-icon-notify" id="topbarBellNotify" title="Follow-ups due today" onclick="switchTab('quotations')">🔔</button>
         <div class="topbar-user-badge" onclick="switchTab('settings')" style="display:inline-flex; align-items:center; gap:8px; cursor:pointer; padding:4px 12px 4px 4px; border-radius:999px; background:#F8FAFC; border:1px solid #E2E8F0; margin-left:6px; transition:all .2s;" onmouseover="this.style.borderColor='#5B4BDB'" onmouseout="this.style.borderColor='#E2E8F0'">
-          <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #5B4BDB; display:block;" onerror="this.onerror=null; this.src='frontend/neeraj_colour.webp';" />
+          <img src="/neeraj_colour.webp" alt="Neeraj Rawat" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #5B4BDB; display:block;" onerror="this.onerror=null; this.src='/apple-touch-icon.png';" />
           <div style="display:flex; flex-direction:column; text-align:left; line-height:1.2;">
             <span style="font-size:12.5px; font-weight:700; color:#0F1222;">Neeraj Rawat</span>
             <span style="font-size:10px; font-weight:700; color:#5B4BDB; text-transform:uppercase;">Admin</span>
@@ -2556,7 +2556,7 @@
 
             <!-- Uploaded Image Preview Chips -->
             <div id="prodImgPreviews" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
-            <input type="hidden" id="prodImg" value="frontend/apple-touch-icon.png" />
+            <input type="hidden" id="prodImg" value="/apple-touch-icon.png" />
           </div>
 
           <div class="form-group">
@@ -2618,7 +2618,7 @@
         desc: 'Interactive 3D Holo-Foil SVG Card for engineers and creators.',
         price: '₹999',
         priceNum: 999,
-        img: 'frontend/ability-card/assets/subject_preview.png',
+        img: '/ability-card/assets/subject_preview.png',
         fileUrl: 'https://neerajrawat.dev/downloads/ability-card.zip',
         sales: '18 sales'
       },
@@ -2628,7 +2628,7 @@
         desc: 'Formula-driven GST calculator, ledger generator & printable invoice format.',
         price: '₹499',
         priceNum: 499,
-        img: 'frontend/web-developer/2-tax-pnl.webp',
+        img: '/web-developer/2-tax-pnl.webp',
         fileUrl: 'https://neerajrawat.dev/downloads/gst-template.xlsx',
         sales: '42 sales'
       },
@@ -2638,7 +2638,7 @@
         desc: 'Production-ready authentication, Razorpay checkout, and dark theme UI.',
         price: '₹1,499',
         priceNum: 1499,
-        img: 'frontend/web-developer/1-zerodha.webp',
+        img: '/web-developer/1-zerodha.webp',
         fileUrl: 'https://neerajrawat.dev/downloads/nextjs-starter.zip',
         sales: '15 sales'
       },
@@ -2648,7 +2648,7 @@
         desc: 'Professional typography scale, color reasoning palettes & logo presentation deck.',
         price: '₹799',
         priceNum: 799,
-        img: 'frontend/graphic-designer/logo-foodicted.webp',
+        img: '/graphic-designer/logo-foodicted.webp',
         fileUrl: 'https://neerajrawat.dev/downloads/brand-kit.zip',
         sales: '24 sales'
       },
@@ -2658,7 +2658,7 @@
         desc: 'Ultra-fast responsive gallery template with WebP optimizations.',
         price: '₹899',
         priceNum: 899,
-        img: 'frontend/photographer/p/10-full.webp',
+        img: '/photographer/p/10-full.webp',
         fileUrl: 'https://neerajrawat.dev/downloads/portfolio-template.zip',
         sales: '12 sales'
       }
@@ -3072,12 +3072,13 @@
       }
 
       grid.innerHTML = productsData.map(p => {
-        const prodImages = Array.isArray(p.images) && p.images.length ? p.images : [p.img || p.image || 'frontend/apple-touch-icon.png'];
+        const normImg = u => (u && typeof u === 'string') ? u.replace(/^\/?frontend\//, '/') : u;
+        const prodImages = (Array.isArray(p.images) && p.images.length ? p.images : [p.img || p.image || '/apple-touch-icon.png']).map(normImg);
         const mainImg = prodImages[0];
         return `
         <div class="product-card" id="prod-card-${p.id}">
           <div class="prod-img-wrap" style="position:relative;">
-            <img src="${mainImg}" alt="${escapeHtml(p.title || p.name)}" onerror="this.onerror=null; this.src='frontend/apple-touch-icon.png';" />
+            <img src="${mainImg}" alt="${escapeHtml(p.title || p.name)}" onerror="this.onerror=null; this.src='/apple-touch-icon.png';" />
             ${prodImages.length > 1 ? `
               <span style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.3);">
                 <span>🎞️ ${prodImages.length} Photos</span>
@@ -3190,9 +3191,9 @@
         const domain = getStoreCookieDomain();
         const dPart = domain ? `; domain=${domain}` : '';
         const lightProds = arr.map(p => {
-          let mainImg = p.img || (p.images && p.images[0]) || 'frontend/apple-touch-icon.png';
+          let mainImg = (p.img || (p.images && p.images[0]) || '/apple-touch-icon.png').replace(/^\/?frontend\//, '/');
           if (mainImg && mainImg.startsWith('data:') && mainImg.length > 1500) {
-            mainImg = 'frontend/apple-touch-icon.png';
+            mainImg = '/apple-touch-icon.png';
           }
           return {
             id: p.id,
@@ -3334,7 +3335,7 @@
       document.getElementById('prodDesc').value = '';
       document.getElementById('prodPrice').value = '';
       document.getElementById('prodOriginalPrice').value = '';
-      document.getElementById('prodImg').value = 'frontend/apple-touch-icon.png';
+      document.getElementById('prodImg').value = '/apple-touch-icon.png';
       document.getElementById('prodFileUrl').value = '';
       uploadedProductImages = [];
       renderUploadedImagesPreviews();
@@ -3357,7 +3358,7 @@
       } else if (p.img || p.image) {
         uploadedProductImages = [p.img || p.image];
       } else {
-        uploadedProductImages = ['frontend/apple-touch-icon.png'];
+        uploadedProductImages = ['/apple-touch-icon.png'];
       }
       document.getElementById('prodImg').value = uploadedProductImages[0] || '';
       renderUploadedImagesPreviews();
@@ -3371,7 +3372,7 @@
       const desc = document.getElementById('prodDesc').value.trim();
       const priceVal = parseInt(document.getElementById('prodPrice').value) || 0;
       const originalPriceVal = parseInt(document.getElementById('prodOriginalPrice').value) || 0;
-      const manualImg = document.getElementById('prodImg').value.trim() || 'frontend/apple-touch-icon.png';
+      const manualImg = (document.getElementById('prodImg').value.trim() || '/apple-touch-icon.png').replace(/^\/?frontend\//, '/');
       const fileUrl = document.getElementById('prodFileUrl').value.trim();
 
       const images = (uploadedProductImages && uploadedProductImages.length) 
