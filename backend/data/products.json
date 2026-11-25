@@ -16,11 +16,13 @@
     ],
     "fileUrl": "https://neerajrawat.dev/downloads/gst-pro.xlsx",
     "downloadUrl": "https://neerajrawat.dev/downloads/gst-pro.xlsx",
-    "category": "Excel Sheets",
+    "category": "Excel & Sheets",
     "badge": "50% OFF",
     "sales": "0 sales",
     "features": [],
     "status": "Active",
-    "updatedAt": "2026-11-23T23:24:55.700Z"
+    "updatedAt": "2026-11-23T23:24:55.700Z",
+    "categoryKey": "excel",
+    "fileFormat": ".XLSX"
   }
 ]

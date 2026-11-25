@@ -1,17 +1,48 @@
-const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 const { getSettings } = require('../_settings');
 const { updateLead } = require('../_leads');
 
+const TMP_QUOTES = '/tmp/quotations.json';
+const REPO_QUOTES = path.resolve(__dirname, '..', '..', 'backend', 'data', 'quotations.json');
+let memoryQuotes = [];
+
+function loadQuotes() {
+  for (const f of [TMP_QUOTES, REPO_QUOTES]) {
+    try {
+      if (fs.existsSync(f)) {
+        const parsed = JSON.parse(fs.readFileSync(f, 'utf8'));
+        if (Array.isArray(parsed)) { memoryQuotes = parsed; return memoryQuotes; }
+      }
+    } catch (e) {}
+  }
+  return memoryQuotes;
+}
+
+function saveQuotes(list) {
+  memoryQuotes = Array.isArray(list) ? list : [];
+  for (const f of [TMP_QUOTES, REPO_QUOTES]) {
+    try {
+      const dir = path.dirname(f);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(f, JSON.stringify(memoryQuotes, null, 2), 'utf8');
+    } catch (e) {}
+  }
+  return memoryQuotes;
+}
+
+const { loadMailer } = require('../_mailer');
+
 function checkAuth(req) {
   const auth = req.headers.authorization || '';
-  const token = auth.replace(/^Bearer\s+/i, '');
+  const token = auth.replace(/^Bearer\s+/i, '').trim();
   const settings = getSettings();
-  return token === settings.adminSecret;
+  return Boolean(token && settings.adminSecret && token === settings.adminSecret);
 }
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
@@ -19,7 +50,39 @@ module.exports = async (req, res) => {
   }
 
   if (!checkAuth(req)) {
-    return res.status(401).json({ success: false, error: 'Unauthorized: कृपया लॉगिन करें।' });
+    return res.status(401).json({ success: false, error: 'Unauthorized: Please sign in first.' });
+  }
+
+  if (req.method === 'GET') {
+    const quotations = loadQuotes();
+    return res.status(200).json({ success: true, quotations });
+  }
+
+  if (req.method === 'PATCH') {
+    const body = req.body || {};
+    const { id, ...updates } = body;
+    if (!id) return res.status(400).json({ success: false, error: 'Quotation ID is required.' });
+    const list = loadQuotes();
+    const idx = list.findIndex(q => String(q.id) === String(id));
+    if (idx === -1) return res.status(404).json({ success: false, error: 'Quotation not found.' });
+    list[idx] = { ...list[idx], ...updates, updatedAt: new Date().toISOString() };
+    saveQuotes(list);
+    return res.status(200).json({ success: true, quotation: list[idx] });
+  }
+
+  if (req.method === 'DELETE') {
+    const body = req.body || {};
+    const urlParams = new URL(req.url, 'http://localhost').searchParams;
+    const id = body.id || urlParams.get('id');
+    const clearAll = body.clearAll === true || urlParams.get('clearAll') === 'true';
+    if (clearAll) {
+      saveQuotes([]);
+      return res.status(200).json({ success: true, quotations: [] });
+    }
+    if (!id) return res.status(400).json({ success: false, error: 'Quotation ID is required.' });
+    const filtered = loadQuotes().filter(q => String(q.id) !== String(id));
+    saveQuotes(filtered);
+    return res.status(200).json({ success: true, id });
   }
 
   if (req.method !== 'POST') {
@@ -56,18 +119,73 @@ module.exports = async (req, res) => {
     customNotes = ''
   } = body;
 
-  if (!clientName || !clientEmail) {
-    return res.status(400).json({ success: false, error: 'Client Name और Email आवश्यक हैं।' });
+  const validName = String(clientName || '').trim();
+  if (!validName) {
+    return res.status(400).json({ success: false, error: 'Client Name is required.' });
   }
 
   const sym = currency === 'USD' ? '$' : '₹';
   const settings = getSettings();
 
-  // Computations matching Gurukulam School PDF exact mathematics
+  // Computations matching Annual Cost Proposal exact mathematics
   const totalOneTime = Number(websiteDevFee) + Number(waIntegrationFee);
   const totalOperatingY1 = Number(vpsFee) + Number(domainFee) + Number(mongodbFee) + Number(backupFee) + Number(whatsappAllowance);
   const grandTotalY1 = totalOneTime + totalOperatingY1;
   const grandTotalRenewal = Number(vpsRenewal) + Number(domainRenewal) + Number(mongodbRenewal) + Number(backupRenewal) + Number(whatsappRenewal);
+
+  const qId = quoteNumber || ('DT-' + new Date().getFullYear() + '-' + String(Math.floor(100 + Math.random() * 900)));
+  const quoteRecord = {
+    id: qId,
+    leadId: leadId || '',
+    client: validName,
+    company: clientCompany || '',
+    email: clientEmail || '',
+    phone: clientMobile || '',
+    category: businessType || 'Custom Project',
+    scope: devTitle,
+    scopeDesc: devDesc,
+    currency: currency || 'INR',
+    websiteDevFee: Number(websiteDevFee) || 0,
+    waIntegrationFee: Number(waIntegrationFee) || 0,
+    vpsFee: Number(vpsFee) || 0,
+    vpsRenewal: Number(vpsRenewal) || 0,
+    domainFee: Number(domainFee) || 0,
+    domainRenewal: Number(domainRenewal) || 0,
+    mongodbFee: Number(mongodbFee) || 0,
+    mongodbRenewal: Number(mongodbRenewal) || 0,
+    backupFee: Number(backupFee) || 0,
+    backupRenewal: Number(backupRenewal) || 0,
+    whatsappAllowance: Number(whatsappAllowance) || 0,
+    whatsappRenewal: Number(whatsappRenewal) || 0,
+    value: sym + Number(websiteDevFee).toLocaleString('en-IN'),
+    valNum: Number(websiteDevFee) || 0,
+    totalOneTime,
+    totalYear1: grandTotalY1,
+    totalRenewal: grandTotalRenewal,
+    status: body.status || (body.sendEmail === false ? 'In Discussion' : 'Quotation Sent'),
+    followupDue: body.followupDue || new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
+    notes: customNotes || 'Proposal created in Super Admin',
+    updatedAt: new Date().toISOString()
+  };
+
+  const quotes = loadQuotes();
+  const qIdx = quotes.findIndex(q => String(q.id) === String(qId));
+  if (qIdx >= 0) quotes[qIdx] = { ...quotes[qIdx], ...quoteRecord };
+  else quotes.unshift(quoteRecord);
+  saveQuotes(quotes);
+
+  if (body.action === 'save' || body.sendEmail === false) {
+    return res.status(200).json({
+      success: true,
+      emailSent: false,
+      quotation: quoteRecord,
+      message: `Quotation #${qId} saved successfully.`
+    });
+  }
+
+  if (!clientEmail || !String(clientEmail).trim()) {
+    return res.status(400).json({ success: false, quotation: quoteRecord, error: 'Client Email is required to send proposal email.' });
+  }
 
   // Auto-update lead in CRM pipeline if leadId passed
   if (leadId) {
@@ -389,7 +507,8 @@ module.exports = async (req, res) => {
   `;
 
   // Send Email using Nodemailer
-  if (settings.smtpUser && settings.smtpPass) {
+  const nodemailer = loadMailer();
+  if (nodemailer && settings.smtpUser && settings.smtpPass) {
     try {
       const transporter = nodemailer.createTransport({
         host: settings.smtpHost || 'smtp.gmail.com',
@@ -406,28 +525,32 @@ module.exports = async (req, res) => {
       await transporter.sendMail({
         from: fromAddress,
         to: clientEmail.trim(),
-        cc: settings.smtpUser.trim(), // Keep Neeraj in CC for record
+        cc: settings.smtpUser.trim(),
         replyTo: settings.smtpUser.trim(),
-        subject: `📄 Commercial Proposal & Quotation #${quoteNumber || 'QT'} for ${clientCompany ? clientCompany + ' (' + clientName + ')' : clientName} — Dhani Tech`,
+        subject: `Commercial Proposal & Quotation #${qId} for ${clientCompany ? clientCompany + ' (' + clientName + ')' : clientName} — Dhani Tech`,
         html: emailHtml
       });
 
       return res.status(200).json({
         success: true,
-        message: `कोटेशन सफलतापूर्वक ${clientEmail.trim()} पर भेज दिया गया है (और आपकी ईमेल पर भी CC सुरक्षित है)!`,
-        quoteNumber
+        emailSent: true,
+        quotation: quoteRecord,
+        message: `Proposal #${qId} emailed cleanly to ${clientEmail.trim()}!`,
+        quoteNumber: qId
       });
     } catch (err) {
       console.error('[Send Quote Email Error]:', err.message);
       return res.status(500).json({
         success: false,
-        error: 'कोटेशन ईमेल भेजने में विफलता: ' + err.message
+        quotation: quoteRecord,
+        error: 'Email delivery failed: ' + err.message
       });
     }
   }
 
   return res.status(400).json({
     success: false,
-    error: 'SMTP क्रेडेंशियल्स कॉन्फ़िगर नहीं हैं।'
+    quotation: quoteRecord,
+    error: 'SMTP credentials are not configured in Settings / Vercel Env.'
   });
 };

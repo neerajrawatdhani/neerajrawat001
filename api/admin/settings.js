@@ -1,11 +1,8 @@
-const nodemailer = require('nodemailer');
 const { getSettings, saveSettings } = require('../_settings');
+const { loadMailer, checkAdminAuth } = require('../_mailer');
 
 function checkAuth(req) {
-  const auth = req.headers.authorization || '';
-  const token = auth.replace(/^Bearer\s+/i, '');
-  const settings = getSettings();
-  return token === settings.adminSecret;
+  return checkAdminAuth(req);
 }
 
 module.exports = async (req, res) => {
@@ -42,14 +39,12 @@ module.exports = async (req, res) => {
         implementationItems: settings.implementationItems,
         scalingBands: settings.scalingBands,
         metaPricingIndia: settings.metaPricingIndia,
-        paymentGateway: settings.paymentGateway || {
-          mode: 'test',
-          testKeyId: process.env.RAZORPAY_KEY_ID || '',
-          testKeySecret: '',
-          liveKeyId: '',
-          liveKeySecret: '',
-          upiId: '',
-          upiName: 'Neeraj Rawat | Dhani Tech'
+        paymentGateway: {
+          mode: (settings.paymentGateway && settings.paymentGateway.mode) || (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_ID.startsWith('rzp_live') ? 'live' : 'test'),
+          testKeyId: process.env.RAZORPAY_KEY_ID || (settings.paymentGateway && settings.paymentGateway.testKeyId) || '',
+          razorpayConfigured: Boolean((process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) || (settings.paymentGateway && settings.paymentGateway.testKeyId)),
+          upiId: (settings.paymentGateway && settings.paymentGateway.upiId) || '',
+          upiName: (settings.paymentGateway && settings.paymentGateway.upiName) || 'Neeraj Rawat | Dhani Tech'
         }
       }
     });
@@ -73,6 +68,10 @@ module.exports = async (req, res) => {
       }
 
       try {
+        const nodemailer = loadMailer();
+        if (!nodemailer) {
+          return res.status(500).json({ success: false, error: 'Nodemailer package unavailable on server.' });
+        }
         const testTransporter = nodemailer.createTransport({
           host: settings.smtpHost || 'smtp.gmail.com',
           port: parseInt(settings.smtpPort || '465', 10),

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const { getSettings, saveSettings } = require('../_settings');
+const { loadMailer } = require('../_mailer');
 
 const ALLOWED_ADMIN_EMAILS = [
   (process.env.ADMIN_EMAIL || '').toLowerCase().trim()
@@ -51,6 +51,10 @@ module.exports = async (req, res) => {
 
     // Send OTP via Gmail SMTP
     try {
+      const nodemailer = loadMailer();
+      if (!nodemailer) {
+        return res.status(500).json({ success: false, error: 'Nodemailer package unavailable on server.' });
+      }
       const transporter = nodemailer.createTransport({
         host: settings.smtpHost || 'smtp.gmail.com',
         port: parseInt(settings.smtpPort || '465', 10),

@@ -1,4 +1,4 @@
-const { loadProducts, saveProducts, addProduct, updateProduct, deleteProduct, clearProducts } = require('./_products');
+const { loadProducts, saveProducts, addProduct, updateProduct, deleteProduct, clearProducts, resolveCategoryMeta } = require('./_products');
 
 function parseRequestBody(req) {
   let body = req.body;
@@ -67,6 +67,8 @@ module.exports = async (req, res) => {
       fileUrl,
       downloadUrl,
       category,
+      categoryKey,
+      fileFormat,
       badge,
       sales,
       features
@@ -82,8 +84,9 @@ module.exports = async (req, res) => {
     const calculatedDiscount = (numOrigPrice > numericPrice && numOrigPrice > 0)
       ? Math.round(((numOrigPrice - numericPrice) / numOrigPrice) * 100)
       : (typeof discountPercent === 'number' ? discountPercent : 0);
+    const resolvedMeta = resolveCategoryMeta(category, categoryKey, fileFormat, fileUrl || downloadUrl);
 
-    const newProd = {
+    const savedProd = addProduct({
       id: id || ('prod_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)),
       title: prodTitle,
       name: prodTitle,
@@ -98,20 +101,20 @@ module.exports = async (req, res) => {
       images: Array.isArray(images) && images.length ? images : (Array.isArray(body.images) && body.images.length ? body.images : [(img || image || '/apple-touch-icon.png').trim().replace(/^\/?frontend\//, '/')]),
       fileUrl: (fileUrl || downloadUrl || '').trim(),
       downloadUrl: (downloadUrl || fileUrl || '').trim(),
-      category: (category || 'Excel Sheets').trim(),
+      category: resolvedMeta.category,
+      categoryKey: resolvedMeta.categoryKey,
+      fileFormat: resolvedMeta.fileFormat,
       badge: calculatedDiscount > 0 ? `${calculatedDiscount}% OFF` : (badge || 'Instant Download').trim(),
       sales: sales || '0 sales',
       features: Array.isArray(features) ? features : [],
       status: 'Active',
       updatedAt: new Date().toISOString()
-    };
-
-    addProduct(newProd);
+    });
 
     return res.status(200).json({
       success: true,
-      message: 'Product saved successfully!',
-      product: newProd
+      message: 'Product saved and published cleanly!',
+      product: savedProd
     });
   }
 

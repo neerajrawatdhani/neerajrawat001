@@ -2653,20 +2653,6 @@ function renderProductsCards(products) {
 }
 
 function getPersistedStoreProducts() {
-  try {
-    const match = document.cookie.match(/(?:^|;\s*)nr_store_prods=([^;]*)/);
-    if (match && match[1]) {
-      const parsed = JSON.parse(decodeURIComponent(match[1]));
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch(e) {}
-  try {
-    const local = localStorage.getItem('nr_digital_products');
-    if (local) {
-      const parsed = JSON.parse(local);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch(e) {}
   return [];
 }
 

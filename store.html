@@ -210,12 +210,14 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
   <section class="hero">
     <div class="kicker"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant digital store</div>
     <h1>Digital Products<br>&amp; Excel Sheets</h1>
-    <p class="lede">Download automated business templates, tax spreadsheets, contracts and code with lifetime access.</p>
+    <p class="lede">Download automated Excel workbooks, digital files, project starters, portfolio templates, and design kits with instant delivery.</p>
     <div class="chips" role="group" aria-label="Filter products">
       <button class="chip" type="button" aria-pressed="true" data-f="all">All</button>
       <button class="chip" type="button" aria-pressed="false" data-f="excel">Excel &amp; Sheets</button>
-      <button class="chip" type="button" aria-pressed="false" data-f="design">Design</button>
-      <button class="chip" type="button" aria-pressed="false" data-f="code">Code</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="file">Digital Files</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="project">Project Templates</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="portfolio">Portfolio Templates</button>
+      <button class="chip" type="button" aria-pressed="false" data-f="design">Design &amp; UI Kits</button>
     </div>
   </section>
 
@@ -321,8 +323,20 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
       const discountPct = (origPriceNum > priceNum && origPriceNum > 0) ? Math.round(((origPriceNum - priceNum) / origPriceNum) * 100) : (p.discountPercent || 0);
       const title = p.title || p.name || 'Digital File';
       const desc = p.desc || '';
-      const cat = (p.category || 'excel').toLowerCase().includes('excel') ? 'excel' : ((p.category || '').toLowerCase().includes('design') ? 'design' : 'code');
-      const fmt = p.fileFormat || (cat === 'excel' ? '.XLSX' : 'DIGITAL');
+      const rawKey = (p.categoryKey || '').toLowerCase();
+      const rawCat = (p.category || '').toLowerCase();
+      const cat = rawKey || (
+        rawCat.includes('excel') || rawCat.includes('sheet') ? 'excel'
+        : rawCat.includes('portfolio') ? 'portfolio'
+        : rawCat.includes('project') || rawCat.includes('code') || rawCat.includes('boilerplate') ? 'project'
+        : rawCat.includes('design') || rawCat.includes('ui') || rawCat.includes('fig') ? 'design'
+        : rawCat.includes('file') || rawCat.includes('pdf') || rawCat.includes('doc') ? 'file'
+        : 'excel'
+      );
+      const catLabelMap = { excel: 'Excel & Sheets', file: 'Digital Files', project: 'Project Templates', portfolio: 'Portfolio Templates', design: 'Design & UI Kits' };
+      const catLabel = p.category || catLabelMap[cat] || 'Digital Product';
+      const fmtDefaultMap = { excel: '.XLSX', file: '.PDF', project: '.ZIP', portfolio: '.ZIP', design: '.FIG' };
+      const fmt = p.fileFormat || fmtDefaultMap[cat] || 'DIGITAL';
       const badge = discountPct > 0 ? `${discountPct}% OFF` : (p.badge || 'Instant Delivery');
       const prodId = p.id;
       const normImg = u => (u && typeof u === 'string') ? u.replace(/^\/?frontend\//, '/') : u;
@@ -353,7 +367,7 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
             <span class="format">${escapeHtml(fmt)}</span>
           </div>
           <div class="body">
-            <div class="meta"><span class="tag"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Instant Delivery</span><span class="tag life">Lifetime Access</span></div>
+            <div class="meta"><span class="tag">${escapeHtml(catLabel)}</span><span class="tag life">Instant Delivery</span></div>
             <h3>${escapeHtml(title)}</h3>
             <p class="desc">${escapeHtml(desc)}</p>
             <div class="price-row" style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px;">
@@ -494,25 +508,9 @@ h3{margin:4px 0 0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-heig
     fetch('/api/products')
       .then(r => r.json())
       .then(data => {
-        let prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
-        const saved = getPersistedStoreProducts();
-        if (Array.isArray(saved) && saved.length > 0) {
-          let needsSync = false;
-          saved.forEach(sp => {
-            if (sp && sp.id && !prods.find(p => p.id === sp.id)) {
-              prods.unshift(sp);
-              needsSync = true;
-            }
-          });
-          if (needsSync) {
-            fetch('/api/products', {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ products: prods })
-            }).catch(() => {});
-          }
-        }
+        const prods = (data && data.success && Array.isArray(data.products)) ? data.products : [];
         shopProducts = prods;
+        try { localStorage.setItem('nr_digital_products', JSON.stringify(prods)); } catch(e) {}
         renderShopGrid(prods);
       })
       .catch(() => {

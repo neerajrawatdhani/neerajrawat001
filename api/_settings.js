@@ -1,6 +1,14 @@
 const fs = require('fs');
+const crypto = require('crypto');
 
 const SETTINGS_FILE = '/tmp/admin_settings.json';
+
+function computeFallbackSecret() {
+  return crypto
+    .createHash('sha256')
+    .update(`dhani-studio:${process.env.ADMIN_EMAIL || 'admin'}:${process.env.ADMIN_PASSWORD || 'nr-studio'}`)
+    .digest('hex');
+}
 
 let memorySettings = {
   // SMTP Configuration
@@ -12,7 +20,7 @@ let memorySettings = {
   adminUsername: process.env.ADMIN_USERNAME || 'admin',
   adminEmail: process.env.ADMIN_EMAIL || '',
   adminPassword: process.env.ADMIN_PASSWORD || '',
-  adminSecret: process.env.ADMIN_SECRET || '',
+  adminSecret: process.env.ADMIN_SECRET || computeFallbackSecret(),
   fromEmail: process.env.FROM_EMAIL || process.env.SMTP_USER || '',
   fromName: process.env.FROM_NAME || 'Neeraj Rawat | Dhani Tech',
 
@@ -95,9 +103,12 @@ function getSettings() {
   try {
     if (fs.existsSync(SETTINGS_FILE)) {
       const data = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
-      return { ...memorySettings, ...data };
+      const merged = { ...memorySettings, ...data };
+      if (!merged.adminSecret) merged.adminSecret = memorySettings.adminSecret || computeFallbackSecret();
+      return merged;
     }
   } catch (e) {}
+  if (!memorySettings.adminSecret) memorySettings.adminSecret = computeFallbackSecret();
   return memorySettings;
 }
 
